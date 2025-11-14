@@ -72,12 +72,40 @@ export function SubcategoryProducts({ products }: { products: any[] }) {
               {/* Specifications */}
               {Object.keys(specs).length > 0 && (
                 <div className="space-y-2 mb-6">
-                  {Object.entries(specs).slice(0, 3).map(([key, value]) => (
-                    <div key={key} className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">{key}:</span>
-                      <span className="font-semibold">{String(value)}</span>
-                    </div>
-                  ))}
+                  {Object.entries(specs).slice(0, 3).map(([key, value]) => {
+                    // Форматируем значение: если массив - объединяем через запятую
+                    let formattedValue = value
+                    if (Array.isArray(value)) {
+                      formattedValue = value.join(", ")
+                    } else if (typeof value === "string" || typeof value === "number") {
+                      formattedValue = String(value)
+                    } else {
+                      formattedValue = String(value)
+                    }
+
+                    // Переводим ключи на русский язык
+                    const keyTranslations: { [key: string]: string } = {
+                      "Application": "Применение",
+                      "Применение": "Применение",
+                      "Тип": "Тип",
+                      "Type": "Тип",
+                      "Марка": "Марка",
+                      "Grade": "Марка",
+                      "Packaging": "Упаковка",
+                      "Упаковка": "Упаковка",
+                      "Granule size": "Размер гранул",
+                      "Размер гранул": "Размер гранул",
+                    }
+
+                    const displayKey = keyTranslations[key] || key
+
+                    return (
+                      <div key={key} className="flex items-start justify-between text-sm gap-2">
+                        <span className="text-muted-foreground flex-shrink-0">{displayKey}:</span>
+                        <span className="font-semibold text-right break-words">{formattedValue}</span>
+                      </div>
+                    )
+                  })}
                 </div>
               )}
 

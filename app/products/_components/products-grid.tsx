@@ -99,9 +99,9 @@ export default function ProductsGrid({
               {Object.keys(specs).length > 0 && (
                 <div className="space-y-2 mb-4">
                   {Object.entries(specs).slice(0, 3).map(([key, value]) => (
-                    <div key={key} className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">{formatSpecKey(key)}:</span>
-                      <span className="font-semibold">{formatSpecValue(key, value)}</span>
+                    <div key={key} className="flex items-start justify-between text-sm gap-2">
+                      <span className="text-muted-foreground flex-shrink-0">{formatSpecKey(key)}:</span>
+                      <span className="font-semibold text-right break-words">{formatSpecValue(key, value)}</span>
                     </div>
                   ))}
                 </div>

@@ -1,0 +1,305 @@
+{
+  "order": "Order",
+  "contactUs": "Contact Us",
+  "products": "Products",
+  "about": "About",
+  "home": "Home",
+  "language": "Language",
+  "menu": "Menu",
+  "categories": "Categories",
+  "subcategories": "Subcategories",
+  "viewAll": "View all",
+  "noSubcategories": "No subcategories",
+  "productsLabel": "Products",
+  "technopark": "Technopark",
+  "pasf": "PASF",
+  "suppliers": "Suppliers",
+  "liquidation": "Liquidation",
+  "contacts": "Contacts",
+  "dealers": "Dealers",
+  "news": "News",
+  "mission": "Mission",
+  "history": "History",
+  "quality": "Quality",
+  "management": "Management",
+  "safety": "Safety",
+  "publications": "Publications",
+  "ethics": "Ethics",
+  "disclosure": "Disclosure",
+  "vacancies": "Vacancies",
+  "extrusion": "Plastic Extrusion",
+  "cart": "Cart",
+  "dealersPage": {
+    "badge": "Dealer Network",
+    "title": "Partners and Regional Warehouses of JSC «Plastik»",
+    "description": "Products of JSC «Plastik» can be purchased from dealers with warehouse complexes in regions of Russia and CIS countries. We are developing a partner network to ensure prompt deliveries and service near our clients' production facilities.",
+    "location": "Nizhny Novgorod and other cities",
+    "sectionTitle": "Nizhny Novgorod — Partner Warehouse",
+    "sectionDescription": "Dealers based in Nizhny Novgorod provide warehouse stocks and shipment of JSC «Plastik» products throughout the Volga region and the Urals.",
+    "logoAlt": "Nizhny Novgorod dealers logos"
+  },
+  "contactsPage": {
+    "title": "Contacts",
+    "description": "Contact us in any convenient way. We are always happy to answer your questions",
+    "ourContacts": "Our Contacts",
+    "production": {
+      "title": "JSC «Plastik» — Production",
+      "badge": "Production",
+      "reception": "General Director's Office",
+      "correspondence": "For Correspondence"
+    },
+    "sales": {
+      "title": "JSC «Plastik» — Sales and Promotion",
+      "badge": "Legal Address",
+      "mainContacts": "Main Contacts",
+      "ordersEmail": "Orders Email"
+    },
+    "procurement": {
+      "title": "Procurement and Supply",
+      "badge": "Supply"
+    },
+    "salesByDirection": {
+      "title": "Sales by Direction",
+      "badge": "Sales",
+      "directions": {
+        "abs": "ABS Plastics",
+        "polystyrene": "Polystyrene",
+        "machineParts": "Machine Parts",
+        "absFilament": "ABS Filament for 3D Printers",
+        "cors": "CORS (Cubic Residue of Styrene Rectification)",
+        "liquidation": "Liquidation",
+        "consumerGoods": "Consumer Goods"
+      }
+    },
+    "form": {
+      "title": "Write to Us",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "message": "Message",
+      "namePlaceholder": "Your name",
+      "emailPlaceholder": "your@email.com",
+      "phonePlaceholder": "+7 (___) ___-__-__",
+      "messagePlaceholder": "Tell us about your request...",
+      "submit": "Send Message"
+    },
+    "workingHours": {
+      "title": "Working Hours",
+      "production": "Production",
+      "salesOffice": "Sales Office",
+      "productionHours": "Mon-Fri: 08:00 – 17:00",
+      "salesHours": "Mon-Fri: 09:00 – 18:00",
+      "weekend": "Sat-Sun: Closed",
+      "unifiedPhone": "For urgent contact, use the unified phone:"
+    },
+    "mapTitle": "JSC «Plastik» — Production"
+  },
+  "suppliersPage": {
+    "badge": "For Suppliers",
+    "title": "Partnership with JSC «Plastik»: Raw Materials and Supplies Procurement",
+    "description": "We are open to cooperation with reliable suppliers of raw materials, chemical components, packaging, and services. Below are key contacts, current requests, and supplier requirements.",
+    "contacts": {
+      "title": "Main Contacts",
+      "description": "For inquiries regarding supplies and procurement of raw materials and supplies, please use the contacts of LLC «TEK-SNAB». We try to respond within 2 business days.",
+      "fullContactsLink": "Full Contact List",
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address",
+      "mapTitle": "LLC «TEK-SNAB» — Moscow, Lobachevskogo St., 41"
+    },
+    "rfps": {
+      "title": "Active Requests for Proposals",
+      "description": "Select an interesting request and submit a proposal directly on the page. Our specialists will contact you to clarify details.",
+      "customer": "Customer: JSC «Plastik»",
+      "submitProposal": "Submit Proposal",
+      "submitDescription": "Provide contact details and briefly describe the terms. The procurement team will respond to the specified email.",
+      "companyPlaceholder": "Company",
+      "emailPlaceholder": "Contact Email",
+      "conditionsPlaceholder": "Your supply terms...",
+      "submitButton": "Submit Proposal",
+      "requests": {
+        "req001": {
+          "title": "Comprehensive Supply of General Purpose Polystyrene",
+          "description": "JSC «Plastik» is considering proposals for the supply of PSE-1 polystyrene (granules) for the production of mass consumption products.",
+          "details": [
+            "Volume: 48 tons (4 batches of 12 tons)",
+            "Requirements: density 1.04 g/cm³, MFR 5–7 g/10 min, big bag packaging 1200 kg",
+            "Desired terms: 30-day payment deferral, delivery to Uzlovaya"
+          ],
+          "deadline": "Proposals accepted until December 14, 2025"
+        },
+        "req002": {
+          "title": "Procurement of Stabilizers for ABS Plastics",
+          "description": "Stabilizing additives are required for ABS series production. Preference for local suppliers with experience in the chemical industry.",
+          "details": [
+            "Volume: 3,000 kg (minimum batch 500 kg)",
+            "Requirements: compatibility with ABS L-121 and ABS 1525-31, quality certificates",
+            "Desired terms: delivery to warehouse in Moscow, consignment warehouse welcome"
+          ],
+          "deadline": "Proposals accepted until January 9, 2026"
+        }
+      }
+    },
+    "howToBecome": {
+      "title": "How to Become a Supplier",
+      "subtitle": "A simple path to cooperation in a few steps",
+      "steps": {
+        "step1": {
+          "title": "Prepare Company Profile",
+          "description": "Tell us about production capacity, certificates, available volumes, and supply terms. Attach a standard contract or commercial proposal."
+        },
+        "step2": {
+          "title": "Send Materials to Procurement Department",
+          "description": "Main e-mail: info@tek-snab.ru. In the subject line, indicate «Supplier — [your company]» and the product segment of interest."
+        },
+        "step3": {
+          "title": "Discuss Details",
+          "description": "Our specialists will contact you to clarify specifications, delivery schedules, and logistics. We can organize a video meeting if necessary."
+        }
+      }
+    }
+  },
+  "homePage": {
+    "hero": {
+      "title": "Plastics Technology of the Future",
+      "description": "Leader in the chemical industry in the production of ABS plastics and polystyrenes since 1959",
+      "catalogButton": "Product Catalog",
+      "aboutButton": "Learn More About Us"
+    },
+    "stats": {
+      "title": "Production Volumes",
+      "subtitle": "Our Enterprise Capacity",
+      "styrene": "Styrene per year",
+      "polystyrene": "Expandable polystyrene per year",
+      "abs": "ABS plastic per year",
+      "suffix": " thousand tons"
+    },
+    "about": {
+      "title": "About Us",
+      "paragraph1": "<strong>JSC «Plastik»</strong> is a leader in the Russian chemical industry in the ABS plastics segment. Founded in 1959, our enterprise continuously develops, exploring new directions and constantly modernizing.",
+      "paragraph2": "We produce and sell polymer raw materials through our Trading House that meet modern quality standards. Our products include <strong>six grades of expandable polystyrene</strong>, extrusion and injection grades of ABS plastics, as well as various plastic products used in industry and everyday life.",
+      "paragraph3": "Our plant operates a <strong>quality management system certified for compliance with ISO 9001-2008 and GOST ISO 9001:2011</strong>. We do not inflate prices, so cooperation with JSC «Plastik» is profitable.",
+      "feature1": {
+        "title": "ABS Market Leader",
+        "description": "Leading positions in the Russian chemical market in the ABS plastics segment"
+      },
+      "feature2": {
+        "title": "Certified Quality",
+        "description": "ISO 9001-2008 and GOST ISO 9001:2011 - strict control at all stages"
+      },
+      "feature3": {
+        "title": "Wide Range",
+        "description": "6 grades of expandable polystyrene, extrusion and injection grades of ABS"
+      },
+      "feature4": {
+        "title": "Technical Support",
+        "description": "Full range of services for customer service and material selection"
+      },
+      "feature5": {
+        "title": "Convenient Logistics",
+        "description": "Production in Uzlovaya, 200 km from Moscow, near M4 highway, railway junction"
+      },
+      "feature6": {
+        "title": "Affordable Prices",
+        "description": "Direct supplies from the manufacturer without inflated prices"
+      }
+    },
+    "products": {
+      "title": "Our Products",
+      "description": "Wide range of high-quality plastic materials for various industries",
+      "searchPlaceholder": "Search products... (e.g.: ABS, polystyrene, granules)",
+      "foundProducts": "Products found:",
+      "catalogSearch": "Catalog search:",
+      "productsInDatabase": "products in database",
+      "noResults": "No results found for",
+      "nothingFound": "",
+      "clearSearch": "Clear search",
+      "viewAll": "View Full Catalog",
+      "readMore": "Read More"
+    },
+    "video": {
+      "title": "Production Film",
+      "description": "We invite you to learn about the history and capabilities of our enterprise"
+    },
+    "news": {
+      "title": "Latest News",
+      "description": "Follow company news and industry events",
+      "readMore": "Read More",
+      "allNews": "All News"
+    },
+    "contact": {
+      "title": "Contact Us",
+      "description": "Ready to answer your questions and discuss cooperation opportunities",
+      "form": {
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "message": "Message",
+        "namePlaceholder": "Your name",
+        "emailPlaceholder": "your@email.com",
+        "phonePlaceholder": "+7 (___) ___-__-__",
+        "messagePlaceholder": "Tell us about your project...",
+        "submit": "Send Message"
+      },
+      "address": {
+        "title": "Factory Address"
+      },
+      "phone": {
+        "title": "Phone"
+      },
+      "email": {
+        "title": "Email"
+      },
+      "mapTitle": "Location Map"
+    },
+    "partners": {
+      "title": "Our Partners",
+      "description": "We collaborate with leading companies in Russia and ensure high product quality",
+      "ariaLabel": "Our Partners"
+    },
+    "catalog": {
+      "title": "Product Catalog",
+      "description": "Full range of polymer raw materials and finished products of the highest quality from the market leader in ABS plastics in Russia",
+      "readMore": "Read More",
+      "sections": "Sections:",
+      "more": "more...",
+      "backToCatalog": "Back to Catalog",
+      "subcategoriesTitle": "Category Sections",
+      "noSubcategories": "No sections in this category yet",
+      "categoriesLabel": "Categories",
+      "subcategoriesLabel": "Subcategories",
+      "productsLabel": "Products",
+      "viewAll": "View All",
+      "categories": {
+        "styrene": "Styrene",
+        "abs": "ABS Plastics",
+        "polystyrene": "Polystyrene",
+        "dispersion": "Styrene-Acrylic Dispersion",
+        "machine-parts": "Machine Parts",
+        "hoztovary": "Household Goods",
+        "canisters": "Canisters",
+        "boxes": "Boxes",
+        "pvc-modifier": "PVC Composition Modifier",
+        "kors": "CORS (Cubic Residue of Styrene Rectification)",
+        "custom-abs": "Custom ABS Plastic Products Manufacturing"
+      },
+      "subcategories": {
+        "abs-injection": "Injection Grades",
+        "abs-extrusion": "Extrusion Grades",
+        "abs-custom": "Custom ABS Plastic Products Manufacturing",
+        "ps-psv-s": "Expandable Polystyrene PSV-S",
+        "ps-psv-l": "Expandable Polystyrene PSV-L",
+        "ps-pse": "Polystyrene PSE-1",
+        "extrusion-parts": "Extrusion Products",
+        "injection-parts": "Injection Products",
+        "vedra-tazy": "Buckets and Basins",
+        "uborka": "Cleaning Supplies",
+        "steklo": "Glass Cleaners",
+        "sanuzel": "Bathroom Accessories",
+        "kuhnya": "Kitchenware",
+        "veshalki": "Hangers and Clothes Hangers",
+        "otdyh": "Leisure Products"
+      }
+    }
+  }
+}

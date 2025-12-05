@@ -14,17 +14,41 @@ export function middleware(request: NextRequest) {
                        pathname.match(/\.(ico|png|jpg|jpeg|svg|gif|webp|woff|woff2|ttf|eot|pdf|mp4)$/)
   
   const isApiRoute = pathname.startsWith("/api")
-  const isLoginPage = pathname === "/login"
+  const isRobotsTxt = pathname === "/robots.txt"
 
-  // Проверка доступа к сайту (для всех страниц кроме исключений)
-  if (!isStaticFile && !isApiRoute && !isLoginPage) {
-    const siteAuth = request.cookies.get("site_auth")
+  // Блокировка ботов и скраперов
+  if (!isStaticFile && !isApiRoute && !isRobotsTxt) {
+    const userAgent = request.headers.get("user-agent") || ""
+    const botPatterns = [
+      /bot/i,
+      /crawler/i,
+      /spider/i,
+      /scraper/i,
+      /facebookexternalhit/i,
+      /twitterbot/i,
+      /linkedinbot/i,
+      /whatsapp/i,
+      /telegrambot/i,
+      /bingbot/i,
+      /googlebot/i,
+      /yandex/i,
+      /baiduspider/i,
+      /duckduckbot/i,
+      /slurp/i,
+      /ia_archiver/i,
+      /archive\.org/i,
+      /semrush/i,
+      /ahrefs/i,
+      /mj12bot/i,
+      /dotbot/i,
+      /blexbot/i,
+      /petalbot/i,
+    ]
 
-    if (!siteAuth || siteAuth.value !== "authenticated") {
-      // Сохраняем URL для редиректа после входа
-      const loginUrl = new URL("/login", request.url)
-      loginUrl.searchParams.set("return", pathname)
-      return NextResponse.redirect(loginUrl)
+    const isBot = botPatterns.some((pattern) => pattern.test(userAgent))
+
+    if (isBot) {
+      return new NextResponse("Access Denied", { status: 403 })
     }
   }
 

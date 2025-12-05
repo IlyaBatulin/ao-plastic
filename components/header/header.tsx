@@ -56,14 +56,14 @@ export function Header() {
         </div>
 
         {/* Mobile Controls */}
-        <div className="flex lg:hidden items-center gap-3 flex-shrink-0">
+        <div className="flex lg:hidden items-center gap-2 sm:gap-3 flex-shrink-0 ml-auto">
           {/* Mobile Cart Button */}
           <Link
             href="/cart"
-            className="relative p-2.5 hover:bg-primary/10 rounded-lg transition-colors"
+            className="relative flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-2xl border border-border/60 bg-white text-foreground transition-all duration-200 shadow-sm active:scale-95"
             aria-label="Корзина"
           >
-            <ShoppingCart className="w-6 h-6" />
+            <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" />
             {itemCount > 0 && (
               <Badge className="absolute -top-1 -right-1 bg-red-500 hover:bg-red-600 min-w-[1.25rem] h-[1.25rem] flex items-center justify-center text-[10px] px-1">
                 {itemCount}
@@ -71,13 +71,15 @@ export function Header() {
             )}
           </Link>
 
-          {/* Mobile Menu Button */}
+          {/* Prominent Catalog Button */}
           <button
-            className="p-2.5 hover:bg-primary/10 rounded-lg transition-colors"
+            className="flex items-center gap-2 rounded-2xl px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-semibold uppercase tracking-wide bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white shadow-[0_4px_12px_rgba(37,99,235,0.4)] hover:shadow-[0_6px_16px_rgba(37,99,235,0.5)] transition-all duration-200 active:scale-95 z-10"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle menu"
+            aria-label={isMobileMenuOpen ? "Закрыть каталог" : "Открыть каталог"}
+            aria-pressed={isMobileMenuOpen}
           >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isMobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
+            <span>Каталог</span>
           </button>
         </div>
       </nav>

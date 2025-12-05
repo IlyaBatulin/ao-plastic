@@ -19,9 +19,12 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent side="right" className="w-1/2 lg:w-[400px] flex flex-col">
+      <SheetContent 
+        side="left" 
+        className="!w-full !max-w-full sm:!max-w-full p-0 flex flex-col !border-0 inset-0"
+      >
         <SheetTitle className="sr-only">Menu</SheetTitle>
-        <nav className="flex flex-col gap-4 mt-8 flex-1 overflow-y-auto pb-4">
+        <nav className="flex flex-col gap-4 mt-8 flex-1 overflow-y-auto pb-4 px-6">
           {menuData.map((item) => {
             const label = lang === "en" && item.labelEn ? item.labelEn : item.label
             const isActive = pathname === item.href
@@ -101,7 +104,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           })}
         </nav>
 
-        <SheetFooter className="border-t bg-background">
+        <SheetFooter className="border-t bg-background px-6 pb-6">
           <div className="w-full space-y-3">
             <Button variant="outline" size="sm" onClick={() => setLang(lang === "ru" ? "en" : "ru")} className="w-full">
               {lang === "ru" ? "English" : "Русский"}

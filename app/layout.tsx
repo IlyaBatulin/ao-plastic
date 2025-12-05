@@ -8,6 +8,7 @@ import { LanguageProvider } from "@/contexts/language-context"
 import { CartProvider } from "@/contexts/cart-context"
 import { ConditionalHeader } from "@/components/conditional-header"
 import { Toaster } from "@/components/ui/toaster"
+import { LoadingScreen } from "@/components/loading-screen"
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -19,6 +20,19 @@ export const metadata: Metadata = {
   description:
     "Лидер химической индустрии по производству АБС-пластиков и полистиролов. Современные технологии, контроль качества, экологичные материалы.",
   keywords: "пластик, АБС-пластик, полистирол, производство пластика, пластиковые изделия",
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+    googleBot: {
+      index: false,
+      follow: false,
+      noimageindex: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 }
 
 export default function RootLayout({
@@ -35,13 +49,16 @@ export default function RootLayout({
         <Script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" />
       </head>
       <body className="antialiased overflow-x-hidden">
-        <LanguageProvider>
-          <CartProvider>
-            <ConditionalHeader />
-            {children}
-          </CartProvider>
-        </LanguageProvider>
-        <Toaster />
+        <LoadingScreen />
+        <div id="main-content" className="opacity-0 animate-fade-in">
+          <LanguageProvider>
+            <CartProvider>
+              <ConditionalHeader />
+              {children}
+            </CartProvider>
+          </LanguageProvider>
+          <Toaster />
+        </div>
       </body>
     </html>
   )

@@ -66,11 +66,14 @@ export function Footer() {
         <div className="border-t border-background/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-background/70 text-sm">© {currentYear} АО «Пластик». Все права защищены.</p>
           <div className="flex gap-6 text-sm text-background/70">
-            <Link href="#" className="hover:text-background transition-colors">
+            <Link href="/legal/privacy-policy" className="hover:text-background transition-colors">
               Политика конфиденциальности
             </Link>
-            <Link href="#" className="hover:text-background transition-colors">
-              Условия использования
+            <Link href="/legal/terms" className="hover:text-background transition-colors">
+              Пользовательское соглашение
+            </Link>
+            <Link href="/legal/company-details" className="hover:text-background transition-colors">
+              Реквизиты
             </Link>
           </div>
         </div>

@@ -6,7 +6,9 @@ import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Building2, MapPin, Phone, ShoppingCart, Truck } from "lucide-react"
+import Link from "next/link"
 import { useState } from "react"
 import { useLanguage } from "@/contexts/language-context"
 import { useToast } from "@/hooks/use-toast"
@@ -32,9 +34,21 @@ export default function ContactsPage() {
     message: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [consentAccepted, setConsentAccepted] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!consentAccepted) {
+      toast({
+        title: "Требуется согласие",
+        description: "Необходимо согласиться на обработку персональных данных",
+        variant: "destructive",
+        duration: 3000,
+      })
+      return
+    }
+    
     setIsSubmitting(true)
 
     try {
@@ -285,7 +299,23 @@ export default function ContactsPage() {
                   />
                 </div>
 
-                <Button type="submit" size="lg" className="w-full transition-transform hover:scale-105" disabled={isSubmitting}>
+                <div className="flex items-start gap-2">
+                  <Checkbox
+                    id="consent-contacts"
+                    checked={consentAccepted}
+                    onCheckedChange={(checked) => setConsentAccepted(checked === true)}
+                    required
+                    className="mt-1"
+                  />
+                  <label htmlFor="consent-contacts" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
+                    Я согласен(а) на{" "}
+                    <Link href="/legal/privacy-policy" className="text-primary hover:underline" target="_blank">
+                      обработку персональных данных
+                    </Link>
+                  </label>
+                </div>
+
+                <Button type="submit" size="lg" className="w-full transition-transform hover:scale-105" disabled={isSubmitting || !consentAccepted}>
                   {isSubmitting ? "Отправка..." : t("contactsPage.form.submit")}
                 </Button>
               </form>

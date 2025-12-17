@@ -10,7 +10,7 @@ export function getCategoryName(categoryId: string, lang: "ru" | "en" = "ru"): s
     polystyrene: { ru: "Полистирол", en: "Polystyrene" },
     dispersion: { ru: "Дисперсия стирол-акриловая", en: "Styrene-Acrylic Dispersion" },
     "machine-parts": { ru: "Детали машиностроения", en: "Machine Parts" },
-    hoztovary: { ru: "Хозяйственные товары", en: "Household Goods" },
+    hoztovary: { ru: "Товары народного потребления", en: "Consumer Goods" },
     canisters: { ru: "Канистры", en: "Canisters" },
     boxes: { ru: "Ящики", en: "Boxes" },
     "pvc-modifier": { ru: "Модификатор для композиций ПВХ", en: "PVC Composition Modifier" },

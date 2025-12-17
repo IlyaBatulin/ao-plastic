@@ -108,28 +108,27 @@ export function SubcategoriesGrid({ categoryId, subcategories }: SubcategoriesGr
               </div>
 
               {/* Content */}
-              <div className="relative h-full flex flex-col justify-between p-6 z-10">
+              <div className="relative h-full flex flex-col justify-between p-4 sm:p-6 z-10">
                 {/* Number Badge */}
                 <div className="absolute top-4 right-4 w-14 h-14 rounded-full bg-primary/10 backdrop-blur-md border border-primary/20 flex items-center justify-center font-bold text-2xl text-primary transition-all duration-300 group-hover:bg-primary/20 group-hover:border-primary/30 group-hover:scale-110">
                   {index + 1}
                 </div>
 
-                {/* Title */}
-                <div className="mt-auto">
-                  <h3 className="text-2xl font-bold mb-2 transition-colors duration-300 group-hover:text-primary">
+                {/* Title and CTA - единый блок без разделения */}
+                <div className="mt-auto bg-white/95 backdrop-blur-sm rounded-xl p-4 -mx-2 border border-white/50 shadow-sm">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 transition-colors duration-300 group-hover:text-primary text-balance break-words">
                     {t(`homePage.catalog.subcategories.${subcategory.id}`) || subcategory.name}
                   </h3>
                   {subcategory.description && subcategory.id !== "abs-custom" && (
-                    <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2 mb-4">
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-3">
                       {subcategory.description}
                     </p>
                   )}
-                </div>
-
-                {/* CTA */}
-                <div className="flex items-center gap-2 text-primary font-semibold transition-all duration-300 group-hover:gap-3">
-                  <span className="text-base">{t("homePage.catalog.readMore")}</span>
-                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  {/* CTA внутри того же блока без границы */}
+                  <div className="flex items-center gap-2 text-primary font-semibold transition-all duration-300 group-hover:gap-3 mt-2">
+                    <span className="text-xs sm:text-sm md:text-base">{t("homePage.catalog.readMore")}</span>
+                    <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </div>
                 </div>
               </div>
 

@@ -7,6 +7,7 @@ import { ArrowRight, ChevronDown } from "lucide-react"
 import Link from "next/link"
 import { useRef, useEffect } from "react"
 import { useLanguage } from "@/contexts/language-context"
+import { HeroNavigation } from "@/components/hero-navigation"
 
 export function Hero() {
   const { t } = useLanguage()
@@ -30,7 +31,10 @@ export function Hero() {
   }
 
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative h-screen flex items-center justify-center">
+      {/* Navigation Overlay */}
+      <HeroNavigation />
+
       {/* Background Video with Overlay */}
       <div className="absolute inset-0 z-0">
         <video

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { MainMenu } from "./main-menu"
+import { MainMenuCorporate } from "./main-menu-corporate"
 import { LanguageSwitcher } from "./language-switcher"
 import { OrderButton } from "./order-button"
 import { MobileMenu } from "./mobile-menu"
@@ -28,26 +28,58 @@ export function Header() {
 
   const isHomePage = pathname === "/"
 
+  const isTransparent = isHomePage && !isScrolled
+
+  // Скрываем хедер на главной странице, чтобы видео было с самого начала
+  if (isHomePage && !isScrolled) {
+    return null
+  }
+
   return (
-    <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        isScrolled || !isHomePage ? "bg-white/90 backdrop-blur-md shadow-md" : "bg-white/80 backdrop-blur-md shadow-sm"
-      }`}
-    >
-      <nav className="flex w-full items-center justify-between gap-2 lg:gap-4 max-w-[1440px] mx-auto px-4 lg:px-8 py-3">
+    <>
+      <header
+        className={`sticky top-0 transition-all duration-300 ${
+          isMobileMenuOpen 
+            ? "z-[110]" 
+            : "z-[100]"
+        } ${
+          isScrolled || !isHomePage 
+            ? "bg-white/95 backdrop-blur-lg shadow-sm border-b border-gray-100/50" 
+            : "backdrop-blur-none"
+        }`}
+        style={isTransparent ? { backgroundColor: 'transparent', background: 'transparent' } : {}}
+      >
+      <nav 
+        className={`flex w-full items-center justify-between gap-2 lg:gap-4 max-w-[1440px] mx-auto px-4 lg:px-8 py-4 ${
+          isScrolled || !isHomePage ? "" : "lg:py-6"
+        }`}
+        style={isTransparent ? { backgroundColor: 'transparent' } : {}}
+      >
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 lg:gap-3 group flex-shrink-0 min-w-fit">
-          <div className="relative w-14 h-14 sm:w-12 sm:h-12 lg:w-12 lg:h-12 flex-shrink-0 transition-transform duration-300 group-hover:scale-110">
+          <div className="relative w-14 h-14 sm:w-12 sm:h-12 lg:w-12 lg:h-12 flex-shrink-0 transition-transform duration-300 group-hover:scale-110 drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
             <Image src="/images/logo.png" alt="АО Пластик" fill className="object-contain" priority />
           </div>
           <div className="hidden sm:flex flex-col min-w-fit">
-            <span className="font-bold text-sm lg:text-base xl:text-lg leading-tight text-foreground whitespace-nowrap">АО Пластик</span>
-            <span className="text-xs text-muted-foreground leading-tight whitespace-nowrap hidden xl:block">Узловая</span>
+            <span className={`font-bold text-sm lg:text-base xl:text-lg leading-tight whitespace-nowrap ${
+              isScrolled || !isHomePage 
+                ? "text-foreground" 
+                : "text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+            }`}>
+              АО Пластик
+            </span>
+            <span className={`text-xs leading-tight whitespace-nowrap hidden xl:block ${
+              isScrolled || !isHomePage 
+                ? "text-muted-foreground" 
+                : "text-white/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]"
+            }`}>
+              Узловая
+            </span>
           </div>
         </Link>
 
         {/* Desktop Menu */}
-        <MainMenu />
+        <MainMenuCorporate />
 
         {/* Right Controls */}
         <div className="hidden lg:flex items-center gap-1.5 xl:gap-3 flex-shrink-0 min-w-fit">
@@ -71,21 +103,22 @@ export function Header() {
             )}
           </Link>
 
-          {/* Prominent Catalog Button */}
+          {/* Catalog Button - прозрачная как корзина */}
           <button
-            className="flex items-center gap-2 rounded-2xl px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-semibold uppercase tracking-wide bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white shadow-[0_4px_12px_rgba(37,99,235,0.4)] hover:shadow-[0_6px_16px_rgba(37,99,235,0.5)] transition-all duration-200 active:scale-95 z-10"
+            className="relative flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-2xl border border-border/60 bg-white/10 backdrop-blur-sm text-foreground transition-all duration-200 shadow-sm active:scale-95 hover:bg-white/20"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label={isMobileMenuOpen ? "Закрыть каталог" : "Открыть каталог"}
             aria-pressed={isMobileMenuOpen}
           >
             {isMobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
-            <span>Каталог</span>
           </button>
         </div>
       </nav>
 
-      {/* Mobile Menu */}
+      </header>
+      
+      {/* Mobile Menu - вне header для правильного z-index */}
       <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
-    </header>
+    </>
   )
 }

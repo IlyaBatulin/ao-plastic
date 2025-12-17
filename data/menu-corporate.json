@@ -1,0 +1,82 @@
+[
+  {
+    "label": "Компания",
+    "labelEn": "Company",
+    "href": "/about",
+    "type": "mega",
+    "sections": [
+      {
+        "title": "О компании",
+        "titleEn": "About Us",
+        "items": [
+          { "label": "Миссия", "labelEn": "Mission", "href": "/about/mission" },
+          { "label": "История компании", "labelEn": "History", "href": "/about/history" },
+          { "label": "Руководство", "labelEn": "Management", "href": "/about/management" }
+        ]
+      },
+      {
+        "title": "Качество и стандарты",
+        "titleEn": "Quality & Standards",
+        "items": [
+          { "label": "Менеджмент качества", "labelEn": "Quality Management", "href": "/about/quality" },
+          { "label": "Охрана труда и экология", "labelEn": "Safety & Ecology", "href": "/about/safety" },
+          { "label": "Кодекс этики", "labelEn": "Code of Ethics", "href": "/about/ethics" }
+        ]
+      },
+      {
+        "title": "Информация",
+        "titleEn": "Information",
+        "items": [
+          { "label": "Публикации", "labelEn": "Publications", "href": "/about/publications" },
+          { "label": "Раскрытие информации", "labelEn": "Disclosure", "href": "/about/disclosure" },
+          { "label": "Вакансии", "labelEn": "Vacancies", "href": "/about/vacancies" },
+          { "label": "Экструзия пластика", "labelEn": "Plastic Extrusion", "href": "/about/extrusion" }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "Продукция",
+    "labelEn": "Products",
+    "href": "/products",
+    "type": "catalog"
+  },
+  {
+    "label": "Партнерство",
+    "labelEn": "Partnership",
+    "href": "/suppliers",
+    "type": "mega",
+    "sections": [
+      {
+        "title": "Для поставщиков",
+        "titleEn": "For Suppliers",
+        "items": [
+          { "label": "Поставщикам", "labelEn": "Suppliers", "href": "/suppliers" },
+          { "label": "Запросы предложений", "labelEn": "RFP Requests", "href": "/suppliers" }
+        ]
+      },
+      {
+        "title": "Для дилеров",
+        "titleEn": "For Dealers",
+        "items": [
+          { "label": "Дилеры", "labelEn": "Dealers", "href": "/dealers" }
+        ]
+      },
+      {
+        "title": "Дополнительно",
+        "titleEn": "Additional",
+        "items": [
+          { "label": "Неликвиды", "labelEn": "Liquidation", "href": "/liquidation" },
+          { "label": "ПАСФ", "labelEn": "PASF", "href": "/images/PASF-PLASTIK.pdf" }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "Контакты",
+    "labelEn": "Contacts",
+    "href": "/contacts",
+    "type": "simple"
+  }
+]
+

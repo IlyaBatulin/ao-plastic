@@ -37,7 +37,7 @@ export function Header() {
 
   return (
     <>
-      <header
+    <header
         className={`sticky top-0 transition-all duration-300 ${
           isMobileMenuOpen 
             ? "z-[110]" 
@@ -48,7 +48,7 @@ export function Header() {
             : "backdrop-blur-none"
         }`}
         style={isTransparent ? { backgroundColor: 'transparent', background: 'transparent' } : {}}
-      >
+    >
       <nav 
         className={`flex w-full items-center justify-between gap-2 lg:gap-4 max-w-[1440px] mx-auto px-4 lg:px-8 py-4 ${
           isScrolled || !isHomePage ? "" : "lg:py-6"

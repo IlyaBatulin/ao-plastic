@@ -29,9 +29,20 @@ interface Vacancy {
   salary: string | null
 }
 
+const VACANCY_CATEGORIES = [
+  { id: "all", label: "Все вакансии", department: null },
+  { id: "production", label: "Производство", department: "Производство" },
+  { id: "science", label: "Наука", department: "Наука" },
+  { id: "marketing", label: "Маркетинг и продажи", department: "Маркетинг и продажи" },
+  { id: "tula", label: "Тульский офис", department: "Тульский офис" },
+  { id: "other", label: "Прочее", department: "Прочее" },
+] as const
+
 export function VacanciesClient() {
   const { toast } = useToast()
   const [vacancies, setVacancies] = useState<Vacancy[]>([])
+  const [filteredVacancies, setFilteredVacancies] = useState<Vacancy[]>([])
+  const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const [isLoading, setIsLoading] = useState(true)
   const [selectedVacancy, setSelectedVacancy] = useState<Vacancy | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -46,6 +57,19 @@ export function VacanciesClient() {
   useEffect(() => {
     fetchVacancies()
   }, [])
+
+  useEffect(() => {
+    if (selectedCategory === "all") {
+      setFilteredVacancies(vacancies)
+    } else {
+      const category = VACANCY_CATEGORIES.find((cat) => cat.id === selectedCategory)
+      if (category) {
+        setFilteredVacancies(
+          vacancies.filter((vacancy) => vacancy.department === category.department)
+        )
+      }
+    }
+  }, [selectedCategory, vacancies])
 
   const fetchVacancies = async () => {
     try {
@@ -69,17 +93,34 @@ export function VacanciesClient() {
     )
   }
 
-  if (vacancies.length === 0) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-muted-foreground">На данный момент открытых вакансий нет</p>
-      </div>
-    )
-  }
+  // Убираем эту проверку, так как теперь используем фильтры
 
   return (
     <div className="space-y-6">
-      {vacancies.map((vacancy) => (
+      {/* Фильтр по подразделам */}
+      <div className="flex flex-wrap gap-2 mb-8">
+        {VACANCY_CATEGORIES.map((category) => (
+          <Button
+            key={category.id}
+            variant={selectedCategory === category.id ? "default" : "outline"}
+            onClick={() => setSelectedCategory(category.id)}
+            className="rounded-lg"
+          >
+            {category.label}
+          </Button>
+        ))}
+      </div>
+
+      {filteredVacancies.length === 0 ? (
+        <div className="text-center py-12">
+          <p className="text-muted-foreground">
+            {selectedCategory === "all" 
+              ? "На данный момент открытых вакансий нет"
+              : "В выбранной категории вакансий нет"}
+          </p>
+        </div>
+      ) : (
+        filteredVacancies.map((vacancy) => (
         <div
           key={vacancy.id}
           className="bg-card rounded-xl p-6 border border-border hover:shadow-lg transition-all"
@@ -145,7 +186,7 @@ export function VacanciesClient() {
             Откликнуться
           </Button>
         </div>
-      ))}
+      )))}
 
       {/* Response Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

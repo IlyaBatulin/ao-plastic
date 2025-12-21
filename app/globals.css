@@ -337,3 +337,86 @@ body {
   animation: blueFlow 20s ease-in-out infinite;
   will-change: background-position, opacity;
 }
+
+/* Скрытие элементов управления видео на всех устройствах */
+video::-webkit-media-controls {
+  display: none !important;
+}
+
+video::-webkit-media-controls-enclosure {
+  display: none !important;
+}
+
+video::-webkit-media-controls-panel {
+  display: none !important;
+}
+
+video::-webkit-media-controls-play-button {
+  display: none !important;
+}
+
+video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+}
+
+video::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+}
+
+video::--webkit-media-controls-overlay-enclosure {
+  display: none !important;
+}
+
+/* Скрытие элементов управления для всех браузеров */
+video {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+video::-webkit-media-controls-overlay {
+  display: none !important;
+}
+
+/* Дополнительное скрытие для мобильных устройств */
+@media (max-width: 768px) {
+  video {
+    pointer-events: none;
+  }
+  
+  video::-webkit-media-controls {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+  
+  video::-webkit-media-controls-enclosure {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+  
+  video::-webkit-media-controls-panel {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+  
+  video::-webkit-media-controls-play-button {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+  
+  video::-webkit-media-controls-start-playback-button {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+  
+  video::-webkit-media-controls-overlay-play-button {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+}

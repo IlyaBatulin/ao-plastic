@@ -11,10 +11,7 @@ insert into public.categories (id, slug, name, description, image, sort, is_acti
 -- 3. Стирол
 ('styrene', 'styrene', 'Стирол', 'Высококачественный стирол мономерный для производства полистирола и сополимеров', '/images/products/styrene.jpg', 30, true),
 -- 4. ТПН (пропущено - требуется уточнение)
--- 5. Канистры (с указанием литража)
-('canisters', 'canisters', 'Канистры', 'Пластиковые канистры различного объема (3л, 5л, 10л, 20л, 30л) для хранения жидкостей', '/images/products/canisters.jpg', 50, true),
--- 6. Ящики (под заказ)
-('boxes', 'boxes', 'Ящики', 'Пластиковые ящики для хранения и транспортировки (под заказ)', '/images/products/boxes.jpg', 60, true),
+-- 5-6. Канистры и Ящики теперь являются подкатегориями ТНП (см. миграцию 029)
 -- 7. Товары народного потребления
 ('hoztovary', 'hoztovary', 'Товары народного потребления', 'Качественные изделия из пластика для дома и быта', '/images/xoztov/П2701.jpg', 70, true),
 -- 8. Остальные материалы
@@ -65,5 +62,20 @@ set category_id = excluded.category_id,
     name = excluded.name,
     description = excluded.description,
     sort = excluded.sort;
+
+-- Подкатегории Товаров народного потребления (включая канистры и ящики)
+-- Примечание: Основные подкатегории ТНП добавляются через миграцию 008_add_household_products.sql
+-- Здесь добавляем только канистры и ящики, которые переносятся из отдельных категорий
+insert into public.subcategories (id, category_id, slug, name, description, image, sort, is_active) values
+('canisters', 'hoztovary', 'canisters', 'Канистры', 'Пластиковые канистры различного объема (3л, 5л, 10л, 20л, 30л) для хранения жидкостей', '/images/products/canisters.jpg', 80, true),
+('boxes', 'hoztovary', 'boxes', 'Ящики', 'Пластиковые ящики для хранения и транспортировки (под заказ)', '/images/products/boxes.jpg', 90, true)
+on conflict (id) do update
+set category_id = excluded.category_id,
+    slug = excluded.slug,
+    name = excluded.name,
+    description = excluded.description,
+    image = excluded.image,
+    sort = excluded.sort,
+    is_active = excluded.is_active;
 
 -- Готово! Теперь можно добавлять товары через Supabase UI

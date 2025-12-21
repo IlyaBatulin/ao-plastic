@@ -9,6 +9,20 @@ export function LoadingScreen() {
   const [pageLoaded, setPageLoaded] = useState(false)
 
   useEffect(() => {
+    // Проверяем, была ли уже показана заставка при первой загрузке
+    const hasSeenLoading = sessionStorage.getItem("hasSeenLoading")
+    
+    if (hasSeenLoading) {
+      // Если уже видели заставку, сразу скрываем её
+      setIsVisible(false)
+      const mainContent = document.getElementById("main-content")
+      if (mainContent) {
+        mainContent.classList.remove("opacity-0")
+        mainContent.classList.add("opacity-100")
+      }
+      return
+    }
+
     const handleLoad = () => {
       setPageLoaded(true)
     }
@@ -31,6 +45,8 @@ export function LoadingScreen() {
       mainContent.classList.remove("opacity-0")
       mainContent.classList.add("opacity-100")
     }
+    // Сохраняем, что заставка уже была показана
+    sessionStorage.setItem("hasSeenLoading", "true")
     setTimeout(() => {
       setIsVisible(false)
       document.body.style.overflow = ""
@@ -51,7 +67,7 @@ export function LoadingScreen() {
         handleVideoEnd()
       }
     }
-  }, [pageLoaded])
+  }, [pageLoaded, handleVideoEnd])
 
   useEffect(() => {
     if (isVisible) {
@@ -82,7 +98,11 @@ export function LoadingScreen() {
             autoPlay
             muted
             playsInline
+            controls={false}
+            disablePictureInPicture
+            disableRemotePlayback
             className="w-full h-full object-cover"
+            style={{ pointerEvents: "none" }}
             onEnded={handleVideoEnd}
             onLoadedMetadata={(e) => {
               e.currentTarget.playbackRate = 2.0

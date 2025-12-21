@@ -19,7 +19,7 @@ export function HeroOrderButton({ isMenuOpen = false }: HeroOrderButtonProps) {
     <Button
       asChild
       size="lg"
-      className="relative flex-shrink-0 whitespace-nowrap rounded-xl bg-blue-600 px-0 text-white font-semibold transition-all duration-300 hover:scale-105 hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-600/30 text-base px-5 py-3"
+      className="relative flex-shrink-0 whitespace-nowrap rounded-xl bg-[#0046FF] px-0 text-white font-semibold transition-all duration-300 hover:scale-105 hover:bg-[#0033CC] hover:shadow-lg hover:shadow-[#0046FF]/30 text-base px-5 py-3"
     >
       <Link href="/cart" className="flex items-center gap-2 px-4 py-2">
         <ShoppingCart className="w-5 h-5 xl:w-6 xl:h-6 flex-shrink-0" />

@@ -45,6 +45,10 @@ export function Hero() {
           loop
           muted
           playsInline
+          controls={false}
+          disablePictureInPicture
+          disableRemotePlayback
+          style={{ pointerEvents: "none" }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80" />
         <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-transparent to-primary/20" />

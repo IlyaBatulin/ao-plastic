@@ -33,6 +33,8 @@ export function getCategoryName(categoryId: string, lang: "ru" | "en" = "ru"): s
     kuhnya: { ru: "Кухонные принадлежности", en: "Kitchenware" },
     veshalki: { ru: "Вешалки и плечики", en: "Hangers and Clothes Hangers" },
     otdyh: { ru: "Товары для отдыха", en: "Leisure Products" },
+    canisters: { ru: "Канистры", en: "Canisters" },
+    boxes: { ru: "Ящики", en: "Boxes" },
   }
 
   const translation = translations[categoryId]
@@ -65,6 +67,8 @@ export function getSubcategoryNameBySlug(slug: string, lang: "ru" | "en" = "ru")
     "kuhnya": "kuhnya",
     "veshalki": "veshalki",
     "otdyh": "otdyh",
+    "canisters": "canisters",
+    "boxes": "boxes",
   }
 
   const categoryId = slugToId[slug] || slug

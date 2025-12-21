@@ -286,7 +286,7 @@
       "name": "Товары народного потребления",
       "description": "Качественные изделия из пластика для дома и быта",
       "technical_purpose": "Производство товаров народного потребления из полипропилена и ПЭНД методом литья под давлением и выдувного формования",
-      "target_application": "Бытовые товары для дома, кухни, санузла, уборки и отдыха",
+      "target_application": "Бытовые товары для дома, кухни, санузла, уборки и отдыха, канистры и ящики для хранения",
       "is_custom_order": false,
       "image": "/images/xoztov/П2701.jpg",
       "subcategories": [
@@ -338,23 +338,29 @@
           "slug": "otdyh",
           "description": "Товары для пикника, барбекю и отдыха на природе",
           "image": "/images/xoztov/П2721.jpg"
+        },
+        {
+          "id": "canisters",
+          "name": "Канистры",
+          "slug": "canisters",
+          "description": "Пластиковые канистры различного объема (3л, 5л, 10л, 20л, 30л) для хранения жидкостей",
+          "image": "/images/products/canisters.jpg"
+        },
+        {
+          "id": "boxes",
+          "name": "Ящики",
+          "slug": "boxes",
+          "description": "Пластиковые ящики для хранения и транспортировки (под заказ)",
+          "image": "/images/products/boxes.jpg"
         }
-      ]
-    },
-    {
-      "id": "canisters",
-      "name": "Канистры",
-      "description": "Пластиковые канистры различного объема (3л, 5л, 10л, 20л, 30л) для хранения жидкостей",
-      "technical_purpose": "Пластиковые емкости для хранения и транспортировки жидкостей методом выдувного формования",
-      "target_application": "Хранение и транспортировка технических жидкостей, воды, пищевых продуктов",
-      "is_custom_order": false,
-      "image": "/images/products/canisters.jpg",
+      ],
       "products": [
         {
           "id": "canister-3l",
           "name": "Канистра 3 л",
           "brand": "К-3",
           "type": "Выдувное изделие",
+          "subcategory": "canisters",
           "description": "Компактная пластиковая канистра малого объема",
           "image": "/images/products/canister-3l.jpg",
           "specifications": {
@@ -369,6 +375,7 @@
           "name": "Канистра 5 л",
           "brand": "К-5",
           "type": "Выдувное изделие",
+          "subcategory": "canisters",
           "description": "Пластиковая канистра для хранения жидкостей",
           "image": "/images/products/canister-5l.jpg",
           "specifications": {
@@ -383,6 +390,7 @@
           "name": "Канистра 10 л",
           "brand": "К-10",
           "type": "Выдувное изделие",
+          "subcategory": "canisters",
           "description": "Пластиковая канистра среднего объема",
           "image": "/images/products/canister-10l.jpg",
           "specifications": {
@@ -397,6 +405,7 @@
           "name": "Канистра 20 л",
           "brand": "К-20",
           "type": "Выдувное изделие",
+          "subcategory": "canisters",
           "description": "Промышленная канистра большого объема",
           "image": "/images/products/canister-20l.jpg",
           "specifications": {
@@ -411,6 +420,7 @@
           "name": "Канистра 30 л",
           "brand": "К-30",
           "type": "Выдувное изделие",
+          "subcategory": "canisters",
           "description": "Промышленная канистра увеличенного объема",
           "image": "/images/products/canister-30l.jpg",
           "specifications": {
@@ -419,23 +429,13 @@
             "Цвет": "Белый",
             "Применение": "Промышленное хранение и транспортировка больших объемов"
           }
-        }
-      ]
-    },
-    {
-      "id": "boxes",
-      "name": "Ящики",
-      "description": "Пластиковые ящики для хранения и транспортировки (под заказ)",
-      "technical_purpose": "Пластиковые контейнеры для хранения и транспортировки методом литья под давлением",
-      "target_application": "Складское хранение, логистика, транспортировка товаров",
-      "is_custom_order": true,
-      "image": "/images/products/boxes.jpg",
-      "products": [
+        },
         {
           "id": "box-40l",
           "name": "Ящик для хранения 40 л",
           "brand": "ЯХ-40",
           "type": "Литьевое изделие",
+          "subcategory": "boxes",
           "description": "Прочный пластиковый ящик для хранения",
           "image": "/images/products/box-40l.jpg",
           "specifications": {
@@ -450,6 +450,7 @@
           "name": "Ящик для хранения 60 л",
           "brand": "ЯХ-60",
           "type": "Литьевое изделие",
+          "subcategory": "boxes",
           "description": "Большой пластиковый ящик",
           "image": "/images/products/box-60l.jpg",
           "specifications": {

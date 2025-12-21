@@ -2,7 +2,6 @@ import { Hero } from "@/sections/hero"
 import { Stats } from "@/sections/stats"
 import { About } from "@/sections/about"
 import { ProductsPreview } from "@/sections/products-preview"
-import { VideoShowcase } from "@/sections/video-showcase"
 import { Partners } from "@/sections/partners"
 import { News } from "@/sections/news"
 import { Contact } from "@/sections/contact"
@@ -134,7 +133,6 @@ export default async function Home() {
         subcategories={subcategoriesMap}
         categories={categoriesMap}
       />
-      <VideoShowcase />
       <Partners />
       <News />
       <Contact />

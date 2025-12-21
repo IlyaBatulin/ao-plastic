@@ -199,9 +199,16 @@ export function CorporateMegaMenu({ isOpen, onClose }: CorporateMegaMenuProps) {
           style={{ top: `${topOffset}px`, backgroundColor: '#ffffff' }}
           onMouseLeave={(e) => {
             // Проверяем, что курсор действительно покинул меню
-            const relatedTarget = e.relatedTarget as HTMLElement
-            if (!menuRef.current?.contains(relatedTarget)) {
-              // Добавляем небольшую задержку перед закрытием
+            const relatedTarget = e.relatedTarget as HTMLElement | null
+            if (menuRef.current && relatedTarget && relatedTarget instanceof Node) {
+              if (!menuRef.current.contains(relatedTarget)) {
+                // Добавляем небольшую задержку перед закрытием
+                closeTimeoutRef.current = setTimeout(() => {
+                  onClose()
+                }, 200)
+              }
+            } else if (menuRef.current && !relatedTarget) {
+              // Если relatedTarget null, значит курсор покинул элемент
               closeTimeoutRef.current = setTimeout(() => {
                 onClose()
               }, 200)

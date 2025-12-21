@@ -123,9 +123,14 @@ export function MainMenuCorporate({ onMenuOpenChange }: MainMenuCorporateProps =
                       }}
                       onMouseLeave={(e) => {
                         // Проверяем, что курсор действительно покинул область меню
-                        const relatedTarget = e.relatedTarget as HTMLElement
+                        const relatedTarget = e.relatedTarget as HTMLElement | null
                         const megaMenu = document.querySelector('[class*="fixed"][class*="z-[110]"]') as HTMLElement
-                        if (!megaMenu?.contains(relatedTarget)) {
+                        if (megaMenu && relatedTarget && relatedTarget instanceof Node) {
+                          if (!megaMenu.contains(relatedTarget)) {
+                            handleMouseLeave()
+                          }
+                        } else if (megaMenu && !relatedTarget) {
+                          // Если relatedTarget null, значит курсор покинул элемент
                           handleMouseLeave()
                         }
                       }}

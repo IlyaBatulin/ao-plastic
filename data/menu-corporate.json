@@ -29,8 +29,14 @@
         "items": [
           { "label": "Публикации", "labelEn": "Publications", "href": "/about/publications" },
           { "label": "Раскрытие информации", "labelEn": "Disclosure", "href": "/about/disclosure" },
-          { "label": "Вакансии", "labelEn": "Vacancies", "href": "/about/vacancies" },
           { "label": "Экструзия пластика", "labelEn": "Plastic Extrusion", "href": "/about/extrusion" }
+        ]
+      },
+      {
+        "title": "Карьера",
+        "titleEn": "Career",
+        "items": [
+          { "label": "Вакансии", "labelEn": "Vacancies", "href": "/about/vacancies" }
         ]
       }
     ]
@@ -59,7 +65,7 @@
         "title": "Для дилеров",
         "titleEn": "For Dealers",
         "items": [
-          { "label": "Дилеры", "labelEn": "Dealers", "href": "/dealers" }
+          { "label": "Наши дилеры", "labelEn": "Our Dealers", "href": "/dealers" }
         ]
       },
       {

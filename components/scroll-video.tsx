@@ -156,7 +156,11 @@ export function ScrollVideo({
           className="w-full h-full object-cover"
           playsInline
           muted
+          controls={false}
+          disablePictureInPicture
+          disableRemotePlayback
           preload={shouldLoad ? "metadata" : "none"}
+          style={{ pointerEvents: "none" }}
         />
       </div>
     </div>

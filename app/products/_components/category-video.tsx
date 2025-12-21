@@ -56,10 +56,14 @@ export function CategoryVideo({
         loop={loop}
         muted={muted}
         playsInline={playsInline}
+        controls={false}
+        disablePictureInPicture
+        disableRemotePlayback
         className="absolute inset-0 w-full h-full object-cover"
         aria-label={alt}
         preload={priority ? "auto" : "metadata"}
         onError={handleError}
+        style={{ pointerEvents: "none" }}
       />
       {/* Градиентный overlay для лучшей читаемости текста поверх видео (опционально) */}
       <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none" aria-hidden="true" />

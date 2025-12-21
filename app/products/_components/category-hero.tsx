@@ -87,7 +87,11 @@ export function CategoryHero({
             loop
             muted
             playsInline
+            controls={false}
+            disablePictureInPicture
+            disableRemotePlayback
             className="absolute inset-0 w-full h-full object-cover"
+            style={{ pointerEvents: "none" }}
           >
             <source src={videoSrc} type="video/mp4" />
           </video>

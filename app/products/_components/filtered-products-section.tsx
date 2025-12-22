@@ -67,8 +67,8 @@ export function FilteredProductsSection({
                   <th className="py-4 px-4 text-left font-semibold">Массовая доля остатка на сите 3,2 мм, %</th>
                   <th className="py-4 px-4 text-left font-semibold">Массовая доля остатка на сите 0,9 мм, %</th>
                   <th className="py-4 px-4 text-left font-semibold">Массовая доля частиц, прошедших через сито 0,4 мм, %</th>
-                  <th className="py-4 px-4 text-left font-semibold">Массовая доля порообразователя, %</th>
-                  <th className="py-4 px-4 text-left font-semibold">Массовая доля остаточного мономера (стирол), %</th>
+                  <th className="py-4 px-4 text-left font-semibold">Массовая доля свободного стирола, %</th>
+                  <th className="py-4 px-4 text-left font-semibold">Массовая доля остаточного стирола, %</th>
                   <th className="py-4 px-4 text-left font-semibold">Потеря массы при сушке, %</th>
                   <th className="py-4 px-4 text-left font-semibold">Относительная вязкость</th>
                   <th className="py-4 px-4 text-left font-semibold">Кажущаяся плотность, кг/м³</th>
@@ -86,12 +86,16 @@ export function FilteredProductsSection({
                   const residue32 = specs.Массовая_доля_остатка_на_сите_3_2_мм_проц ?? "—"
                   const residue09 = specs.Массовая_доля_остатка_на_сите_0_9_мм_проц ?? "—"
                   const passed04 = specs.Массовая_доля_частиц_прошедших_через_сито_0_4_мм_проц ?? "—"
-                  const blowingAgent = specs.Массовая_доля_порообразователя_проц ?? "—"
-                  const residualMonomer = specs.Массовая_доля_остаточного_мономера_стирол_проц ?? "—"
+                  const freeStyrene = specs.Массовая_доля_свободного_стирола_проц ?? "—"
+                  const residualStyrene = specs.Массовая_доля_остаточного_стирола_проц ?? "—"
                   const massLoss = specs.Потеря_массы_при_сушке_проц ?? "—"
                   const relativeViscosity = specs.Относительная_вязкость ?? "—"
                   const apparentDensity = specs.Кажущаяся_плотность_кг_м3 ?? "—"
-                  const breakingStress = (specs.Разрушающее_напряжение_при_статическом_изгибе_кг_см2 || specs.Разрушающее_напряжение_при_статическом_изгибе_МПа) ?? "—"
+                  const breakingStressKg = specs.Разрушающее_напряжение_при_статическом_изгибе_кг_см2
+                  const breakingStressMpa = specs.Разрушающее_напряжение_при_статическом_изгибе_МПа
+                  const breakingStress = breakingStressKg && breakingStressMpa 
+                    ? `${breakingStressKg} (${breakingStressMpa})`
+                    : (breakingStressKg || breakingStressMpa || "—")
                   const flammability = specs.Горючесть_время_самовоспламенения_сек ?? "—"
                   
                   return (
@@ -103,8 +107,8 @@ export function FilteredProductsSection({
                       <td className="py-4 px-4">{residue32}</td>
                       <td className="py-4 px-4">{residue09}</td>
                       <td className="py-4 px-4">{passed04}</td>
-                      <td className="py-4 px-4">{blowingAgent}</td>
-                      <td className="py-4 px-4">{residualMonomer}</td>
+                      <td className="py-4 px-4">{freeStyrene}</td>
+                      <td className="py-4 px-4">{residualStyrene}</td>
                       <td className="py-4 px-4">{massLoss}</td>
                       <td className="py-4 px-4">{relativeViscosity}</td>
                       <td className="py-4 px-4">{apparentDensity}</td>

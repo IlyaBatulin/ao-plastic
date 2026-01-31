@@ -1,6 +1,6 @@
 "use client"
 
-import { LogoLoop } from "@/components/logo-loop"
+import { SimpleLogoLoop } from "@/components/simple-logo-loop"
 import { useLanguage } from "@/contexts/language-context"
 import { useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
@@ -8,13 +8,13 @@ import Link from "next/link"
 import Image from "next/image"
 
 const partnerLogos = [
-  { src: "/images/partners/gazprom-logo.png", alt: "Газпром", href: "https://www.gazprom.ru" },
-  { src: "/images/partners/sber-logo.png", alt: "Сбербанк", href: "https://www.sberbank.ru" },
-  { src: "/images/partners/GAZ-Logo.png", alt: "ГАЗ", href: "https://www.avtogaz.ru" },
-  { src: "/images/partners/kamaz-logo.png", alt: "КАМАЗ", href: "https://kamaz.ru" },
-  { src: "/images/partners/lada-logo.png", alt: "LADA", href: "https://www.lada.ru" },
-  { src: "/images/partners/sibur-logo.png", alt: "СИБУР", href: "https://www.sibur.ru" },
-  { src: "/images/partners/yaz-logo.png", alt: "УАЗ", href: "https://www.uaz.ru" },
+  { src: "/images/partners/gazprom-logo.png", alt: "Газпром", href: "https://www.gazprom.ru", width: 200, height: 100 },
+  { src: "/images/partners/sber-logo.png", alt: "Сбербанк", href: "https://www.sberbank.ru", width: 200, height: 100 },
+  { src: "/images/partners/GAZ-Logo.png", alt: "ГАЗ", href: "https://www.avtogaz.ru", width: 200, height: 100 },
+  { src: "/images/partners/kamaz-logo.png", alt: "КАМАЗ", href: "https://kamaz.ru", width: 200, height: 100 },
+  { src: "/images/partners/lada-logo.png", alt: "LADA", href: "https://www.lada.ru", width: 200, height: 100 },
+  { src: "/images/partners/sibur-logo.png", alt: "СИБУР", href: "https://www.sibur.ru", width: 200, height: 100 },
+  { src: "/images/partners/yaz-logo.png", alt: "УАЗ", href: "https://www.uaz.ru", width: 200, height: 100 },
 ]
 
 export function Partners() {
@@ -42,16 +42,7 @@ export function Partners() {
           
           {/* Desktop: Animated Loop */}
           <div className="hidden lg:block relative py-6">
-            <LogoLoop
-              logos={partnerLogos}
-              speed={60}
-              direction="left"
-              logoHeight={80}
-              gap={80}
-              pauseOnHover
-              scaleOnHover
-              ariaLabel={t("homePage.partners.ariaLabel")}
-            />
+            <SimpleLogoLoop logos={partnerLogos} speed={40} />
           </div>
 
           {/* Mobile: Single Logo with Arrows */}

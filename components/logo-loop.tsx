@@ -209,9 +209,17 @@ export const LogoLoop = React.memo<LogoLoopProps>(
     }, [speed, direction])
 
     const updateDimensions = useCallback(() => {
-      const containerWidth = containerRef.current?.clientWidth ?? 0
+      const container = containerRef.current
+      if (!container) return
+      
+      const containerWidth = container.clientWidth || container.offsetWidth || 0
       const list = seqRef.current
       if (!list) return
+      
+      // Не обновляем, если контейнер еще не имеет размеров
+      if (containerWidth === 0) {
+        return
+      }
 
       // Пробуем несколько способов вычисления ширины для надежности на мобильных
       let sequenceWidth = 0
@@ -254,13 +262,21 @@ export const LogoLoop = React.memo<LogoLoopProps>(
         }
       }
 
+      // Способ 5: Fallback - используем приблизительные размеры если ничего не помогло
+      if (sequenceWidth === 0 && logos.length > 0) {
+        // Предполагаем средний размер логотипа ~200px + gap
+        const estimatedItemWidth = 200 + gap
+        sequenceWidth = logos.length * estimatedItemWidth
+        console.warn('[LogoLoop] Using estimated width:', sequenceWidth)
+      }
+
       if (sequenceWidth > 0) {
         const calculatedWidth = Math.ceil(sequenceWidth)
         setSeqWidth(calculatedWidth)
         const copiesNeeded = Math.ceil(containerWidth / sequenceWidth) + ANIMATION_CONFIG.COPY_HEADROOM
         setCopyCount(Math.max(ANIMATION_CONFIG.MIN_COPIES, copiesNeeded))
       }
-    }, [gap])
+    }, [gap, logos.length, speed])
 
     useResizeObserver(updateDimensions, [containerRef, seqRef], [logos, gap, logoHeight])
 
@@ -273,12 +289,16 @@ export const LogoLoop = React.memo<LogoLoopProps>(
 
     // Принудительное обновление размеров после монтирования на мобильных
     useEffect(() => {
-      // Множественные попытки обновления для надежности на мобильных
+      // Множественные попытки обновления для надежности
       const timers = [
+        setTimeout(() => updateDimensions(), 50),
         setTimeout(() => updateDimensions(), 100),
+        setTimeout(() => updateDimensions(), 200),
         setTimeout(() => updateDimensions(), 300),
-        setTimeout(() => updateDimensions(), 600),
-        setTimeout(() => updateDimensions(), 1000),
+        setTimeout(() => updateDimensions(), 500),
+        setTimeout(() => updateDimensions(), 800),
+        setTimeout(() => updateDimensions(), 1200),
+        setTimeout(() => updateDimensions(), 2000),
       ]
       return () => timers.forEach(timer => clearTimeout(timer))
     }, [updateDimensions])
@@ -331,13 +351,18 @@ export const LogoLoop = React.memo<LogoLoopProps>(
           src={item.src || "/placeholder.svg"}
           srcSet={item.srcSet}
           sizes={item.sizes}
-          width={item.width}
-          height={item.height}
+          width={item.width || 200}
+          height={item.height || 100}
           alt={item.alt ?? ""}
           title={item.title}
-          loading="lazy"
+          loading="eager"
           decoding="async"
           draggable={false}
+          style={{ 
+            height: 'var(--logoloop-logoHeight)', 
+            width: 'auto',
+            display: 'block'
+          }}
         />
       )
 

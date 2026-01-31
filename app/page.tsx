@@ -6,7 +6,7 @@ import { Partners } from "@/sections/partners"
 import { News } from "@/sections/news"
 import { Contact } from "@/sections/contact"
 import { Footer } from "@/components/footer"
-import { createClient } from "@/utils/supabase/server"
+import { createClient, withRetry } from "@/utils/supabase/server"
 
 export const revalidate = 300
 
@@ -28,23 +28,42 @@ export default async function Home() {
     } else {
       const supabase = createClient()
 
-      // Получаем подкатегории для формирования ссылок
-      const { data: subcatsData } = await supabase
-        .from("subcategories")
-        .select("id, slug, name, category_id")
-        .eq("is_active", true)
+      // ОПТИМИЗАЦИЯ: Выполняем запросы параллельно для ускорения загрузки
+      const [
+        { data: subcatsData },
+        { data: catsData },
+        { data: allProductsData, error: allProductsError }
+      ] = await Promise.all([
+        // Получаем подкатегории
+        withRetry(() => 
+          supabase
+            .from("subcategories")
+            .select("id, slug, name, category_id")
+            .eq("is_active", true)
+        ),
+        // Получаем категории
+        withRetry(() =>
+          supabase
+            .from("categories")
+            .select("id, name")
+            .eq("is_active", true)
+        ),
+        // Получаем все товары для поиска
+        withRetry(() =>
+          supabase
+            .from("products")
+            .select("*")
+            .eq("is_active", true)
+            .order("sort", { ascending: true })
+        )
+      ])
 
+      // Заполняем маппинги
       if (subcatsData) {
         subcatsData.forEach((sub) => {
           subcategoriesMap[sub.id] = { slug: sub.slug, name: sub.name }
         })
       }
-
-      // Получаем категории
-      const { data: catsData } = await supabase
-        .from("categories")
-        .select("id, name")
-        .eq("is_active", true)
 
       if (catsData) {
         catsData.forEach((cat) => {
@@ -52,70 +71,77 @@ export default async function Home() {
         })
       }
 
-      // Получаем актуальные товары: 1 из АБС и 2 из разных категорий полистирола (всего 3 товара)
+      // Получаем избранные товары параллельно
       if (subcatsData && subcatsData.length > 0) {
         const absInjectionSubcat = subcatsData.find((s) => s.slug === "abs-injection")
         const psPsvSSubcat = subcatsData.find((s) => s.slug === "ps-psv-s")
         const psPsvLSubcat = subcatsData.find((s) => s.slug === "ps-psv-l")
 
-        // Получаем 1 товар из АБС
+        // Выполняем запросы товаров параллельно
+        const productPromises = []
+        
         if (absInjectionSubcat) {
-          const { data: absProducts } = await supabase
-            .from("products")
-            .select("*")
-            .eq("subcategory_id", absInjectionSubcat.id)
-            .eq("is_active", true)
-            .order("sort", { ascending: true })
-            .limit(1)
-
-          if (absProducts && absProducts.length > 0) {
-            featuredProducts.push(...absProducts)
-          }
+          productPromises.push(
+            withRetry(() =>
+              supabase
+                .from("products")
+                .select("*")
+                .eq("subcategory_id", absInjectionSubcat.id)
+                .eq("is_active", true)
+                .order("sort", { ascending: true })
+                .limit(1)
+            )
+          )
         }
-
-        // Получаем по 1 товару из двух категорий полистирола
+        
         if (psPsvSSubcat) {
-          const { data: psPsvSProducts } = await supabase
-            .from("products")
-            .select("*")
-            .eq("subcategory_id", psPsvSSubcat.id)
-            .eq("is_active", true)
-            .order("sort", { ascending: true })
-            .limit(1)
-
-          if (psPsvSProducts && psPsvSProducts.length > 0) {
-            featuredProducts.push(...psPsvSProducts)
-          }
+          productPromises.push(
+            withRetry(() =>
+              supabase
+                .from("products")
+                .select("*")
+                .eq("subcategory_id", psPsvSSubcat.id)
+                .eq("is_active", true)
+                .order("sort", { ascending: true })
+                .limit(1)
+            )
+          )
         }
-
+        
         if (psPsvLSubcat) {
-          const { data: psPsvLProducts } = await supabase
-            .from("products")
-            .select("*")
-            .eq("subcategory_id", psPsvLSubcat.id)
-            .eq("is_active", true)
-            .order("sort", { ascending: true })
-            .limit(1)
-
-          if (psPsvLProducts && psPsvLProducts.length > 0) {
-            featuredProducts.push(...psPsvLProducts)
-          }
+          productPromises.push(
+            withRetry(() =>
+              supabase
+                .from("products")
+                .select("*")
+                .eq("subcategory_id", psPsvLSubcat.id)
+                .eq("is_active", true)
+                .order("sort", { ascending: true })
+                .limit(1)
+            )
+          )
         }
+
+        // Ждем все запросы товаров одновременно
+        const productsResults = await Promise.all(productPromises)
+        
+        // Собираем все товары
+        productsResults.forEach(({ data }) => {
+          if (data && data.length > 0) {
+            featuredProducts.push(...data)
+          }
+        })
       }
 
-      // Получаем все товары для поиска по всему каталогу
-      const { data: allProductsData, error: allProductsError } = await supabase
-        .from("products")
-        .select("*")
-        .eq("is_active", true)
-        .order("sort", { ascending: true })
-
       if (allProductsError) {
-        console.error("Error fetching all products:", allProductsError)
+        console.warn("Error fetching all products:", allProductsError)
+        // Не критично - продолжаем работу без всех товаров
       }
 
       if (allProductsData && Array.isArray(allProductsData)) {
         allProducts = allProductsData
+      } else if (!allProductsError) {
+        console.warn("All products data is empty or not an array")
       }
     }
   } catch (error) {

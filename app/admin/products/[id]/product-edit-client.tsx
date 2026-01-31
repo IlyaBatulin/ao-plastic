@@ -52,7 +52,7 @@ export function ProductEditClient({
   params, 
   isNew = false 
 }: { 
-  params?: Promise<{ id: string }>
+  params?: { id: string }
   isNew?: boolean
 }) {
   const router = useRouter()
@@ -81,9 +81,8 @@ export function ProductEditClient({
     const loadData = async () => {
       if (!isNew && params) {
         try {
-          const resolvedParams = await params
-          setProductId(resolvedParams.id)
-          await fetchProduct(resolvedParams.id)
+          setProductId(params.id)
+          await fetchProduct(params.id)
         } catch (error) {
           console.error("Ошибка загрузки товара:", error)
           setIsLoading(false)

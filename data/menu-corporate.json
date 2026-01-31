@@ -62,16 +62,10 @@
         ]
       },
       {
-        "title": "Для дилеров",
-        "titleEn": "For Dealers",
-        "items": [
-          { "label": "Наши дилеры", "labelEn": "Our Dealers", "href": "/dealers" }
-        ]
-      },
-      {
         "title": "Дополнительно",
         "titleEn": "Additional",
         "items": [
+          { "label": "Наши дилеры", "labelEn": "Our Dealers", "href": "/dealers" },
           { "label": "Неликвиды", "labelEn": "Liquidation", "href": "/liquidation" },
           { "label": "ПАСФ", "labelEn": "PASF", "href": "/images/PASF-PLASTIK.pdf" }
         ]

@@ -54,7 +54,7 @@ export function StatsCounter({ end, duration = 2000, suffix = "", prefix = "" }:
   }, [isVisible, end, duration])
 
   return (
-    <div ref={ref} className="text-4xl lg:text-5xl font-bold text-primary">
+    <div ref={ref} className="text-5xl lg:text-6xl font-bold text-[#1e3a8a] dark:text-[#60a5fa] tabular-nums">
       {prefix}
       {count}
       {suffix}

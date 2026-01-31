@@ -24,6 +24,7 @@ export interface ChromaGridProps {
   damping?: number
   fadeOut?: number
   ease?: string
+  onCardClick?: (item: ChromaItem, index: number) => void
 }
 
 type SetterFn = (v: number | string) => void
@@ -37,6 +38,7 @@ export const ChromaGrid: React.FC<ChromaGridProps> = ({
   damping = 0.45,
   fadeOut = 0.6,
   ease = "power3.out",
+  onCardClick,
 }) => {
   const rootRef = useRef<HTMLDivElement>(null)
   const fadeRef = useRef<HTMLDivElement>(null)
@@ -93,9 +95,11 @@ export const ChromaGrid: React.FC<ChromaGridProps> = ({
     })
   }
 
-  const handleCardClick = (url?: string) => {
-    if (url) {
-      window.open(url, "_blank", "noopener,noreferrer")
+  const handleCardClick = (item: ChromaItem, index: number) => {
+    if (onCardClick) {
+      onCardClick(item, index)
+    } else if (item.url) {
+      window.open(item.url, "_blank", "noopener,noreferrer")
     }
   }
 
@@ -127,12 +131,12 @@ export const ChromaGrid: React.FC<ChromaGridProps> = ({
           key={i}
           className="chroma-card"
           onMouseMove={handleCardMove}
-          onClick={() => handleCardClick(c.url)}
+          onClick={() => handleCardClick(c, i)}
           style={
             {
               "--card-border": c.borderColor || "transparent",
               "--card-gradient": c.gradient,
-              cursor: c.url ? "pointer" : "default",
+              cursor: onCardClick || c.url ? "pointer" : "default",
             } as React.CSSProperties
           }
         >

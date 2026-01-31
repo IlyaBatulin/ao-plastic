@@ -23,9 +23,130 @@ interface CorporateMegaMenuProps {
   onClose: () => void
 }
 
+// Кэш для категорий (глобальный для всех экземпляров компонента)
+let categoriesCache: Category[] | null = null
+let categoriesCachePromise: Promise<Category[]> | null = null
+
+// Функция загрузки категорий с кэшированием
+export const loadCategoriesCached = async (): Promise<Category[]> => {
+  // Если уже загружаем, возвращаем существующий промис
+  if (categoriesCachePromise) {
+    return categoriesCachePromise
+  }
+
+  // Если уже есть в кэше, возвращаем сразу
+  if (categoriesCache) {
+    return categoriesCache
+  }
+
+  // Создаем промис загрузки
+  categoriesCachePromise = (async () => {
+    try {
+      const supabase = createClient()
+      
+      // Сначала получаем категории
+      const { data: categoriesData, error: categoriesError } = await supabase
+        .from("categories")
+        .select("id, name, slug")
+        .eq("is_active", true)
+        .order("sort", { ascending: true })
+
+      if (!categoriesError && categoriesData && categoriesData.length > 0) {
+        // Затем получаем подкатегории для каждой категории
+        const categoriesWithSubs = await Promise.all(
+          categoriesData.map(async (cat) => {
+            const { data: subcatsData } = await supabase
+              .from("subcategories")
+              .select("id, name, slug")
+              .eq("category_id", cat.id)
+              .eq("is_active", true)
+              .order("sort", { ascending: true })
+
+            return {
+              id: cat.id,
+              name: cat.name,
+              slug: cat.slug || cat.id,
+              // Исключаем "Технические характеристики АБС" (abs-specs) для категории АБС
+              subcategories: (subcatsData || []).filter(
+                (sub: any) => !(cat.id === "abs" && (sub.id === "abs-specs" || sub.slug === "abs-specs"))
+              ),
+            }
+          })
+        )
+
+        categoriesCache = categoriesWithSubs
+        return categoriesWithSubs
+      } else {
+        // Fallback на JSON
+        const jsonCategories = productsData.categories
+          .filter((cat) => cat.id !== 'dispersion')
+          .map((cat) => ({
+            id: cat.id,
+            name: cat.name,
+            slug: cat.id,
+            // Исключаем "Технические характеристики АБС" (abs-specs) для категории АБС
+            subcategories: (cat.subcategories || [])
+              .filter((sub: any) => !(cat.id === "abs" && (sub.id === "abs-specs" || sub.slug === "abs-specs")))
+              .map((sub) => ({
+                id: sub.id,
+                name: sub.name,
+                slug: sub.slug,
+              })),
+          }))
+        categoriesCache = jsonCategories
+        return jsonCategories
+      }
+    } catch (error) {
+      console.error("Error loading categories:", error)
+      // Fallback на JSON
+      const jsonCategories = productsData.categories
+        .filter((cat) => cat.id !== 'dispersion')
+        .map((cat) => ({
+          id: cat.id,
+          name: cat.name,
+          slug: cat.id,
+          // Исключаем "Технические характеристики АБС" (abs-specs) для категории АБС
+          subcategories: (cat.subcategories || [])
+            .filter((sub: any) => !(cat.id === "abs" && (sub.id === "abs-specs" || sub.slug === "abs-specs")))
+            .map((sub) => ({
+              id: sub.id,
+              name: sub.name,
+              slug: sub.slug,
+            })),
+        }))
+      categoriesCache = jsonCategories
+      return jsonCategories
+    } finally {
+      categoriesCachePromise = null
+    }
+  })()
+
+  return categoriesCachePromise
+}
+
 export function CorporateMegaMenu({ isOpen, onClose }: CorporateMegaMenuProps) {
-  const [categories, setCategories] = useState<Category[]>([])
-  const [loading, setLoading] = useState(true)
+  const [categories, setCategories] = useState<Category[]>(() => {
+    // Сразу показываем fallback данные, если они есть в кэше
+    if (categoriesCache) {
+      return categoriesCache
+    }
+    // Или показываем fallback из JSON
+    return productsData.categories
+      .filter((cat) => cat.id !== 'dispersion')
+      .map((cat) => ({
+        id: cat.id,
+        name: cat.name,
+        slug: cat.id,
+        subcategories: (cat.subcategories || [])
+          .filter((sub: any) => !(cat.id === "abs" && (sub.id === "abs-specs" || sub.slug === "abs-specs")))
+          .map((sub) => ({
+            id: sub.id,
+            name: sub.name,
+            slug: sub.slug,
+          })),
+      }))
+  })
+  const [loading, setLoading] = useState(!categoriesCache)
   const [topOffset, setTopOffset] = useState(0)
   const menuRef = useRef<HTMLDivElement>(null)
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -55,90 +176,20 @@ export function CorporateMegaMenu({ isOpen, onClose }: CorporateMegaMenuProps) {
     }
   }, [isOpen])
 
+  // Загружаем данные заранее, не дожидаясь открытия меню
   useEffect(() => {
-    // Загружаем категории из Supabase или используем fallback
-    const loadCategories = async () => {
-      try {
-        const supabase = createClient()
-        
-        // Сначала получаем категории
-        const { data: categoriesData, error: categoriesError } = await supabase
-          .from("categories")
-          .select("id, name, slug")
-          .eq("is_active", true)
-          .order("sort", { ascending: true })
-
-        if (!categoriesError && categoriesData && categoriesData.length > 0) {
-          // Затем получаем подкатегории для каждой категории
-          const categoriesWithSubs = await Promise.all(
-            categoriesData.map(async (cat) => {
-              const { data: subcatsData } = await supabase
-                .from("subcategories")
-                .select("id, name, slug")
-                .eq("category_id", cat.id)
-                .eq("is_active", true)
-                .order("sort", { ascending: true })
-
-              return {
-                id: cat.id,
-                name: cat.name,
-                slug: cat.slug || cat.id,
-                // Исключаем "Технические характеристики АБС" (abs-specs) для категории АБС
-                subcategories: (subcatsData || []).filter(
-                  (sub: any) => !(cat.id === "abs" && (sub.id === "abs-specs" || sub.slug === "abs-specs"))
-                ),
-              }
-            })
-          )
-
-          setCategories(categoriesWithSubs)
-        } else {
-          // Fallback на JSON
-          const jsonCategories = productsData.categories
-            .filter((cat) => cat.id !== 'dispersion')
-            .map((cat) => ({
-              id: cat.id,
-              name: cat.name,
-              slug: cat.id,
-              // Исключаем "Технические характеристики АБС" (abs-specs) для категории АБС
-              subcategories: (cat.subcategories || [])
-                .filter((sub: any) => !(cat.id === "abs" && (sub.id === "abs-specs" || sub.slug === "abs-specs")))
-                .map((sub) => ({
-                  id: sub.id,
-                  name: sub.name,
-                  slug: sub.slug,
-                })),
-            }))
-          setCategories(jsonCategories)
-        }
-      } catch (error) {
-        console.error("Error loading categories:", error)
-        // Fallback на JSON
-        const jsonCategories = productsData.categories
-          .filter((cat) => cat.id !== 'dispersion')
-          .map((cat) => ({
-            id: cat.id,
-            name: cat.name,
-            slug: cat.id,
-            // Исключаем "Технические характеристики АБС" (abs-specs) для категории АБС
-            subcategories: (cat.subcategories || [])
-              .filter((sub: any) => !(cat.id === "abs" && (sub.id === "abs-specs" || sub.slug === "abs-specs")))
-              .map((sub) => ({
-                id: sub.id,
-                name: sub.name,
-                slug: sub.slug,
-              })),
-          }))
-        setCategories(jsonCategories)
-      } finally {
-        setLoading(false)
-      }
+    // Если данные уже в кэше, не загружаем
+    if (categoriesCache) {
+      setLoading(false)
+      return
     }
 
-    if (isOpen) {
-      loadCategories()
-    }
-  }, [isOpen])
+    // Загружаем данные в фоне
+    loadCategoriesCached().then((loadedCategories) => {
+      setCategories(loadedCategories)
+      setLoading(false)
+    })
+  }, [])
 
   // Закрытие при клике вне меню
   useEffect(() => {
@@ -202,16 +253,16 @@ export function CorporateMegaMenu({ isOpen, onClose }: CorporateMegaMenuProps) {
             const relatedTarget = e.relatedTarget as HTMLElement | null
             if (menuRef.current && relatedTarget && relatedTarget instanceof Node) {
               if (!menuRef.current.contains(relatedTarget)) {
-                // Добавляем небольшую задержку перед закрытием
+                // Увеличиваем задержку закрытия, чтобы меню не закрывалось слишком быстро
                 closeTimeoutRef.current = setTimeout(() => {
                   onClose()
-                }, 200)
+                }, 300)
               }
             } else if (menuRef.current && !relatedTarget) {
               // Если relatedTarget null, значит курсор покинул элемент
               closeTimeoutRef.current = setTimeout(() => {
                 onClose()
-              }, 200)
+              }, 300)
             }
           }}
           onMouseEnter={() => {
@@ -223,8 +274,8 @@ export function CorporateMegaMenu({ isOpen, onClose }: CorporateMegaMenuProps) {
           }}
         >
           <div className="max-w-[1400px] mx-auto px-8 py-12">
-            {loading ? (
-              <div className="text-center text-sm text-muted-foreground">Загрузка...</div>
+            {loading && categories.length === 0 ? (
+              <div className="text-center text-sm text-muted-foreground py-8">Загрузка...</div>
             ) : (
               <div
                 className="grid gap-12"

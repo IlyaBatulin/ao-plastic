@@ -12,6 +12,10 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
 NEXT_PUBLIC_SITE_URL=https://your-site-domain.ru  # опционально, для ссылок в Bitrix24
 
+# Security - Пароли для доступа (ОБЯЗАТЕЛЬНО измените на свои!)
+SITE_PASSWORD=your-secure-site-password-here
+ADMIN_PASSWORD=your-secure-admin-password-here
+
 # Telegram Bot Configuration
 TG_BOT_TOKEN=1234567890:ABCdefGHIjklMNOpqrsTUVwxyz
 TG_DEFAULT_CHAT_ID=123456789

@@ -26,7 +26,7 @@ export function CategoryEditClient({
   params, 
   isNew = false 
 }: { 
-  params?: Promise<{ id: string }>
+  params?: { id: string }
   isNew?: boolean
 }) {
   const router = useRouter()
@@ -48,9 +48,8 @@ export function CategoryEditClient({
     const loadData = async () => {
       if (!isNew && params) {
         try {
-          const resolvedParams = await params
-          setCategoryId(resolvedParams.id)
-          await fetchCategory(resolvedParams.id)
+          setCategoryId(params.id)
+          await fetchCategory(params.id)
         } catch (error) {
           console.error("Ошибка загрузки категории:", error)
           setIsLoading(false)

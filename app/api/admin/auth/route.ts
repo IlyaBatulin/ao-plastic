@@ -1,10 +1,17 @@
 import { NextRequest, NextResponse } from "next/server"
 import { cookies } from "next/headers"
 
-const ADMIN_PASSWORD = "admin123"
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || ""
 
 export async function POST(req: NextRequest) {
   try {
+    if (!ADMIN_PASSWORD) {
+      return NextResponse.json(
+        { success: false, error: "Сервер не настроен" },
+        { status: 500 }
+      )
+    }
+
     const { password } = await req.json()
 
     if (password === ADMIN_PASSWORD) {

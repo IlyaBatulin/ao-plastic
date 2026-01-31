@@ -1,12 +1,19 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
-const SITE_PASSWORD = "aoplastic313q"
+const SITE_PASSWORD = process.env.SITE_PASSWORD || ""
 const SITE_AUTH_COOKIE = "site_auth"
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 30 // 30 дней
 
 export async function POST(request: NextRequest) {
   try {
+    if (!SITE_PASSWORD) {
+      return NextResponse.json(
+        { success: false, error: "Сервер не настроен" },
+        { status: 500 }
+      )
+    }
+
     const { password } = await request.json()
 
     if (password === SITE_PASSWORD) {

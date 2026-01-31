@@ -9,6 +9,7 @@ import { CartProvider } from "@/contexts/cart-context"
 import { ConditionalHeader } from "@/components/conditional-header"
 import { Toaster } from "@/components/ui/toaster"
 import { LoadingScreen } from "@/components/loading-screen"
+import { LenisProvider } from "@/components/lenis-provider"
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -41,24 +42,26 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ru" className={`${inter.className} overflow-x-hidden`}>
+    <html lang="ru" className={inter.className}>
       <head>
         <link rel="preload" href="/locales/ru.json" as="fetch" crossOrigin="anonymous" />
         <link rel="preload" href="/locales/en.json" as="fetch" crossOrigin="anonymous" />
         <Script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" />
         <Script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" />
       </head>
-      <body className="antialiased overflow-x-hidden">
+      <body className="antialiased">
         <LoadingScreen />
-        <div id="main-content" className="opacity-0 animate-fade-in">
-          <LanguageProvider>
-            <CartProvider>
-              <ConditionalHeader />
-              {children}
-            </CartProvider>
-          </LanguageProvider>
-          <Toaster />
-        </div>
+        <LenisProvider>
+          <div id="main-content" className="opacity-0 transition-opacity duration-500">
+            <LanguageProvider>
+              <CartProvider>
+                <ConditionalHeader />
+                {children}
+              </CartProvider>
+            </LanguageProvider>
+            <Toaster />
+          </div>
+        </LenisProvider>
       </body>
     </html>
   )

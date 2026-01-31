@@ -1,83 +1,66 @@
-"use client"
-
 import { Footer } from "@/components/footer"
-import { ChromaGrid, type ChromaItem } from "@/components/chroma-grid"
-import { useEffect, useRef } from "react"
+import { createClient } from "@/utils/supabase/server"
+import type { ManagementTeamMemberPublic } from "@/types/database"
+import { ManagementClient } from "./management-client"
+import { BackgroundPaths } from "@/components/ui/background-paths"
 
-const teamMembers = [
-  { name: "Кузнецов Александр Викторович", position: "Генеральный директор", bio: "Опыт работы в химической промышленности более 30 лет. Под его руководством АО 'Пластик' стало лидером отрасли по производству АБС-пластиков и полистиролов в России.", email: "director@oaplastic.ru", phone: "+7 (48731) 6-12-34" },
-  { name: "Смирнов Дмитрий Петрович", position: "Технический директор", bio: "Доктор технических наук, специалист по полимерным материалам. Руководит модернизацией производства и внедрением инновационных технологий.", email: "tech@oaplastic.ru", phone: "+7 (48731) 6-12-35" },
-  { name: "Волкова Елена Сергеевна", position: "Финансовый директор", bio: "MBA, более 20 лет опыта в финансовом управлении крупных промышленных предприятий. Обеспечивает финансовую стабильность и развитие компании.", email: "finance@oaplastic.ru", phone: "+7 (48731) 6-12-36" },
-  { name: "Морозов Игорь Николаевич", position: "Директор по производству", bio: "Инженер-технолог с 25-летним стажем. Отвечает за эффективность производственных процессов и контроль качества продукции.", email: "production@oaplastic.ru", phone: "+7 (48731) 6-12-37" },
-  { name: "Соколова Ольга Андреевна", position: "Директор по качеству", bio: "Специалист по системам менеджмента качества. Обеспечивает соответствие продукции международным стандартам ISO и ГОСТ.", email: "quality@oaplastic.ru", phone: "+7 (48731) 6-12-38" },
-  { name: "Петров Сергей Владимирович", position: "Коммерческий директор", bio: "Эксперт в области продаж полимерных материалов. Развивает партнерские отношения с клиентами в России, СНГ и странах Европы через Торговый дом 'Пластик'.", email: "sales@oaplastic.ru", phone: "+7 (48731) 6-12-39" },
-]
+async function getManagementTeam(): Promise<ManagementTeamMemberPublic[]> {
+  try {
+    const supabase = createClient()
+    
+    const { data, error } = await supabase
+      .from("management_team")
+      .select("id, full_name, position, bio, email, phone, image_url, sort_order")
+      .eq("is_active", true)
+      .order("sort_order", { ascending: true })
+    
+    if (error) {
+      console.error("Ошибка при получении руководства:", error)
+      return []
+    }
+    
+    return data || []
+  } catch (error) {
+    console.error("Ошибка при подключении к базе данных:", error)
+    return []
+  }
+}
 
-export default function ManagementPage() {
-  const cardsRef = useRef<HTMLDivElement>(null)
-  const managementItems: ChromaItem[] = teamMembers.map((member, index) => ({
-    image: `/placeholder.svg?height=400&width=400&text=${member.name.charAt(0)}`,
-    title: member.name,
-    subtitle: member.position,
-    handle: member.bio.substring(0, 50) + "...",
-    borderColor: "#0046FF",
-    gradient: `linear-gradient(${135 + index * 30}deg, #0046FF, #000)`,
-  }))
-
-  useEffect(() => {
-    if (typeof window === "undefined" || !window.gsap || !window.ScrollTrigger) return
-
-    if (!cardsRef.current) return
-
-    const cards = cardsRef.current.querySelectorAll(".management-card")
-
-    cards.forEach((card, index) => {
-      window.gsap.fromTo(
-        card,
-        {
-          y: 80,
-          opacity: 0,
-          scale: 0.95,
-        },
-        {
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          duration: 0.8,
-          delay: index * 0.1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: card,
-            start: "top bottom-=100",
-            toggleActions: "play none none none",
-          },
-        },
-      )
-    })
-  }, [])
+export default async function ManagementPage() {
+  const members = await getManagementTeam()
 
   return (
-    <div className="min-h-screen bg-background">
-      <section className="pt-32 pb-24 bg-gradient-to-br from-primary/5 via-background to-primary/5">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-balance bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
+    <>
+      <BackgroundPaths />
+      
+      <div className="min-h-screen bg-transparent">
+        <section className="pt-32 pb-24">
+          <div className="container mx-auto px-4 lg:px-8">
+            {/* Заголовок в стиле вакансий */}
+            <div className="mb-16 text-center">
+              <h1 className="text-6xl md:text-7xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6] animate-in fade-in slide-in-from-bottom-4 duration-700">
                 Руководство
               </h1>
-              <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto text-pretty">
+              <p className="text-xl md:text-2xl text-foreground/70 leading-relaxed animate-in fade-in slide-in-from-bottom-5 duration-700 delay-200">
                 Наша команда профессионалов с многолетним опытом в индустрии пластиковых материалов
               </p>
+              <div className="mt-6 h-0.5 w-24 mx-auto bg-[#1e3a8a] dark:bg-[#3b82f6] animate-in fade-in duration-700 delay-300" />
             </div>
 
-            <div style={{ minHeight: "800px", position: "relative" }}>
-              <ChromaGrid items={managementItems} radius={300} damping={0.45} fadeOut={0.6} ease="power3.out" />
-            </div>
+            {members.length > 0 ? (
+              <ManagementClient members={members} />
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">
+                  Информация о руководстве временно недоступна
+                </p>
+              </div>
+            )}
           </div>
-        </div>
-      </section>
+        </section>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </>
   )
 }

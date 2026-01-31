@@ -1,6 +1,7 @@
 import { ProductEditClient } from "./product-edit-client"
 
-export default function ProductEditPage({ params }: { params: Promise<{ id: string }> }) {
-  return <ProductEditClient params={params} />
+export default async function ProductEditPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params
+  return <ProductEditClient params={resolvedParams} />
 }
 

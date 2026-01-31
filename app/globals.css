@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -184,7 +186,7 @@ body {
 }
 
 .animate-fade-in {
-  animation: fade-in 0.8s ease-out;
+  animation: fade-in 0.8s ease-out both;
 }
 
 .animate-fade-in-delay {
@@ -193,6 +195,28 @@ body {
 
 .animate-fade-in-delay-2 {
   animation: fade-in 0.8s ease-out 0.4s both;
+}
+
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+.animation-delay-400 {
+  animation-delay: 400ms;
+}
+
+/* Scrollbar hide utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
 .product-card {
@@ -418,5 +442,218 @@ video::-webkit-media-controls-overlay {
     display: none !important;
     opacity: 0 !important;
     visibility: hidden !important;
+  }
+}
+
+/* Локальная тёмная тема только для страницы истории компании */
+.history-theme {
+  --background: hsl(220 20% 7%);
+  --foreground: hsl(210 20% 95%);
+  --card: hsl(220 18% 10%);
+  --card-foreground: hsl(210 20% 95%);
+  --popover: hsl(220 18% 10%);
+  --popover-foreground: hsl(210 20% 95%);
+  --primary: hsl(180 60% 45%);
+  --primary-foreground: hsl(220 20% 7%);
+  --secondary: hsl(220 15% 15%);
+  --secondary-foreground: hsl(210 20% 90%);
+  --muted: hsl(220 15% 18%);
+  --muted-foreground: hsl(215 15% 55%);
+  --accent: hsl(180 50% 40%);
+  --accent-foreground: hsl(210 20% 95%);
+  --destructive: hsl(0 84.2% 60.2%);
+  --destructive-foreground: hsl(210 40% 98%);
+  --border: hsl(220 15% 20%);
+  --input: hsl(220 15% 18%);
+  --ring: hsl(180 60% 45%);
+  --radius: 0.5rem;
+
+  /* Custom industrial tokens */
+  --industrial-glow: 180 70% 50%;
+  --timeline-line: 180 40% 30%;
+  --timeline-dot: 180 60% 50%;
+  --overlay-dark: 220 20% 5% / 0.8;
+  --overlay-medium: 220 20% 5% / 0.5;
+  --text-hero: 210 20% 98%;
+  --text-subtle: 215 15% 65%;
+  --background-shadow: hsl(220 20% 7% / 0.8);
+
+  /* Gradients */
+  --gradient-hero: linear-gradient(
+    180deg,
+    hsl(220 20% 5% / 0.3) 0%,
+    hsl(220 20% 5% / 0.7) 50%,
+    hsl(220 20% 7%) 100%
+  );
+  --gradient-timeline: linear-gradient(
+    90deg,
+    hsl(180 60% 45% / 0.1) 0%,
+    hsl(180 60% 45% / 0.3) 50%,
+    hsl(180 60% 45% / 0.1) 100%
+  );
+  --gradient-card: linear-gradient(
+    135deg,
+    hsl(220 18% 12%) 0%,
+    hsl(220 18% 8%) 100%
+  );
+
+  /* Shadows */
+  --shadow-industrial: 0 25px 50px -12px hsl(220 20% 3% / 0.5);
+  --shadow-glow: 0 0 40px hsl(180 60% 45% / 0.2);
+
+  /* Sidebar */
+  --sidebar-background: 220 18% 10%;
+  --sidebar-foreground: 210 20% 90%;
+  --sidebar-primary: 180 60% 45%;
+  --sidebar-primary-foreground: 220 20% 7%;
+  --sidebar-accent: 220 15% 15%;
+  --sidebar-accent-foreground: 210 20% 90%;
+  --sidebar-border: 220 15% 20%;
+  --sidebar-ring: 180 60% 45%;
+}
+
+@layer components {
+  /* Hero text styles */
+  .text-hero-title {
+    @apply text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tight;
+    color: hsl(var(--text-hero));
+    text-shadow: 0 4px 30px var(--background-shadow);
+  }
+
+  .text-hero-subtitle {
+    @apply text-xl md:text-2xl lg:text-3xl font-light tracking-wide;
+    color: hsl(var(--text-subtle));
+  }
+
+  .text-period-title {
+    @apply text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight;
+    color: hsl(var(--text-hero));
+  }
+
+  .text-period-subtitle {
+    @apply text-lg md:text-xl font-light;
+    color: hsl(var(--text-subtle));
+  }
+
+  /* Timeline styles */
+  .timeline-line {
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      hsl(var(--timeline-line)) 10%,
+      hsl(var(--timeline-line)) 90%,
+      transparent 100%
+    );
+  }
+
+  .timeline-dot {
+    @apply relative;
+    background: hsl(var(--timeline-dot));
+    box-shadow: 0 0 20px hsl(var(--industrial-glow) / 0.5);
+  }
+
+  .timeline-year {
+    @apply text-2xl md:text-3xl font-semibold;
+    color: var(--primary);
+  }
+
+  .timeline-description {
+    @apply text-base md:text-lg font-light leading-relaxed;
+    color: hsl(var(--text-subtle));
+  }
+
+  /* Card and overlay styles */
+  .overlay-gradient {
+    background: var(--gradient-hero);
+  }
+
+  .card-industrial {
+    background: var(--gradient-card);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-industrial);
+  }
+
+  /* Scroll indicator */
+  .scroll-indicator {
+    @apply animate-bounce;
+    color: var(--primary);
+  }
+
+  /* Image treatment */
+  .image-industrial {
+    filter: contrast(1.05) brightness(0.95);
+  }
+}
+
+@layer utilities {
+  @keyframes pulse-glow {
+    0%,
+    100% {
+      opacity: 0.5;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0;
+      transform: scale(2);
+    }
+  }
+
+  .timeline-dot::before {
+    content: "";
+    @apply absolute inset-0 rounded-full;
+    background: hsl(var(--timeline-dot));
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .animate-fade-up {
+    animation: fade-up 0.8s ease-out forwards;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* Slide animation for infographic bars */
+  @keyframes slide {
+    0% {
+      transform: translateX(-100%);
+    }
+    50% {
+      transform: translateX(300%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  /* Hide scrollbar */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }

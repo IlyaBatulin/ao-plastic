@@ -1,49 +1,57 @@
-import { Footer } from "@/components/footer"
+"use client";
 
-const milestones = [
-  { year: "1959", event: "Основание предприятия АО 'Пластик' в г. Узловая Тульской области" },
-  { year: "1970", event: "Запуск производства суспензионных полистиролов" },
-  { year: "1985", event: "Расширение производства АБС-пластиков" },
-  { year: "2000", event: "Модернизация производственных линий" },
-  { year: "2008", event: "Получение сертификата ISO 9001-2008" },
-  { year: "2011", event: "Сертификация по ГОСТ ISO 9001:2011" },
-  { year: "2015", event: "Запуск производства вспенивающегося полистирола шести марок" },
-  { year: "2020", event: "Внедрение новых технологий экструзии и литья АБС-пластиков" },
-  { year: "2024", event: "Лидер химической индустрии России в сегменте АБС-пластиков" },
-]
+import { heroData, historyPeriods } from "@/data/historyPeriods22";
+import HeroBlock22 from "@/components/history22/HeroBlock22";
+import PeriodBlock22 from "@/components/history22/PeriodBlock22";
 
-export default function HistoryPage() {
+// Period images mapping
+const periodImages: Record<string, string> = {
+  "period-1": "/images/history/period-1959-1992.jpeg",
+  "period-2": "/images/history/period-2001-2009.jpeg",
+  "period-3": "/images/history/period-2010-2014.jpeg",
+  "period-4": "/images/history/period-2019-present.jpeg",
+};
+
+const History22 = () => {
+  // Lenis теперь работает глобально из app/layout.tsx
+
   return (
-    <div className="min-h-screen bg-background">
-      <section className="pt-32 pb-24">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-5xl font-bold mb-12">История компании</h1>
+    <main className="bg-background min-h-screen">
+      {/* Hero Section with scrolling text */}
+      <HeroBlock22
+        title={heroData.heroTitle}
+        subtitle={heroData.heroSubTitle}
+        textSlides={heroData.heroTextSlides}
+      />
 
-            <div className="relative">
-              {/* Timeline line */}
-              <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-primary/20" />
+      {/* Period Blocks */}
+      {historyPeriods.map((period) => (
+        <PeriodBlock22
+          key={period.id}
+          period={period}
+          image={periodImages[period.id]}
+        />
+      ))}
 
-              {/* Timeline items */}
-              <div className="space-y-8">
-                {milestones.map((milestone, index) => (
-                  <div key={index} className="relative pl-20 group">
-                    {/* Timeline dot */}
-                    <div className="absolute left-6 top-2 w-5 h-5 rounded-full bg-primary border-4 border-background group-hover:scale-125 transition-transform" />
-
-                    <div className="bg-card rounded-xl p-6 border border-border hover:shadow-lg transition-all">
-                      <span className="text-2xl font-bold text-primary">{milestone.year}</span>
-                      <p className="text-lg text-foreground mt-2">{milestone.event}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+      {/* Footer section */}
+      <footer className="bg-background py-24 md:py-32">
+        <div className="container mx-auto px-6 text-center">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-foreground mb-6">
+            Наша история продолжается
+          </h2>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+            Более 60 лет мы создаём инновационные решения для промышленности. 
+            Впереди — новые горизонты и технологические прорывы.
+          </p>
+          <div className="mt-12 flex justify-center gap-4">
+            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <div className="w-2 h-2 rounded-full bg-primary/60 animate-pulse" style={{ animationDelay: "0.2s" }} />
+            <div className="w-2 h-2 rounded-full bg-primary/30 animate-pulse" style={{ animationDelay: "0.4s" }} />
           </div>
         </div>
-      </section>
+      </footer>
+    </main>
+  );
+};
 
-      <Footer />
-    </div>
-  )
-}
+export default History22;

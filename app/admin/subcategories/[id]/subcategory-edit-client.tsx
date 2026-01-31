@@ -38,7 +38,7 @@ export function SubcategoryEditClient({
   params, 
   isNew = false 
 }: { 
-  params?: Promise<{ id: string }>
+  params?: { id: string }
   isNew?: boolean
 }) {
   const router = useRouter()
@@ -60,9 +60,8 @@ export function SubcategoryEditClient({
     const loadData = async () => {
       if (!isNew && params) {
         try {
-          const resolvedParams = await params
-          setSubcategoryId(resolvedParams.id)
-          await fetchSubcategory(resolvedParams.id)
+          setSubcategoryId(params.id)
+          await fetchSubcategory(params.id)
         } catch (error) {
           console.error("Ошибка загрузки подкатегории:", error)
           setIsLoading(false)

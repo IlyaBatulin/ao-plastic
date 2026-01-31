@@ -1,12 +1,11 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { AnimatePresence } from "framer-motion"
 import { useTranslation } from "@/lib/i18n"
-import { CorporateMegaMenu } from "./corporate-mega-menu"
-import { CorporateMenuSection } from "./corporate-menu-section"
+import { UnifiedMegaMenu } from "./unified-mega-menu"
 import corporateMenuData from "@/data/menu-corporate.json"
 
 interface MainMenuCorporateProps {
@@ -16,69 +15,88 @@ interface MainMenuCorporateProps {
 export function MainMenuCorporate({ onMenuOpenChange }: MainMenuCorporateProps = {}) {
   const pathname = usePathname()
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
-  const openTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const navHoverRef = useRef(false) // Флаг, что курсор над навигацией
+  const menuHoverRef = useRef(false) // Флаг, что курсор над меню
   const { lang } = useTranslation()
 
-  const handleMouseEnter = (label: string) => {
+  // Обработка наведения на пункт меню
+  const handleMouseEnter = (itemLabel: string) => {
     // Очищаем таймер закрытия
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current)
       closeTimeoutRef.current = null
     }
-
-    // Задержка открытия ~120ms
-    openTimeoutRef.current = setTimeout(() => {
-      setActiveDropdown(label)
-      onMenuOpenChange?.(true)
-    }, 120)
+    
+    // Если меню уже открыто, просто переключаем содержимое
+    if (activeDropdown) {
+      setActiveDropdown(itemLabel)
+      return
+    }
+    
+    // Открываем меню
+    setActiveDropdown(itemLabel)
+    onMenuOpenChange?.(true)
   }
 
+  // Обработка ухода с пункта меню
   const handleMouseLeave = () => {
-    // Очищаем таймер открытия
-    if (openTimeoutRef.current) {
-      clearTimeout(openTimeoutRef.current)
-      openTimeoutRef.current = null
+    // Если курсор не над навигацией и не над меню, закрываем
+    if (!navHoverRef.current && !menuHoverRef.current) {
+      closeTimeoutRef.current = setTimeout(() => {
+        if (!navHoverRef.current && !menuHoverRef.current) {
+          setActiveDropdown(null)
+          onMenuOpenChange?.(false)
+        }
+      }, 200)
     }
-
-    // Задержка закрытия ~200ms
-    closeTimeoutRef.current = setTimeout(() => {
-      setActiveDropdown(null)
-      onMenuOpenChange?.(false)
-    }, 200)
   }
 
-  const handleClose = () => {
-    if (openTimeoutRef.current) {
-      clearTimeout(openTimeoutRef.current)
-      openTimeoutRef.current = null
-    }
+  // Обработка входа в область навигации
+  const handleNavEnter = () => {
+    navHoverRef.current = true
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current)
       closeTimeoutRef.current = null
     }
-    setActiveDropdown(null)
-    onMenuOpenChange?.(false)
   }
 
-  useEffect(() => {
-    return () => {
-      if (openTimeoutRef.current) {
-        clearTimeout(openTimeoutRef.current)
-      }
-      if (closeTimeoutRef.current) {
-        clearTimeout(closeTimeoutRef.current)
-      }
+  // Обработка выхода из области навигации
+  const handleNavLeave = () => {
+    navHoverRef.current = false
+    if (!menuHoverRef.current) {
+      closeTimeoutRef.current = setTimeout(() => {
+        setActiveDropdown(null)
+        onMenuOpenChange?.(false)
+      }, 200)
     }
-  }, [])
+  }
 
-  // Определяем цвета в зависимости от того, открыто ли меню
-  // Если меню открыто - темные цвета, если нет - белые (для прозрачного фона)
+  // Обработка входа в меню - отменяем закрытие
+  const handleMenuEnter = () => {
+    menuHoverRef.current = true
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current)
+      closeTimeoutRef.current = null
+    }
+  }
+
+  // Обработка выхода из меню
+  const handleMenuLeave = () => {
+    menuHoverRef.current = false
+    if (!navHoverRef.current) {
+      closeTimeoutRef.current = setTimeout(() => {
+        setActiveDropdown(null)
+        onMenuOpenChange?.(false)
+      }, 200)
+    }
+  }
+
+  // Определяем цвета
   const isMenuOpen = activeDropdown !== null
   const isHomePage = pathname === "/"
-  
-  // Для главной страницы используем белые цвета, если меню закрыто
   const useWhiteColors = isHomePage && !isMenuOpen
+  
   const textColorClass = useWhiteColors
     ? "text-white hover:text-white/90 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" 
     : "text-foreground hover:text-primary"
@@ -87,94 +105,65 @@ export function MainMenuCorporate({ onMenuOpenChange }: MainMenuCorporateProps =
     : "text-primary"
 
   return (
-    <nav className="hidden lg:flex flex-1 min-w-0 items-center justify-center gap-6 xl:gap-8">
-      {corporateMenuData.map((item) => {
-        const label = (lang === "en" && item.labelEn ? item.labelEn : item.label) || item.label
-        const isActive =
-          pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href))
+    <>
+      <nav 
+        className="hidden lg:flex flex-1 min-w-0 items-center justify-center gap-6 xl:gap-8"
+        onMouseEnter={handleNavEnter}
+        onMouseLeave={handleNavLeave}
+      >
+        {corporateMenuData.map((item) => {
+          const label = (lang === "en" && item.labelEn ? item.labelEn : item.label) || item.label
+          const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href))
+          const hasDropdown = item.type === "mega" || item.type === "catalog"
+          const isDropdownActive = activeDropdown === item.label
 
-        return (
-          <div
-            key={item.label}
-            className="relative"
-            onMouseEnter={() => (item.type === "mega" || item.type === "catalog") && handleMouseEnter(item.label)}
-            onMouseLeave={handleMouseLeave}
-          >
-            {item.type === "catalog" ? (
-              <>
-                <Link
-                  href={item.href}
-                  className={`whitespace-nowrap text-sm font-semibold tracking-wider uppercase px-3 py-2 transition-colors duration-200 ${
-                    isActive ? activeColorClass : textColorClass
-                  }`}
-                >
-                  {label}
-                </Link>
-                <AnimatePresence>
-                  {activeDropdown === item.label && (
-                    <div
-                      onMouseEnter={() => {
-                        // Отменяем закрытие при наведении на меню
-                        if (closeTimeoutRef.current) {
-                          clearTimeout(closeTimeoutRef.current)
-                          closeTimeoutRef.current = null
-                        }
-                        handleMouseEnter(item.label)
-                      }}
-                      onMouseLeave={(e) => {
-                        // Проверяем, что курсор действительно покинул область меню
-                        const relatedTarget = e.relatedTarget as HTMLElement | null
-                        const megaMenu = document.querySelector('[class*="fixed"][class*="z-[110]"]') as HTMLElement
-                        if (megaMenu && relatedTarget && relatedTarget instanceof Node) {
-                          if (!megaMenu.contains(relatedTarget)) {
-                            handleMouseLeave()
-                          }
-                        } else if (megaMenu && !relatedTarget) {
-                          // Если relatedTarget null, значит курсор покинул элемент
-                          handleMouseLeave()
-                        }
-                      }}
-                    >
-                      <CorporateMegaMenu isOpen={true} onClose={handleClose} />
-                    </div>
-                  )}
-                </AnimatePresence>
-              </>
-            ) : item.type === "mega" && item.sections ? (
-              <>
-                <Link
-                  href={item.href}
-                  className={`whitespace-nowrap text-sm font-semibold tracking-wider uppercase px-3 py-2 transition-colors duration-200 ${
-                    isActive ? activeColorClass : textColorClass
-                  }`}
-                >
-                  {label}
-                </Link>
-                <AnimatePresence>
-                  {activeDropdown === item.label && (
-                    <div
-                      onMouseEnter={() => handleMouseEnter(item.label)}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      <CorporateMenuSection sections={item.sections} isOpen={true} onClose={handleClose} />
-                    </div>
-                  )}
-                </AnimatePresence>
-              </>
-            ) : (
+          return (
+            <div
+              key={item.label}
+              className="relative"
+              onMouseEnter={() => hasDropdown && handleMouseEnter(item.label)}
+              onMouseLeave={handleMouseLeave}
+            >
               <Link
                 href={item.href}
-                className={`whitespace-nowrap text-sm font-semibold tracking-wider uppercase px-3 py-2 transition-colors duration-200 ${
-                  isActive ? activeColorClass : textColorClass
+                className={`whitespace-nowrap text-sm font-semibold tracking-wider uppercase px-4 py-2.5 transition-all duration-300 relative ${
+                  isActive || isDropdownActive ? activeColorClass : textColorClass
                 }`}
+                style={{ 
+                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                  letterSpacing: '0.08em'
+                }}
               >
-                {label}
+                <span className="relative z-10">{label}</span>
+                {(isActive || isDropdownActive) && (
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-current opacity-30 transition-all duration-300" />
+                )}
               </Link>
-            )}
+            </div>
+          )
+        })}
+      </nav>
+
+      {/* Единое мега-меню с плавными переходами */}
+      <AnimatePresence mode="wait">
+        {isMenuOpen && activeDropdown && (
+          <div
+            onMouseEnter={handleMenuEnter}
+            onMouseLeave={handleMenuLeave}
+          >
+            <UnifiedMegaMenu 
+              isOpen={isMenuOpen} 
+              activeItem={activeDropdown} 
+              onClose={() => {
+                navHoverRef.current = false
+                menuHoverRef.current = false
+                setActiveDropdown(null)
+                onMenuOpenChange?.(false)
+              }} 
+            />
           </div>
-        )
-      })}
-    </nav>
+        )}
+      </AnimatePresence>
+    </>
   )
 }
-

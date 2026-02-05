@@ -4,6 +4,8 @@ import { useState, useMemo } from "react"
 import { Sparkles } from "lucide-react"
 import ProductsGrid from "./products-grid"
 import { ProductFilters } from "./product-filters"
+import { Input } from "@/components/ui/input"
+import { Checkbox } from "@/components/ui/checkbox"
 
 type Product = {
   id: string
@@ -27,8 +29,56 @@ export function FilteredProductsSection({
   
   // Для хозяйственных товаров скрываем фильтры и таблицу сравнения
   const isHouseholdCategory = categoryId === 'hoztovary'
-  const showFilters = !isHouseholdCategory
-  const showComparisonTable = !isHouseholdCategory
+  // Специальная логика для экструзионных изделий ДМС
+  const isExtrusionSubcategory = categoryId === "machine-parts" && subcategoryId === "parts-extrusion"
+
+  // Для экструзии не показываем стандартные фильтры и сравнительные таблицы ABS/ПС
+  const showFilters = !isHouseholdCategory && !isExtrusionSubcategory
+  const showComparisonTable = !isHouseholdCategory && !isExtrusionSubcategory
+
+  // ----- Фильтры для экструзионных изделий (тип + поиск) -----
+  const [extrusionSearch, setExtrusionSearch] = useState("")
+  const [extrusionSelectedTypes, setExtrusionSelectedTypes] = useState<string[]>([])
+
+  const extrusionTypeOptions = useMemo(() => {
+    if (!isExtrusionSubcategory) return []
+    const set = new Set<string>()
+    products.forEach((p) => {
+      const specs = typeof p.specifications === "string"
+        ? JSON.parse(p.specifications)
+        : p.specifications || {}
+      const t = specs.type as string | undefined
+      if (t) set.add(t)
+    })
+    return Array.from(set)
+  }, [isExtrusionSubcategory, products])
+
+  const extrusionFilteredProducts = useMemo(() => {
+    if (!isExtrusionSubcategory) return products
+
+    const q = extrusionSearch.trim().toLowerCase()
+
+    return products.filter((p) => {
+      const specs = typeof p.specifications === "string"
+        ? JSON.parse(p.specifications)
+        : p.specifications || {}
+      const t = (specs.type as string | undefined) || ""
+
+      if (extrusionSelectedTypes.length > 0 && !extrusionSelectedTypes.includes(t)) {
+        return false
+      }
+
+      if (q) {
+        const name = p.name?.toLowerCase() || ""
+        const desc = p.description?.toLowerCase() || ""
+        return name.includes(q) || desc.includes(q)
+      }
+
+      return true
+    })
+  }, [isExtrusionSubcategory, products, extrusionSearch, extrusionSelectedTypes])
+
+  const effectiveProducts = isExtrusionSubcategory ? extrusionFilteredProducts : filteredProducts
 
   return (
     <>
@@ -36,16 +86,59 @@ export function FilteredProductsSection({
         <h2 className="text-3xl font-bold">Товары в этой категории</h2>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Sparkles className="w-4 h-4 text-primary" />
-          <span>{filteredProducts.length} товаров</span>
+          <span>{effectiveProducts.length} товаров</span>
         </div>
       </div>
+
+      {/* Фильтры для экструзионных изделий ДМС */}
+      {isExtrusionSubcategory && (
+        <div className="mb-8 space-y-4">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="relative flex-1">
+              <Input
+                type="text"
+                placeholder="Поиск по названию или шифру изделия..."
+                value={extrusionSearch}
+                onChange={(e) => setExtrusionSearch(e.target.value)}
+                className="h-11"
+              />
+            </div>
+          </div>
+
+          {extrusionTypeOptions.length > 0 && (
+            <div className="bg-muted/30 rounded-2xl p-4 border border-border">
+              <div className="text-sm font-semibold mb-3">Тип изделия</div>
+              <div className="flex flex-wrap gap-3">
+                {extrusionTypeOptions.map((t) => (
+                  <label
+                    key={t}
+                    className="inline-flex items-center gap-2 cursor-pointer text-sm"
+                  >
+                    <Checkbox
+                      checked={extrusionSelectedTypes.includes(t)}
+                      onCheckedChange={() =>
+                        setExtrusionSelectedTypes((prev) =>
+                          prev.includes(t)
+                            ? prev.filter((x) => x !== t)
+                            : [...prev, t]
+                        )
+                      }
+                    />
+                    <span>{t}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {showFilters && (
         <ProductFilters products={products} onFilterChange={setFilteredProducts} />
       )}
 
       <ProductsGrid 
-        products={filteredProducts} 
+        products={effectiveProducts} 
         categoryId={categoryId}
         subcategoryId={subcategoryId}
       />

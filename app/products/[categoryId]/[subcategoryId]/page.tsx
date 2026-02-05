@@ -123,6 +123,45 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ ca
     }
   })
 
+  // Получаем данные экструзионных изделий для machine-parts/parts-extrusion
+  let extrusionDisplayProducts: any[] = []
+  if (categoryId === "machine-parts" && subcategoryId === "parts-extrusion") {
+    const supabaseServer = createClient()
+    const { data: extrusionData } = await supabaseServer
+      .from("extrusion_products")
+      .select("*")
+      .eq("is_active", true)
+      .order("source_no", { ascending: true, nullsFirst: false })
+
+    if (extrusionData && extrusionData.length > 0) {
+      extrusionDisplayProducts = extrusionData.map((item: any) => {
+        // Человеко‑читаемое краткое описание на русском
+        const parts: string[] = []
+        if (item.size_raw) parts.push(`Габаритные размеры: ${item.size_raw}`)
+        if (item.length_raw) parts.push(`Длина изделия: ${item.length_raw}`)
+        if (item.code) parts.push(`Шифр: ${item.code}`)
+        const description = parts.join(" · ")
+
+        return {
+          id: `extrusion-${item.id}`,
+          name: item.name,
+          description: description || null,
+          // Лого АО «Пластик» / общее изображение
+          image: "/placeholder-logo.png",
+          // Спецификации только из полей документа/таблицы
+          specifications: {
+            type: item.type,
+            subtype: item.subtype,
+            size_raw: item.size_raw,
+            code: item.code,
+            length_raw: item.length_raw,
+            length_kind: item.length_kind,
+          },
+        }
+      })
+    }
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -163,12 +202,20 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ ca
         </section>
       )}
 
-      {/* Секция товаров - не показываем для abs-custom */}
+      {/* Секция товаров
+          - для abs-custom не показываем
+          - для machine-parts/parts-extrusion используем данные из extrusion_products,
+            но в том же дизайне карточек, что и у ABS / полистирола
+      */}
       {!(categoryId === "abs" && subcategory.slug === "abs-custom") && (
         <section className="py-20 relative">
           <div className="container mx-auto px-4 lg:px-8">
-            <FilteredProductsSection 
-              products={displayProducts} 
+            <FilteredProductsSection
+              products={
+                categoryId === "machine-parts" && subcategoryId === "parts-extrusion"
+                  ? extrusionDisplayProducts
+                  : displayProducts
+              }
               categoryId={categoryId}
               subcategoryId={subcategoryId}
             />

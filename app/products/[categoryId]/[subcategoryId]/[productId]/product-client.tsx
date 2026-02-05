@@ -115,6 +115,10 @@ export function ProductPageClient({
   const { Штрихкод, штрихкод, barcode, ...cleanSpecs } = specifications
   specifications = cleanSpecs
 
+  // Для экструзионных изделий скрываем блок "ключевые фичи" и оставляем только описание/характеристики
+  const isExtrusionProduct =
+    categoryId === "machine-parts" && subcategoryId === "parts-extrusion"
+
   return (
     <div className="min-h-screen bg-background">
       {/* Breadcrumbs */}
@@ -172,27 +176,29 @@ export function ProductPageClient({
                 </p>
               )}
 
-              {/* Key Features */}
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                    <CheckCircle2 className="w-5 h-5 text-primary" />
+              {/* Key Features: для экструзионных изделий не показываем маркетинговые пункты */}
+              {!isExtrusionProduct && (
+                <div className="space-y-4 mb-8">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <CheckCircle2 className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-sm">Высокое качество</span>
                   </div>
-                  <span className="text-sm">Высокое качество</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Package className="w-5 h-5 text-primary" />
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Package className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-sm">Сертифицированная продукция</span>
                   </div>
-                  <span className="text-sm">Сертифицированная продукция</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Truck className="w-5 h-5 text-primary" />
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Truck className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-sm">Доставка по всей России</span>
                   </div>
-                  <span className="text-sm">Доставка по всей России</span>
                 </div>
-              </div>
+              )}
 
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2 border border-border rounded-lg px-2 py-1">

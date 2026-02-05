@@ -39,7 +39,7 @@ export function Hero() {
       <div className="absolute inset-0 z-0">
         <video
           ref={videoRef}
-          src="/videos/frontpage.mp4"
+          src="/videos/frontpage2.mp4"
           className="absolute inset-0 w-full h-full object-cover"
           autoPlay
           loop

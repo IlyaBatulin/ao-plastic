@@ -10,6 +10,7 @@ import { ConditionalHeader } from "@/components/conditional-header"
 import { Toaster } from "@/components/ui/toaster"
 import { LoadingScreen } from "@/components/loading-screen"
 import { LenisProvider } from "@/components/lenis-provider"
+import { SitePasswordGate } from "@/components/site-password-gate"
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -51,17 +52,19 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <LoadingScreen />
-        <LenisProvider>
-          <div id="main-content" className="opacity-0 transition-opacity duration-500">
-            <LanguageProvider>
-              <CartProvider>
-                <ConditionalHeader />
-                {children}
-              </CartProvider>
-            </LanguageProvider>
-            <Toaster />
-          </div>
-        </LenisProvider>
+        <SitePasswordGate>
+          <LenisProvider>
+            <div id="main-content" className="opacity-0 transition-opacity duration-500">
+              <LanguageProvider>
+                <CartProvider>
+                  <ConditionalHeader />
+                  {children}
+                </CartProvider>
+              </LanguageProvider>
+              <Toaster />
+            </div>
+          </LenisProvider>
+        </SitePasswordGate>
       </body>
     </html>
   )

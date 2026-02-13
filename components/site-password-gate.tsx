@@ -6,13 +6,13 @@ import { Button } from "@/components/ui/button"
 import { Lock } from "lucide-react"
 
 const STORAGE_KEY = "site_access_granted"
-const PASSWORD = process.env.NEXT_PUBLIC_SITE_PASSWORD || "plastic2025"
 
 export function SitePasswordGate({ children }: { children: React.ReactNode }) {
   const [isUnlocked, setIsUnlocked] = useState(false)
   const [password, setPassword] = useState("")
   const [error, setError] = useState(false)
   const [isClient, setIsClient] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     setIsClient(true)
@@ -26,16 +26,29 @@ export function SitePasswordGate({ children }: { children: React.ReactNode }) {
     }
   }, [isClient])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(false)
-    if (password.trim() === PASSWORD) {
-      if (typeof window !== "undefined") {
-        sessionStorage.setItem(STORAGE_KEY, "1")
+    setLoading(true)
+    try {
+      const res = await fetch("/api/site-access", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: password.trim() }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        if (typeof window !== "undefined") {
+          sessionStorage.setItem(STORAGE_KEY, "1")
+        }
+        setIsUnlocked(true)
+      } else {
+        setError(true)
       }
-      setIsUnlocked(true)
-    } else {
+    } catch {
       setError(true)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -78,8 +91,8 @@ export function SitePasswordGate({ children }: { children: React.ReactNode }) {
                 Неверный пароль. Попробуйте ещё раз.
               </p>
             )}
-            <Button type="submit" className="w-full h-12">
-              Войти
+            <Button type="submit" className="w-full h-12" disabled={loading}>
+              {loading ? "Проверка…" : "Войти"}
             </Button>
           </form>
         </div>

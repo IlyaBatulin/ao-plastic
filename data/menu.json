@@ -9,7 +9,6 @@
       { "label": "История компании", "labelEn": "History", "href": "/about/history" },
       { "label": "Менеджмент качества", "labelEn": "Quality Management", "href": "/about/quality" },
       { "label": "Публикации", "labelEn": "Publications", "href": "/about/publications" },
-      { "label": "Руководство", "labelEn": "Management", "href": "/about/management" },
       { "label": "Охрана труда и экология", "labelEn": "Safety & Ecology", "href": "/about/safety" },
       { "label": "Кодекс этики", "labelEn": "Code of Ethics", "href": "/about/ethics" },
       { "label": "Раскрытие информации", "labelEn": "Disclosure", "href": "/about/disclosure" },

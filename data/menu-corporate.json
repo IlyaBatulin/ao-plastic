@@ -10,8 +10,7 @@
         "titleEn": "About Us",
         "items": [
           { "label": "Миссия", "labelEn": "Mission", "href": "/about/mission" },
-          { "label": "История компании", "labelEn": "History", "href": "/about/history" },
-          { "label": "Руководство", "labelEn": "Management", "href": "/about/management" }
+          { "label": "История компании", "labelEn": "History", "href": "/about/history" }
         ]
       },
       {

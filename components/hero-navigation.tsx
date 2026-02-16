@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { MainMenuCorporate } from "./header/main-menu-corporate"
@@ -11,15 +11,29 @@ import { Menu, X, ShoppingCart } from "lucide-react"
 import { useCart } from "@/contexts/cart-context"
 import { Badge } from "@/components/ui/badge"
 
+const SCROLL_HIDE_THRESHOLD = 50 // сначала шапка героя полностью уходит
+
 export function HeroNavigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false)
+  const [isHiddenByScroll, setIsHiddenByScroll] = useState(false)
   const { itemCount } = useCart()
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsHiddenByScroll(window.scrollY > SCROLL_HIDE_THRESHOLD)
+    }
+    window.addEventListener("scroll", handleScroll)
+    handleScroll()
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   return (
     <>
       <nav 
         className={`absolute top-0 left-0 right-0 w-full transition-all duration-300 ${
+          isHiddenByScroll ? "opacity-0 pointer-events-none" : ""
+        } ${
           isMobileMenuOpen 
             ? "z-[110]" 
             : isMegaMenuOpen 
@@ -29,7 +43,7 @@ export function HeroNavigation() {
           isMegaMenuOpen 
             ? "bg-white shadow-sm" 
             : "bg-transparent"
-        }`}
+        } duration-300`}
         style={isMegaMenuOpen ? { backgroundColor: '#ffffff' } : { backgroundColor: 'transparent' }}
       >
       <div className="flex w-full items-center justify-between gap-2 lg:gap-4 max-w-[1440px] mx-auto px-4 lg:px-8 py-4 lg:py-6">

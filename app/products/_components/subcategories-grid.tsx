@@ -16,6 +16,8 @@ function getSubcategoryImage(subcategoryId: string, slug?: string): string | nul
     'abs-injection': '/images/abs-plastik-katalog.webp',
     'abs-extrusion': '/images/abs-plastik-katalog.webp',
     'abs-custom': '/images/abs-plastik-katalog.webp',
+    // Хозтовары
+    'vedra-tazy': '/images/xoztov/vedra_main.jpeg',
   }
   
   return imageMap[subcategoryId] || imageMap[slug || ''] || null

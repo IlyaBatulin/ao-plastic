@@ -20,9 +20,11 @@ export function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
+      // Сначала уходит шапка героя (50px), потом через «одно микродвижение» колесика появляется эта
+      setIsScrolled(window.scrollY > 120)
     }
     window.addEventListener("scroll", handleScroll)
+    handleScroll() // проверка при монтировании
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
@@ -79,7 +81,7 @@ export function Header() {
         </Link>
 
         {/* Desktop Menu */}
-        <MainMenuCorporate />
+        <MainMenuCorporate useDarkText />
 
         {/* Right Controls */}
         <div className="hidden lg:flex items-center gap-1.5 xl:gap-3 flex-shrink-0 min-w-fit">

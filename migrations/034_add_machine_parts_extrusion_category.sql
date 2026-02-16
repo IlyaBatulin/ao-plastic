@@ -7,7 +7,7 @@ INSERT INTO public.categories (id, slug, name, description, image, sort, is_acti
 VALUES (
   'machine-parts',
   'machine-parts',
-  'Детали машин',
+  'Детали машиностроения',
   'Экструзионные изделия и детали для автомобильной промышленности',
   '/images/machine-parts.jpg',
   100,

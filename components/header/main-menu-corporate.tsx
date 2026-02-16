@@ -10,9 +10,11 @@ import corporateMenuData from "@/data/menu-corporate.json"
 
 interface MainMenuCorporateProps {
   onMenuOpenChange?: (isOpen: boolean) => void
+  /** В основной шапке (при скролле) — всегда тёмный текст, чтобы не было белого на белом */
+  useDarkText?: boolean
 }
 
-export function MainMenuCorporate({ onMenuOpenChange }: MainMenuCorporateProps = {}) {
+export function MainMenuCorporate({ onMenuOpenChange, useDarkText = false }: MainMenuCorporateProps = {}) {
   const pathname = usePathname()
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -92,10 +94,10 @@ export function MainMenuCorporate({ onMenuOpenChange }: MainMenuCorporateProps =
     }
   }
 
-  // Определяем цвета
+  // Определяем цвета: в hero — белый текст на видео; в основной шапке (useDarkText) — всегда тёмный
   const isMenuOpen = activeDropdown !== null
   const isHomePage = pathname === "/"
-  const useWhiteColors = isHomePage && !isMenuOpen
+  const useWhiteColors = !useDarkText && isHomePage && !isMenuOpen
   
   const textColorClass = useWhiteColors
     ? "text-white hover:text-white/90 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" 

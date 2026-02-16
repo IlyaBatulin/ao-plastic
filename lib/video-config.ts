@@ -1,3 +1,6 @@
+// Дефолтное видео для hero категории (если у категории нет своего)
+export const DEFAULT_CATEGORY_VIDEO = '/videos/xoztov.mp4'
+
 // Конфигурация видео для категорий и подкатегорий
 export const videoConfig: Record<string, string> = {
   // Категория: Полистирол

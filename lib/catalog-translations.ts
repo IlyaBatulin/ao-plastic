@@ -25,6 +25,7 @@ export function getCategoryName(categoryId: string, lang: "ru" | "en" = "ru"): s
     "ps-psv-l": { ru: "Полистирол вспенивающийся ПСВ-Л", en: "Expandable Polystyrene PSV-L" },
     "ps-pse": { ru: "Полистирол ПСЭ-1", en: "Polystyrene PSE-1" },
     "extrusion-parts": { ru: "Экструзионные изделия", en: "Extrusion Products" },
+    "parts-extrusion": { ru: "Экструзионные изделия", en: "Extrusion Products" },
     "injection-parts": { ru: "Литьевые изделия", en: "Injection Products" },
     "vedra-tazy": { ru: "Ведра и тазы", en: "Buckets and Basins" },
     uborka: { ru: "Уборочный инвентарь", en: "Cleaning Supplies" },

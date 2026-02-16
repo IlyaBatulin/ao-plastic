@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTranslation } from "@/lib/i18n"
+import { getCategoryName } from "@/lib/catalog-translations"
 import { createClient } from "@/utils/supabase/client"
 import productsData from "@/data/products.json"
 import corporateMenuData from "@/data/menu-corporate.json"
@@ -234,7 +235,7 @@ export function UnifiedMegaMenu({ isOpen, activeItem, onClose }: UnifiedMegaMenu
                     style={{ fontFamily: 'system-ui, -apple-system, sans-serif', fontWeight: 600 }}
                     onClick={onClose}
                   >
-                    {category.name}
+                    {getCategoryName(category.id, lang === "en" ? "en" : "ru") || category.name}
                   </Link>
                   {category.subcategories && category.subcategories.length > 0 && (
                     <div className="flex flex-col gap-3 pl-1 border-l-2 border-transparent group-hover:border-primary/20 transition-colors duration-300">
@@ -248,7 +249,7 @@ export function UnifiedMegaMenu({ isOpen, activeItem, onClose }: UnifiedMegaMenu
                             style={{ fontFamily: 'system-ui, -apple-system, sans-serif', fontWeight: 400 }}
                             onClick={onClose}
                           >
-                            {subcategory.name}
+                            {getCategoryName(subcategory.id, lang === "en" ? "en" : "ru") || getCategoryName(subcategory.slug, lang === "en" ? "en" : "ru") || subcategory.name}
                           </Link>
                         ))}
                     </div>

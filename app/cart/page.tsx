@@ -139,9 +139,9 @@ export default function CartPage() {
           <div className="grid lg:grid-cols-3 gap-4 md:gap-8">
             {/* Cart Items */}
             <div className="lg:col-span-2 space-y-3 md:space-y-4">
-              {items.map((item) => (
+              {items.map((item, index) => (
                 <div
-                  key={item.productId}
+                  key={`${item.productId}-${item.subcategoryId ?? ""}-${index}`}
                   className="bg-card rounded-2xl md:rounded-3xl p-3 sm:p-4 md:p-6 border border-border shadow-sm flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 group"
                 >
                   {/* Product Image */}

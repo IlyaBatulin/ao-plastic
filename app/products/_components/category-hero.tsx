@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
+import { DEFAULT_CATEGORY_VIDEO } from "@/lib/video-config"
 
 interface CategoryHeroProps {
   title: string
@@ -21,7 +22,7 @@ export function CategoryHero({
   backLabel,
   hasVideo,
   videoSrc,
-  imageSrc,
+  imageSrc: _imageSrc,
 }: CategoryHeroProps) {
   const titleRef = useRef<HTMLHeadingElement>(null)
   const descRef = useRef<HTMLParagraphElement>(null)
@@ -77,106 +78,57 @@ export function CategoryHero({
     }
   }, [description])
 
-  if (hasVideo && videoSrc) {
-    return (
-      <section className="relative min-h-screen w-full overflow-hidden flex items-center justify-center">
-        {/* Fullscreen Video */}
-        <div className="absolute inset-0 z-0">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            controls={false}
-            disablePictureInPicture
-            disableRemotePlayback
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{ pointerEvents: "none" }}
-          >
-            <source src={videoSrc} type="video/mp4" />
-          </video>
-          
-          {/* Темный overlay для читаемости */}
-          <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background/95" />
-          
-          {/* Декоративные эффекты */}
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/40 via-transparent to-transparent" />
-        </div>
+  const videoUrl = (hasVideo && videoSrc) ? videoSrc : DEFAULT_CATEGORY_VIDEO
 
-        {/* Content */}
-        <div className="relative z-10 container mx-auto px-4 lg:px-8 pt-32 pb-20 min-h-screen flex flex-col">
-          {/* Back button */}
-          <Link
-            href={backHref}
-            className="inline-flex items-center gap-2 text-white/90 hover:text-white transition-colors mb-8 group backdrop-blur-sm bg-white/5 rounded-full px-4 py-2 w-fit border border-white/10"
-          >
-            <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-            <span>{backLabel}</span>
-          </Link>
-
-          {/* Title and Description */}
-          <div className="flex-1 flex items-center">
-            <div className="max-w-4xl">
-              <h1
-                ref={titleRef}
-                className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 text-white drop-shadow-2xl opacity-0 translate-y-8 transition-all duration-1000 leading-tight break-words"
-              >
-                {title}
-              </h1>
-              {description && (
-                <p
-                  ref={descRef}
-                  className="text-xl lg:text-2xl text-white/90 leading-relaxed drop-shadow-lg"
-                >
-                  {displayedText}
-                  {isTyping && (
-                    <span className="inline-block w-0.5 h-6 lg:h-8 bg-white/90 ml-1 animate-pulse" />
-                  )}
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-    )
-  }
-
-  // Fallback для изображения или без медиа
   return (
-    <section className="relative min-h-[60vh] w-full overflow-hidden flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-primary/5">
-      {/* Background Image если есть */}
-      {imageSrc && (
-        <div className="absolute inset-0 z-0">
-          <img
-            src={imageSrc}
-            alt={title}
-            className="absolute inset-0 w-full h-full object-cover opacity-20"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/50 to-background" />
-        </div>
-      )}
+    <section className="relative min-h-screen w-full overflow-hidden flex items-center justify-center">
+      <div className="absolute inset-0 z-0">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          controls={false}
+          disablePictureInPicture
+          disableRemotePlayback
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ pointerEvents: "none" }}
+        >
+          <source src={videoUrl} type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background/95" />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/40 via-transparent to-transparent" />
+      </div>
 
-      {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 lg:px-8 pt-32 pb-20">
+      <div className="relative z-10 container mx-auto px-4 lg:px-8 pt-32 pb-20 min-h-screen flex flex-col">
         <Link
           href={backHref}
-          className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-8 group"
+          className="inline-flex items-center gap-2 text-white font-medium hover:text-white transition-colors mb-8 group backdrop-blur-md bg-black/50 rounded-full px-4 py-2.5 w-fit border border-white/30 shadow-lg hover:bg-black/60 hover:border-white/50"
         >
           <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
           <span>{backLabel}</span>
         </Link>
-
-        <h1 className="text-5xl lg:text-7xl font-bold mb-4 text-foreground text-balance">
-          {title}
-        </h1>
-        {description && (
-          <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed">
-            {displayedText}
-            {isTyping && (
-              <span className="inline-block w-0.5 h-6 bg-muted-foreground ml-1 animate-pulse" />
+        <div className="flex-1 flex items-center">
+          <div className="max-w-4xl">
+            <h1
+              ref={titleRef}
+              className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 text-white drop-shadow-2xl opacity-0 translate-y-8 transition-all duration-1000 leading-tight break-words"
+            >
+              {title}
+            </h1>
+            {description && (
+              <p
+                ref={descRef}
+                className="text-xl lg:text-2xl text-white/90 leading-relaxed drop-shadow-lg"
+              >
+                {displayedText}
+                {isTyping && (
+                  <span className="inline-block w-0.5 h-6 lg:h-8 bg-white/90 ml-1 animate-pulse" />
+                )}
+              </p>
             )}
-          </p>
-        )}
+          </div>
+        </div>
       </div>
     </section>
   )

@@ -1,115 +1,97 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
+import { Syringe, Zap, Shield, Package } from "lucide-react"
 
-const introText =
-  "В линейке выпускаемой продукции завода АО «Пластик» широкий выбор марок литьевого АБС-пластика. Основной метод переработки литьевого АБС пластика – литье под давлением на термопластавтоматах. Данный метод предполагает нагревание литьевого АБС пластика до пластичного состояния, затем материал впрыскивается пресс-форму и охлаждается."
+const advantageIcons = [Syringe, Zap, Shield] as const
 
-const advantagesText =
-  "Марки литьевого АБС пластика отличаются высоким ПТР, отдельные марки - стойкостью к горению, антистатическими свойствами. Устойчивость к высоким температурам дает возможность использовать литьевой АБС пластик в производстве деталей автопрома. Отдельные марки обладают характеристиками повышенной жесткости и текучести, что позволяет производить из них мелкие детали приборостроения и автомобилестроения, разнообразные технические детали. Термостойкий литьевой АБС подходит для компаундирования с поликарбонатом."
+const introShort =
+  "Широкий выбор марок литьевого АБС-пластика. Основной метод переработки — литьё под давлением на термопластавтоматах."
 
-const usageText =
-  "Трудногорючие марки АБС применяются для литья корпусов агрегатов, приборов, деталей технических изделий и бытовых товаров. В ряде марок есть разрешение на food contact."
-
-const conclusionText =
-  "Чтобы купить ABS пластик в гранулах по выгодной стоимости, обращайтесь в нашу компанию. Мы продаем гранулированный пластик, соответствующий всем стандартам качества."
+const advantages = [
+  { title: "Высокий ПТР", desc: "Отдельные марки — стойкость к горению, антистатика" },
+  { title: "Термостойкость", desc: "Детали автопрома, компаундирование с поликарбонатом" },
+  { title: "Жёсткость и текучесть", desc: "Мелкие детали приборостроения и техники" },
+]
 
 const applications = [
-  "решетки радиатора в авто",
-  "колпаки автомобильных колес",
-  "корпуса бытовой и оргтехники",
-  "металлизированные фрагменты бытовой техники и оргтехники",
-  "выключатели, переключатели",
-  "корпуса электроинструмента",
-  "канцелярские изделия",
-  "настольные принадлежности",
-  "игрушки",
-  "детские конструкторы",
-  "дверные ручки",
-  "металлизированные изделия для сантехники",
-  "фитинги",
-  "изделия медицинского назначения",
+  "Решётки радиатора",
+  "Колпаки колёс",
+  "Корпуса бытовой и оргтехники",
+  "Металлизированные детали",
+  "Выключатели, переключатели",
+  "Корпуса электроинструмента",
+  "Канцелярия и настольные принадлежности",
+  "Игрушки и конструкторы",
+  "Дверные ручки",
+  "Сантехника",
+  "Фитинги",
+  "Медицинские изделия",
 ]
 
 export function AbsInjectionInfo() {
-  const [visibleStep, setVisibleStep] = useState(0)
-
-  useEffect(() => {
-    const timers = [
-      setTimeout(() => setVisibleStep(1), 100),
-      setTimeout(() => setVisibleStep(2), 400),
-      setTimeout(() => setVisibleStep(3), 750),
-      setTimeout(() => setVisibleStep(4), 1100),
-      setTimeout(() => setVisibleStep(5), 1450),
-    ]
-
-    return () => {
-      timers.forEach((timer) => clearTimeout(timer))
-    }
-  }, [])
+  const [hoveredApp, setHoveredApp] = useState<string | null>(null)
 
   return (
-    <div className="max-w-5xl mx-auto space-y-12 py-12">
-      <section
-        className={`transition-all duration-700 ease-out ${
-          visibleStep >= 1 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-        }`}
-      >
-        <p className="text-xl lg:text-2xl text-foreground leading-relaxed font-light">{introText}</p>
-      </section>
+    <div className="max-w-4xl mx-auto py-8 lg:py-10">
+      {/* Краткое описание */}
+      <div className="rounded-2xl border border-border/60 bg-muted/30 px-5 py-4 mb-8">
+        <p className="text-base lg:text-lg text-foreground/90 leading-snug">
+          {introShort}
+        </p>
+      </div>
 
-      <section
-        className={`transition-all duration-700 ease-out ${
-          visibleStep >= 2 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-        }`}
-      >
-        <h3 className="text-3xl lg:text-4xl font-bold mb-6">Несколько важных достоинств</h3>
-        <p className="text-xl lg:text-2xl text-foreground leading-relaxed font-light">{advantagesText}</p>
-      </section>
-
-      <section
-        className={`transition-all duration-700 ease-out ${
-          visibleStep >= 3 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-        }`}
-      >
-        <h3 className="text-3xl lg:text-4xl font-bold mb-6">Для чего используется материал?</h3>
-        <p className="text-xl lg:text-2xl text-foreground leading-relaxed font-light">{usageText}</p>
-      </section>
-
-      <section
-        className={`transition-all duration-700 ease-out ${
-          visibleStep >= 4 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-        }`}
-      >
-        <h4 className="text-2xl lg:text-3xl font-bold mb-8">Список возможных применений:</h4>
-        <ul className="space-y-4">
-          {applications.map((app, index) => (
-            <li
-              key={app}
-              className="flex items-start gap-4 group transition-all duration-500"
-              style={{
-                opacity: visibleStep >= 4 ? 1 : 0,
-                transform: visibleStep >= 4 ? "translateY(0)" : "translateY(16px)",
-                transitionDelay: visibleStep >= 4 ? `${index * 60}ms` : "0ms",
-              }}
+      {/* Достоинства — карточки */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        {advantages.map((item, i) => {
+          const Icon = advantageIcons[i]
+          return (
+            <div
+              key={item.title}
+              className="rounded-xl border border-border/50 bg-card p-4 shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300"
             >
-              <span className="text-primary font-bold text-xl mt-1 group-hover:scale-125 transition-transform duration-300">
-                •
-              </span>
-              <span className="text-lg lg:text-xl text-foreground leading-relaxed font-light">{app};</span>
-            </li>
-          ))}
-        </ul>
-      </section>
+              <div className="flex items-center gap-2 mb-2">
+                {Icon && <Icon className="w-5 h-5 text-primary shrink-0" />}
+                <h3 className="font-semibold text-foreground text-sm lg:text-base">{item.title}</h3>
+              </div>
+              <p className="text-sm text-muted-foreground leading-snug">{item.desc}</p>
+            </div>
+          )
+        })}
+      </div>
 
-      <section
-        className={`transition-all duration-700 ease-out ${
-          visibleStep >= 5 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-        }`}
-      >
-        <p className="text-xl lg:text-2xl text-foreground leading-relaxed font-light">{conclusionText}</p>
-      </section>
+      {/* Применение — интерактивная сетка */}
+      <div className="mb-8">
+        <h3 className="flex items-center gap-2 font-semibold text-foreground mb-4 text-sm lg:text-base">
+          <Package className="w-4 h-4 text-primary" />
+          Применение
+        </h3>
+        <div className="flex flex-wrap gap-2">
+          {applications.map((app) => (
+            <span
+              key={app}
+              onMouseEnter={() => setHoveredApp(app)}
+              onMouseLeave={() => setHoveredApp(null)}
+              className={`
+                inline-flex px-3 py-1.5 rounded-full text-sm border transition-all duration-200 cursor-default
+                ${hoveredApp === app
+                  ? "bg-primary/15 border-primary/50 text-foreground scale-105"
+                  : "bg-muted/50 border-border/50 text-muted-foreground hover:bg-muted hover:border-border"
+                }
+              `}
+            >
+              {app}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div className="rounded-xl border border-primary/20 bg-primary/5 px-4 py-3 text-center">
+        <p className="text-sm text-foreground/90">
+          Чтобы купить АБС-пластик в гранулах по выгодной стоимости, обращайтесь в нашу компанию — гранулированный пластик с соответствием всем стандартам качества.
+        </p>
+      </div>
     </div>
   )
 }
-

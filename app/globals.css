@@ -657,3 +657,11 @@ video::-webkit-media-controls-overlay {
     scrollbar-width: none;
   }
 }
+
+/* Фиксация портала Next.js (dev overlay) в левом верхнем углу */
+nextjs-portal {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  z-index: 99999;
+}

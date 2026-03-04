@@ -97,6 +97,7 @@ export function MainMenu() {
                         <Link
                           key={subItem.href}
                           href={subItem.href}
+                          prefetch={false}
                           className="block px-4 py-2.5 text-sm text-foreground hover:bg-primary/10 hover:text-primary transition-all duration-150 border-l-2 border-transparent hover:border-primary"
                         >
                           {subLabel}
@@ -109,6 +110,7 @@ export function MainMenu() {
             ) : (
               <Link
                 href={item.href}
+                prefetch={false}
                 className={`whitespace-nowrap text-[13px] xl:text-sm font-medium px-2 xl:px-3 py-2 rounded-lg transition-all duration-200 hover:bg-primary/10 hover:text-primary ${
                   isActive ? "text-primary bg-primary/5" : "text-foreground"
                 }`}

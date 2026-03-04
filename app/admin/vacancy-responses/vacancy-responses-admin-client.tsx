@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Mail, Phone, Building2, Calendar, CheckCircle2, XCircle, Clock } from "lucide-react"
-import Link from "next/link"
+import { AdminLink } from "@/components/admin-link"
 
 interface VacancyResponse {
   id: number
@@ -116,11 +116,11 @@ export function VacancyResponsesAdmin() {
         <div className="container mx-auto px-4 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/admin/dashboard">
+              <AdminLink href="/admin/dashboard">
                 <Button variant="ghost" size="icon">
                   <ArrowLeft className="w-4 h-4" />
                 </Button>
-              </Link>
+              </AdminLink>
               <h1 className="text-2xl font-bold text-foreground">Ответы на вакансии</h1>
             </div>
           </div>

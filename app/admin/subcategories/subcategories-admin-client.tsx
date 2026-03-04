@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Plus, Pencil, Trash2, ArrowLeft, FolderTree } from "lucide-react"
-import Link from "next/link"
+import { AdminLink } from "@/components/admin-link"
 
 interface Subcategory {
   id: string
@@ -107,11 +107,11 @@ export function SubcategoriesAdminClient() {
       {/* Header */}
       <div className="mb-8 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link href="/admin/dashboard">
+          <AdminLink href="/admin/dashboard">
             <Button variant="ghost" size="icon">
               <ArrowLeft className="h-4 w-4" />
             </Button>
-          </Link>
+          </AdminLink>
           <div>
             <h1 className="text-3xl font-bold">Управление подкатегориями</h1>
             <p className="text-muted-foreground">
@@ -120,11 +120,11 @@ export function SubcategoriesAdminClient() {
           </div>
         </div>
         <div className="flex gap-2">
-          <Link href="/admin/categories">
+          <AdminLink href="/admin/categories">
             <Button variant="outline">
               Категории
             </Button>
-          </Link>
+          </AdminLink>
           <Button onClick={() => router.push("/admin/subcategories/new")}>
             <Plus className="h-4 w-4 mr-2" />
             Добавить подкатегорию

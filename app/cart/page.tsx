@@ -70,6 +70,7 @@ export default function CartPage() {
             price: item.price,
             isPackages: item.isPackages,
             packageQuantity: item.packageQuantity,
+            colorCode: item.colorCode,
           })),
           customerName,
           customerPhone,
@@ -157,6 +158,12 @@ export default function CartPage() {
                   {/* Product Info */}
                   <div className="flex-1 min-w-0">
                     <h3 className="text-base sm:text-lg md:text-xl font-bold mb-2 line-clamp-2">{item.productName}</h3>
+                    {item.colorCode && (
+                      <div className="inline-flex items-center gap-2 mb-2 px-2.5 py-1 rounded-full bg-muted border border-border">
+                        <span className="text-xs text-muted-foreground">Цвет RAL:</span>
+                        <span className="text-xs font-semibold text-foreground">{item.colorCode}</span>
+                      </div>
+                    )}
                     
                     {/* Quantity Controls */}
                     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4 mt-3 md:mt-4">

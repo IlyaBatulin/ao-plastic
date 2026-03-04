@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap');
 
 @import "tailwindcss";
 @import "tw-animate-css";
@@ -90,7 +90,8 @@
 }
 
 @theme inline {
-  --font-sans: "Inter", "Inter Fallback", system-ui, -apple-system, sans-serif;
+  --font-sans: "Manrope", system-ui, -apple-system, sans-serif;
+  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
 
   /* Updated primary color to be more vibrant blue #0046FF */
   --color-primary: #0046ff;
@@ -158,7 +159,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
 }
 
@@ -447,69 +448,74 @@ video::-webkit-media-controls-overlay {
 
 /* Локальная тёмная тема только для страницы истории компании */
 .history-theme {
-  --background: hsl(220 20% 7%);
-  --foreground: hsl(210 20% 95%);
-  --card: hsl(220 18% 10%);
-  --card-foreground: hsl(210 20% 95%);
-  --popover: hsl(220 18% 10%);
-  --popover-foreground: hsl(210 20% 95%);
-  --primary: hsl(180 60% 45%);
-  --primary-foreground: hsl(220 20% 7%);
-  --secondary: hsl(220 15% 15%);
-  --secondary-foreground: hsl(210 20% 90%);
-  --muted: hsl(220 15% 18%);
-  --muted-foreground: hsl(215 15% 55%);
-  --accent: hsl(180 50% 40%);
-  --accent-foreground: hsl(210 20% 95%);
+  /* Основной фон и текст в тёмно-синей палитре */
+  --background: hsl(222 47% 10%);
+  --foreground: hsl(210 40% 98%);
+  --card: hsl(222 47% 13%);
+  --card-foreground: hsl(210 40% 98%);
+  --popover: hsl(222 47% 13%);
+  --popover-foreground: hsl(210 40% 98%);
+
+  /* Основной синий акцент (близко к палитре сайта) */
+  --primary: hsl(222 82% 55%);
+  --primary-foreground: hsl(210 40% 98%);
+
+  /* Дополнительные тёмно-синие/серо-синие тона */
+  --secondary: hsl(222 36% 18%);
+  --secondary-foreground: hsl(210 30% 92%);
+  --muted: hsl(222 30% 16%);
+  --muted-foreground: hsl(215 20% 65%);
+  --accent: hsl(217 91% 60%);
+  --accent-foreground: hsl(210 40% 98%);
   --destructive: hsl(0 84.2% 60.2%);
   --destructive-foreground: hsl(210 40% 98%);
-  --border: hsl(220 15% 20%);
-  --input: hsl(220 15% 18%);
-  --ring: hsl(180 60% 45%);
+  --border: hsl(222 36% 25%);
+  --input: hsl(222 30% 20%);
+  --ring: hsl(222 82% 55%);
   --radius: 0.5rem;
 
-  /* Custom industrial tokens */
-  --industrial-glow: 180 70% 50%;
-  --timeline-line: 180 40% 30%;
-  --timeline-dot: 180 60% 50%;
-  --overlay-dark: 220 20% 5% / 0.8;
-  --overlay-medium: 220 20% 5% / 0.5;
-  --text-hero: 210 20% 98%;
-  --text-subtle: 215 15% 65%;
-  --background-shadow: hsl(220 20% 7% / 0.8);
+  /* Дополнительные индустриальные токены в синей гамме */
+  --industrial-glow: 222 90% 60%;
+  --timeline-line: 222 50% 40%;
+  --timeline-dot: 222 82% 55%;
+  --overlay-dark: 222 47% 7% / 0.85;
+  --overlay-medium: 222 47% 10% / 0.6;
+  --text-hero: 210 40% 98%;
+  --text-subtle: 215 18% 70%;
+  --background-shadow: hsl(222 47% 8% / 0.85);
 
   /* Gradients */
   --gradient-hero: linear-gradient(
     180deg,
-    hsl(220 20% 5% / 0.3) 0%,
-    hsl(220 20% 5% / 0.7) 50%,
-    hsl(220 20% 7%) 100%
+    hsl(222 47% 6% / 0.35) 0%,
+    hsl(222 47% 8% / 0.8) 45%,
+    hsl(222 47% 10%) 100%
   );
   --gradient-timeline: linear-gradient(
     90deg,
-    hsl(180 60% 45% / 0.1) 0%,
-    hsl(180 60% 45% / 0.3) 50%,
-    hsl(180 60% 45% / 0.1) 100%
+    hsl(222 82% 55% / 0.08) 0%,
+    hsl(222 82% 55% / 0.35) 50%,
+    hsl(222 82% 55% / 0.08) 100%
   );
   --gradient-card: linear-gradient(
     135deg,
-    hsl(220 18% 12%) 0%,
-    hsl(220 18% 8%) 100%
+    hsl(222 40% 14%) 0%,
+    hsl(222 45% 11%) 100%
   );
 
   /* Shadows */
-  --shadow-industrial: 0 25px 50px -12px hsl(220 20% 3% / 0.5);
-  --shadow-glow: 0 0 40px hsl(180 60% 45% / 0.2);
+  --shadow-industrial: 0 25px 50px -12px hsl(222 40% 4% / 0.65);
+  --shadow-glow: 0 0 40px hsl(222 82% 55% / 0.25);
 
   /* Sidebar */
-  --sidebar-background: 220 18% 10%;
-  --sidebar-foreground: 210 20% 90%;
-  --sidebar-primary: 180 60% 45%;
-  --sidebar-primary-foreground: 220 20% 7%;
-  --sidebar-accent: 220 15% 15%;
-  --sidebar-accent-foreground: 210 20% 90%;
-  --sidebar-border: 220 15% 20%;
-  --sidebar-ring: 180 60% 45%;
+  --sidebar-background: 222 47% 13%;
+  --sidebar-foreground: 210 30% 94%;
+  --sidebar-primary: 222 82% 55%;
+  --sidebar-primary-foreground: 210 40% 98%;
+  --sidebar-accent: 222 36% 20%;
+  --sidebar-accent-foreground: 210 30% 94%;
+  --sidebar-border: 222 36% 25%;
+  --sidebar-ring: 222 82% 55%;
 }
 
 @layer components {
@@ -645,6 +651,13 @@ video::-webkit-media-controls-overlay {
     100% {
       transform: translateX(-100%);
     }
+  }
+
+  /* Девиз миссии — акцентный шрифт */
+  .font-mission-motto {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
   }
 
   /* Hide scrollbar */

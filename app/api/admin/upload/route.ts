@@ -40,8 +40,10 @@ export async function POST(req: NextRequest) {
     const extension = originalName.split(".").pop() || "jpg"
     const fileName = `${timestamp}-${random}.${extension}`
 
-    // Создаем папку uploads если её нет
-    const uploadDir = join(process.cwd(), "public", "uploads", "products")
+    // Папка загрузки: products по умолчанию, news — для новостей
+    const rawFolder = req.nextUrl.searchParams.get("folder") || "products"
+    const folder = rawFolder.replace(/[^a-z0-9_-]/gi, "") || "products"
+    const uploadDir = join(process.cwd(), "public", "uploads", folder)
     if (!existsSync(uploadDir)) {
       await mkdir(uploadDir, { recursive: true })
     }
@@ -51,7 +53,7 @@ export async function POST(req: NextRequest) {
     await writeFile(filePath, buffer)
 
     // Возвращаем путь для использования в изображении
-    const imageUrl = `/uploads/products/${fileName}`
+    const imageUrl = `/uploads/${folder}/${fileName}`
 
     return NextResponse.json({ url: imageUrl })
   } catch (error: any) {

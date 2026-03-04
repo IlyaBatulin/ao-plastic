@@ -231,6 +231,7 @@ export function UnifiedMegaMenu({ isOpen, activeItem, onClose }: UnifiedMegaMenu
                 <div key={category.id} className="flex flex-col gap-4 group">
                   <Link
                     href={`/products/${category.slug}`}
+                    prefetch={false}
                     className="text-lg font-semibold text-gray-900 hover:text-primary transition-all duration-300 tracking-tight group-hover:translate-x-1 inline-block"
                     style={{ fontFamily: 'system-ui, -apple-system, sans-serif', fontWeight: 600 }}
                     onClick={onClose}
@@ -245,6 +246,7 @@ export function UnifiedMegaMenu({ isOpen, activeItem, onClose }: UnifiedMegaMenu
                           <Link
                             key={subcategory.id}
                             href={`/products/${category.slug}/${subcategory.slug}`}
+                            prefetch={false}
                             className="text-sm text-gray-700 hover:text-gray-900 transition-all duration-300 leading-relaxed hover:translate-x-2 inline-block"
                             style={{ fontFamily: 'system-ui, -apple-system, sans-serif', fontWeight: 400 }}
                             onClick={onClose}
@@ -302,6 +304,7 @@ export function UnifiedMegaMenu({ isOpen, activeItem, onClose }: UnifiedMegaMenu
                       <Link
                         key={itemIndex}
                         href={item.href}
+                        prefetch={false}
                         target={isExternal ? "_blank" : undefined}
                         rel={isExternal ? "noopener noreferrer" : undefined}
                         className="text-sm text-gray-700 hover:text-gray-900 transition-all duration-300 leading-relaxed hover:translate-x-2 inline-block"

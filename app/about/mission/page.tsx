@@ -1,109 +1,87 @@
 "use client"
 
-import { useEffect } from "react"
 import { Footer } from "@/components/footer"
-import { Target, Leaf, TrendingUp, Users, Award, Shield } from "lucide-react"
-
-const values = [
-  {
-    title: "Качество продукции",
-    subtitle: "ISO 9001-2008 и ГОСТ ISO 9001:2011",
-    icon: Award,
-    color: "from-blue-500 to-cyan-500",
-    bgColor: "bg-blue-50",
-    textColor: "text-blue-600",
-  },
-  {
-    title: "Широкий ассортимент",
-    subtitle: "6 марок вспенивающегося полистирола, АБС-пластики",
-    icon: Target,
-    color: "from-cyan-500 to-blue-600",
-    bgColor: "bg-cyan-50",
-    textColor: "text-cyan-600",
-  },
-  {
-    title: "Доступные цены",
-    subtitle: "Прямые поставки от производителя",
-    icon: TrendingUp,
-    color: "from-blue-600 to-indigo-500",
-    bgColor: "bg-blue-100",
-    textColor: "text-blue-700",
-  },
-  {
-    title: "Техническая поддержка",
-    subtitle: "Полный комплекс услуг по работе с клиентом",
-    icon: Shield,
-    color: "from-indigo-500 to-blue-500",
-    bgColor: "bg-indigo-50",
-    textColor: "text-indigo-600",
-  },
-]
+import Ballpit from "@/components/ballpit"
 
 export default function MissionPage() {
-  useEffect(() => {
-    // Простая fade-in анимация при загрузке
-    if (typeof window !== "undefined" && window.IntersectionObserver) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("opacity-100", "translate-y-0")
-              entry.target.classList.remove("opacity-0", "translate-y-4")
-            }
-          })
-        },
-        { threshold: 0.1 }
-      )
-
-      const cards = document.querySelectorAll(".mission-card")
-      cards.forEach((card) => observer.observe(card))
-
-      return () => {
-        cards.forEach((card) => observer.unobserve(card))
-      }
-    }
-  }, [])
-
   return (
     <div className="min-h-screen bg-background">
-      <section className="pt-32 pb-24 bg-gradient-to-b from-blue-50/50 via-background to-background">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-16">
-              <h1 className="text-5xl font-bold mb-6 text-balance bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+      <section className="relative pt-32 pb-24 bg-background overflow-hidden min-h-[500px]">
+        {/* Белые «полимерные» шары на заднем плане */}
+        <div className="absolute inset-0 z-0 opacity-40 pointer-events-auto">
+          <div className="w-full h-full">
+            <Ballpit
+              count={120}
+              gravity={0.06}
+              friction={0.9985}
+              wallBounce={0.85}
+              followCursor
+              cursorLerp={0.04}
+              cursorControlSize={0.8}
+              cursorPushStrength={0.4}
+            />
+          </div>
+        </div>
+
+        <div className="container mx-auto px-4 lg:px-8 relative z-10 pointer-events-none">
+          <div className="max-w-4xl mx-auto pointer-events-auto">
+            <div className="text-center border-2 border-border rounded-xl bg-card/95 backdrop-blur-sm shadow-xl p-8 md:p-12 lg:p-16">
+              <h1 className="text-5xl font-normal mb-8 text-balance bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
                 Миссия компании
               </h1>
-              <p className="text-xl text-muted-foreground leading-relaxed text-pretty">
-                Производить высококачественное полимерное сырье, отвечающее современным стандартам качества, обеспечивая инновационные решения для промышленности и способствуя устойчивому развитию отрасли.
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              {values.map((value, index) => {
-                const Icon = value.icon
-                return (
-                  <div
-                    key={index}
-                    data-index={index}
-                    className={`mission-card ${value.bgColor} rounded-2xl p-8 border-2 border-white/50 hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] opacity-0 translate-y-4`}
-                    style={{ transitionDelay: `${index * 100}ms` }}
-                  >
-                    <div className="flex items-start gap-6">
-                      <div className={`flex-shrink-0 w-16 h-16 rounded-xl bg-gradient-to-br ${value.color} flex items-center justify-center shadow-lg`}>
-                        <Icon className="w-8 h-8 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className={`text-2xl font-bold mb-2 ${value.textColor}`}>{value.title}</h3>
-                        <p className="text-muted-foreground font-medium mb-3">{value.subtitle}</p>
-                        <p className="text-sm text-muted-foreground leading-relaxed">
-                          Наша компания стремится к достижению высочайших стандартов в области производства пластиковых
-                          изделий, обеспечивая качество и надежность на каждом этапе.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
+              <div className="text-xl md:text-2xl text-foreground/90 leading-relaxed text-pretty space-y-5 text-left md:text-center md:space-y-6 antialiased font-normal">
+                <p>
+                  Мы достигаем максимальной эффективности бизнеса на основе удовлетворения потребностей и ожиданий Потребителей,
+                  долгосрочного обоснованного планирования, организации результативной работы каждого сотрудника, повышения уровня
+                  комфорта и жизни общества.
+                </p>
+                <p>
+                  Мы производим продукцию высокого уровня переработки нефти и газохимии для широкого круга промышленных Потребителей
+                  в России и СНГ, развивая международные поставки в сотрудничестве со странами дальнего зарубежья:
+                </p>
+                <ul className="list-disc pl-6 md:pl-10 space-y-1.5 text-left inline-block">
+                  <li>стирол, полистирол;</li>
+                  <li>АБС пластики и листовые пластики;</li>
+                  <li>комплектующие для автомобилестроения, машиностроения, строительной и других отраслей промышленности;</li>
+                  <li>защитные каски, товары народного потребления и другие изделия промышленного назначения.</li>
+                </ul>
+                <p>
+                  Наши цели и намерения направлены на повышение конкурентоспособности продукции и услуг предприятия за счёт:
+                </p>
+                <ul className="list-disc pl-6 md:pl-10 space-y-1.5 text-left inline-block">
+                  <li>дальнейшего развития компетенций в области стирольных пластиков и переработки пластмасс;</li>
+                  <li>
+                    повышения результативности мероприятий по обеспечению качества продукции, в том числе по государственному
+                    оборонному заказу;
+                  </li>
+                  <li>использования выгодного географического положения производственных площадок АО «Пластик».</li>
+                </ul>
+                <p>
+                  Мы предлагаем гибкую ценовую политику и оптимальный ассортимент продуктового предложения за счёт изучения и учёта
+                  в работе рыночных факторов внешней и внутренней среды бизнеса, реализации инвестиционных усилий, направленных на
+                  внедрение современных технологий, устранение неэффективности производств, инноваций в технологиях и системах
+                  управления, формирование благоприятного инвестиционного климата и реализацию новых проектов.
+                </p>
+                <p>
+                  <span className="font-mission-motto text-primary">«От достигнутого — к совершенству»</span> — девиз, отражающий наше твёрдое намерение не останавливаться на достигнутом и
+                  направленность на получение результатов в тех делах, в которых мы всегда должны быть, по крайней мере, не хуже
+                  мировых практик.
+                </p>
+                <p>
+                  Важнейшей ценностью АО «Пластик» являются работники предприятия. Мы предполагаем непрерывное развитие компетенций,
+                  повышение уровня материального удовлетворения, формирование благоприятного микроклимата в коллективе, повышение
+                  мотивации, материальное благосостояние работников предприятия и членов их семей, их уверенное материальное
+                  положение и получение духовных ценностей, культуру производства и быта, заботу об охране труда.
+                </p>
+                <p>
+                  Приоритет предприятия состоит в обеспечении гарантированной безопасности перед экологическим вредом для людей и
+                  окружающей среды, повышении уровня безопасности и охраны труда.
+                </p>
+                <p>
+                  Для реализации Миссии и целей АО «Пластик» предприятие будет продолжать повышать результативность и эффективность
+                  системы менеджмента качества.
+                </p>
+              </div>
             </div>
           </div>
         </div>

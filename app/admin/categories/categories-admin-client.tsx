@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Plus, Pencil, Trash2, ArrowLeft, Folder, Image as ImageIcon } from "lucide-react"
-import Link from "next/link"
+import { AdminLink } from "@/components/admin-link"
 import Image from "next/image"
 
 interface Category {
@@ -75,11 +75,11 @@ export function CategoriesAdminClient() {
       {/* Header */}
       <div className="mb-8 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link href="/admin/dashboard">
+          <AdminLink href="/admin/dashboard">
             <Button variant="ghost" size="icon">
               <ArrowLeft className="h-4 w-4" />
             </Button>
-          </Link>
+          </AdminLink>
           <div>
             <h1 className="text-3xl font-bold">Управление категориями</h1>
             <p className="text-muted-foreground">
@@ -88,11 +88,11 @@ export function CategoriesAdminClient() {
           </div>
         </div>
         <div className="flex gap-2">
-          <Link href="/admin/subcategories">
+          <AdminLink href="/admin/subcategories">
             <Button variant="outline">
               Подкатегории
             </Button>
-          </Link>
+          </AdminLink>
           <Button onClick={() => router.push("/admin/categories/new")}>
             <Plus className="h-4 w-4 mr-2" />
             Добавить категорию

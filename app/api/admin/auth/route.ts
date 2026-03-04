@@ -1,5 +1,12 @@
 import { NextRequest, NextResponse } from "next/server"
 import { cookies } from "next/headers"
+import {
+  isRateLimited,
+  getBlockedUntil,
+  recordFailedAttempt,
+  clearAttempts,
+} from "@/lib/admin-rate-limit"
+import { createSessionToken, COOKIE_NAME } from "@/lib/admin-session"
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || ""
 
@@ -12,21 +19,39 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    // Защита от перебора пароля
+    if (isRateLimited(req)) {
+      const blockedUntil = getBlockedUntil(req)
+      const minutesLeft = blockedUntil
+        ? Math.ceil((blockedUntil - Date.now()) / 60000)
+        : 15
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Слишком много попыток. Попробуйте через ${minutesLeft} мин.`,
+        },
+        { status: 429 }
+      )
+    }
+
     const { password } = await req.json()
 
     if (password === ADMIN_PASSWORD) {
-      // Создаем сессию через cookie
+      clearAttempts(req)
+
+      const token = createSessionToken()
       const cookieStore = await cookies()
-      cookieStore.set("admin_session", "authenticated", {
+      cookieStore.set(COOKIE_NAME, token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
-        maxAge: 60 * 60 * 24, // 24 часа
+        maxAge: 4 * 60 * 60, // 4 часа
         path: "/",
       })
 
       return NextResponse.json({ success: true })
     } else {
+      recordFailedAttempt(req)
       return NextResponse.json({ success: false, error: "Неверный пароль" }, { status: 401 })
     }
   } catch (error) {
@@ -35,10 +60,8 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE() {
-  // Выход из админки
   const cookieStore = await cookies()
-  cookieStore.delete("admin_session")
-
+  cookieStore.delete(COOKIE_NAME)
   return NextResponse.json({ success: true })
 }
 

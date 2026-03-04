@@ -19,6 +19,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { RalColorPicker, type RalColor } from "@/components/ral-color-picker"
 
 type ProductPageClientProps = {
   product: any
@@ -50,6 +51,8 @@ export function ProductPageClient({
                     product.category_id === 'styrene'
   const packageQuantity = product.package_quantity || product.quantity_in_pack || 1
   
+  const isAbsProduct = categoryId === "abs"
+  const [selectedRalColor, setSelectedRalColor] = useState<RalColor | null>(null)
   const [quantityInput, setQuantityInput] = useState<string>("1")
   const [isContactFormOpen, setIsContactFormOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -200,6 +203,25 @@ export function ProductPageClient({
                 </div>
               )}
 
+              {/* RAL Color Picker — только для АБС-пластиков */}
+              {isAbsProduct && (
+                <div className="mb-6 p-4 rounded-2xl border border-border bg-muted/30">
+                  <p className="text-sm font-semibold mb-3 text-foreground">
+                    Цвет RAL
+                    <span className="ml-1 text-xs font-normal text-muted-foreground">(необязательно)</span>
+                  </p>
+                  <RalColorPicker
+                    selected={selectedRalColor}
+                    onChange={setSelectedRalColor}
+                  />
+                  {selectedRalColor && (
+                    <p className="mt-2 text-xs text-muted-foreground">
+                      Будет указан в заказе: <span className="font-semibold text-foreground">{selectedRalColor.code}</span> — {selectedRalColor.name}
+                    </p>
+                  )}
+                </div>
+              )}
+
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2 border border-border rounded-lg px-2 py-1">
                   <span className="text-sm text-muted-foreground">
@@ -267,12 +289,14 @@ export function ProductPageClient({
                       quantity: n,
                       isPackages: isHouseholdProduct,
                       packageQuantity: isHouseholdProduct ? packageQuantity : undefined,
+                      colorCode: isAbsProduct && selectedRalColor ? selectedRalColor.code : undefined,
                     })
                     const unit = isHouseholdProduct ? 'уп' : 'т'
                     const formatted = isHouseholdProduct ? n.toString() : n.toFixed(3)
+                    const colorInfo = isAbsProduct && selectedRalColor ? `, цвет: ${selectedRalColor.code}` : ''
                     toast({
                       title: "Товар добавлен в корзину",
-                      description: `${product.name}: ${formatted} ${unit}${isHouseholdProduct && packageQuantity > 1 ? ` (${n * packageQuantity} шт)` : ''}`,
+                      description: `${product.name}: ${formatted} ${unit}${isHouseholdProduct && packageQuantity > 1 ? ` (${n * packageQuantity} шт)` : ''}${colorInfo}`,
                     })
                   }}
                 >

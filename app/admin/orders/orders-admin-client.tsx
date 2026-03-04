@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, ShoppingCart, Phone, Mail, User, Clock, Package, Calendar } from "lucide-react"
-import Link from "next/link"
+import { AdminLink } from "@/components/admin-link"
 import { Badge } from "@/components/ui/badge"
 
 interface OrderItem {
@@ -99,12 +99,12 @@ export function OrdersAdmin() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6">
-        <Link href="/admin/dashboard">
+        <AdminLink href="/admin/dashboard">
           <Button variant="ghost" size="sm" className="mb-4">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Назад в админку
           </Button>
-        </Link>
+        </AdminLink>
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-foreground mb-2">Заказы с сайта</h1>

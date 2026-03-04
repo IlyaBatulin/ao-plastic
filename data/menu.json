@@ -7,6 +7,7 @@
     "submenu": [
       { "label": "Миссия", "labelEn": "Mission", "href": "/about/mission" },
       { "label": "История компании", "labelEn": "History", "href": "/about/history" },
+      { "label": "Новости", "labelEn": "News", "href": "/about/news" },
       { "label": "Менеджмент качества", "labelEn": "Quality Management", "href": "/about/quality" },
       { "label": "Публикации", "labelEn": "Publications", "href": "/about/publications" },
       { "label": "Охрана труда и экология", "labelEn": "Safety & Ecology", "href": "/about/safety" },

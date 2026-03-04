@@ -58,7 +58,7 @@ export function Header() {
         style={isTransparent ? { backgroundColor: 'transparent' } : {}}
       >
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 lg:gap-3 group flex-shrink-0 min-w-fit">
+        <Link href="/" prefetch={false} className="flex items-center gap-2 lg:gap-3 group flex-shrink-0 min-w-fit">
           <div className="relative w-14 h-14 sm:w-12 sm:h-12 lg:w-12 lg:h-12 flex-shrink-0 transition-transform duration-300 group-hover:scale-110 drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
             <Image src="/images/logo.png" alt="АО Пластик" fill className="object-contain" priority />
           </div>

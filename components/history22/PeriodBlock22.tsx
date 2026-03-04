@@ -39,7 +39,7 @@ const PeriodBlock22 = ({ period, image }: PeriodBlockProps) => {
   const imageTop = useTransform(
     scrollYProgress,
     [0, 0.15, 0.4, 0.85, 1],
-    ["0%", "0%", "6%", "6%", "6%"]
+	["0%", "0%", "10%", "10%", "10%"]
   );
 
   const imageLeft = useTransform(
@@ -52,6 +52,12 @@ const PeriodBlock22 = ({ period, image }: PeriodBlockProps) => {
     scrollYProgress,
     [0, 0.15, 0.4],
     [0, 0, 16]
+  );
+
+  const imageBorderWidth = useTransform(
+    scrollYProgress,
+    [0, 0.15, 0.4],
+    [0, 0, 2]
   );
 
   // Title overlay transforms (visible when fullscreen)
@@ -105,13 +111,16 @@ const PeriodBlock22 = ({ period, image }: PeriodBlockProps) => {
         
         {/* Image container - animates size and position */}
         <motion.div
-          className="absolute overflow-hidden shadow-2xl"
+          className="absolute overflow-hidden shadow-2xl rounded-2xl"
           style={{
             width: imageWidth,
             height: imageHeight,
             top: imageTop,
             left: imageLeft,
             borderRadius: imageBorderRadius,
+            borderWidth: imageBorderWidth,
+            borderColor: "rgba(15, 23, 42, 0.12)",
+            boxSizing: "border-box",
           }}
         >
           <img

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { Footer } from "@/components/footer"
 import { CategoryHero } from "@/app/products/_components/category-hero"
 import { SubcategoriesGrid } from "@/app/products/_components/subcategories-grid"
@@ -60,6 +61,7 @@ export function CategoryPageClient({
   const categoryName = t(`homePage.catalog.categories.${categoryId}`) || category.name
   const backLabel = t("homePage.catalog.backToCatalog") || "Назад к каталогу"
   const isStyrene = categoryId === 'styrene'
+  const isKors = categoryId === 'kors'
 
   return (
     <div className="min-h-screen bg-background">
@@ -74,8 +76,8 @@ export function CategoryPageClient({
         imageSrc={category.image}
       />
 
-      {/* Subcategories Grid - скрываем для стирола */}
-      {!isStyrene && <SubcategoriesGrid categoryId={categoryId} subcategories={subcategories} />}
+      {/* Subcategories Grid - скрываем для стирола и КОРС */}
+      {!isStyrene && !isKors && <SubcategoriesGrid categoryId={categoryId} subcategories={subcategories} />}
 
       {/* Styrene Specifications Table */}
       {isStyrene && (
@@ -160,6 +162,92 @@ export function CategoryPageClient({
                     <td className="py-4 px-6 border border-gray-300">Цветность по платиново-кобальтовой шкале, не более</td>
                     <td className="py-4 px-6 border border-gray-300 text-center">ед. Хазена</td>
                     <td className="py-4 px-6 border border-gray-300">10</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div className="mt-8 flex justify-center">
+              <Button
+                onClick={() => setIsContactFormOpen(true)}
+                className="text-lg h-14 px-8 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+              >
+                Связаться с нами
+              </Button>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* КОРС — описание, нормы по ТУ и кнопка «Связаться с нами» */}
+      {isKors && (
+        <section className="py-16 bg-secondary/30">
+          <div className="container mx-auto px-4 lg:px-8">
+            <div className="mb-10 flex justify-center">
+              <div className="relative w-full max-w-md aspect-[4/3] rounded-2xl overflow-hidden border border-border shadow-md">
+                <Image
+                  src="/ПРЕВЬЮ/колбы/корс_1.jpeg"
+                  alt="КОРС — кубовый остаток ректификации стирола"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 28rem"
+                />
+              </div>
+            </div>
+            <div className="mb-12 max-w-4xl mx-auto">
+              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                КОРС — Кубовый остаток ректификации стирола. Является побочным продуктом производства стирола.
+              </p>
+              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                Применяется в качестве топлива в некоторых современных системах отопления и котлах. КОРС является растворителем и используется в качестве компонента в различных видах промышленного производства.
+              </p>
+              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                Основное применение – получение пленкообразующих материалов. Также остатки кубовые ректификации стирола применяют для повышения механической прочности и снижения электризуемости покрытий для пола на основе каучука. Применяют КОРС для пропитки древесины и ДВП, что позволяет повысить ряд технических характеристик материала: его влагостойкость, прочность, долговечность.
+              </p>
+              <div className="space-y-2 mb-8">
+                <p className="text-base text-muted-foreground">
+                  Качество КОРС от ОАО «Пластик» соответствует ТУ 2415-038-05762341-2012, изм. 1,2,3.
+                </p>
+              </div>
+            </div>
+
+            <h2 className="text-3xl lg:text-4xl font-bold mb-8">Норма по НТД</h2>
+            <div className="bg-card rounded-3xl p-8 shadow-sm border border-border overflow-x-auto">
+              <div className="mb-4">
+                <p className="text-sm text-muted-foreground mb-2">ТУ 2415-038-05762341-2012, изм. 1,2,3</p>
+              </div>
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="bg-[#1e3a5f] text-white">
+                    <th className="py-4 px-6 text-left font-semibold border border-gray-300">№ п/п</th>
+                    <th className="py-4 px-6 text-left font-semibold border border-gray-300">Наименование показателей</th>
+                    <th className="py-4 px-6 text-left font-semibold border border-gray-300">Ед. измерения</th>
+                    <th className="py-4 px-6 text-left font-semibold border border-gray-300">Норма по НТД</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="bg-white border-b border-gray-200">
+                    <td className="py-4 px-6 border border-gray-300">1</td>
+                    <td className="py-4 px-6 border border-gray-300">Внешний вид</td>
+                    <td className="py-4 px-6 border border-gray-300 text-center">—</td>
+                    <td className="py-4 px-6 border border-gray-300">Вязкая жидкость от светло-желтого до темно-бурого цвета</td>
+                  </tr>
+                  <tr className="bg-gray-50 border-b border-gray-200">
+                    <td className="py-4 px-6 border border-gray-300">2</td>
+                    <td className="py-4 px-6 border border-gray-300">Плотность при 20 °С, не менее</td>
+                    <td className="py-4 px-6 border border-gray-300 text-center">г/см³</td>
+                    <td className="py-4 px-6 border border-gray-300">0,940</td>
+                  </tr>
+                  <tr className="bg-white border-b border-gray-200">
+                    <td className="py-4 px-6 border border-gray-300">3</td>
+                    <td className="py-4 px-6 border border-gray-300">Динамическая вязкость при 80 °С, не более</td>
+                    <td className="py-4 px-6 border border-gray-300 text-center">мПа·с (сПз)</td>
+                    <td className="py-4 px-6 border border-gray-300">10</td>
+                  </tr>
+                  <tr className="bg-gray-50">
+                    <td className="py-4 px-6 border border-gray-300">4</td>
+                    <td className="py-4 px-6 border border-gray-300">Массовая доля стирола, не более</td>
+                    <td className="py-4 px-6 border border-gray-300 text-center">%</td>
+                    <td className="py-4 px-6 border border-gray-300">30,0</td>
                   </tr>
                 </tbody>
               </table>

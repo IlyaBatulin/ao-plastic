@@ -3,8 +3,9 @@
 import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
+import { useAdminPath } from "@/hooks/use-admin-path"
 import { LogOut, Package, ShoppingCart, Users, FileText, ClipboardList, MessageSquare, Box } from "lucide-react"
-import Link from "next/link"
+import { AdminLink } from "@/components/admin-link"
 import { Badge } from "@/components/ui/badge"
 
 export function AdminDashboard() {
@@ -57,9 +58,11 @@ export function AdminDashboard() {
     }
   }
 
+  const adminPath = useAdminPath()
+
   const handleLogout = async () => {
     await fetch("/api/admin/auth", { method: "DELETE" })
-    router.push("/admin")
+    router.push(adminPath)
     router.refresh()
   }
 
@@ -83,6 +86,29 @@ export function AdminDashboard() {
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-foreground mb-2">Панель управления</h2>
           <p className="text-muted-foreground">Добро пожаловать в админ-панель</p>
+        </div>
+
+        {/* Секретная ссылка */}
+        <div className="mb-8 p-4 rounded-xl bg-primary/5 border border-primary/20">
+          <h3 className="font-semibold text-foreground mb-2">Ссылка на админку</h3>
+          <p className="text-sm text-muted-foreground mb-2">
+            {adminPath !== "/admin" ? (
+              <>Используется секретный путь. Сохраните ссылку — стандартный /admin заблокирован.</>
+            ) : (
+              <>Добавьте секретный путь в .env.local для усиления защиты:</>
+            )}
+          </p>
+          <code className="block p-3 rounded-lg bg-background text-sm font-mono break-all">
+            {typeof window !== "undefined" ? window.location.origin + adminPath : adminPath}
+          </code>
+          {adminPath === "/admin" && (
+            <pre className="mt-3 p-3 rounded-lg bg-background text-xs font-mono overflow-x-auto">
+{`# Добавьте в .env.local (придумайте свой код):
+ADMIN_PATH=panel-ваш-код
+
+# Путь НЕ попадёт в браузер — его нельзя найти в DevTools`}
+            </pre>
+          )}
         </div>
 
         {/* Stats Grid */}
@@ -126,43 +152,52 @@ export function AdminDashboard() {
 
         {/* Quick Actions */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Link
+          <AdminLink
             href="/admin/orders"
             className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 hover:shadow-lg transition-all group"
           >
             <ShoppingCart className="w-8 h-8 text-primary mb-4 group-hover:scale-110 transition-transform" />
             <h3 className="text-lg font-semibold text-foreground mb-2">Заказы</h3>
             <p className="text-sm text-muted-foreground">Просмотр и управление заказами</p>
-          </Link>
+          </AdminLink>
 
-          <Link
+          <AdminLink
             href="/admin/products"
             className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 hover:shadow-lg transition-all group"
           >
             <Package className="w-8 h-8 text-primary mb-4 group-hover:scale-110 transition-transform" />
             <h3 className="text-lg font-semibold text-foreground mb-2">Товары</h3>
             <p className="text-sm text-muted-foreground">Управление товарами</p>
-          </Link>
+          </AdminLink>
 
-          <Link
+          <AdminLink
             href="/admin/categories"
             className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 hover:shadow-lg transition-all group"
           >
             <FileText className="w-8 h-8 text-primary mb-4 group-hover:scale-110 transition-transform" />
             <h3 className="text-lg font-semibold text-foreground mb-2">Категории</h3>
             <p className="text-sm text-muted-foreground">Управление категориями и подкатегориями</p>
-          </Link>
+          </AdminLink>
 
-          <Link
+          <AdminLink
+            href="/admin/news"
+            className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 hover:shadow-lg transition-all group"
+          >
+            <FileText className="w-8 h-8 text-primary mb-4 group-hover:scale-110 transition-transform" />
+            <h3 className="text-lg font-semibold text-foreground mb-2">Новости</h3>
+            <p className="text-sm text-muted-foreground">Управление новостями компании</p>
+          </AdminLink>
+
+          <AdminLink
             href="/admin/vacancies"
             className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 hover:shadow-lg transition-all group"
           >
             <FileText className="w-8 h-8 text-primary mb-4 group-hover:scale-110 transition-transform" />
             <h3 className="text-lg font-semibold text-foreground mb-2">Вакансии</h3>
             <p className="text-sm text-muted-foreground">Управление вакансиями</p>
-          </Link>
+          </AdminLink>
 
-          <Link
+          <AdminLink
             href="/admin/vacancy-responses"
             className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 hover:shadow-lg transition-all group relative"
           >
@@ -177,18 +212,18 @@ export function AdminDashboard() {
             <FileText className="w-8 h-8 text-primary mb-4 group-hover:scale-110 transition-transform" />
             <h3 className="text-lg font-semibold text-foreground mb-2">Ответы на вакансии</h3>
             <p className="text-sm text-muted-foreground">Просмотр откликов на вакансии</p>
-          </Link>
+          </AdminLink>
 
-          <Link
+          <AdminLink
             href="/admin/rfp-requests"
             className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 hover:shadow-lg transition-all group"
           >
             <ClipboardList className="w-8 h-8 text-primary mb-4 group-hover:scale-110 transition-transform" />
             <h3 className="text-lg font-semibold text-foreground mb-2">Запросы предложений</h3>
             <p className="text-sm text-muted-foreground">Управление запросами для поставщиков</p>
-          </Link>
+          </AdminLink>
 
-          <Link
+          <AdminLink
             href="/admin/rfp-responses"
             className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 hover:shadow-lg transition-all group relative"
           >
@@ -203,9 +238,9 @@ export function AdminDashboard() {
             <ClipboardList className="w-8 h-8 text-primary mb-4 group-hover:scale-110 transition-transform" />
             <h3 className="text-lg font-semibold text-foreground mb-2">Ответы на запросы</h3>
             <p className="text-sm text-muted-foreground">Просмотр предложений от поставщиков</p>
-          </Link>
+          </AdminLink>
 
-          <Link
+          <AdminLink
             href="/admin/contact-messages"
             className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 hover:shadow-lg transition-all group relative"
           >
@@ -220,16 +255,16 @@ export function AdminDashboard() {
             <MessageSquare className="w-8 h-8 text-primary mb-4 group-hover:scale-110 transition-transform" />
             <h3 className="text-lg font-semibold text-foreground mb-2">Сообщения с сайта</h3>
             <p className="text-sm text-muted-foreground">Просмотр сообщений из форм обратной связи</p>
-          </Link>
+          </AdminLink>
 
-          <Link
+          <AdminLink
             href="/admin/managers"
             className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 hover:shadow-lg transition-all group"
           >
             <Users className="w-8 h-8 text-primary mb-4 group-hover:scale-110 transition-transform" />
             <h3 className="text-lg font-semibold text-foreground mb-2">Менеджеры</h3>
             <p className="text-sm text-muted-foreground">Управление менеджерами</p>
-          </Link>
+          </AdminLink>
         </div>
       </main>
     </div>

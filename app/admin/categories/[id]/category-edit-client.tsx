@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
 import { ArrowLeft, Save, Upload, X, Image as ImageIcon } from "lucide-react"
-import Link from "next/link"
+import { AdminLink } from "@/components/admin-link"
 import Image from "next/image"
 
 interface Category {
@@ -177,11 +177,11 @@ export function CategoryEditClient({
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       {/* Header */}
       <div className="mb-8 flex items-center gap-4">
-        <Link href="/admin/categories">
+        <AdminLink href="/admin/categories">
           <Button variant="ghost" size="icon">
             <ArrowLeft className="h-4 w-4" />
           </Button>
-        </Link>
+        </AdminLink>
         <h1 className="text-3xl font-bold">
           {isNew ? "Новая категория" : "Редактирование категории"}
         </h1>
@@ -357,11 +357,11 @@ export function CategoryEditClient({
               <Save className="h-4 w-4 mr-2" />
               {isNew ? "Создать категорию" : "Сохранить изменения"}
             </Button>
-            <Link href="/admin/categories">
+            <AdminLink href="/admin/categories">
               <Button type="button" variant="outline">
                 Отмена
               </Button>
-            </Link>
+            </AdminLink>
           </div>
         </div>
       </form>

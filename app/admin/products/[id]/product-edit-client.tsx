@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { ArrowLeft, Save, Upload, X, Image as ImageIcon } from "lucide-react"
-import Link from "next/link"
+import { AdminLink } from "@/components/admin-link"
 import Image from "next/image"
 import { SpecificationsEditor } from "../_components/specifications-editor"
 
@@ -251,11 +251,11 @@ export function ProductEditClient({
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       {/* Header */}
       <div className="mb-8 flex items-center gap-4">
-        <Link href="/admin/products">
+        <AdminLink href="/admin/products">
           <Button variant="ghost" size="icon">
             <ArrowLeft className="h-4 w-4" />
           </Button>
-        </Link>
+        </AdminLink>
         <h1 className="text-3xl font-bold">
           {isNew ? "Новый товар" : "Редактирование товара"}
         </h1>
@@ -524,11 +524,11 @@ export function ProductEditClient({
               <Save className="h-4 w-4 mr-2" />
               {isNew ? "Создать товар" : "Сохранить изменения"}
             </Button>
-            <Link href="/admin/products">
+            <AdminLink href="/admin/products">
               <Button type="button" variant="outline">
                 Отмена
               </Button>
-            </Link>
+            </AdminLink>
           </div>
         </div>
       </form>

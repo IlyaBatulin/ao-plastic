@@ -128,6 +128,7 @@ export function MainMenuCorporate({ onMenuOpenChange, useDarkText = false }: Mai
             >
               <Link
                 href={item.href}
+                prefetch={false}
                 className={`whitespace-nowrap text-sm font-semibold tracking-wider uppercase px-4 py-2.5 transition-all duration-300 relative ${
                   isActive || isDropdownActive ? activeColorClass : textColorClass
                 }`}

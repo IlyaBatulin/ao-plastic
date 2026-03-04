@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
+const SITE_AUTH_COOKIE = "site_auth"
+
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
 
@@ -15,6 +17,20 @@ export function middleware(request: NextRequest) {
   
   const isApiRoute = pathname.startsWith("/api")
   const isRobotsTxt = pathname === "/robots.txt"
+  const isSiteLoginPage = pathname === "/login"
+
+  // Временная защита сайта паролем (если задан SITE_PASSWORD в .env)
+  const sitePassword = process.env.SITE_PASSWORD
+  if (sitePassword && !isStaticFile && !isApiRoute && !isRobotsTxt && !isSiteLoginPage) {
+    const siteAuth = request.cookies.get(SITE_AUTH_COOKIE)
+    const hasSiteAuth = siteAuth?.value === "authenticated"
+
+    if (!hasSiteAuth) {
+      const loginUrl = new URL("/login", request.url)
+      loginUrl.searchParams.set("return", pathname)
+      return NextResponse.redirect(loginUrl)
+    }
+  }
 
   // Блокировка ботов и скраперов
   if (!isStaticFile && !isApiRoute && !isRobotsTxt) {
@@ -52,13 +68,33 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  // Защита всех /admin роутов кроме страницы входа
-  if (pathname.startsWith("/admin") && pathname !== "/admin") {
-    const adminSession = request.cookies.get("admin_session")
+  // Секретный путь к админке (если задан ADMIN_PATH в .env)
+  const adminPath = process.env.ADMIN_PATH
+  const adminBase = adminPath ? (adminPath.startsWith("/") ? adminPath : `/${adminPath}`) : "/admin"
+  const isAdminRoute = pathname.startsWith("/admin") || (adminPath && pathname.startsWith(adminBase))
+  const isLoginPage = pathname === "/admin" || pathname === adminBase
 
-    if (!adminSession || adminSession.value !== "authenticated") {
-      return NextResponse.redirect(new URL("/admin", request.url))
+  // Защита админ-роутов: проверка сессии (кроме страницы входа)
+  if (isAdminRoute && !isLoginPage) {
+    const adminSession = request.cookies.get("admin_session")
+    const hasValidSession =
+      adminSession?.value &&
+      (adminSession.value === "authenticated" || adminSession.value.includes("."))
+
+    if (!hasValidSession) {
+      return NextResponse.redirect(new URL(adminBase, request.url))
     }
+  }
+
+  // Скрываем стандартный /admin, если задан секретный путь
+  if (adminPath && pathname.startsWith("/admin")) {
+    return new NextResponse("Not Found", { status: 404 })
+  }
+
+  // Rewrite секретного пути на /admin
+  if (adminPath && pathname.startsWith(adminBase)) {
+    const internalPath = pathname.replace(adminBase, "/admin") || "/admin"
+    return NextResponse.rewrite(new URL(internalPath, request.url))
   }
 
   return NextResponse.next()

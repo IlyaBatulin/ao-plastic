@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { ArrowLeft, Save } from "lucide-react"
-import Link from "next/link"
+import { AdminLink } from "@/components/admin-link"
 
 interface Category {
   id: string
@@ -162,11 +162,11 @@ export function SubcategoryEditClient({
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       {/* Header */}
       <div className="mb-8 flex items-center gap-4">
-        <Link href="/admin/subcategories">
+        <AdminLink href="/admin/subcategories">
           <Button variant="ghost" size="icon">
             <ArrowLeft className="h-4 w-4" />
           </Button>
-        </Link>
+        </AdminLink>
         <h1 className="text-3xl font-bold">
           {isNew ? "Новая подкатегория" : "Редактирование подкатегории"}
         </h1>
@@ -276,11 +276,11 @@ export function SubcategoryEditClient({
               <Save className="h-4 w-4 mr-2" />
               {isNew ? "Создать подкатегорию" : "Сохранить изменения"}
             </Button>
-            <Link href="/admin/subcategories">
+            <AdminLink href="/admin/subcategories">
               <Button type="button" variant="outline">
                 Отмена
               </Button>
-            </Link>
+            </AdminLink>
           </div>
         </div>
       </form>

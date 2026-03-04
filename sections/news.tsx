@@ -5,11 +5,23 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
-import { ArrowRight, Calendar } from "lucide-react"
-import newsData from "@/data/news.json"
+import { ArrowRight, Calendar, Newspaper } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 
-export function News() {
+interface NewsItem {
+  id: number
+  title: string
+  excerpt: string | null
+  image_url: string | null
+  published_at: string | null
+  slug: string | null
+}
+
+interface NewsProps {
+  items?: NewsItem[]
+}
+
+export function News({ items = [] }: NewsProps) {
   const { t, lang } = useLanguage()
   const [isVisible, setIsVisible] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
@@ -41,48 +53,68 @@ export function News() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {newsData.news.map((item, index) => (
-            <Card
-              key={item.id}
-              className={`group hover:shadow-xl hover:-translate-y-2 transition-all duration-300 overflow-hidden ${
-                isVisible ? "animate-in fade-in slide-in-from-bottom-4" : "opacity-0"
-              }`}
-              style={{ animationDelay: `${index * 150}ms`, animationFillMode: "both" }}
-            >
-              <div className="relative h-48 overflow-hidden">
-                <Image
-                  src={item.image || "/placeholder.svg"}
-                  alt={item.title}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-110"
-                />
-              </div>
-              <CardHeader>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                  <Calendar className="w-4 h-4" />
-                  {new Date(item.date).toLocaleDateString(lang === "en" ? "en-US" : "ru-RU")}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 mb-12">
+          {items.length > 0 ? (
+            items.map((item, index) => (
+              <Card
+                key={item.id}
+                className={`group hover:shadow-xl hover:-translate-y-2 transition-all duration-300 overflow-hidden ${
+                  isVisible ? "animate-in fade-in slide-in-from-bottom-4" : "opacity-0"
+                }`}
+                style={{ animationDelay: `${index * 150}ms`, animationFillMode: "both" }}
+              >
+                <div className="relative h-64 overflow-hidden bg-muted">
+                  {item.image_url ? (
+                    <Image
+                      src={item.image_url}
+                      alt={item.title}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-110"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <Newspaper className="w-20 h-20 text-muted-foreground/50" />
+                    </div>
+                  )}
                 </div>
-                <h3 className="text-xl font-semibold group-hover:text-primary transition-colors">{item.title}</h3>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">{item.excerpt}</p>
-              </CardContent>
-              <CardFooter>
-                <Button variant="ghost" asChild className="group/btn">
-                  <Link href={`/news/${item.id}`}>
-                    {t("homePage.news.readMore")}
-                    <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
-                  </Link>
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
+                <CardHeader className="p-6 pb-2">
+                  <div className="flex items-center gap-2 text-base text-muted-foreground mb-2">
+                    <Calendar className="w-4 h-4" />
+                    {item.published_at
+                      ? new Date(item.published_at).toLocaleDateString(lang === "en" ? "en-US" : "ru-RU", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        })
+                      : ""}
+                  </div>
+                  <h3 className="text-2xl font-semibold group-hover:text-primary transition-colors leading-tight">{item.title}</h3>
+                </CardHeader>
+                <CardContent className="px-6 py-4">
+                  <p className="text-muted-foreground text-base line-clamp-4">
+                    {item.excerpt || ""}
+                  </p>
+                </CardContent>
+                <CardFooter className="p-6 pt-2">
+                  <Button variant="ghost" asChild className="group/btn">
+                    <Link href={`/about/news/${item.slug || item.id}`}>
+                      {t("homePage.news.readMore")}
+                      <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))
+          ) : (
+            <div className="col-span-full text-center py-12 text-muted-foreground">
+              {t("homePage.news.noNews") || "Пока нет новостей"}
+            </div>
+          )}
         </div>
 
         <div className="text-center">
           <Button asChild size="lg" variant="outline" className="group bg-transparent">
-            <Link href="/news">
+            <Link href="/about/news">
               {t("homePage.news.allNews")}
               <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>

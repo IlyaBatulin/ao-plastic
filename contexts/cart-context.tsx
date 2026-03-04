@@ -12,6 +12,7 @@ export type CartItem = {
   price?: number
   isPackages?: boolean // true если заказ в упаковках (хозтовары)
   packageQuantity?: number // количество штук в одной упаковке
+  colorCode?: string // HEX-код цвета для АБС-пластиков (например, #ff0000)
 }
 
 interface CartContextType {
@@ -19,6 +20,7 @@ interface CartContextType {
   addItem: (item: CartItem) => void
   removeItem: (productId: string) => void
   updateQuantity: (productId: string, quantity: number) => void
+  updateColorCode: (productId: string, colorCode: string) => void
   clearCart: () => void
   itemCount: number
 }
@@ -57,7 +59,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const addItem = (newItem: CartItem) => {
     setItems((prev) => {
-      const existingIndex = prev.findIndex((item) => item.productId === newItem.productId)
+      // Один и тот же товар с разным цветом — разные позиции
+      const existingIndex = prev.findIndex(
+        (item) =>
+          item.productId === newItem.productId &&
+          (item.colorCode ?? "") === (newItem.colorCode ?? "")
+      )
       
       if (existingIndex >= 0) {
         // Обновляем количество
@@ -72,6 +79,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
       // Добавляем новый товар
       return [...prev, newItem]
     })
+  }
+
+  const updateColorCode = (productId: string, colorCode: string) => {
+    setItems((prev) =>
+      prev.map((item) =>
+        item.productId === productId ? { ...item, colorCode } : item
+      )
+    )
   }
 
   const removeItem = (productId: string) => {
@@ -104,6 +119,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         addItem,
         removeItem,
         updateQuantity,
+        updateColorCode,
         clearCart,
         itemCount,
       }}

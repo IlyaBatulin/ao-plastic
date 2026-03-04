@@ -1,4 +1,5 @@
 import { Footer } from "@/components/footer"
+import { DeliveryMap } from "@/sections/delivery-map"
 import { StatsCounter } from "@/components/stats-counter"
 import { Award, Target, Users, Zap } from "lucide-react"
 
@@ -145,6 +146,9 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* География поставок */}
+      <DeliveryMap />
 
       <Footer />
     </div>

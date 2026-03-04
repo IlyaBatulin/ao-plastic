@@ -14,6 +14,7 @@ export default async function Home() {
   // Получаем реальные актуальные товары из базы данных
   let featuredProducts: any[] = []
   let allProducts: any[] = []
+  let newsItems: { id: number; title: string; excerpt: string | null; image_url: string | null; published_at: string | null; slug: string | null }[] = []
   const subcategoriesMap: { [key: string]: { slug: string; name: string } } = {}
   const categoriesMap: { [key: string]: { name: string } } = {}
 
@@ -32,7 +33,8 @@ export default async function Home() {
       const [
         { data: subcatsData },
         { data: catsData },
-        { data: allProductsData, error: allProductsError }
+        { data: allProductsData, error: allProductsError },
+        { data: newsData }
       ] = await Promise.all([
         // Получаем подкатегории
         withRetry(() => 
@@ -55,6 +57,15 @@ export default async function Home() {
             .select("*")
             .eq("is_active", true)
             .order("sort", { ascending: true })
+        ),
+        // Получаем новости для главной
+        withRetry(() =>
+          supabase
+            .from("news")
+            .select("id, title, excerpt, image_url, published_at, slug")
+            .eq("is_active", true)
+            .order("published_at", { ascending: false })
+            .limit(6)
         )
       ])
 
@@ -143,6 +154,10 @@ export default async function Home() {
       } else if (!allProductsError) {
         console.warn("All products data is empty or not an array")
       }
+
+      if (newsData && Array.isArray(newsData)) {
+        newsItems = newsData
+      }
     }
   } catch (error) {
     console.error("Error fetching featured products:", error)
@@ -160,7 +175,7 @@ export default async function Home() {
         categories={categoriesMap}
       />
       <Partners />
-      <News />
+      <News items={newsItems} />
       <Contact />
       <Footer />
     </main>

@@ -1,12 +1,26 @@
 "use client"
 
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef, useCallback } from "react"
 
 export function LoadingScreen() {
   const [isVisible, setIsVisible] = useState(true)
   const [isFading, setIsFading] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [pageLoaded, setPageLoaded] = useState(false)
+
+  const handleVideoEnd = useCallback(() => {
+    setIsFading(true)
+    const mainContent = document.getElementById("main-content")
+    if (mainContent) {
+      mainContent.classList.remove("opacity-0")
+      mainContent.classList.add("opacity-100")
+    }
+    sessionStorage.setItem("hasSeenLoading", "true")
+    setTimeout(() => {
+      setIsVisible(false)
+      document.body.style.overflow = ""
+    }, 500)
+  }, [])
 
   useEffect(() => {
     // Проверяем, была ли уже показана заставка при первой загрузке
@@ -37,21 +51,6 @@ export function LoadingScreen() {
       window.removeEventListener("load", handleLoad)
     }
   }, [])
-
-  const handleVideoEnd = () => {
-    setIsFading(true)
-    const mainContent = document.getElementById("main-content")
-    if (mainContent) {
-      mainContent.classList.remove("opacity-0")
-      mainContent.classList.add("opacity-100")
-    }
-    // Сохраняем, что заставка уже была показана
-    sessionStorage.setItem("hasSeenLoading", "true")
-    setTimeout(() => {
-      setIsVisible(false)
-      document.body.style.overflow = ""
-    }, 500)
-  }
 
   useEffect(() => {
     if (videoRef.current) {

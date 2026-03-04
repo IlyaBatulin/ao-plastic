@@ -5,12 +5,14 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Lock } from "lucide-react"
+import { useAdminPath } from "@/hooks/use-admin-path"
 
 export default function AdminLogin() {
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+  const adminPath = useAdminPath()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -27,7 +29,7 @@ export default function AdminLogin() {
       const data = await response.json()
 
       if (response.ok && data.success) {
-        router.push("/admin/dashboard")
+        router.push(`${adminPath}/dashboard`)
         router.refresh()
       } else {
         setError(data.error || "Неверный пароль")

@@ -25,7 +25,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Plus, Pencil, Trash2, ArrowLeft, ClipboardList } from "lucide-react"
-import Link from "next/link"
+import { AdminLink } from "@/components/admin-link"
 
 interface RfpRequest {
   id: number
@@ -175,11 +175,11 @@ export function RfpRequestsAdmin() {
         <div className="container mx-auto px-4 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/admin/dashboard">
+              <AdminLink href="/admin/dashboard">
                 <Button variant="ghost" size="icon">
                   <ArrowLeft className="w-4 h-4" />
                 </Button>
-              </Link>
+              </AdminLink>
               <h1 className="text-2xl font-bold text-foreground">Управление запросами предложений</h1>
             </div>
             <Button onClick={handleCreate}>

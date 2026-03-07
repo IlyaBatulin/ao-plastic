@@ -75,6 +75,9 @@ export function Footer() {
             <Link href="/legal/company-details" className="hover:text-background transition-colors">
               Реквизиты
             </Link>
+            <Link href="/about/ethics" className="hover:text-background transition-colors">
+              Кодекс этики
+            </Link>
           </div>
         </div>
       </div>

@@ -14,7 +14,7 @@ export function getCategoryName(categoryId: string, lang: "ru" | "en" = "ru"): s
     canisters: { ru: "Канистры", en: "Canisters" },
     boxes: { ru: "Ящики", en: "Boxes" },
     "pvc-modifier": { ru: "Модификатор для композиций ПВХ", en: "PVC Composition Modifier" },
-    kors: { ru: "КОРС (кубовый остаток ректификации стирола)", en: "CORS (Cubic Residue of Styrene Rectification)" },
+    kors: { ru: "КОРС и Бентол", en: "CORS and Bentol" },
     "custom-abs": { ru: "Изготовление изделий из АБС пластика на заказ", en: "Custom ABS Plastic Products Manufacturing" },
     
     // Подкатегории

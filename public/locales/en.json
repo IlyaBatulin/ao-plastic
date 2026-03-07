@@ -107,6 +107,13 @@
       "address": "Address",
       "mapTitle": "LLC «TEK-SNAB» — Moscow, Lobachevskogo St., 41"
     },
+    "etpTenders": {
+      "title": "Tenders on ETP GPB",
+      "description": "Current procurements of JSC «Plastik» on Gazprombank's electronic trading platform. Participation is subject to ETP GPB rules.",
+      "openOnEtp": "Open on ETP GPB",
+      "noTenders": "No open tenders on ETP GPB at the moment",
+      "loading": "Loading tenders..."
+    },
     "rfps": {
       "title": "Active Requests for Proposals",
       "description": "Select an interesting request and submit a proposal directly on the page. Our specialists will contact you to clarify details.",
@@ -280,7 +287,7 @@
         "canisters": "Canisters",
         "boxes": "Boxes",
         "pvc-modifier": "PVC Composition Modifier",
-        "kors": "CORS (Cubic Residue of Styrene Rectification)",
+        "kors": "CORS and Bentol",
         "custom-abs": "Custom ABS Plastic Products Manufacturing"
       },
       "subcategories": {

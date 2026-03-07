@@ -62,8 +62,9 @@ export const loadCategoriesCached = async (): Promise<Category[]> => {
         .order("sort", { ascending: true })
 
       if (!categoriesError && categoriesData && categoriesData.length > 0) {
+        const filteredCategories = categoriesData.filter((cat: any) => cat.id !== 'pvc-modifier')
         const categoriesWithSubs = await Promise.all(
-          categoriesData.map(async (cat) => {
+          filteredCategories.map(async (cat: any) => {
             const { data: subcatsData } = await supabase
               .from("subcategories")
               .select("id, name, slug")
@@ -86,7 +87,7 @@ export const loadCategoriesCached = async (): Promise<Category[]> => {
         return categoriesWithSubs
       } else {
         const jsonCategories = productsData.categories
-          .filter((cat) => cat.id !== 'dispersion')
+          .filter((cat) => cat.id !== 'dispersion' && cat.id !== 'pvc-modifier')
           .map((cat) => ({
             id: cat.id,
             name: cat.name,
@@ -105,7 +106,7 @@ export const loadCategoriesCached = async (): Promise<Category[]> => {
     } catch (error) {
       console.error("Error loading categories:", error)
       const jsonCategories = productsData.categories
-        .filter((cat) => cat.id !== 'dispersion')
+        .filter((cat) => cat.id !== 'dispersion' && cat.id !== 'pvc-modifier')
         .map((cat) => ({
           id: cat.id,
           name: cat.name,
@@ -136,7 +137,7 @@ export function UnifiedMegaMenu({ isOpen, activeItem, onClose }: UnifiedMegaMenu
       return categoriesCache
     }
     return productsData.categories
-      .filter((cat) => cat.id !== 'dispersion')
+      .filter((cat) => cat.id !== 'dispersion' && cat.id !== 'pvc-modifier')
       .map((cat) => ({
         id: cat.id,
         name: cat.name,
@@ -200,14 +201,25 @@ export function UnifiedMegaMenu({ isOpen, activeItem, onClose }: UnifiedMegaMenu
   let content = null
 
   if (activeMenuItem.type === "catalog") {
-    // Каталог продукции
-    const columnsCount = Math.min(4, Math.max(3, Math.ceil(categories.length / 8)))
-    const itemsPerColumn = Math.ceil(categories.length / columnsCount)
-    const columns: Category[][] = []
+    // Левый: Стирол и остальное (кроме центра и правого). Центр: только Товары. Правый: ДМС, КОРС, Изготовление на заказ.
+    const rightColumnIds = ["machine-parts", "kors", "custom-abs"]
+    const centerColumnIds = ["hoztovary"]
+    const rightColumnCategories = rightColumnIds
+      .map((id) => categories.find((c) => c.id === id))
+      .filter((c): c is Category => !!c)
+    const centerColumnCategories = centerColumnIds
+      .map((id) => categories.find((c) => c.id === id))
+      .filter((c): c is Category => !!c)
+    const leftColumnCategories = categories.filter(
+      (c) => !rightColumnIds.includes(c.id) && !centerColumnIds.includes(c.id)
+    )
 
-    for (let i = 0; i < columnsCount; i++) {
-      columns.push(categories.slice(i * itemsPerColumn, (i + 1) * itemsPerColumn))
-    }
+    const columnsCount = 3
+    const columns: Category[][] = [
+      leftColumnCategories,
+      centerColumnCategories,
+      rightColumnCategories,
+    ]
 
     if (loading && categories.length === 0) {
       content = (

@@ -34,7 +34,7 @@ export function FilteredProductsSection({
 
   // Для экструзии не показываем стандартные фильтры и сравнительные таблицы ABS/ПС
   const showFilters = !isHouseholdCategory && !isExtrusionSubcategory
-  const showComparisonTable = !isHouseholdCategory && !isExtrusionSubcategory
+  const showComparisonTable = false
 
   // ----- Фильтры для экструзионных изделий (тип + поиск) -----
   const [extrusionSearch, setExtrusionSearch] = useState("")

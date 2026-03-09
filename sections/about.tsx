@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { Factory, FlaskConical, Leaf, Award, Truck, HeadphonesIcon } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 
@@ -41,6 +42,21 @@ export function About() {
             <p dangerouslySetInnerHTML={{ __html: t("homePage.about.paragraph1") }} />
             <p dangerouslySetInnerHTML={{ __html: t("homePage.about.paragraph2") }} />
             <p dangerouslySetInnerHTML={{ __html: t("homePage.about.paragraph3") }} />
+          </div>
+        </div>
+
+        <div className="mt-12 lg:mt-16 flex justify-center">
+          <div className="w-full max-w-[600px]">
+            <div className="relative rounded-2xl overflow-hidden shadow-xl ring-1 ring-black/5 dark:ring-white/10 aspect-[4/3]">
+              <Image
+                src="/images/FURS0027_1.jpeg"
+                alt="Производственные мощности предприятия"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 600px"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
+            </div>
           </div>
         </div>
 

@@ -25,16 +25,19 @@ export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps
   const { t } = useLanguage()
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-transparent">
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-b from-primary/10 via-background to-background">
+      <section className="pt-32 pb-16">
         <div className="container mx-auto px-4 lg:px-8">
-          <h1 className="text-5xl lg:text-7xl font-bold text-foreground mb-6 text-balance">
-            {t("homePage.catalog.title")}
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed">
-            {t("homePage.catalog.description")}
-          </p>
+          <div className="mb-10 text-center">
+            <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-balance text-[#1e3a8a] dark:text-[#3b82f6]">
+              {t("homePage.catalog.title")}
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              {t("homePage.catalog.description")}
+            </p>
+            <div className="mt-6 h-0.5 w-24 mx-auto bg-[#1e3a8a] dark:bg-[#3b82f6]" />
+          </div>
         </div>
       </section>
 
@@ -51,18 +54,22 @@ export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps
                   className="group relative bg-card rounded-3xl overflow-hidden border-2 border-border hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-2"
                 >
                   {/* Image */}
-                  <div className="relative h-56 bg-gradient-to-br from-primary/10 to-primary/5 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent z-10" />
+                  <div className={`relative h-56 overflow-hidden ${category.id === "custom-abs" ? "bg-white" : "bg-gradient-to-br from-primary/10 to-primary/5"}`}>
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent z-10 pointer-events-none" />
                     <Image
                       src={
-                        category.id === "abs" 
-                          ? "/images/abs-plastik-katalog.webp"
-                          : category.image ||
-                            `/placeholder.svg?height=400&width=600&query=${encodeURIComponent(categoryName)}`
+                        category.id === "abs"
+                          ? "/images/absplasric.jpeg"
+                          : category.id === "kors"
+                            ? "/images/bent.jpeg"
+                            : category.id === "custom-abs"
+                              ? "/images/logo1.png"
+                              : category.image ||
+                                `/placeholder.svg?height=400&width=600&query=${encodeURIComponent(categoryName)}`
                       }
                       alt={categoryName}
                       fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-700"
+                      className={category.id === "custom-abs" ? "object-contain p-6 group-hover:scale-105 transition-transform duration-700" : "object-cover group-hover:scale-110 transition-transform duration-700"}
                     />
                   </div>
 

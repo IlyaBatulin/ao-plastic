@@ -1,4 +1,5 @@
 import { Footer } from "@/components/footer"
+import { BackgroundPaths } from "@/components/ui/background-paths"
 import { createClient } from "@/utils/supabase/server"
 import productsData from "@/data/products.json"
 import { ProductsCatalogClient } from "@/app/products/_components/products-catalog-client"
@@ -18,26 +19,29 @@ export default async function ProductsPage() {
       .order("sort", { ascending: true })
 
     if (!error && data && data.length > 0) {
-      categories = data.map((cat) => {
-        const fallback = fallbackMap.get(cat.id)
-        const image = cat.image ?? fallback?.image ?? undefined
-        const description = cat.description ?? fallback?.description
-        return {
-          ...cat,
-          image,
-          description,
-          subcategories: fallback?.subcategories ?? [],
-        }
-      })
+      categories = data
+        .filter((cat: any) => cat.id !== "dispersion" && cat.id !== "pvc-modifier")
+        .map((cat) => {
+          const fallback = fallbackMap.get(cat.id)
+          const image = cat.image ?? fallback?.image ?? undefined
+          const description = cat.description ?? fallback?.description
+          return {
+            ...cat,
+            image,
+            description,
+            subcategories: fallback?.subcategories ?? [],
+          }
+        })
     } else {
-      categories = productsData.categories.filter((cat) => cat.id !== 'dispersion')
+      categories = productsData.categories.filter((cat) => cat.id !== "dispersion" && cat.id !== "pvc-modifier")
     }
   } catch {
-    categories = productsData.categories.filter((cat) => cat.id !== 'dispersion')
+    categories = productsData.categories.filter((cat) => cat.id !== "dispersion" && cat.id !== "pvc-modifier")
   }
 
   return (
     <>
+      <BackgroundPaths />
       <ProductsCatalogClient categories={categories} />
       <Footer />
     </>

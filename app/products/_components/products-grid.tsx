@@ -22,7 +22,12 @@ export default function ProductsGrid({
   const { addItem } = useCart()
   const { toast } = useToast()
 
+  // ДМС (литьевые и экструзионные) — карточки сразу видимы, без анимации при скролле
+  const isDms = categoryId === "machine-parts"
+
   useEffect(() => {
+    if (isDms) return
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -45,7 +50,7 @@ export default function ProductsGrid({
     })
 
     return () => observer.disconnect()
-  }, [products])
+  }, [products, isDms])
 
   if (products.length === 0) {
     return (
@@ -67,7 +72,7 @@ export default function ProductsGrid({
             key={product.id}
             href={categoryId && subcategoryId ? `/products/${categoryId}/${subcategoryId}/${product.id}` : '#'}
             className="product-card group relative bg-card rounded-3xl overflow-hidden border border-border/50 hover:border-primary/50"
-            style={{
+            style={isDms ? undefined : {
               opacity: 0,
               transform: 'translateY(30px)',
               transition: 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',

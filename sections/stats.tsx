@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { StatsCounter } from "@/components/stats-counter"
 import { Beaker, Package, Factory } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
@@ -7,34 +8,16 @@ import { useLanguage } from "@/contexts/language-context"
 export function Stats() {
   const { t } = useLanguage()
 
+  const statStyle = {
+    color: "from-[#1e3a8a] to-[#1e40af]",
+    bgColor: "bg-[#1e3a8a]/5 dark:bg-[#3b82f6]/10",
+    borderColor: "border-[#1e3a8a]/20 dark:border-[#3b82f6]/20",
+    iconColor: "text-[#1e3a8a] dark:text-[#3b82f6]",
+  }
   const stats = [
-    {
-      icon: Beaker,
-      value: 60,
-      label: "styrene",
-      color: "from-[#1e3a8a] to-[#1e40af]",
-      bgColor: "bg-[#1e3a8a]/5 dark:bg-[#3b82f6]/10",
-      borderColor: "border-[#1e3a8a]/20 dark:border-[#3b82f6]/20",
-      iconColor: "text-[#1e3a8a] dark:text-[#3b82f6]",
-    },
-    {
-      icon: Package,
-      value: 11,
-      label: "polystyrene",
-      color: "from-[#0f766e] to-[#0d9488]",
-      bgColor: "bg-teal-700/5 dark:bg-teal-500/10",
-      borderColor: "border-teal-700/20 dark:border-teal-500/20",
-      iconColor: "text-teal-700 dark:text-teal-500",
-    },
-    {
-      icon: Factory,
-      value: 23,
-      label: "abs",
-      color: "from-[#1e3a8a] to-[#1e40af]",
-      bgColor: "bg-[#1e3a8a]/5 dark:bg-[#3b82f6]/10",
-      borderColor: "border-[#1e3a8a]/20 dark:border-[#3b82f6]/20",
-      iconColor: "text-[#1e3a8a] dark:text-[#3b82f6]",
-    },
+    { icon: Beaker, value: 60, label: "styrene", ...statStyle },
+    { icon: Package, value: 11, label: "polystyrene", ...statStyle },
+    { icon: Factory, value: 23, label: "abs", ...statStyle },
   ]
   return (
     <section
@@ -60,34 +43,44 @@ export function Stats() {
           <div className="mt-6 h-0.5 w-24 mx-auto bg-[#1e3a8a] dark:bg-[#3b82f6]" />
         </div>
 
-        {/* Карточки статистики */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {stats.map((stat, index) => (
-            <div
-              key={index}
-              className={`group relative bg-card rounded-lg p-8 border ${stat.borderColor} hover:border-[#1e3a8a]/40 dark:hover:border-[#3b82f6]/40 hover:shadow-xl transition-all duration-300`}
-            >
-              {/* Декоративная полоска сверху */}
-              <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${stat.color} rounded-t-lg`} />
-              
-              <div className="text-center">
-                {/* Иконка */}
-                <div className={`inline-flex items-center justify-center w-20 h-20 rounded-xl ${stat.bgColor} border ${stat.borderColor} mb-6 transition-transform duration-300 group-hover:scale-105`}>
-                  <stat.icon className={`w-10 h-10 ${stat.iconColor}`} />
-                </div>
-                
-                {/* Число */}
-                <div className="mb-2">
-                  <StatsCounter end={stat.value} suffix={t("homePage.stats.suffix")} />
-                </div>
-                
-                {/* Описание */}
-                <p className="text-muted-foreground text-sm sm:text-base leading-snug">
-                  {t(`homePage.stats.${stat.label}`)}
-                </p>
-              </div>
+        {/* Фото производства + карточки статистики */}
+        <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14 max-w-6xl mx-auto">
+          <div className="w-full lg:w-[42%] flex-shrink-0 order-2 lg:order-1">
+            <div className="relative rounded-2xl overflow-hidden shadow-xl ring-1 ring-black/5 dark:ring-white/10 aspect-[4/3] max-h-[320px] lg:max-h-none">
+              <Image
+                src="/images/FURS0085.jpeg"
+                alt="Производственные мощности предприятия"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 42vw"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
             </div>
-          ))}
+          </div>
+          <div className="w-full lg:flex-1 order-1 lg:order-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {stats.map((stat, index) => (
+                <div
+                  key={index}
+                  className={`group relative bg-card rounded-lg p-8 border ${stat.borderColor} hover:border-[#1e3a8a]/40 dark:hover:border-[#3b82f6]/40 hover:shadow-xl transition-all duration-300`}
+                >
+                  <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${stat.color} rounded-t-lg`} />
+                  <div className="text-center">
+                    <div className={`inline-flex items-center justify-center w-12 h-12 rounded-lg ${stat.bgColor} border ${stat.borderColor} mb-4 transition-transform duration-300 group-hover:scale-105`}>
+                      <stat.icon className={`w-6 h-6 ${stat.iconColor}`} />
+                    </div>
+                    <div className="mb-2">
+                      <StatsCounter end={stat.value} suffix={t("homePage.stats.suffix")} />
+                    </div>
+                    <p className="text-muted-foreground text-sm sm:text-base leading-snug">
+                      {t(`homePage.stats.${stat.label}`)}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

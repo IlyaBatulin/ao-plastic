@@ -119,7 +119,7 @@ export default async function ProductPage({
             id: productId,
             name: extrusionProduct.name,
             description: description || null,
-            image: "/placeholder-logo.png",
+            image: extrusionProduct.image || "/placeholder-logo.png",
             specifications: {
               "Тип изделия": extrusionProduct.type,
               ...(extrusionProduct.subtype

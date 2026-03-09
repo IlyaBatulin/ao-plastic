@@ -13,9 +13,9 @@ function getSubcategoryImage(subcategoryId: string, slug?: string): string | nul
     'ps-psv-l': '/images/polystyrene-pse-card.png',    // ПСВ-Л теперь с фото ПСЭ-1
     'ps-pse': '/images/polystyrene-psv-s-card.png',    // ПСЭ-1 теперь с фото ПСВ-С
     // АБС-пластики
-    'abs-injection': '/images/abs-plastik-katalog.webp',
-    'abs-extrusion': '/images/abs-plastik-katalog.webp',
-    'abs-custom': '/images/abs-plastik-katalog.webp',
+    'abs-injection': '/images/absplasric.jpeg',
+    'abs-extrusion': '/images/absplasric.jpeg',
+    'abs-custom': '/images/absplasric.jpeg',
     // Хозтовары
     'vedra-tazy': '/images/xoztov/vedra_main.jpeg',
   }

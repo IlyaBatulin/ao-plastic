@@ -267,6 +267,11 @@
     "catalog": {
       "title": "Product Catalog",
       "description": "Full range of polymer raw materials and finished products of the highest quality from the market leader in ABS plastics in Russia",
+      "searchPlaceholder": "Search categories and sections...",
+      "noResults": "No results for",
+      "suggestionCategory": "Category",
+      "suggestionSection": "Section",
+      "suggestionProduct": "Product",
       "readMore": "Read More",
       "sections": "Sections:",
       "more": "more...",

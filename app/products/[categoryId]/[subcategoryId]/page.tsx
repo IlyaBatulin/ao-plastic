@@ -146,8 +146,7 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ ca
           id: `extrusion-${item.id}`,
           name: item.name,
           description: description || null,
-          // Лого АО «Пластик» / общее изображение
-          image: "/placeholder-logo.png",
+          image: item.image || "/placeholder-logo.png",
           // Спецификации только из полей документа/таблицы
           specifications: {
             type: item.type,

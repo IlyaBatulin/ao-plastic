@@ -9,7 +9,7 @@ export const videoConfig: Record<string, string> = {
   // Подкатегории Полистирола
   'polystyrene/ps-psv-s': '/videos/polystyrene-psv-s.mp4',
   'polystyrene/ps-psv-l': '/videos/polystyrene-psv-l.mp4',
-  'polystyrene/ps-pse-1': '/videos/polystyrene-pse-1.mp4',
+  'polystyrene/ps-pse-1': '/videos/frontpage4.mp4',
   
   // Категория: АБС-пластики
   'abs': '/videos/abs-category.mp4',

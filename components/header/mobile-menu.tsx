@@ -134,9 +134,9 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         {/* Header с логотипом и кнопкой закрытия */}
         <div className="flex items-center justify-between px-4 lg:px-6 py-4 border-b border-gray-200/50 bg-[#faf9f7] sticky top-0 z-[121]">
           <Link href="/" onClick={onClose} className="flex items-center gap-3">
-            <div className="relative w-12 h-12 flex-shrink-0">
+            <div className="relative w-12 h-12 flex-shrink-0 bg-transparent">
               <Image 
-                src="/images/logo.png" 
+                src="/images/logo1.png" 
                 alt="АО Пластик" 
                 fill 
                 className="object-contain" 

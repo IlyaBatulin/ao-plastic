@@ -14,13 +14,14 @@ import { Badge } from "@/components/ui/badge"
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
+  const [animateIn, setAnimateIn] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const pathname = usePathname()
   const { itemCount } = useCart()
 
   useEffect(() => {
     const handleScroll = () => {
-      // Сначала уходит шапка героя (50px), потом через «одно микродвижение» колесика появляется эта
+      // На главной показываем шапку после ~3 прокруток (120px), чтобы не наслаивалась на Hero
       setIsScrolled(window.scrollY > 120)
     }
     window.addEventListener("scroll", handleScroll)
@@ -32,10 +33,21 @@ export function Header() {
 
   const isTransparent = isHomePage && !isScrolled
 
-  // Скрываем хедер на главной странице, чтобы видео было с самого начала
-  if (isHomePage && !isScrolled) {
-    return null
-  }
+  // На главной не рендерим хедер в самом верху (чтобы не сдвигать Hero),
+  // но как только начался скролл — монтируем и плавно показываем.
+  const shouldRender = !isHomePage || isScrolled
+
+  useEffect(() => {
+    if (!shouldRender) {
+      setAnimateIn(false)
+      return
+    }
+    // Даем React смонтировать DOM, затем включаем переход
+    const id = requestAnimationFrame(() => setAnimateIn(true))
+    return () => cancelAnimationFrame(id)
+  }, [shouldRender])
+
+  if (!shouldRender) return null
 
   return (
     <>
@@ -48,6 +60,10 @@ export function Header() {
           isScrolled || !isHomePage 
             ? "bg-white/95 backdrop-blur-lg shadow-sm border-b border-gray-100/50" 
             : "backdrop-blur-none"
+        } ${
+          isHomePage
+            ? (animateIn ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2")
+            : "opacity-100 translate-y-0"
         }`}
         style={isTransparent ? { backgroundColor: 'transparent', background: 'transparent' } : {}}
     >
@@ -57,10 +73,10 @@ export function Header() {
         }`}
         style={isTransparent ? { backgroundColor: 'transparent' } : {}}
       >
-        {/* Logo */}
+        {/* Logo — прозрачный фон */}
         <Link href="/" prefetch={false} className="flex items-center gap-2 lg:gap-3 group flex-shrink-0 min-w-fit">
-          <div className="relative w-14 h-14 sm:w-12 sm:h-12 lg:w-12 lg:h-12 flex-shrink-0 transition-transform duration-300 group-hover:scale-110 drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
-            <Image src="/images/logo.png" alt="АО Пластик" fill className="object-contain" priority />
+          <div className="relative w-14 h-14 sm:w-12 sm:h-12 lg:w-12 lg:h-12 flex-shrink-0 transition-transform duration-300 group-hover:scale-110 bg-transparent" style={{ background: 'transparent' }}>
+            <Image src="/images/logo1.png" alt="АО Пластик" fill className="object-contain" priority />
           </div>
           <div className="hidden sm:flex flex-col min-w-fit">
             <span className={`font-bold text-sm lg:text-base xl:text-lg leading-tight whitespace-nowrap ${

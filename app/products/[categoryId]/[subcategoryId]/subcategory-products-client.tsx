@@ -59,9 +59,6 @@ export function SubcategoryProducts({ products }: { products: any[] }) {
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-700"
               />
-              <div className="absolute top-4 right-4 z-20 bg-primary/10 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-primary">
-                NEW
-              </div>
             </div>
 
             {/* Content */}

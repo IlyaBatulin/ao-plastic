@@ -1,7 +1,15 @@
+import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
 import { BackgroundPaths } from "@/components/ui/background-paths"
 import { FileText, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
+
+export const metadata: Metadata = {
+  title: "Раскрытие информации",
+  description:
+    "Раскрытие информации АО «Пластик»: годовые отчёты, финансовая отчётность, устав и документы для акционеров.",
+  alternates: { canonical: "/about/disclosure" },
+}
 
 const documents = [
   { title: "Годовой отчет 2024", size: "2.5 MB", type: "PDF" },

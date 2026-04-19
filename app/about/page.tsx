@@ -1,7 +1,15 @@
+import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
 import { DeliveryMap } from "@/sections/delivery-map"
 import { StatsCounter } from "@/components/stats-counter"
 import { Award, Target, Users, Zap } from "lucide-react"
+
+export const metadata: Metadata = {
+  title: "О компании",
+  description:
+    "АО «Пластик» с 1959 года: история завода в Узловой, масштабы производства полимеров и пластмасс, ценности компании, география поставок АБС, полистирола и изделий по России и на экспорт.",
+  alternates: { canonical: "/about" },
+}
 
 const values = [
   {
@@ -53,7 +61,7 @@ export default function AboutPage() {
               <p className="text-muted-foreground mt-2">Год основания</p>
             </div>
             <div className="text-center">
-              <StatsCounter end={500} suffix="+" />
+              <StatsCounter end={1000} suffix="+" />
               <p className="text-muted-foreground mt-2">Сотрудников</p>
             </div>
             <div className="text-center">
@@ -61,8 +69,8 @@ export default function AboutPage() {
               <p className="text-muted-foreground mt-2">Довольных клиентов</p>
             </div>
             <div className="text-center">
-              <StatsCounter end={94000} suffix="+" />
-              <p className="text-muted-foreground mt-2">Тонн продукции в год</p>
+              <StatsCounter end={150} suffix="+ тыс. тонн" />
+              <p className="text-muted-foreground mt-2">Продукции в год</p>
             </div>
           </div>
         </div>

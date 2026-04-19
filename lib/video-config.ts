@@ -3,13 +3,16 @@ export const DEFAULT_CATEGORY_VIDEO = '/videos/xoztov.mp4'
 
 // Конфигурация видео для категорий и подкатегорий
 export const videoConfig: Record<string, string> = {
+  // Категория: Стирол
+  styrene: "/videos/stirolmain.mp4",
+
   // Категория: Полистирол
   'polystyrene': '/videos/polystyrene-category.mp4',
   
   // Подкатегории Полистирола
   'polystyrene/ps-psv-s': '/videos/polystyrene-psv-s.mp4',
   'polystyrene/ps-psv-l': '/videos/polystyrene-psv-l.mp4',
-  'polystyrene/ps-pse-1': '/videos/frontpage4.mp4',
+  'polystyrene/ps-pse-1': '/videos/polystyrene-pse-1.mp4',
   
   // Категория: АБС-пластики
   'abs': '/videos/abs-category.mp4',
@@ -21,6 +24,12 @@ export const videoConfig: Record<string, string> = {
 
   // Категория: Хозяйственные товары
   'hoztovary': '/videos/xoztov.mp4',
+
+  // ДМС, изготовление на заказ — общее фоновое видео
+  "machine-parts": "/videos/mainlogo.mp4",
+  // КОРС и Бентол — отдельный ролик
+  kors: "/videos/bentolmain.mp4",
+  "custom-abs": "/videos/mainlogo.mp4",
 }
 
 // Вспомогательная функция для получения видео по категории и подкатегории
@@ -39,6 +48,9 @@ export function getCategoryVideo(categoryId: string, subcategoryId?: string): st
   // Но на всякий случай пробуем и без префикса
   const key3 = subcategoryId.startsWith('abs-') ? key1 : `${categoryId}/abs-${subcategoryId}`
   
-  return videoConfig[key1] || videoConfig[key2] || videoConfig[key3]
+  const specific = videoConfig[key1] || videoConfig[key2] || videoConfig[key3]
+  if (specific) return specific
+  // Подкатегория без своего ролика — фон как у категории (ДМС и др.)
+  return videoConfig[categoryId]
 }
 

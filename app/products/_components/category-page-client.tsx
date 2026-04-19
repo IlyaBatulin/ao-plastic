@@ -2,9 +2,12 @@
 
 import { useState } from "react"
 import Image from "next/image"
+import { motion } from "framer-motion"
 import { Footer } from "@/components/footer"
 import { CategoryHero } from "@/app/products/_components/category-hero"
 import { SubcategoriesGrid } from "@/app/products/_components/subcategories-grid"
+import { AbsInjectionInfo } from "@/app/products/_components/abs-injection-info"
+import { AbsExtrusionInfo } from "@/app/products/_components/abs-extrusion-info"
 import { useLanguage } from "@/contexts/language-context"
 import { Button } from "@/components/ui/button"
 import {
@@ -18,6 +21,30 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/hooks/use-toast"
+import { KorsNormTable } from "@/app/products/_components/kors-norm-table"
+import {
+  BENTOL_NORM_ROWS,
+  BENTOL_TU_LABEL,
+  KORS_NORM_ROWS,
+  KORS_TU_LABEL,
+} from "@/lib/kors-bentol-norms"
+
+const korsStoryParent = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.12, delayChildren: 0.05 },
+  },
+}
+
+const korsStoryChild = {
+  hidden: { opacity: 0, y: 22 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+  },
+}
 
 interface CategoryPageClientProps {
   categoryId: string
@@ -62,13 +89,16 @@ export function CategoryPageClient({
   const backLabel = t("homePage.catalog.backToCatalog") || "Назад к каталогу"
   const isStyrene = categoryId === 'styrene'
   const isKors = categoryId === 'kors'
+  const isAbs = categoryId === 'abs'
 
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <CategoryHero
         title={categoryName}
-        description={category.description}
+        description={
+          t(`homePage.catalog.categoryDescriptions.${categoryId}`) || category.description
+        }
         backHref="/products"
         backLabel={backLabel}
         hasVideo={hasVideo}
@@ -79,23 +109,95 @@ export function CategoryPageClient({
       {/* Subcategories Grid - скрываем для стирола и КОРС */}
       {!isStyrene && !isKors && <SubcategoriesGrid categoryId={categoryId} subcategories={subcategories} />}
 
-      {/* Styrene Specifications Table */}
-      {isStyrene && (
-        <section className="py-16 bg-secondary/30">
-          <div className="container mx-auto px-4 lg:px-8">
-            {/* Описание стирола */}
-            <div className="mb-12 max-w-4xl mx-auto">
-              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                Стирол используется для производства полистирола, АБС-пластиков, стиролсодержащих каучуков и латексов.
+      {/* АБС: описание литьевых и экструзионных марок — на странице категории, под подкатегориями */}
+      {isAbs && (
+        <section className="border-t border-border bg-muted/30 py-16 lg:py-20">
+          <div className="container mx-auto max-w-7xl px-4 lg:px-8">
+            <header className="mb-10 text-center">
+              <h2 className="text-2xl font-semibold tracking-tight text-foreground lg:text-3xl">
+                О марках АБС-пластика
+              </h2>
+              <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground leading-relaxed">
+                Кратко о литьевых марках (термопластавтоматы) и экструзионных (листы и профили). Каталог позиций — в
+                подкатегориях выше.
               </p>
-              <div className="space-y-2 mb-8">
-                <h3 className="text-2xl font-semibold text-foreground">СТИРОЛ, марка СДЭБ</h3>
-                <p className="text-base text-muted-foreground">ГОСТ 10003-90 «Стирол», Изменение №1</p>
-              </div>
+            </header>
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-stretch">
+              <AbsInjectionInfo />
+              <AbsExtrusionInfo />
             </div>
+          </div>
+        </section>
+      )}
 
-            <h2 className="text-3xl lg:text-4xl font-bold mb-8">Норма по НТД - Высший сорт</h2>
-            <div className="bg-card rounded-3xl p-8 shadow-sm border border-border overflow-x-auto">
+      {/* Стирол: описание с фото, таблица по ГОСТ */}
+      {isStyrene && (
+        <section className="py-16 lg:py-20 bg-secondary/30">
+          <div className="container mx-auto px-4 lg:px-8">
+            <motion.div
+              className="mx-auto mb-16 grid max-w-6xl grid-cols-1 items-start gap-x-10 gap-y-8 lg:grid-cols-2"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.12 }}
+              variants={korsStoryParent}
+            >
+              <motion.div variants={korsStoryChild} className="col-span-full">
+                <h2 className="text-balance text-3xl font-bold tracking-tight text-[#1e3a8a] sm:text-4xl lg:text-5xl dark:text-[#60a5fa]">
+                  Стирол
+                </h2>
+                <p className="mt-4 max-w-2xl text-base leading-relaxed text-[#1e3a8a]/85 sm:text-lg dark:text-blue-100/85">
+                  Мономер для производства полистирола, сополимеров и синтетического каучука — основа многих полимерных
+                  материалов, которые вы знаете по каталогу АО «Пластик».
+                </p>
+                <div className="mt-8 h-1 w-28 rounded-full bg-[#1e3a8a] dark:bg-[#60a5fa]" />
+              </motion.div>
+              <motion.div
+                variants={korsStoryChild}
+                className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border bg-muted/30 shadow-md"
+              >
+                <Image
+                  src="/images/styrol1.png"
+                  alt="Стирол марки СДЭБ — прозрачная жидкость, производство АО «Пластик»"
+                  fill
+                  className="object-cover object-center"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+              </motion.div>
+              <motion.div variants={korsStoryChild} className="space-y-5">
+                <p className="text-lg leading-relaxed text-muted-foreground">
+                  <span className="font-semibold text-foreground">Стирол (винилбензол)</span> — жидкий ароматический
+                  углеводород и главный строительный блок для цепочки полимеров: вспенивающийся и экструзионный полистирол,
+                  АБС-пластики, стирол-бутадиен-стирольные и стирол-содержащие каучуки, латексы и другие продукты глубокой
+                  переработки.
+                </p>
+                <p className="text-lg leading-relaxed text-muted-foreground">
+                  Высокая химическая чистота мономера напрямую влияет на стабильность полимеризации и качество конечного
+                  изделия: от листов и профилей до деталей машиностроения и товаров народного потребления. Поэтому на
+                  предприятии поддерживают строгий контроль показателей по нормативной документации и условия хранения и
+                  отгрузки продукции.
+                </p>
+                <div className="rounded-xl border border-border/80 bg-card/80 px-4 py-4 shadow-sm dark:bg-card/50">
+                  <p className="text-lg font-semibold text-foreground">СТИРОЛ, марка СДЭБ</p>
+                  <p className="mt-1 text-sm text-muted-foreground">ГОСТ 10003-90 «Стирол», Изменение №1</p>
+                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+                    Марка соответствует требованиям к стиролу высшего сорта по показателям внешнего вида, массовой доле
+                    основного вещества и примесей — см. таблицу ниже.
+                  </p>
+                </div>
+              </motion.div>
+            </motion.div>
+
+            <motion.div
+              className="mx-auto max-w-6xl"
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.12 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <h3 className="mb-6 text-balance text-2xl font-bold tracking-tight text-[#1e3a8a] sm:text-3xl dark:text-[#60a5fa]">
+                Норма по НТД — Высший сорт
+              </h3>
+              <div className="overflow-x-auto rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8">
               <div className="mb-4">
                 <p className="text-sm text-muted-foreground mb-2">ОКП 24 14930120</p>
               </div>
@@ -165,15 +267,22 @@ export function CategoryPageClient({
                   </tr>
                 </tbody>
               </table>
-            </div>
-            <div className="mt-8 flex justify-center">
+              </div>
+            </motion.div>
+            <motion.div
+              className="mt-10 flex justify-center"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            >
               <Button
                 onClick={() => setIsContactFormOpen(true)}
-                className="text-lg h-14 px-8 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+                className="h-14 bg-gradient-to-r from-primary to-primary/80 px-8 text-lg hover:from-primary/90 hover:to-primary/70"
               >
                 Связаться с нами
               </Button>
-            </div>
+            </motion.div>
           </div>
         </section>
       )}
@@ -182,84 +291,147 @@ export function CategoryPageClient({
       {isKors && (
         <section className="py-16 bg-secondary/30">
           <div className="container mx-auto px-4 lg:px-8">
-            <div className="mb-10 flex justify-center">
-              <div className="relative w-full max-w-md aspect-[4/3] rounded-2xl overflow-hidden border border-border shadow-md">
+            <motion.div
+              className="mx-auto mb-16 grid max-w-6xl grid-cols-1 items-start gap-x-10 gap-y-8 lg:grid-cols-2"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.12 }}
+              variants={korsStoryParent}
+            >
+              <motion.div variants={korsStoryChild} className="col-span-full">
+                <h2 className="text-balance text-3xl font-bold tracking-tight text-[#1e3a8a] sm:text-4xl lg:text-5xl dark:text-[#60a5fa]">
+                  КОРС
+                </h2>
+                <p className="mt-4 max-w-2xl text-base leading-relaxed text-[#1e3a8a]/85 sm:text-lg dark:text-blue-100/85">
+                  Кубовый остаток ректификации стирола — побочный продукт производства стирола, используемый как топливо,
+                  растворитель и компонент промышленных материалов.
+                </p>
+                <div className="mt-8 h-1 w-28 rounded-full bg-[#1e3a8a] dark:bg-[#60a5fa]" />
+              </motion.div>
+              <motion.div
+                variants={korsStoryChild}
+                className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border bg-muted/30 shadow-md"
+              >
                 <Image
                   src="/ПРЕВЬЮ/колбы/корс_1.jpeg"
                   alt="КОРС — кубовый остаток ректификации стирола"
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 28rem"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                 />
-              </div>
-            </div>
-            <div className="mb-12 max-w-4xl mx-auto">
-              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                КОРС — Кубовый остаток ректификации стирола. Является побочным продуктом производства стирола.
-              </p>
-              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                Применяется в качестве топлива в некоторых современных системах отопления и котлах. КОРС является растворителем и используется в качестве компонента в различных видах промышленного производства.
-              </p>
-              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                Основное применение – получение пленкообразующих материалов. Также остатки кубовые ректификации стирола применяют для повышения механической прочности и снижения электризуемости покрытий для пола на основе каучука. Применяют КОРС для пропитки древесины и ДВП, что позволяет повысить ряд технических характеристик материала: его влагостойкость, прочность, долговечность.
-              </p>
-              <div className="space-y-2 mb-8">
-                <p className="text-base text-muted-foreground">
-                  Качество КОРС от ОАО «Пластик» соответствует ТУ 2415-038-05762341-2012, изм. 1,2,3.
+              </motion.div>
+              <motion.div variants={korsStoryChild} className="space-y-5">
+                <p className="text-lg leading-relaxed text-muted-foreground">
+                  КОРС — Кубовый остаток ректификации стирола. Является побочным продуктом производства стирола.
                 </p>
-              </div>
-            </div>
+                <p className="text-lg leading-relaxed text-muted-foreground">
+                  Применяется в качестве топлива в некоторых современных системах отопления и котлах. КОРС является
+                  растворителем и используется в качестве компонента в различных видах промышленного производства.
+                </p>
+                <p className="text-lg leading-relaxed text-muted-foreground">
+                  Основное применение – получение пленкообразующих материалов. Также остатки кубовые ректификации стирола
+                  применяют для повышения механической прочности и снижения электризуемости покрытий для пола на основе
+                  каучука. Применяют КОРС для пропитки древесины и ДВП, что позволяет повысить ряд технических
+                  характеристик материала: его влагостойкость, прочность, долговечность.
+                </p>
+                <p className="text-base text-muted-foreground">
+                  Качество КОРС от АО «Пластик» соответствует ТУ 2415-038-05762341-2012, изм. 1,2,3.
+                </p>
+              </motion.div>
+            </motion.div>
 
-            <h2 className="text-3xl lg:text-4xl font-bold mb-8">Норма по НТД</h2>
-            <div className="bg-card rounded-3xl p-8 shadow-sm border border-border overflow-x-auto">
-              <div className="mb-4">
-                <p className="text-sm text-muted-foreground mb-2">ТУ 2415-038-05762341-2012, изм. 1,2,3</p>
-              </div>
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="bg-[#1e3a5f] text-white">
-                    <th className="py-4 px-6 text-left font-semibold border border-gray-300">№ п/п</th>
-                    <th className="py-4 px-6 text-left font-semibold border border-gray-300">Наименование показателей</th>
-                    <th className="py-4 px-6 text-left font-semibold border border-gray-300">Ед. измерения</th>
-                    <th className="py-4 px-6 text-left font-semibold border border-gray-300">Норма по НТД</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="bg-white border-b border-gray-200">
-                    <td className="py-4 px-6 border border-gray-300">1</td>
-                    <td className="py-4 px-6 border border-gray-300">Внешний вид</td>
-                    <td className="py-4 px-6 border border-gray-300 text-center">—</td>
-                    <td className="py-4 px-6 border border-gray-300">Вязкая жидкость от светло-желтого до темно-бурого цвета</td>
-                  </tr>
-                  <tr className="bg-gray-50 border-b border-gray-200">
-                    <td className="py-4 px-6 border border-gray-300">2</td>
-                    <td className="py-4 px-6 border border-gray-300">Плотность при 20 °С, не менее</td>
-                    <td className="py-4 px-6 border border-gray-300 text-center">г/см³</td>
-                    <td className="py-4 px-6 border border-gray-300">0,940</td>
-                  </tr>
-                  <tr className="bg-white border-b border-gray-200">
-                    <td className="py-4 px-6 border border-gray-300">3</td>
-                    <td className="py-4 px-6 border border-gray-300">Динамическая вязкость при 80 °С, не более</td>
-                    <td className="py-4 px-6 border border-gray-300 text-center">мПа·с (сПз)</td>
-                    <td className="py-4 px-6 border border-gray-300">10</td>
-                  </tr>
-                  <tr className="bg-gray-50">
-                    <td className="py-4 px-6 border border-gray-300">4</td>
-                    <td className="py-4 px-6 border border-gray-300">Массовая доля стирола, не более</td>
-                    <td className="py-4 px-6 border border-gray-300 text-center">%</td>
-                    <td className="py-4 px-6 border border-gray-300">30,0</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div className="mt-8 flex justify-center">
+            <motion.div
+              className="mb-16"
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <h2 className="mb-6 text-balance text-2xl font-bold tracking-tight text-[#1e3a8a] sm:text-3xl dark:text-[#60a5fa]">
+                Норма по НТД — КОРС
+              </h2>
+              <KorsNormTable tuLabel={KORS_TU_LABEL} rows={KORS_NORM_ROWS} />
+            </motion.div>
+
+            <motion.div
+              className="mx-auto mb-16 grid max-w-6xl grid-cols-1 items-start gap-x-10 gap-y-8 lg:grid-cols-2"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.12 }}
+              variants={korsStoryParent}
+            >
+              <motion.div variants={korsStoryChild} className="col-span-full">
+                <h2 className="text-balance text-3xl font-bold tracking-tight text-[#1e3a8a] sm:text-4xl lg:text-5xl dark:text-[#60a5fa]">
+                  Бентол
+                </h2>
+                <p className="mt-4 max-w-2xl text-base leading-relaxed text-[#1e3a8a]/85 sm:text-lg dark:text-blue-100/85">
+                  Фракция бензол-толуольная — продукт переработки, используемый как технологическое сырьё и растворитель в
+                  серии отраслей промышленности.
+                </p>
+                <div className="mt-8 h-1 w-28 rounded-full bg-[#1e3a8a] dark:bg-[#60a5fa]" />
+              </motion.div>
+              <motion.div
+                variants={korsStoryChild}
+                className="relative aspect-[3/4] w-full max-w-md overflow-hidden rounded-2xl border border-border bg-muted/40 shadow-md lg:max-w-none"
+              >
+                <Image
+                  src="/images/bentol.png"
+                  alt="Бентол — фракция бензол-толуольная, лабораторная бутыль 500 мл"
+                  fill
+                  className="object-contain p-4"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+              </motion.div>
+              <motion.div variants={korsStoryChild} className="space-y-5">
+                <p className="text-lg leading-relaxed text-muted-foreground">
+                  Бентол представляет собой жидкую углеводородную смесь (в первую очередь бензола и толуола) с
+                  регламентированным по нормативной документации составом и физико-химическими показателями. Продукт
+                  применяется как растворитель и компонент сырьевых смесей при изготовлении лаков, красок, эмалей и
+                  связующих в лакокрасочной отрасли, а также в производстве каучуков, клеев и других органических синтезов,
+                  где требуется контролируемое содержание ароматических углеводородов.
+                </p>
+                <p className="text-lg leading-relaxed text-muted-foreground">
+                  В зависимости от технологической цепочки заказчика Бентол может использоваться для регулирования
+                  вязкости лакокрасочных материалов, ускорения высыхания плёночных покрытий и как участник рецептур при
+                  переработке полимеров и резинотехнических изделий. Поставка осуществляется с соблюдением требований к
+                  маркировке, упаковке и безопасной транспортировке химической продукции.
+                </p>
+                <p className="text-lg leading-relaxed text-muted-foreground">
+                  АО «Пластик» обеспечивает стабильное качество партий: показатели фракции соответствуют утверждённым нормам
+                  по ТУ, что подтверждается входным контролем сырья и приёмочными испытаниями готовой продукции.
+                </p>
+                <p className="text-base text-muted-foreground">
+                  Продукция «Бентол» АО «Пластик» соответствует {BENTOL_TU_LABEL}.
+                </p>
+              </motion.div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <h3 className="mb-6 text-balance text-2xl font-bold tracking-tight text-[#1e3a8a] sm:text-3xl dark:text-[#60a5fa]">
+                Норма по НТД — Бентол
+              </h3>
+              <KorsNormTable tuLabel={BENTOL_TU_LABEL} rows={BENTOL_NORM_ROWS} />
+            </motion.div>
+
+            <motion.div
+              className="mt-8 flex justify-center"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            >
               <Button
                 onClick={() => setIsContactFormOpen(true)}
-                className="text-lg h-14 px-8 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+                className="h-14 bg-gradient-to-r from-primary to-primary/80 px-8 text-lg hover:from-primary/90 hover:to-primary/70"
               >
                 Связаться с нами
               </Button>
-            </div>
+            </motion.div>
           </div>
         </section>
       )}

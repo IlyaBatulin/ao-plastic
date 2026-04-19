@@ -1,6 +1,14 @@
+import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
 import { BackgroundPaths } from "@/components/ui/background-paths"
 import { NewsClient } from "./news-client"
+
+export const metadata: Metadata = {
+  title: "Новости",
+  description:
+    "Новости АО «Пластик»: события завода, рынок полимеров, обновления ассортимента АБС и полистирола.",
+  alternates: { canonical: "/about/news" },
+}
 
 export default function NewsPage() {
   return (

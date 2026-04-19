@@ -20,6 +20,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { RalColorPicker, type RalColor } from "@/components/ral-color-picker"
+import { useLanguage } from "@/contexts/language-context"
+import { getHouseholdProductEn } from "@/lib/household-product-en"
 
 type ProductPageClientProps = {
   product: any
@@ -41,7 +43,8 @@ export function ProductPageClient({
   const specsRef = useRef<HTMLDivElement>(null)
   const { addItem } = useCart()
   const { toast } = useToast()
-  
+  const { lang } = useLanguage()
+
   // Определяем тип товара
   const isHouseholdProduct = categoryId === 'hoztovary'
   const isStyrene = categoryId === 'styrene' || 
@@ -63,6 +66,11 @@ export function ProductPageClient({
     message: "",
   })
   const [consentAccepted, setConsentAccepted] = useState(false)
+
+  const householdEn =
+    isHouseholdProduct && lang === "en" ? getHouseholdProductEn(String(product.id)) : null
+  const displayName = householdEn?.name ?? product.name
+  const displayDescription = householdEn?.description ?? product.description
 
   const sanitizeQuantity = (value: string, isPackages: boolean = false): number => {
     if (isPackages) {
@@ -153,7 +161,7 @@ export function ProductPageClient({
             >
               <Image
                 src={product.image || category?.image || "/placeholder.svg"}
-                alt={product.name}
+                alt={displayName}
                 fill
                 className="object-cover"
                 priority
@@ -171,11 +179,11 @@ export function ProductPageClient({
                 transitionDelay: '200ms',
               }}
             >
-              <h1 className="text-4xl lg:text-5xl font-bold mb-4">{product.name}</h1>
+              <h1 className="text-4xl lg:text-5xl font-bold mb-4">{displayName}</h1>
 
-              {product.description && (
+              {displayDescription && (
                 <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-                  {product.description}
+                  {displayDescription}
                 </p>
               )}
 
@@ -282,7 +290,7 @@ export function ProductPageClient({
                     if (!n || n <= 0) return
                     addItem({
                       productId: product.id,
-                      productName: product.name,
+                      productName: displayName,
                       productImage: product.image,
                       categoryId: categoryId,
                       subcategoryId: subcategoryId,
@@ -296,7 +304,7 @@ export function ProductPageClient({
                     const colorInfo = isAbsProduct && selectedRalColor ? `, цвет: ${selectedRalColor.code}` : ''
                     toast({
                       title: "Товар добавлен в корзину",
-                      description: `${product.name}: ${formatted} ${unit}${isHouseholdProduct && packageQuantity > 1 ? ` (${n * packageQuantity} шт)` : ''}${colorInfo}`,
+                      description: `${displayName}: ${formatted} ${unit}${isHouseholdProduct && packageQuantity > 1 ? ` (${n * packageQuantity} шт)` : ''}${colorInfo}`,
                     })
                   }}
                 >
@@ -458,7 +466,7 @@ export function ProductPageClient({
                   body: JSON.stringify({
                     source: "contacts",
                     ...contactFormData,
-                    message: `Запрос по продукту: ${product.name}\n\n${contactFormData.message || "Интерес к продукции"}`,
+                    message: `Запрос по продукту: ${displayName}\n\n${contactFormData.message || "Интерес к продукции"}`,
                   }),
                 })
 

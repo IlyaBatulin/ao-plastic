@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react"
 import { Sparkles } from "lucide-react"
+import { useLanguage } from "@/contexts/language-context"
 import ProductsGrid from "./products-grid"
 import { ProductFilters } from "./product-filters"
 import { Input } from "@/components/ui/input"
@@ -25,6 +26,7 @@ export function FilteredProductsSection({
   categoryId?: string
   subcategoryId?: string
 }) {
+  const { t } = useLanguage()
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(products)
   
   // Для хозяйственных товаров скрываем фильтры и таблицу сравнения
@@ -47,8 +49,8 @@ export function FilteredProductsSection({
       const specs = typeof p.specifications === "string"
         ? JSON.parse(p.specifications)
         : p.specifications || {}
-      const t = specs.type as string | undefined
-      if (t) set.add(t)
+      const specType = specs.type as string | undefined
+      if (specType) set.add(specType)
     })
     return Array.from(set)
   }, [isExtrusionSubcategory, products])
@@ -83,10 +85,15 @@ export function FilteredProductsSection({
   return (
     <>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-3xl font-bold">Товары в этой категории</h2>
+        <h2 className="text-3xl font-bold">
+          {t("homePage.catalog.productList.sectionTitle") || "Товары в этой категории"}
+        </h2>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Sparkles className="w-4 h-4 text-primary" />
-          <span>{effectiveProducts.length} товаров</span>
+          <span>
+            {effectiveProducts.length}{" "}
+            {t("homePage.catalog.productList.countSuffix") || "товаров"}
+          </span>
         </div>
       </div>
 
@@ -97,7 +104,10 @@ export function FilteredProductsSection({
             <div className="relative flex-1">
               <Input
                 type="text"
-                placeholder="Поиск по названию или шифру изделия..."
+                placeholder={
+                  t("homePage.catalog.productList.extrusionSearchPlaceholder") ||
+                  "Поиск по названию или шифру изделия..."
+                }
                 value={extrusionSearch}
                 onChange={(e) => setExtrusionSearch(e.target.value)}
                 className="h-11"
@@ -107,24 +117,26 @@ export function FilteredProductsSection({
 
           {extrusionTypeOptions.length > 0 && (
             <div className="bg-muted/30 rounded-2xl p-4 border border-border">
-              <div className="text-sm font-semibold mb-3">Тип изделия</div>
+              <div className="text-sm font-semibold mb-3">
+                {t("homePage.catalog.productList.extrusionTypeLabel") || "Тип изделия"}
+              </div>
               <div className="flex flex-wrap gap-3">
-                {extrusionTypeOptions.map((t) => (
+                {extrusionTypeOptions.map((typeOption) => (
                   <label
-                    key={t}
+                    key={typeOption}
                     className="inline-flex items-center gap-2 cursor-pointer text-sm"
                   >
                     <Checkbox
-                      checked={extrusionSelectedTypes.includes(t)}
+                      checked={extrusionSelectedTypes.includes(typeOption)}
                       onCheckedChange={() =>
                         setExtrusionSelectedTypes((prev) =>
-                          prev.includes(t)
-                            ? prev.filter((x) => x !== t)
-                            : [...prev, t]
+                          prev.includes(typeOption)
+                            ? prev.filter((x) => x !== typeOption)
+                            : [...prev, typeOption]
                         )
                       }
                     />
-                    <span>{t}</span>
+                    <span>{typeOption}</span>
                   </label>
                 ))}
               </div>

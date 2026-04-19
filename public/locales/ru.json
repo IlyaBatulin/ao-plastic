@@ -176,10 +176,15 @@
     "stats": {
       "title": "Объемы производства",
       "subtitle": "Мощности нашего предприятия",
-      "styrene": "Стирола в год",
-      "polystyrene": "Вспенивающегося полистирола в год",
-      "abs": "АБС пластика в год",
-      "suffix": " тыс. тонн"
+      "sadStyreneAcrylicDispersions": "Стирол-акриловые дисперсии (САД) в год",
+      "absPlastics": "АБС-пластики в год",
+      "expandablePolystyrene": "Вспенивающийся полистирол (ПСВ) в год",
+      "styrene": "Стирол в год",
+      "machineBuildingPartsDms": "Детали машиностроения (ДМС) в год",
+      "dispersionsInRamenskoye": "Дисперсии на площадке в Раменском в год",
+      "totalProductVolume": "Продукции в год",
+      "suffix": " тыс. тонн",
+      "suffixPlus": "+ тыс. тонн"
     },
     "about": {
       "title": "О компании",
@@ -276,8 +281,16 @@
       "sections": "Разделы:",
       "more": "еще...",
       "backToCatalog": "Назад к каталогу",
+      "backToCategory": "Назад к категории",
       "subcategoriesTitle": "Разделы категории",
       "noSubcategories": "В этой категории пока нет разделов",
+      "emptyCategoryInquiryOrderPrefix": "Заявка по каталогу",
+      "emptyCategoryInquiryLead": "Для выбранной категории в каталоге пока не открыты отдельные разделы с номенклатурой. Это не мешает оставить запрос: менеджер подскажет по маркам, наличию, объёмам и условиям поставки.",
+      "emptyCategoryInquiryTitle": "Оставить заявку",
+      "emptyCategoryInquiryHint": "Заполните контакты и кратко опишите задачу — ответим в рабочее время.",
+      "emptyCategoryCommentLabel": "Ваш запрос",
+      "emptyCategoryCommentPlaceholder": "Марки, объёмы, назначение, сроки поставки, удобный способ связи…",
+      "emptyCategoryCommentHint": "Чем подробнее описание, тем точнее мы сможем ответить.",
       "categoriesLabel": "Категории",
       "subcategoriesLabel": "Подкатегории",
       "productsLabel": "Товары",
@@ -313,6 +326,13 @@
         "otdyh": "Товары для отдыха",
         "canisters": "Канистры",
         "boxes": "Ящики"
+      },
+      "productList": {
+        "sectionTitle": "Товары в этой категории",
+        "countSuffix": "товаров",
+        "emptySubcategory": "В этой подкатегории пока нет товаров",
+        "extrusionSearchPlaceholder": "Поиск по названию или шифру изделия...",
+        "extrusionTypeLabel": "Тип изделия"
       }
     }
   }

@@ -1,7 +1,15 @@
+import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
 import { BackgroundPaths } from "@/components/ui/background-paths"
 import Image from "next/image"
 import { Zap, Settings, CheckCircle } from "lucide-react"
+
+export const metadata: Metadata = {
+  title: "Экструзионное производство",
+  description:
+    "Экструзия полимеров на АО «Пластик»: оборудование, контроль качества гранул и профилей, стандарты производства.",
+  alternates: { canonical: "/about/extrusion" },
+}
 
 const features = [
   "Современное экструзионное оборудование",

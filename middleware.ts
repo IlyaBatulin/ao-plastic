@@ -3,6 +3,24 @@ import type { NextRequest } from "next/server"
 
 const SITE_AUTH_COOKIE = "site_auth"
 
+/** Поисковые роботы: им нужен доступ к страницам и sitemap (иначе сайт не проиндексируется). */
+function isAllowedSearchCrawler(userAgent: string): boolean {
+  const ua = userAgent.toLowerCase()
+  const allow = [
+    "googlebot",
+    "google-inspectiontool",
+    "bingbot",
+    "slurp",
+    "duckduckbot",
+    "yandexbot",
+    "yandeximages",
+    "yandexmetrika",
+    "applebot",
+    "petalbot",
+  ]
+  return allow.some((token) => ua.includes(token))
+}
+
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
 
@@ -17,11 +35,19 @@ export function middleware(request: NextRequest) {
   
   const isApiRoute = pathname.startsWith("/api")
   const isRobotsTxt = pathname === "/robots.txt"
+  const isSitemapXml = pathname === "/sitemap.xml"
   const isSiteLoginPage = pathname === "/login"
 
   // Временная защита сайта паролем (если задан SITE_PASSWORD в .env)
   const sitePassword = process.env.SITE_PASSWORD
-  if (sitePassword && !isStaticFile && !isApiRoute && !isRobotsTxt && !isSiteLoginPage) {
+  if (
+    sitePassword &&
+    !isStaticFile &&
+    !isApiRoute &&
+    !isRobotsTxt &&
+    !isSitemapXml &&
+    !isSiteLoginPage
+  ) {
     const siteAuth = request.cookies.get(SITE_AUTH_COOKIE)
     const hasSiteAuth = siteAuth?.value === "authenticated"
 
@@ -63,7 +89,7 @@ export function middleware(request: NextRequest) {
 
     const isBot = botPatterns.some((pattern) => pattern.test(userAgent))
 
-    if (isBot) {
+    if (isBot && !isAllowedSearchCrawler(userAgent)) {
       return new NextResponse("Access Denied", { status: 403 })
     }
   }

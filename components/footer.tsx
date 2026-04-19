@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
@@ -10,8 +11,14 @@ export function Footer() {
           {/* Company Info */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-xl">П</span>
+              <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-background/10 ring-1 ring-background/20">
+                <Image
+                  src="/images/logo1.png"
+                  alt="АО «Пластик»"
+                  fill
+                  className="object-contain p-1"
+                  sizes="40px"
+                />
               </div>
               <span className="font-semibold text-lg">АО «Пластик»</span>
             </div>

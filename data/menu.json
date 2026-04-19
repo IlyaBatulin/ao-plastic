@@ -18,10 +18,8 @@
     ]
   },
   { "label": "Продукция", "labelEn": "Products", "href": "/products", "type": "catalog" },
-  { "label": "Технопарк", "labelEn": "Technopark", "href": "/technopark" },
   { "label": "ПАСФ", "labelEn": "PASF", "href": "/images/PASF-PLASTIK.pdf" },
   { "label": "Поставщикам", "labelEn": "Suppliers", "href": "/suppliers" },
-  { "label": "Неликвиды", "labelEn": "Liquidation", "href": "/liquidation" },
   { "label": "Контакты", "labelEn": "Contacts", "href": "/contacts" },
   { "label": "Дилеры", "labelEn": "Dealers", "href": "/dealers" }
 ]

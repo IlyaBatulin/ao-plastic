@@ -201,9 +201,11 @@ export function UnifiedMegaMenu({ isOpen, activeItem, onClose }: UnifiedMegaMenu
   let content = null
 
   if (activeMenuItem.type === "catalog") {
-    // Левый: Стирол и остальное (кроме центра и правого). Центр: только Товары. Правый: ДМС, КОРС, Изготовление на заказ.
-    const rightColumnIds = ["machine-parts", "kors", "custom-abs"]
+    // Левый: Стирол и остальное (кроме центра и правого). Центр: только Товары. Правый: ДМС, КОРС.
+    // Категория custom-abs в выпадающем меню не показываем (доступна подкатегория abs/abs-custom в разделе АБС).
+    const rightColumnIds = ["machine-parts", "kors"]
     const centerColumnIds = ["hoztovary"]
+    const excludedFromMegaMenuIds = ["custom-abs"]
     const rightColumnCategories = rightColumnIds
       .map((id) => categories.find((c) => c.id === id))
       .filter((c): c is Category => !!c)
@@ -211,7 +213,10 @@ export function UnifiedMegaMenu({ isOpen, activeItem, onClose }: UnifiedMegaMenu
       .map((id) => categories.find((c) => c.id === id))
       .filter((c): c is Category => !!c)
     const leftColumnCategories = categories.filter(
-      (c) => !rightColumnIds.includes(c.id) && !centerColumnIds.includes(c.id)
+      (c) =>
+        !excludedFromMegaMenuIds.includes(c.id) &&
+        !rightColumnIds.includes(c.id) &&
+        !centerColumnIds.includes(c.id)
     )
 
     const columnsCount = 3

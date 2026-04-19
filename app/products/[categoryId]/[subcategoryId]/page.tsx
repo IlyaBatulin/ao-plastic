@@ -1,16 +1,42 @@
+import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
 import { createClient } from "@/utils/supabase/server"
 import { notFound } from "next/navigation"
 import { FilteredProductsSection } from "@/app/products/_components/filtered-products-section"
-import { CategoryHero } from "@/app/products/_components/category-hero"
-import { CustomOrderForm } from "@/app/products/_components/custom-order-form"
+import { SubcategoryPageShell } from "@/app/products/_components/subcategory-page-shell"
 import { AbsCustomInfo } from "@/app/products/_components/abs-custom-info"
-import { AbsInjectionInfo } from "@/app/products/_components/abs-injection-info"
-import { AbsExtrusionInfo } from "@/app/products/_components/abs-extrusion-info"
 import { getCategoryVideo } from "@/lib/video-config"
 import productsData from "@/data/products.json"
+import { getSubcategorySeo } from "@/lib/seo/catalog-meta"
+import { truncateMeta } from "@/lib/seo/text"
+import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld"
 
 export const revalidate = 300
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ categoryId: string; subcategoryId: string }>
+}): Promise<Metadata> {
+  const { categoryId, subcategoryId } = await params
+  const seo = await getSubcategorySeo(categoryId, subcategoryId)
+  if (!seo) {
+    return { title: "Каталог" }
+  }
+  const desc = seo.subDescription
+    ? truncateMeta(String(seo.subDescription))
+    : `Каталог «${seo.subName}» в разделе «${seo.categoryName}». Производство АО «Пластик», Узловая.`
+  return {
+    title: `${seo.subName} — ${seo.categoryName}`,
+    description: desc,
+    alternates: { canonical: `/products/${categoryId}/${subcategoryId}` },
+    openGraph: {
+      title: `${seo.subName} | АО «Пластик»`,
+      description: desc,
+      url: `/products/${categoryId}/${subcategoryId}`,
+    },
+  }
+}
 
 export default async function SubcategoryPage({ params }: { params: Promise<{ categoryId: string; subcategoryId: string }> }) {
   const resolvedParams = await params
@@ -45,6 +71,10 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ ca
   if (subError || !subcategory) {
     notFound()
   }
+
+  const { data: catRowNav } = await supabase.from("categories").select("name").eq("id", categoryId).single()
+  const categoryDisplayName =
+    catRowNav?.name ?? productsData.categories.find((c) => c.id === categoryId)?.name ?? categoryId
 
   // Получаем категорию для изображения
   let categoryImage: string | null = null
@@ -163,39 +193,28 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ ca
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <CategoryHero
-        title={subcategory.name}
-        description={subcategory.id === "abs-custom" ? undefined : subcategory.description}
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Главная", path: "/" },
+          { name: "Каталог", path: "/products" },
+          { name: categoryDisplayName, path: `/products/${categoryId}` },
+          { name: subcategory.name, path: `/products/${categoryId}/${subcategoryId}` },
+        ]}
+      />
+      <SubcategoryPageShell
+        subcategorySlug={subcategory.slug}
+        fallbackTitle={subcategory.name}
+        fallbackDescription={subcategory.description}
+        skipDescription={subcategory.id === "abs-custom"}
         backHref={`/products/${categoryId}`}
-        backLabel="Назад к категории"
         hasVideo={!!getCategoryVideo(categoryId, subcategory.slug)}
         videoSrc={getCategoryVideo(categoryId, subcategory.slug)}
         imageSrc={categoryImage || undefined}
-      />
-
-      {/* Информационная секция для экструзионного АБС */}
-      {categoryId === "abs" && subcategory.slug === "abs-extrusion" && (
-        <section className="py-20 bg-muted/20">
-          <div className="container mx-auto px-4 lg:px-8">
-            <AbsExtrusionInfo />
-          </div>
-        </section>
-      )}
-
-      {/* Информационная секция для литьевого АБС */}
-      {categoryId === "abs" && subcategory.slug === "abs-injection" && (
-        <section className="py-20 bg-background">
-          <div className="container mx-auto px-4 lg:px-8">
-            <AbsInjectionInfo />
-          </div>
-        </section>
-      )}
-
+      >
       {/* Информационная секция для изготовления изделий из АБС на заказ */}
       {categoryId === "abs" && subcategory.slug === "abs-custom" && (
-        <section className="py-20 bg-muted/20">
-          <div className="container mx-auto px-4 lg:px-8">
+        <section className="w-full py-20 bg-muted/20">
+          <div className="mx-auto w-full max-w-[1920px] px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20 2xl:px-24">
             <AbsCustomInfo />
           </div>
         </section>
@@ -223,6 +242,7 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ ca
       )}
 
       <Footer />
+      </SubcategoryPageShell>
     </div>
   )
 }

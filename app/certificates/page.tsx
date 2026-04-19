@@ -1,6 +1,14 @@
+import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
 import { Award, Download, Shield, CheckCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
+
+export const metadata: Metadata = {
+  title: "Сертификаты и стандарты",
+  description:
+    "Сертификаты качества АО «Пластик»: ISO 9001, ISO 14001, ГОСТ Р, ТР ТС. Подтверждение соответствия продукции и систем менеджмента.",
+  alternates: { canonical: "/certificates" },
+}
 
 const certificates = [
   {
@@ -55,6 +63,7 @@ export default function CertificatesPage() {
       {/* Certificates Grid */}
       <section className="py-24">
         <div className="container mx-auto px-4 lg:px-8">
+          <h2 className="text-3xl font-bold text-foreground mb-10">Действующие сертификаты</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
             {certificates.map((cert, index) => (
               <div

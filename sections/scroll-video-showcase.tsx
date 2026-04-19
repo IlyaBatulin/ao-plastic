@@ -8,6 +8,7 @@ export function ScrollVideoShowcase() {
       <ScrollVideo
         src="/videos/factory-scroll.mp4"
         poster="/images/factory-poster.jpg"
+        posterAlt="Завод АО «Пластик» в Узловой — постер к видео о производстве"
         scrollHeight={3000}
         startOffset={0}
         loop={false}

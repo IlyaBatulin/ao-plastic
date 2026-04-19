@@ -59,13 +59,21 @@ export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps
                     <Image
                       src={
                         category.id === "abs"
-                          ? "/images/absplasric.jpeg"
+                          ? "/images/absiplast_main.png"
                           : category.id === "kors"
-                            ? "/images/bent.jpeg"
-                            : category.id === "custom-abs"
-                              ? "/images/logo1.png"
-                              : category.image ||
-                                `/placeholder.svg?height=400&width=600&query=${encodeURIComponent(categoryName)}`
+                            ? "/images/kors_bentol_main.png"
+                            : category.id === "styrene"
+                              ? "/stirol_main.png"
+                              : category.id === "polystyrene"
+                                ? "/images/polist_main.png"
+                                : category.id === "hoztovary"
+                                  ? "/images/hoztov_main.png"
+                                  : category.id === "machine-parts"
+                                    ? "/images/machine_main.png"
+                                    : category.id === "custom-abs"
+                                      ? "/images/logo1.png"
+                                      : category.image ||
+                                        `/placeholder.svg?height=400&width=600&query=${encodeURIComponent(categoryName)}`
                       }
                       alt={categoryName}
                       fill

@@ -138,7 +138,7 @@ export const publications: Publication[] = [
     ],
   },
   {
-    title: "В технопарке ОАО «Пластик» открылось новое производство геосинтетики",
+    title: "В технопарке АО «Пластик» открылось новое производство геосинтетики",
     links: [
       { label: "Новость на ленте «Интерфакс-Россия»", url: "http://www.interfax-russia.ru/Center/news.asp?sec=1679&id=1034433" },
       { label: "Новость на портале «Тульские новости»", url: "https://newstula.ru/fn_452426.html" },
@@ -147,7 +147,7 @@ export const publications: Publication[] = [
     ],
   },
   {
-    title: "ОАО «Пластик» реализует программу импортозамещения. Статья в «Российской газете». Спецвыпуск «Нефтехимия» 12 апреля 2019 г. № 7839",
+    title: "АО «Пластик» реализует программу импортозамещения. Статья в «Российской газете». Спецвыпуск «Нефтехимия» 12 апреля 2019 г. № 7839",
     links: [
       { label: "Российская газета: СПЕЦВЫПУСК НЕФТЕХИМИЯ № 7839 (PDF)", url: "https://oaoplastic.ru/wp-content/uploads/2019/04/Rossijskaya-gazeta.pdf" },
       { label: "Статья на портале РГ", url: "https://rg.ru/2019/04/12/reg-cfo/v-rossii-nachali-proizvodit-plastmassu-dlia-bytovoj-i-elektrotehniki.html" },
@@ -155,13 +155,13 @@ export const publications: Publication[] = [
     ],
   },
   {
-    title: "ОАО «Пластик» принял участие в профориентационном марафоне",
+    title: "АО «Пластик» принял участие в профориентационном марафоне",
     links: [
       { label: "Новость в газете «Знамя Узловая»", url: "http://znamyuzl.ru/news/start-proforientatsi2222222222222222onnogo-mar/" },
     ],
   },
   {
-    title: "Губернатор Тульской области Алексей Дюмин и генеральный директор ОАО «Пластик» подписали соглашение о сотрудничестве в реализации инфраструктурного инвестпроекта в Узловой",
+    title: "Губернатор Тульской области Алексей Дюмин и генеральный директор АО «Пластик» подписали соглашение о сотрудничестве в реализации инфраструктурного инвестпроекта в Узловой",
     links: [
       { label: "Новость на портале Пластинфо", url: "https://plastinfo.ru/information/news/41003_18.02.2019/" },
       { label: "Новость на портале Рупек", url: "http://rupec.ru/news/40231/" },
@@ -172,7 +172,7 @@ export const publications: Publication[] = [
     ],
   },
   {
-    title: "ОАО «Пластик» продемонстрировал обновленный ассортимент материалов на выставке «Интерпластика»",
+    title: "АО «Пластик» продемонстрировал обновленный ассортимент материалов на выставке «Интерпластика»",
     links: [
       { label: "Новость в газете «Знамя Узловая»", url: "http://www.znamyuzl.ru/news/rasshirennaya-tsvet%D1%86%D1%86%D1%86%D1%86%D1%86%D1%86%D1%86%D1%86%D1%86%D1%86%D1%86%D1%86%D1%86%D1%86%D1%86%D1%86%D1%86ovaya-palit/" },
       { label: "Статья в журнале «Пластикс»", url: "https://oaoplastic.ru/wp-content/uploads/2015/02/Plastik.pdf" },
@@ -270,7 +270,7 @@ export const publications: Publication[] = [
     ],
   },
   {
-    title: "ОАО «Пластик» оказал помощь предприятию Всероссийского общества слепых",
+    title: "АО «Пластик» оказал помощь предприятию Всероссийского общества слепых",
     links: [
       { label: "Новость на портале Пластинфо", url: "https://plastinfo.ru/information/news/37050_19.3.2018/" },
       { label: "Новость на портале Тульские СМИ", url: "http://tulasmi.ru/news/255740" },
@@ -278,7 +278,7 @@ export const publications: Publication[] = [
     ],
   },
   {
-    title: "ОАО «Пластик» получил знак Made in Russia",
+    title: "АО «Пластик» получил знак Made in Russia",
     links: [
       { label: "Новость в газете «Знамя Узловая»", url: "http://znamyuzl.ru/news/plastik-poluchil-z44nak-made-in-/" },
       { label: "Новость на портале Пластинфо", url: "https://plastinfo.ru/information/news/37062_20.03.2018/" },
@@ -297,7 +297,7 @@ export const publications: Publication[] = [
     ],
   },
   {
-    title: "Новость о создании нового текстильного производства на площадке ОАО «Пластик»",
+    title: "Новость о создании нового текстильного производства на площадке АО «Пластик»",
     links: [
       { label: "Новость информационного агентства Интерфакс", url: "http://www.interfax-russia.ru/Center/news.asp?id=910375" },
       { label: "Новость на портале Тульские СМИ", url: "http://tulasmi.ru/news/255082" },
@@ -330,7 +330,7 @@ export const publications: Publication[] = [
     ],
   },
   {
-    title: "Усовершенствованные материалы от ОАО «Пластик» на «Интерпластике 2018»",
+    title: "Усовершенствованные материалы от АО «Пластик» на «Интерпластике 2018»",
     links: [
       { label: "Новость на портале ПластЭксперт", url: "http://e-plastic.ru/news/interplastika2018plastikuzlovayagotovitshirokuyuekspozitsiyu/" },
       { label: "Новость на портале Интерпластика", url: "http://interplastica.ru/17268/p/1784-interplastica-2018-plastik-uzlovaya-gotovit-shirokuyu-ekspozitsiyu" },
@@ -406,7 +406,7 @@ export const publications: Publication[] = [
   {
     title: "Модификаторы для жесткого ПВХ",
     links: [
-      { label: "Статья независимого эксперта Г.Б. Барсамяна в журнале «Пластикс» о новом продукте ОАО «Пластик»", url: "https://oaoplastic.ru/wp-content/uploads/2017/04/Barsamyan_statya_Plastiks.pdf" },
+      { label: "Статья независимого эксперта Г.Б. Барсамяна в журнале «Пластикс» о новом продукте АО «Пластик»", url: "https://oaoplastic.ru/wp-content/uploads/2017/04/Barsamyan_statya_Plastiks.pdf" },
     ],
   },
   {
@@ -630,7 +630,7 @@ export const publications: Publication[] = [
     ],
   },
   {
-    title: "В ОАО «Пластик» ввели в действие Кодекс корпоративной этики и Антикоррупционную политику (15.07.2015)",
+    title: "В АО «Пластик» ввели в действие Кодекс корпоративной этики и Антикоррупционную политику (15.07.2015)",
     links: [
       { label: "Новость на портале Химпорт", url: "http://www.chemport.ru/chemprodnews_11569.html" },
     ],
@@ -747,7 +747,7 @@ export const publications: Publication[] = [
   },
   {
     title: "Узловая программа. Модернизация и оптимизация как средства против кризиса",
-    subtitle: "Статья соинвестора ОАО «Пластик» Максима Кизимова в журнале «Коммерсантъ Деньги» №50 от 22.12.2014",
+    subtitle: "Статья соинвестора АО «Пластик» Максима Кизимова в журнале «Коммерсантъ Деньги» №50 от 22.12.2014",
     links: [
       { label: "Статья в журнале «Коммерсантъ Деньги»", url: "https://oaoplastic.ru/wp-content/uploads/2015/02/%D0%A1%D1%82%D0%B0%D1%82%D1%8C%D1%8F_%D0%9A%D0%BE%D0%BC%D0%BC%D0%B5%D1%80%D1%81%D0%B0%D0%BD%D1%82.pdf" },
     ],

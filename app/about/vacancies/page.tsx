@@ -1,6 +1,14 @@
+import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
 import { VacanciesSwitcher } from "./vacancies-switcher"
 import { BackgroundPaths } from "@/components/ui/background-paths"
+
+export const metadata: Metadata = {
+  title: "Вакансии",
+  description:
+    "Вакансии АО «Пластик» в Узловой и регионах: работа на химическом производстве, инженерные и производственные специальности.",
+  alternates: { canonical: "/about/vacancies" },
+}
 
 export default function VacanciesPage() {
   return (

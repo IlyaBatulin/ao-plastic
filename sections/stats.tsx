@@ -1,85 +1,104 @@
 "use client"
 
 import Image from "next/image"
+import { motion } from "framer-motion"
 import { StatsCounter } from "@/components/stats-counter"
-import { Beaker, Package, Factory } from "lucide-react"
+import type { LucideIcon } from "lucide-react"
+import { Beaker, Package, Cog, Droplets, FlaskConical, Factory, TrendingUp } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 
 export function Stats() {
   const { t } = useLanguage()
 
-  const statStyle = {
-    color: "from-[#1e3a8a] to-[#1e40af]",
-    bgColor: "bg-[#1e3a8a]/5 dark:bg-[#3b82f6]/10",
-    borderColor: "border-[#1e3a8a]/20 dark:border-[#3b82f6]/20",
-    iconColor: "text-[#1e3a8a] dark:text-[#3b82f6]",
-  }
-  const stats = [
-    { icon: Beaker, value: 60, label: "styrene", ...statStyle },
-    { icon: Package, value: 11, label: "polystyrene", ...statStyle },
-    { icon: Factory, value: 23, label: "abs", ...statStyle },
+  const stats: {
+    icon: LucideIcon
+    value: number
+    label: string
+    /** Если не задан — используется homePage.stats.suffix */
+    suffixKey?: string
+  }[] = [
+    { icon: TrendingUp, value: 150, label: "totalProductVolume", suffixKey: "homePage.stats.suffixPlus" },
+    { icon: FlaskConical, value: 20, label: "sadStyreneAcrylicDispersions" },
+    { icon: Factory, value: 23, label: "absPlastics" },
+    { icon: Package, value: 42, label: "expandablePolystyrene" },
+    { icon: Beaker, value: 60, label: "styrene" },
+    { icon: Cog, value: 3, label: "machineBuildingPartsDms" },
+    { icon: Droplets, value: 20, label: "dispersionsInRamenskoye" },
   ]
+
   return (
-    <section
-      id="stats"
-      className="py-20 sm:py-28 bg-background relative overflow-hidden"
-    >
-      {/* Декоративные элементы фона */}
-      <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-[#1e3a8a]/5 dark:bg-[#3b82f6]/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 opacity-50" />
-      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-[#1e3a8a]/5 dark:bg-[#3b82f6]/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 opacity-50" />
-      
-      {/* Сетка для делового стиля */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(30,58,138,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(30,58,138,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
+    <section id="stats" className="relative overflow-hidden bg-background">
+      <div className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2">
+        <div className="flex min-h-[100dvh] w-full flex-col items-stretch bg-background lg:h-[100dvh] lg:min-h-[100dvh] lg:flex-row">
+          {/* Слева: статистика на фоне страницы, без градиента поверх фото */}
+          <div className="flex min-h-0 flex-1 flex-col justify-center p-3 pt-5 sm:p-5 sm:pt-7 lg:max-w-md lg:flex-none lg:basis-[min(28rem,44%)] lg:pl-8 lg:pt-9 xl:max-w-xl xl:basis-[min(36rem,40%)]">
+            <div className="flex max-h-[min(100dvh,920px)] min-h-0 w-full max-w-lg flex-1 flex-col overflow-hidden rounded-xl border border-border/80 bg-card shadow-lg sm:max-w-xl lg:max-h-none lg:h-full dark:bg-card">
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ x: -22 }}
+                  whileInView={{ x: 0 }}
+                  viewport={{ once: true, amount: 0.35 }}
+                  transition={{
+                    duration: 0.5,
+                    delay: index * 0.12,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className="flex min-h-0 flex-1 flex-row items-stretch border-b border-border/60 last:border-b-0"
+                >
+                  {/* Фиксированная ширина «в длину», высота — доля ряда */}
+                  <div className="flex w-14 shrink-0 flex-col items-center justify-center border-r border-primary/20 bg-primary/10 py-1 sm:w-16 dark:bg-primary/15">
+                    <motion.div
+                      className="flex h-[88%] max-h-full w-full items-center justify-center px-1"
+                      initial={{ opacity: 0, scale: 0.88 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true, amount: 0.35 }}
+                      transition={{
+                        duration: 0.55,
+                        delay: index * 0.12 + 0.15,
+                        ease: [0.22, 1, 0.36, 1],
+                      }}
+                    >
+                      <stat.icon
+                        className="h-full w-full max-w-[2.75rem] text-primary sm:max-w-[3.25rem]"
+                        strokeWidth={1.65}
+                        aria-hidden
+                      />
+                    </motion.div>
+                  </div>
+                  <div className="flex min-w-0 flex-1 flex-col justify-center px-3 py-2 sm:px-5 sm:py-3">
+                    <StatsCounter
+                      end={stat.value}
+                      suffix={t(stat.suffixKey ?? "homePage.stats.suffix")}
+                      className="text-xl font-bold leading-tight text-[#1e3a8a] tabular-nums sm:text-2xl lg:text-3xl xl:text-4xl dark:text-[#60a5fa]"
+                    />
+                    <p className="mt-1 text-sm font-medium leading-snug text-muted-foreground sm:text-base lg:text-lg">
+                      {t(`homePage.stats.${stat.label}`)}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
 
-      <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        {/* Заголовок */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-[#1e3a8a] dark:text-[#60a5fa]">
-            {t("homePage.stats.title")}
-          </h2>
-          <p className="text-muted-foreground text-lg sm:text-xl max-w-2xl mx-auto">
-            {t("homePage.stats.subtitle")}
-          </p>
-          <div className="mt-6 h-0.5 w-24 mx-auto bg-[#1e3a8a] dark:bg-[#3b82f6]" />
-        </div>
-
-        {/* Фото производства + карточки статистики */}
-        <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14 max-w-6xl mx-auto">
-          <div className="w-full lg:w-[42%] flex-shrink-0 order-2 lg:order-1">
-            <div className="relative rounded-2xl overflow-hidden shadow-xl ring-1 ring-black/5 dark:ring-white/10 aspect-[4/3] max-h-[320px] lg:max-h-none">
+          {/* Справа: фото на всю колонку до края экрана, по высоте как секция (ровно с блоком статистики) */}
+          <div className="relative flex min-h-[42vh] w-full min-w-0 flex-1 flex-col self-stretch lg:min-h-0">
+            <motion.div
+              className="relative h-full min-h-[42vh] w-full flex-1 overflow-hidden bg-muted/20 lg:min-h-0 lg:rounded-l-xl lg:border-l lg:border-border/45 dark:bg-muted/15"
+              initial={{ opacity: 0, scale: 1.02 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 1.15, ease: [0.16, 1, 0.3, 1] }}
+            >
               <Image
                 src="/images/FURS0085.jpeg"
                 alt="Производственные мощности предприятия"
                 fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 42vw"
+                className="object-cover object-center lg:object-right lg:object-[85%_center]"
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 priority
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
-            </div>
-          </div>
-          <div className="w-full lg:flex-1 order-1 lg:order-2">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {stats.map((stat, index) => (
-                <div
-                  key={index}
-                  className={`group relative bg-card rounded-lg p-8 border ${stat.borderColor} hover:border-[#1e3a8a]/40 dark:hover:border-[#3b82f6]/40 hover:shadow-xl transition-all duration-300`}
-                >
-                  <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${stat.color} rounded-t-lg`} />
-                  <div className="text-center">
-                    <div className={`inline-flex items-center justify-center w-12 h-12 rounded-lg ${stat.bgColor} border ${stat.borderColor} mb-4 transition-transform duration-300 group-hover:scale-105`}>
-                      <stat.icon className={`w-6 h-6 ${stat.iconColor}`} />
-                    </div>
-                    <div className="mb-2">
-                      <StatsCounter end={stat.value} suffix={t("homePage.stats.suffix")} />
-                    </div>
-                    <p className="text-muted-foreground text-sm sm:text-base leading-snug">
-                      {t(`homePage.stats.${stat.label}`)}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

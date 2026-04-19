@@ -1,4 +1,12 @@
+import type { Metadata } from "next"
 import { SuppliersPageClient } from "./suppliers-page-client"
+
+export const metadata: Metadata = {
+  title: "Поставщикам",
+  description:
+    "Информация для поставщиков сырья и услуг АО «Пластик»: сотрудничество, закупки, требования к контрагентам.",
+  alternates: { canonical: "/suppliers" },
+}
 
 type PageProps = {
   params?: Promise<Record<string, string | string[]>>

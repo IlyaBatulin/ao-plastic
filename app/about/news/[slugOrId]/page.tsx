@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { Footer } from "@/components/footer"
@@ -11,7 +12,7 @@ interface NewsDetailPageProps {
 }
 
 async function getNews(slugOrId: string) {
-  const supabase = await createClient()
+  const supabase = createClient()
   const isNumeric = /^\d+$/.test(slugOrId)
 
   let query = supabase.from("news").select("*").eq("is_active", true)
@@ -20,6 +21,30 @@ async function getNews(slugOrId: string) {
   const { data, error } = await query.single()
   if (error || !data) return null
   return data
+}
+
+export async function generateMetadata({ params }: NewsDetailPageProps): Promise<Metadata> {
+  const { slugOrId } = await params
+  const item = await getNews(slugOrId)
+  if (!item) {
+    return { title: "Новость" }
+  }
+  const desc =
+    typeof item.excerpt === "string" && item.excerpt.trim()
+      ? item.excerpt.replace(/<[^>]+>/g, "").slice(0, 160)
+      : `${item.title} — новости АО «Пластик».`
+  return {
+    title: item.title,
+    description: desc,
+    alternates: {
+      canonical: `/about/news/${item.slug || item.id}`,
+    },
+    openGraph: {
+      title: item.title,
+      description: desc,
+      images: item.image_url ? [{ url: item.image_url }] : undefined,
+    },
+  }
 }
 
 export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
@@ -71,7 +96,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
                     <div className="aspect-video max-w-2xl rounded-xl overflow-hidden border border-border mb-6">
                       <iframe
                         src={embedUrl}
-                        title="Видео"
+                        title={item.title ? `Видео: ${item.title}` : "Видео к новости"}
                         className="w-full h-full"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
@@ -83,7 +108,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
                   <div className="mb-6 rounded-xl overflow-hidden border border-border max-w-2xl">
                     <img
                       src={item.image_url}
-                      alt=""
+                      alt={item.title ? `Иллюстрация к новости: ${item.title}` : "Иллюстрация к новости"}
                       className="w-full h-auto object-cover"
                     />
                   </div>

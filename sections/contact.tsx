@@ -88,13 +88,6 @@ export function Contact() {
   return (
     <section id="contact" className="py-24 lg:py-32 bg-secondary">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="max-w-3xl mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">{t("homePage.contact.title")}</h2>
-          <p className="text-xl text-muted-foreground leading-relaxed">
-            {t("homePage.contact.description")}
-          </p>
-        </div>
-
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
           {/* Contact Form */}
           <div className="bg-background rounded-2xl p-8 shadow-sm">

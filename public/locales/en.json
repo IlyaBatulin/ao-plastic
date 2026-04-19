@@ -176,10 +176,15 @@
     "stats": {
       "title": "Production Volumes",
       "subtitle": "Our Enterprise Capacity",
+      "sadStyreneAcrylicDispersions": "Styrene-acrylic dispersions (SAD) per year",
+      "absPlastics": "ABS plastics per year",
+      "expandablePolystyrene": "Expandable polystyrene (EPS) per year",
       "styrene": "Styrene per year",
-      "polystyrene": "Expandable polystyrene per year",
-      "abs": "ABS plastic per year",
-      "suffix": " thousand tons"
+      "machineBuildingPartsDms": "Machine-building parts (DMS) per year",
+      "dispersionsInRamenskoye": "Dispersions at the Ramenskoye site per year",
+      "totalProductVolume": "Total product output per year",
+      "suffix": " thousand tons",
+      "suffixPlus": "+ thousand tons"
     },
     "about": {
       "title": "About Us",
@@ -276,8 +281,16 @@
       "sections": "Sections:",
       "more": "more...",
       "backToCatalog": "Back to Catalog",
+      "backToCategory": "Back to category",
       "subcategoriesTitle": "Category Sections",
       "noSubcategories": "No sections in this category yet",
+      "emptyCategoryInquiryOrderPrefix": "Catalog inquiry",
+      "emptyCategoryInquiryLead": "This category does not yet have separate catalog sections with a full SKU list. You can still send a request: our manager will advise on grades, availability, volumes, and delivery terms.",
+      "emptyCategoryInquiryTitle": "Send a request",
+      "emptyCategoryInquiryHint": "Add your contact details and a short description of what you need — we will respond during business hours.",
+      "emptyCategoryCommentLabel": "Your message",
+      "emptyCategoryCommentPlaceholder": "Grades, volumes, application, delivery timeline, preferred contact method…",
+      "emptyCategoryCommentHint": "The more detail you provide, the more accurately we can respond.",
       "categoriesLabel": "Categories",
       "subcategoriesLabel": "Subcategories",
       "productsLabel": "Products",
@@ -313,6 +326,43 @@
         "otdyh": "Leisure Products",
         "canisters": "Canisters",
         "boxes": "Boxes"
+      },
+      "categoryDescriptions": {
+        "styrene": "High-quality monomeric styrene for polystyrene and copolymer production",
+        "abs": "Wide range of ABS plastics for automotive, appliances, medical and other applications",
+        "polystyrene": "Expandable and general-purpose polystyrene grades for insulation and packaging",
+        "dispersion": "Styrene-acrylic dispersion for water-based paints and coatings",
+        "machine-parts": "Plastic parts for automotive and general engineering",
+        "hoztovary": "Quality plastic household products for home and everyday use",
+        "pvc-modifier": "Modifier to improve properties of PVC compounds",
+        "kors": "CORS rectification bottoms and Bentol fraction — fuels and industrial solvents",
+        "custom-abs": "Custom manufacturing of ABS plastic parts to customer drawings"
+      },
+      "subcategoryDescriptions": {
+        "abs-injection": "ABS grades for injection molding",
+        "abs-extrusion": "ABS grades for sheet and profile extrusion",
+        "abs-custom": "Manufacturing of ABS parts to individual orders",
+        "ps-psv-s": "Expandable polystyrene of standard density",
+        "ps-psv-l": "Expandable cast polystyrene",
+        "ps-pse": "General-purpose emulsion polystyrene",
+        "extrusion-parts": "Profiles, tubes, seals",
+        "injection-parts": "Trim panels, inserts, protective parts",
+        "vedra-tazy": "Durable plastic buckets and basins in various volumes",
+        "uborka": "Dustpans, brushes and cleaning sets",
+        "steklo": "Squeegees for windows and mirrors",
+        "sanuzel": "Toilet brush sets, soap dishes and accessories",
+        "kuhnya": "Funnels, mugs, strainers and other kitchen accessories",
+        "veshalki": "Clothes hangers in various sizes",
+        "otdyh": "Picnic, barbecue and outdoor leisure products",
+        "canisters": "HDPE canisters (3–30 L) for storing liquids",
+        "boxes": "Plastic storage and transport crates (to order)"
+      },
+      "productList": {
+        "sectionTitle": "Products in this category",
+        "countSuffix": "products",
+        "emptySubcategory": "No products in this subsection yet",
+        "extrusionSearchPlaceholder": "Search by product name or code…",
+        "extrusionTypeLabel": "Part type"
       }
     }
   }

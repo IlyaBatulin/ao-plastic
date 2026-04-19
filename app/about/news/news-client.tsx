@@ -57,7 +57,11 @@ export function NewsClient() {
               <div className="flex items-start gap-4">
                 {item.image_url ? (
                   <div className="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0 bg-muted">
-                    <img src={item.image_url} alt="" className="w-full h-full object-cover" />
+                    <img
+                      src={item.image_url}
+                      alt={item.title ? `Иллюстрация: ${item.title}` : "Новость АО «Пластик»"}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 ) : (
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">

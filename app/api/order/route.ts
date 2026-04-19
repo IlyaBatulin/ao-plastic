@@ -379,8 +379,13 @@ async function queueIntegrations({
 					const url = `https://api.telegram.org/bot${tgToken}/sendMessage`
 					
 				// Формируем подробное сообщение
-				const isCustomOrder = (orderInfo?.payload as any)?.orderType === "custom_abs"
-				const orderTitle = isCustomOrder ? "🔧 Заявка об АБС пластике на заказ" : "🛒 Новый заказ"
+				const ot = (orderInfo?.payload as any)?.orderType as string | undefined
+				const orderTitle =
+					ot === "custom_abs"
+						? "🔧 Заявка об АБС пластике на заказ"
+						: ot === "category_inquiry"
+							? "📋 Заявка из каталога"
+							: "🛒 Новый заказ"
 				let message = `*${orderTitle} #${orderId}*\n\n`
 				
 				// Информация о клиенте
@@ -460,8 +465,13 @@ async function queueIntegrations({
 				const url = `https://api.telegram.org/bot${tgToken}/sendMessage`
 				
 				// Формируем подробное сообщение
-				const isCustomOrder = (orderInfo?.payload as any)?.orderType === "custom_abs"
-				const orderTitle = isCustomOrder ? "🔧 Заявка об АБС пластике на заказ" : "🛒 Новый заказ"
+				const ot = (orderInfo?.payload as any)?.orderType as string | undefined
+				const orderTitle =
+					ot === "custom_abs"
+						? "🔧 Заявка об АБС пластике на заказ"
+						: ot === "category_inquiry"
+							? "📋 Заявка из каталога"
+							: "🛒 Новый заказ"
 				let message = `*${orderTitle} #${orderId}*\n\n`
 				
 				// Информация о клиенте

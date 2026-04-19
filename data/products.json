@@ -7,7 +7,7 @@
       "technical_purpose": "Мономерный стирол высокой чистоты для синтеза полимеров",
       "target_application": "Производство полистирола, АБС-пластиков, сополимеров стирола",
       "is_custom_order": false,
-      "image": "/images/products/styrene.jpg",
+      "image": "/stirol_main.png",
       "products": [
         {
           "id": "styrene-monomer",
@@ -33,7 +33,7 @@
       "technical_purpose": "Термопластичный сополимер акрилонитрил-бутадиен-стирол для литья и экструзии",
       "target_application": "Автомобильная промышленность, приборостроение, электроника, медицина, бытовая техника",
       "is_custom_order": false,
-      "image": "/images/products/abs-plastic.jpg",
+      "image": "/images/absiplast_main.png",
       "subcategories": [
         {
           "id": "abs-injection",
@@ -99,7 +99,7 @@
       "technical_purpose": "Полимер стирола для производства теплоизоляционных материалов и упаковки",
       "target_application": "Теплоизоляция зданий, упаковочные материалы, одноразовая посуда",
       "is_custom_order": false,
-      "image": "/images/polystyrene-warehouse.png",
+      "image": "/images/polist_main.png",
       "subcategories": [
         {
           "id": "ps-psv-s",
@@ -204,7 +204,7 @@
       "technical_purpose": "Пластиковые детали для автомобильной промышленности и машиностроения",
       "target_application": "Автомобильные комплектующие, декоративные элементы, защитные детали",
       "is_custom_order": true,
-      "image": "/images/products/machine-parts.jpg",
+      "image": "/images/machine_main.png",
       "subcategories": [
         {
           "id": "extrusion-parts",
@@ -288,7 +288,7 @@
       "technical_purpose": "Производство товаров народного потребления из полипропилена и ПЭНД методом литья под давлением и выдувного формования",
       "target_application": "Бытовые товары для дома, кухни, санузла, уборки и отдыха, канистры и ящики для хранения",
       "is_custom_order": false,
-      "image": "/images/xoztov/П2701.jpg",
+      "image": "/images/hoztov_main.png",
       "subcategories": [
         {
           "id": "vedra-tazy",
@@ -493,7 +493,7 @@
       "technical_purpose": "Кубовый остаток ректификации стирола - побочный продукт производства",
       "target_application": "Топливо для промышленных печей, компонент лакокрасочных составов",
       "is_custom_order": false,
-      "image": "/images/products/kors.jpg",
+      "image": "/images/kors_bentol_main.png",
       "products": [
         {
           "id": "kors-fuel",
@@ -515,7 +515,7 @@
           "brand": "",
           "type": "Жидкость",
           "description": "Бентол — продукт переработки, применяется в промышленности",
-          "image": "/images/products/kors.jpg",
+          "image": "/images/bentol.png",
           "specifications": {
             "Внешний вид": "Жидкость",
             "Применение": "Промышленное применение",

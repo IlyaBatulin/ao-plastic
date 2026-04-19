@@ -1,13 +1,13 @@
-"use client";
+"use client"
 
-import { useEffect, useRef } from "react";
-import Lenis from "lenis";
+import { useEffect, useRef } from "react"
+import Lenis from "lenis"
 
 export function LenisProvider({ children }: { children: React.ReactNode }) {
-  const lenisRef = useRef<Lenis | null>(null);
+  const lenisRef = useRef<Lenis | null>(null)
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") return
 
     const lenis = new Lenis({
       duration: 1.2,
@@ -18,24 +18,16 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
       wheelMultiplier: 1,
       touchMultiplier: 2,
       infinite: false,
-    });
+      autoRaf: true,
+    })
 
-    lenisRef.current = lenis;
-
-    let rafId: number;
-    function raf(time: number) {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    }
-
-    rafId = requestAnimationFrame(raf);
+    lenisRef.current = lenis
 
     return () => {
-      cancelAnimationFrame(rafId);
-      lenis.destroy();
-      lenisRef.current = null;
-    };
-  }, []);
+      lenis.destroy()
+      lenisRef.current = null
+    }
+  }, [])
 
-  return <>{children}</>;
+  return <>{children}</>
 }

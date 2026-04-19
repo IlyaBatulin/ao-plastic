@@ -10,30 +10,79 @@ import { ConditionalHeader } from "@/components/conditional-header"
 import { Toaster } from "@/components/ui/toaster"
 import { LoadingScreen } from "@/components/loading-screen"
 import { LenisProvider } from "@/components/lenis-provider"
+import { getSiteUrl } from "@/lib/site"
+import { SiteJsonLd } from "@/components/seo/site-json-ld"
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
   display: "swap",
 })
 
+const siteUrl = getSiteUrl()
+
 export const metadata: Metadata = {
-  title: "АО «Пластик» — Производство пластиковых изделий",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "АО «Пластик» — АБС-пластики, полистирол, пластиковые изделия",
+    template: "%s | АО «Пластик»",
+  },
   description:
-    "Лидер химической индустрии по производству АБС-пластиков и полистиролов. Современные технологии, контроль качества, экологичные материалы.",
-  keywords: "пластик, АБС-пластик, полистирол, производство пластика, пластиковые изделия",
+    "АО «Пластик» (Узловая): производство АБС-пластиков, вспенивающегося и экструзионного полистирола, стирола, деталей для машиностроения и товаров народного потребления. Поставки по России и на экспорт.",
+  keywords: [
+    "АО Пластик",
+    "АБС-пластик",
+    "полистирол ПСВ",
+    "стирол",
+    "производство пластика",
+    "Узловая",
+    "полимеры",
+  ],
+  icons: {
+    icon: [{ url: "/images/logo.png", type: "image/png" }],
+    apple: [{ url: "/images/logo.png", type: "image/png" }],
+  },
   robots: {
-    index: false,
-    follow: false,
-    nocache: true,
+    index: true,
+    follow: true,
     googleBot: {
-      index: false,
-      follow: false,
-      noimageindex: true,
-      "max-video-preview": -1,
+      index: true,
+      follow: true,
       "max-image-preview": "large",
       "max-snippet": -1,
+      "max-video-preview": -1,
     },
   },
+  openGraph: {
+    type: "website",
+    locale: "ru_RU",
+    url: siteUrl,
+    siteName: "АО «Пластик»",
+    title: "АО «Пластик» — АБС-пластики, полистирол и изделия из пластмасс",
+    description:
+      "Производитель полимеров и пластиковых изделий с 1959 года: АБС, полистирол, стирол, автокомпоненты, товары для дома.",
+    images: [
+      {
+        url: "/images/logo.png",
+        width: 512,
+        height: 512,
+        alt: "Логотип АО «Пластик»",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "АО «Пластик»",
+    description:
+      "Производство АБС-пластиков, полистирола и пластиковых изделий. Завод в Тульской области.",
+    images: ["/images/logo.png"],
+  },
+  ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? {
+        verification: {
+          google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+        },
+      }
+    : {}),
 }
 
 export default function RootLayout({
@@ -50,6 +99,7 @@ export default function RootLayout({
         <Script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" />
       </head>
       <body className="antialiased">
+        <SiteJsonLd />
         <LoadingScreen />
         <LenisProvider>
           <div id="main-content" className="opacity-0 transition-opacity duration-500">

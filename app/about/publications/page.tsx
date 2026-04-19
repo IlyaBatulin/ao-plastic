@@ -1,7 +1,15 @@
+import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
 import { FileText, ExternalLink } from "lucide-react"
 import { publications } from "@/data/publications"
 import { BackgroundPaths } from "@/components/ui/background-paths"
+
+export const metadata: Metadata = {
+  title: "Публикации в СМИ",
+  description:
+    "Публикации о АО «Пластик» в СМИ: отраслевые материалы, интервью и статьи о производстве полимеров.",
+  alternates: { canonical: "/about/publications" },
+}
 
 export default function PublicationsPage() {
   return (

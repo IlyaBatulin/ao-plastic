@@ -34,8 +34,6 @@ export function getCategoryName(categoryId: string, lang: "ru" | "en" = "ru"): s
     kuhnya: { ru: "Кухонные принадлежности", en: "Kitchenware" },
     veshalki: { ru: "Вешалки и плечики", en: "Hangers and Clothes Hangers" },
     otdyh: { ru: "Товары для отдыха", en: "Leisure Products" },
-    canisters: { ru: "Канистры", en: "Canisters" },
-    boxes: { ru: "Ящики", en: "Boxes" },
   }
 
   const translation = translations[categoryId]
@@ -45,6 +43,20 @@ export function getCategoryName(categoryId: string, lang: "ru" | "en" = "ru"): s
 
   // Если перевод не найден, возвращаем ID
   return categoryId
+}
+
+/** Slug из URL/БД → ключ в `homePage.catalog.subcategories` / `subcategoryDescriptions` (locales) */
+export function getCatalogSubcategoryTranslationKey(slug: string): string {
+  const slugToI18nKey: Record<string, string> = {
+    "psv-s": "ps-psv-s",
+    "psv-l": "ps-psv-l",
+    "pse-1": "ps-pse",
+    extrusion: "extrusion-parts",
+    injection: "injection-parts",
+    "parts-extrusion": "extrusion-parts",
+    "parts-injection": "injection-parts",
+  }
+  return slugToI18nKey[slug] ?? slug
 }
 
 /**
@@ -61,6 +73,8 @@ export function getSubcategoryNameBySlug(slug: string, lang: "ru" | "en" = "ru")
     "pse-1": "ps-pse",
     "extrusion": "extrusion-parts",
     "injection": "injection-parts",
+    "parts-extrusion": "extrusion-parts",
+    "parts-injection": "injection-parts",
     "vedra-tazy": "vedra-tazy",
     "uborka": "uborka",
     "steklo": "steklo",

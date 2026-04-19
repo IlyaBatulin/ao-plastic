@@ -1,9 +1,38 @@
+import type { Metadata } from "next"
 import { createClient } from "@/utils/supabase/server"
 import { notFound } from "next/navigation"
 import { ProductPageClient } from "./product-client"
 import productsData from "@/data/products.json"
+import { getProductSeo } from "@/lib/seo/catalog-meta"
+import { truncateMeta } from "@/lib/seo/text"
+import { ProductJsonLd } from "@/components/seo/product-json-ld"
+import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld"
 
 export const revalidate = 300
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ categoryId: string; subcategoryId: string; productId: string }>
+}): Promise<Metadata> {
+  const { categoryId, subcategoryId, productId } = await params
+  const seo = await getProductSeo(categoryId, subcategoryId, productId)
+  if (!seo) {
+    return { title: "Товар" }
+  }
+  const path = `/products/${categoryId}/${subcategoryId}/${productId}`
+  return {
+    title: `${seo.productName} — ${seo.categoryName}`,
+    description: seo.description,
+    alternates: { canonical: path },
+    openGraph: {
+      title: seo.productName,
+      description: seo.description,
+      url: path,
+      ...(seo.image ? { images: [{ url: seo.image, alt: seo.productName }] } : {}),
+    },
+  }
+}
 
 // Генерируем статические страницы для всех товаров
 export async function generateStaticParams() {
@@ -199,14 +228,51 @@ export default async function ProductPage({
     notFound()
   }
 
+  const canonicalPath = `/products/${categoryId}/${subcategoryId}/${productId}`
+  const rawProductDesc =
+    typeof product.description === "string"
+      ? product.description
+      : product.description != null
+        ? String(product.description)
+        : ""
+  const productLdDescription = truncateMeta(
+    rawProductDesc ||
+      `${product.name}. ${category?.name || categoryId}, ${subcategory?.name || subcategoryId}. АО «Пластик».`
+  )
+
   return (
-    <ProductPageClient
-      product={product}
-      category={category}
-      subcategory={subcategory}
-      categoryId={categoryId}
-      subcategoryId={subcategoryId}
-    />
+    <>
+      <ProductJsonLd
+        name={product.name}
+        description={productLdDescription}
+        image={product.image}
+        sku={String(product.id)}
+        category={typeof category?.name === "string" ? category.name : categoryId}
+        urlPath={canonicalPath}
+      />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Главная", path: "/" },
+          { name: "Каталог", path: "/products" },
+          {
+            name: typeof category?.name === "string" ? category.name : categoryId,
+            path: `/products/${categoryId}`,
+          },
+          {
+            name: typeof subcategory?.name === "string" ? subcategory.name : subcategoryId,
+            path: `/products/${categoryId}/${subcategoryId}`,
+          },
+          { name: product.name, path: canonicalPath },
+        ]}
+      />
+      <ProductPageClient
+        product={product}
+        category={category}
+        subcategory={subcategory}
+        categoryId={categoryId}
+        subcategoryId={subcategoryId}
+      />
+    </>
   )
 }
 

@@ -1,7 +1,15 @@
+import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
 import { BackgroundPaths } from "@/components/ui/background-paths"
 import { Shield, Leaf, HardHat, FileText, Download } from "lucide-react"
 import Link from "next/link"
+
+export const metadata: Metadata = {
+  title: "Охрана труда и экология",
+  description:
+    "Промышленная безопасность, охрана труда и экологическая политика АО «Пластик»: документы, сертификаты и принципы устойчивого развития.",
+  alternates: { canonical: "/about/safety" },
+}
 
 const documents = [
   {

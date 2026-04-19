@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
 import { BackgroundPaths } from "@/components/ui/background-paths"
 import { createClient } from "@/utils/supabase/server"
@@ -5,6 +6,13 @@ import productsData from "@/data/products.json"
 import { ProductsCatalogClient } from "@/app/products/_components/products-catalog-client"
 
 export const revalidate = 300
+
+export const metadata: Metadata = {
+  title: "Каталог продукции",
+  description:
+    "Каталог АО «Пластик»: АБС-пластики, полистирол, стирол, детали машиностроения, канистры и бытовые изделия. Подкатегории, характеристики и заказ продукции.",
+  alternates: { canonical: "/products" },
+}
 
 export default async function ProductsPage() {
   // Пытаемся получить категории из Supabase; при ошибке/пусто используем локальный JSON

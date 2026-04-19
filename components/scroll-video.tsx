@@ -16,6 +16,8 @@ interface ScrollVideoProps {
   startOffset?: number
   loop?: boolean
   poster?: string
+  /** Текст для постера (SEO / доступность) */
+  posterAlt?: string
   lazy?: boolean
 }
 
@@ -26,6 +28,7 @@ export function ScrollVideo({
   startOffset = 0,
   loop = false,
   poster,
+  posterAlt = "Производство АО «Пластик» — кадр из видео",
   lazy = true,
 }: ScrollVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -143,10 +146,9 @@ export function ScrollVideo({
         {poster && !shouldLoad && (
           <img
             src={poster}
-            alt=""
+            alt={posterAlt}
             className="absolute inset-0 w-full h-full object-cover"
             loading="lazy"
-            aria-hidden="true"
           />
         )}
         <video

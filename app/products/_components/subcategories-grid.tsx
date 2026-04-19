@@ -2,8 +2,10 @@
 
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
-import { useEffect, useRef } from "react"
+import { useEffect, useMemo, useRef } from "react"
 import { useLanguage } from "@/contexts/language-context"
+import { CustomOrderForm } from "@/app/products/_components/custom-order-form"
+import { AbsShimmerCard } from "@/app/products/_components/abs-shimmer-card"
 
 // Вспомогательная функция для получения изображения подкатегории
 function getSubcategoryImage(subcategoryId: string, slug?: string): string | null {
@@ -13,11 +15,18 @@ function getSubcategoryImage(subcategoryId: string, slug?: string): string | nul
     'ps-psv-l': '/images/polystyrene-pse-card.png',    // ПСВ-Л теперь с фото ПСЭ-1
     'ps-pse': '/images/polystyrene-psv-s-card.png',    // ПСЭ-1 теперь с фото ПСВ-С
     // АБС-пластики
-    'abs-injection': '/images/absplasric.jpeg',
-    'abs-extrusion': '/images/absplasric.jpeg',
-    'abs-custom': '/images/absplasric.jpeg',
+    'abs-injection': '/images/absiplast_main.png',
+    'abs-extrusion': '/images/absiplast_main.png',
+    'abs-custom': '/images/absiplast_main.png',
     // Хозтовары
     'vedra-tazy': '/images/xoztov/vedra_main.jpeg',
+    // Детали машиностроения (литьё / экструзия — как на главной карточке категории)
+    'injection-parts': '/images/litmain.jpeg',
+    'parts-injection': '/images/litmain.jpeg',
+    injection: '/images/litmain.jpeg',
+    'extrusion-parts': '/images/machine_main.png',
+    'parts-extrusion': '/images/machine_main.png',
+    extrusion: '/images/machine_main.png',
   }
   
   return imageMap[subcategoryId] || imageMap[slug || ''] || null
@@ -39,6 +48,12 @@ interface SubcategoriesGridProps {
 export function SubcategoriesGrid({ categoryId, subcategories }: SubcategoriesGridProps) {
   const { t } = useLanguage()
   const gridRef = useRef<HTMLDivElement>(null)
+
+  const categoryLabel = t(`homePage.catalog.categories.${categoryId}`) || categoryId
+  const orderCommentPrefix = useMemo(() => {
+    const lead = t("homePage.catalog.emptyCategoryInquiryOrderPrefix")
+    return lead ? `${lead}: ${categoryLabel}` : `Заявка по каталогу: ${categoryLabel}`
+  }, [t, categoryLabel])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -67,9 +82,20 @@ export function SubcategoriesGrid({ categoryId, subcategories }: SubcategoriesGr
 
   if (subcategories.length === 0) {
     return (
-      <section className="py-16">
-        <div className="container mx-auto px-4 lg:px-8 text-center">
-          <p className="text-muted-foreground text-lg">{t("homePage.catalog.noSubcategories")}</p>
+      <section className="w-full py-16">
+        <div className="mx-auto w-full max-w-[1920px] px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20 2xl:px-24">
+          <AbsShimmerCard>
+            <CustomOrderForm
+              categoryId={categoryId}
+              subcategoryId={null}
+              orderCommentPrefix={orderCommentPrefix}
+              orderType="category_inquiry"
+              source={`catalog-category-empty:${categoryId}`}
+              commentLabel={t("homePage.catalog.emptyCategoryCommentLabel")}
+              commentPlaceholder={t("homePage.catalog.emptyCategoryCommentPlaceholder")}
+              commentHint={t("homePage.catalog.emptyCategoryCommentHint")}
+            />
+          </AbsShimmerCard>
         </div>
       </section>
     )

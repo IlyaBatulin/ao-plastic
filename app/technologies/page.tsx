@@ -1,5 +1,13 @@
+import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
 import { Beaker, Cog, Leaf, Shield } from "lucide-react"
+
+export const metadata: Metadata = {
+  title: "Технологии производства",
+  description:
+    "Технологии АО «Пластик»: полимеризация, экструзия, контроль качества по ГОСТ и ISO, экологичные решения. Оборудование и этапы выпуска АБС, полистирола и изделий.",
+  alternates: { canonical: "/technologies" },
+}
 
 const technologies = [
   {
@@ -86,6 +94,9 @@ export default function TechnologiesPage() {
       {/* Technologies Grid */}
       <section className="py-24">
         <div className="container mx-auto px-4 lg:px-8">
+          <h2 className="text-3xl font-bold text-foreground mb-10 text-balance">
+            Ключевые направления производства
+          </h2>
           <div className="grid md:grid-cols-2 gap-8">
             {technologies.map((tech, index) => (
               <div

@@ -46,13 +46,6 @@ export function News({ items = [] }: NewsProps) {
   return (
     <section ref={sectionRef} className="py-12 lg:py-16 pt-8 bg-background">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4">{t("homePage.news.title")}</h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            {t("homePage.news.description")}
-          </p>
-        </div>
-
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 mb-12">
           {items.length > 0 ? (
             items.map((item, index) => (

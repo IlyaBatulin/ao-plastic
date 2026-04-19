@@ -1,4 +1,12 @@
+import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
+
+export const metadata: Metadata = {
+  title: "Реквизиты компании",
+  description:
+    "Юридические реквизиты АО «Пластик»: ИНН, КПП, ОГРН, юридический и почтовый адрес, контакты для договоров.",
+  alternates: { canonical: "/legal/company-details" },
+}
 
 export default function CompanyDetailsPage() {
   return (

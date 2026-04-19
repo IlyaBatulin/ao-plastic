@@ -1,15 +1,18 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { cn } from "@/lib/utils"
 
 interface StatsCounterProps {
   end: number
   duration?: number
   suffix?: string
   prefix?: string
+  /** Переопределение размеров (например, компактный блок на главной) */
+  className?: string
 }
 
-export function StatsCounter({ end, duration = 2000, suffix = "", prefix = "" }: StatsCounterProps) {
+export function StatsCounter({ end, duration = 2000, suffix = "", prefix = "", className }: StatsCounterProps) {
   const [count, setCount] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -54,7 +57,13 @@ export function StatsCounter({ end, duration = 2000, suffix = "", prefix = "" }:
   }, [isVisible, end, duration])
 
   return (
-    <div ref={ref} className="text-5xl lg:text-6xl font-bold text-[#1e3a8a] dark:text-[#60a5fa] tabular-nums">
+    <div
+      ref={ref}
+      className={cn(
+        "font-bold tabular-nums text-primary text-5xl lg:text-6xl",
+        className,
+      )}
+    >
       {prefix}
       {count}
       {suffix}

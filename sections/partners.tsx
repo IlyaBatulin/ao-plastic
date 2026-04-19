@@ -1,15 +1,48 @@
 "use client"
 
+import { cn } from "@/lib/utils"
 import { SimpleLogoLoop } from "@/components/simple-logo-loop"
-import { useLanguage } from "@/contexts/language-context"
 import { useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
 
-const partnerLogos = [
+type PartnerLogo = {
+  src: string
+  alt: string
+  href?: string
+  width?: number
+  height?: number
+  loopSlotClass?: string
+  imgClassName?: string
+  mobileImgClass?: string
+  mobileWrapClass?: string
+}
+
+const partnerLogos: PartnerLogo[] = [
   { src: "/images/partners/gazprom-logo.png", alt: "Газпром", href: "https://www.gazprom.ru", width: 200, height: 100 },
-  { src: "/images/partners/sber-logo.png", alt: "Сбербанк", href: "https://www.sberbank.ru", width: 200, height: 100 },
+  {
+    src: "/images/partners/roshim-logo.png",
+    alt: "Росхим",
+    href: "https://ruschem.ru",
+    width: 200,
+    height: 100,
+    loopSlotClass: "w-[205px] h-[88px]",
+    imgClassName: "scale-[1.08] origin-center",
+    mobileImgClass: "scale-110 origin-center",
+    mobileWrapClass: "max-w-[288px]",
+  },
+  { src: "/images/partners/vtb-bank.png", alt: "ВТБ", href: "https://www.vtb.ru", width: 200, height: 100 },
+  {
+    src: "/images/partners/abr-logo.png",
+    alt: "АБР Россия",
+    href: "https://www.abr.ru",
+    width: 200,
+    height: 100,
+    loopSlotClass: "w-[205px] h-[88px]",
+    imgClassName: "scale-[1.08] origin-center",
+    mobileImgClass: "scale-110 origin-center",
+    mobileWrapClass: "max-w-[288px]",
+  },
   { src: "/images/partners/GAZ-Logo.png", alt: "ГАЗ", href: "https://www.avtogaz.ru", width: 200, height: 100 },
   { src: "/images/partners/kamaz-logo.png", alt: "КАМАЗ", href: "https://kamaz.ru", width: 200, height: 100 },
   { src: "/images/partners/lada-logo.png", alt: "LADA", href: "https://www.lada.ru", width: 200, height: 100 },
@@ -18,7 +51,6 @@ const partnerLogos = [
 ]
 
 export function Partners() {
-  const { t } = useLanguage()
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const nextLogo = () => {
@@ -35,11 +67,6 @@ export function Partners() {
     <section id="partners" className="py-12 lg:py-16 pb-8">
       <div className="container mx-auto px-4 lg:px-8">
         <div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-4 text-center">{t("homePage.partners.title")}</h2>
-          <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
-            {t("homePage.partners.description")}
-          </p>
-          
           {/* Desktop: Animated Loop */}
           <div className="hidden lg:block relative py-6">
             <SimpleLogoLoop logos={partnerLogos} speed={40} />
@@ -64,22 +91,25 @@ export function Partners() {
                     href={currentLogo.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block w-full max-w-[200px] h-auto"
+                    className={cn("block w-full h-auto", currentLogo.mobileWrapClass ?? "max-w-[260px]")}
                   >
-                    <Image
+                    <img
                       src={currentLogo.src}
                       alt={currentLogo.alt || ""}
-                      width={200}
-                      height={100}
-                      className="w-full h-auto object-contain opacity-90 hover:opacity-100 transition-opacity"
+                      width={currentLogo.width ?? 200}
+                      height={currentLogo.height ?? 100}
+                      className={cn(
+                        "w-full h-auto object-contain opacity-90 hover:opacity-100 transition-opacity",
+                        currentLogo.mobileImgClass,
+                      )}
                     />
                   </Link>
                 ) : (
-                  <Image
+                  <img
                     src={currentLogo.src}
                     alt={currentLogo.alt || ""}
-                    width={200}
-                    height={100}
+                    width={currentLogo.width ?? 200}
+                    height={currentLogo.height ?? 100}
                     className="w-full max-w-[200px] h-auto object-contain opacity-90"
                   />
                 )}

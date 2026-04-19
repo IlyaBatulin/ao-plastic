@@ -1,4 +1,13 @@
+import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
+
+export const metadata: Metadata = {
+  title: "Политика конфиденциальности",
+  description:
+    "Политика обработки персональных данных на сайте АО «Пластик»: цели, сроки хранения и права пользователей.",
+  robots: { index: true, follow: true },
+  alternates: { canonical: "/legal/privacy-policy" },
+}
 
 export default function PrivacyPolicyPage() {
   return (

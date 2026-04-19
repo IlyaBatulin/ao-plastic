@@ -8,6 +8,8 @@ import Link from "next/link"
 import { useCart } from "@/contexts/cart-context"
 import { useToast } from "@/hooks/use-toast"
 import { formatSpecKey, formatSpecValue } from "@/lib/formatters"
+import { useLanguage } from "@/contexts/language-context"
+import { getHouseholdProductEn } from "@/lib/household-product-en"
 
 export default function ProductsGrid({ 
   products, 
@@ -21,6 +23,7 @@ export default function ProductsGrid({
   const gridRef = useRef<HTMLDivElement>(null)
   const { addItem } = useCart()
   const { toast } = useToast()
+  const { lang, t } = useLanguage()
 
   // ДМС (литьевые и экструзионные) — карточки сразу видимы, без анимации при скролле
   const isDms = categoryId === "machine-parts"
@@ -55,7 +58,9 @@ export default function ProductsGrid({
   if (products.length === 0) {
     return (
       <div className="text-center py-20">
-        <p className="text-muted-foreground text-lg">В этой подкатегории пока нет товаров</p>
+        <p className="text-muted-foreground text-lg">
+          {t("homePage.catalog.productList.emptySubcategory") || "В этой подкатегории пока нет товаров"}
+        </p>
       </div>
     )
   }
@@ -66,6 +71,11 @@ export default function ProductsGrid({
         const specs = typeof product.specifications === "string"
           ? JSON.parse(product.specifications)
           : product.specifications || {}
+
+        const householdEn =
+          categoryId === "hoztovary" && lang === "en" ? getHouseholdProductEn(String(product.id)) : null
+        const displayName = householdEn?.name ?? product.name
+        const displayDescription = householdEn?.description ?? product.description
 
         return (
           <Link
@@ -83,22 +93,19 @@ export default function ProductsGrid({
               <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent z-10" />
               <Image
                 src={product.image || "/placeholder.svg"}
-                alt={product.name}
+                alt={displayName}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
-              <div className="absolute top-4 right-4 z-20 bg-primary/10 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-primary">
-                NEW
-              </div>
             </div>
 
             {/* Content */}
             <div className="p-6">
               <h3 className="text-xl font-bold mb-2 transition-colors duration-300 group-hover:text-primary">
-                {product.name}
+                {displayName}
               </h3>
               <p className="text-muted-foreground text-sm mb-4 leading-relaxed line-clamp-2">
-                {product.description}
+                {displayDescription}
               </p>
 
               {Object.keys(specs).length > 0 && (
@@ -125,7 +132,7 @@ export default function ProductsGrid({
                   
                   addItem({
                     productId: product.id,
-                    productName: product.name,
+                    productName: displayName,
                     productImage: product.image,
                     categoryId: categoryId || '',
                     subcategoryId: subcategoryId,
@@ -137,7 +144,7 @@ export default function ProductsGrid({
                   const unit = isHouseholdProduct ? 'уп' : 'т'
                   toast({
                     title: "Товар добавлен в корзину",
-                    description: `${product.name}: 1 ${unit}${isHouseholdProduct && packageQuantity && packageQuantity > 1 ? ` (${packageQuantity} шт/уп)` : ''}`,
+                    description: `${displayName}: 1 ${unit}${isHouseholdProduct && packageQuantity && packageQuantity > 1 ? ` (${packageQuantity} шт/уп)` : ''}`,
                   })
                 }}
               >

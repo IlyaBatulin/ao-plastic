@@ -1,4 +1,12 @@
+import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
+
+export const metadata: Metadata = {
+  title: "Пользовательское соглашение",
+  description:
+    "Пользовательское соглашение сайта АО «Пластик»: правила использования материалов, ответственность сторон.",
+  alternates: { canonical: "/legal/terms" },
+}
 
 export default function TermsPage() {
   return (

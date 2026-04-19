@@ -1,8 +1,16 @@
+import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
 import { Award, CheckCircle, FileCheck, FlaskConical, Shield, Download, FileText } from "lucide-react"
 import Link from "next/link"
 import { BackgroundPaths } from "@/components/ui/background-paths"
 import { CertificatesCarousel } from "./certificates-carousel"
+
+export const metadata: Metadata = {
+  title: "Политика качества",
+  description:
+    "Система менеджмента качества АО «Пластик»: политика, принципы ISO, лабораторный контроль АБС и полистирола, сертификаты.",
+  alternates: { canonical: "/about/quality" },
+}
 
 const principles = [
   {

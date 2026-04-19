@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { Hero } from "@/sections/hero"
 import { Stats } from "@/sections/stats"
 import { About } from "@/sections/about"
@@ -5,9 +6,22 @@ import { Partners } from "@/sections/partners"
 import { News } from "@/sections/news"
 import { Contact } from "@/sections/contact"
 import { Footer } from "@/components/footer"
+import { HomeSectionDivider } from "@/components/home-section-divider"
 import { createClient, withRetry } from "@/utils/supabase/server"
 
 export const revalidate = 300
+
+export const metadata: Metadata = {
+  title: {
+    absolute:
+      "АО «Пластик» — производство АБС-пластиков, полистирола и полимеров | Узловая",
+  },
+  description:
+    "Официальный сайт производителя: АБС-пластики (литьё и экструзия), вспенивающийся и экструзионный полистирол, стирол, детали машиностроения, товары народного потребления. Каталог, новости, контакты завода в Узловой.",
+  alternates: {
+    canonical: "/",
+  },
+}
 
 export default async function Home() {
   let newsItems: { id: number; title: string; excerpt: string | null; image_url: string | null; published_at: string | null; slug: string | null }[] = []
@@ -40,10 +54,15 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-background">
       <Hero />
+      <HomeSectionDivider titleKey="homePage.stats.title" subtitleKey="homePage.stats.subtitle" />
       <Stats />
+      <HomeSectionDivider titleKey="homePage.about.title" />
       <About />
+      <HomeSectionDivider titleKey="homePage.partners.title" subtitleKey="homePage.partners.description" />
       <Partners />
+      <HomeSectionDivider titleKey="homePage.news.title" subtitleKey="homePage.news.description" />
       <News items={newsItems} />
+      <HomeSectionDivider titleKey="homePage.contact.title" subtitleKey="homePage.contact.description" />
       <Contact />
       <Footer />
     </main>

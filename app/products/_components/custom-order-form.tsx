@@ -6,7 +6,28 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 
-export function CustomOrderForm() {
+export type CustomOrderFormProps = {
+  categoryId?: string
+  /** `null` — заявка только по категории; не указано — подкатегория abs-custom (как раньше) */
+  subcategoryId?: string | null
+  orderCommentPrefix?: string
+  orderType?: string
+  source?: string
+  commentPlaceholder?: string
+  commentLabel?: string
+  commentHint?: string
+}
+
+export function CustomOrderForm({
+  categoryId = "abs",
+  subcategoryId,
+  orderCommentPrefix = "Заявка об АБС пластике на заказ",
+  orderType = "custom_abs",
+  source = "abs-custom-page",
+  commentPlaceholder = "Опишите, какие изделия из АБС-пластика вам необходимы, их характеристики, количество, сроки изготовления и другие требования...",
+  commentLabel = "Описание заказа / Комментарий",
+  commentHint = "Укажите тип изделия, размеры, количество, цвет, особые требования и другие детали",
+}: CustomOrderFormProps = {}) {
   const { toast } = useToast()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState({
@@ -30,25 +51,31 @@ export function CustomOrderForm() {
 
     setIsSubmitting(true)
 
+    const resolvedSubcategoryId =
+      subcategoryId === null ? undefined : subcategoryId !== undefined ? subcategoryId : "abs-custom"
+    const orderItem: { categoryId: string; quantity: number; subcategoryId?: string } = {
+      categoryId,
+      quantity: 1,
+    }
+    if (resolvedSubcategoryId) {
+      orderItem.subcategoryId = resolvedSubcategoryId
+    }
+
     try {
       const response = await fetch("/api/order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          items: [{
-            categoryId: "abs",
-            subcategoryId: "abs-custom",
-            quantity: 1,
-          }],
+          items: [orderItem],
           customerName: formData.customerName.trim(),
           customerPhone: formData.customerPhone.trim(),
           customerEmail: formData.customerEmail.trim() || undefined,
-          comment: formData.comment.trim() 
-            ? `Заявка об АБС пластике на заказ\n\n${formData.comment.trim()}`
-            : "Заявка об АБС пластике на заказ",
+          comment: formData.comment.trim()
+            ? `${orderCommentPrefix}\n\n${formData.comment.trim()}`
+            : orderCommentPrefix,
           payload: {
-            orderType: "custom_abs",
-            source: "abs-custom-page",
+            orderType,
+            source,
           },
         }),
       })
@@ -125,26 +152,18 @@ export function CustomOrderForm() {
       </div>
 
       <div>
-        <label className="text-sm font-semibold mb-2 block">
-          Описание заказа / Комментарий
-        </label>
+        <label className="text-sm font-semibold mb-2 block">{commentLabel}</label>
         <Textarea
           value={formData.comment}
           onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
-          placeholder="Опишите, какие изделия из АБС-пластика вам необходимы, их характеристики, количество, сроки изготовления и другие требования..."
+          placeholder={commentPlaceholder}
           rows={6}
           className="resize-none"
         />
-        <p className="text-xs text-muted-foreground mt-2">
-          Укажите тип изделия, размеры, количество, цвет, особые требования и другие детали
-        </p>
+        <p className="text-xs text-muted-foreground mt-2">{commentHint}</p>
       </div>
 
-      <Button
-        type="submit"
-        className="w-full h-14 text-lg bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
-        disabled={isSubmitting}
-      >
+      <Button type="submit" className="w-full h-14 text-lg" disabled={isSubmitting}>
         {isSubmitting ? "Отправка..." : "Отправить заявку"}
       </Button>
     </form>

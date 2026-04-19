@@ -23,6 +23,7 @@ interface ProductsCatalogClientProps {
 
 export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps) {
   const { t } = useLanguage()
+  const catalogCategories = categories.filter((c) => c.id !== "custom-abs")
 
   return (
     <div className="min-h-screen bg-transparent">
@@ -45,7 +46,7 @@ export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps
       <section className="py-20">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {categories.map((category: Category) => {
+            {catalogCategories.map((category: Category) => {
               const categoryName = t(`homePage.catalog.categories.${category.id}`) || category.name
               return (
                 <Link
@@ -54,7 +55,7 @@ export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps
                   className="group relative bg-card rounded-3xl overflow-hidden border-2 border-border hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-2"
                 >
                   {/* Image */}
-                  <div className={`relative h-56 overflow-hidden ${category.id === "custom-abs" ? "bg-white" : "bg-gradient-to-br from-primary/10 to-primary/5"}`}>
+                  <div className="relative h-56 overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5">
                     <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent z-10 pointer-events-none" />
                     <Image
                       src={
@@ -70,14 +71,12 @@ export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps
                                   ? "/images/hoztov_main.png"
                                   : category.id === "machine-parts"
                                     ? "/images/machine_main.png"
-                                    : category.id === "custom-abs"
-                                      ? "/images/logo1.png"
-                                      : category.image ||
+                                    : category.image ||
                                         `/placeholder.svg?height=400&width=600&query=${encodeURIComponent(categoryName)}`
                       }
                       alt={categoryName}
                       fill
-                      className={category.id === "custom-abs" ? "object-contain p-6 group-hover:scale-105 transition-transform duration-700" : "object-cover group-hover:scale-110 transition-transform duration-700"}
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                   </div>
 

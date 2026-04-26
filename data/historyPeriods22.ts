@@ -114,7 +114,7 @@ export const historyPeriods: HistoryPeriod[] = [
     infographic: [
       { value: "4.0", label: "Индустрия" },
       { value: "130+", label: "контрагентов в РФ и СНГ" },
-      { value: "2000+", label: "сотрудников" },
+      { value: "1000", label: "сотрудников" },
       { value: "20+", label: "партнёров" }
     ]
   }

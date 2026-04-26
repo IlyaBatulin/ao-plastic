@@ -48,14 +48,16 @@ export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {catalogCategories.map((category: Category) => {
               const categoryName = t(`homePage.catalog.categories.${category.id}`) || category.name
+              const categoryDescription =
+                t(`homePage.catalog.categoryDescriptions.${category.id}`) || category.description
               return (
                 <Link
                   key={category.id}
                   href={`/products/${category.id}`}
-                  className="group relative bg-card rounded-3xl overflow-hidden border-2 border-border hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-2"
+                  className="group relative flex h-full min-h-0 flex-col bg-card rounded-3xl overflow-hidden border-2 border-border hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-2"
                 >
                   {/* Image */}
-                  <div className="relative h-56 overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5">
+                  <div className="relative h-56 shrink-0 overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5">
                     <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent z-10 pointer-events-none" />
                     <Image
                       src={
@@ -64,7 +66,7 @@ export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps
                           : category.id === "kors"
                             ? "/images/kors_bentol_main.png"
                             : category.id === "styrene"
-                              ? "/stirol_main.png"
+                              ? "/images/styrolmain.png"
                               : category.id === "polystyrene"
                                 ? "/images/polist_main.png"
                                 : category.id === "hoztovary"
@@ -80,49 +82,51 @@ export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps
                     />
                   </div>
 
-                  {/* Content */}
-                  <div className="p-8">
-                    <div className="flex items-start gap-4 mb-4">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
-                        <Package className="w-6 h-6 text-primary" />
+                  {/* Content — flex-1 + CTA внизу, чтобы «Подробнее» был на одной линии в ряду */}
+                  <div className="flex min-h-0 flex-1 flex-col p-8">
+                    <div className="min-h-0 flex-1">
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+                          <Package className="w-6 h-6 text-primary" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-2xl font-bold mb-2 group-hover:text-primary transition-colors text-balance">
+                            {categoryName}
+                          </h3>
+                          {categoryDescription ? (
+                            <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2">
+                              {categoryDescription}
+                            </p>
+                          ) : null}
+                        </div>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-2xl font-bold mb-2 group-hover:text-primary transition-colors text-balance">
-                          {categoryName}
-                        </h3>
-                        {category.description && (
-                          <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2">
-                            {category.description}
+
+                      {category.subcategories && category.subcategories.length > 0 && (
+                        <div className="mt-6 border-t border-border pt-6">
+                          <p className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
+                            {t("homePage.catalog.sections")}
                           </p>
-                        )}
-                      </div>
+                          <ul className="space-y-2">
+                            {category.subcategories.slice(0, 3).map((sub: any) => {
+                              const subcategoryName = t(`homePage.catalog.subcategories.${sub.id}`) || sub.name
+                              return (
+                                <li key={sub.id} className="text-sm text-muted-foreground flex items-center gap-2">
+                                  <ArrowRight className="w-4 h-4 text-primary flex-shrink-0" />
+                                  <span className="line-clamp-1">{subcategoryName}</span>
+                                </li>
+                              )
+                            })}
+                            {category.subcategories.length > 3 && (
+                              <li className="text-sm text-primary font-medium">
+                                +{category.subcategories.length - 3} {t("homePage.catalog.more")}
+                              </li>
+                            )}
+                          </ul>
+                        </div>
+                      )}
                     </div>
 
-                    {category.subcategories && category.subcategories.length > 0 && (
-                      <div className="mt-6 pt-6 border-t border-border">
-                        <p className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
-                          {t("homePage.catalog.sections")}
-                        </p>
-                        <ul className="space-y-2">
-                          {category.subcategories.slice(0, 3).map((sub: any) => {
-                            const subcategoryName = t(`homePage.catalog.subcategories.${sub.id}`) || sub.name
-                            return (
-                              <li key={sub.id} className="text-sm text-muted-foreground flex items-center gap-2">
-                                <ArrowRight className="w-4 h-4 text-primary flex-shrink-0" />
-                                <span className="line-clamp-1">{subcategoryName}</span>
-                              </li>
-                            )
-                          })}
-                          {category.subcategories.length > 3 && (
-                            <li className="text-sm text-primary font-medium">
-                              +{category.subcategories.length - 3} {t("homePage.catalog.more")}
-                            </li>
-                          )}
-                        </ul>
-                      </div>
-                    )}
-
-                    <div className="mt-6 flex items-center gap-2 text-primary font-semibold group-hover:gap-4 transition-all">
+                    <div className="mt-auto flex items-center gap-2 pt-6 text-primary font-semibold group-hover:gap-4 transition-all">
                       {t("homePage.catalog.readMore")}
                       <ArrowRight className="w-5 h-5" />
                     </div>

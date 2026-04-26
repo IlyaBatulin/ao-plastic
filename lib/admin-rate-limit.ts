@@ -8,14 +8,14 @@ const attempts = new Map<string, { count: number; blockedUntil: number }>()
 const MAX_ATTEMPTS = 5
 const BLOCK_DURATION_MS = 15 * 60 * 1000 // 15 минут
 
-function getClientKey(req: Request): string {
+function getClientKey(req: Request, scope: string = "admin"): string {
   const forwarded = req.headers.get("x-forwarded-for")
   const ip = forwarded ? forwarded.split(",")[0].trim() : "unknown"
-  return ip
+  return `${scope}:${ip}`
 }
 
-export function isRateLimited(req: Request): boolean {
-  const key = getClientKey(req)
+export function isRateLimited(req: Request, scope?: string): boolean {
+  const key = getClientKey(req, scope)
   const record = attempts.get(key)
 
   if (!record) return false
@@ -29,15 +29,15 @@ export function isRateLimited(req: Request): boolean {
   return false
 }
 
-export function getBlockedUntil(req: Request): number | null {
-  const key = getClientKey(req)
+export function getBlockedUntil(req: Request, scope?: string): number | null {
+  const key = getClientKey(req, scope)
   const record = attempts.get(key)
   if (!record || Date.now() >= record.blockedUntil) return null
   return record.blockedUntil
 }
 
-export function recordFailedAttempt(req: Request): void {
-  const key = getClientKey(req)
+export function recordFailedAttempt(req: Request, scope?: string): void {
+  const key = getClientKey(req, scope)
   const now = Date.now()
   const record = attempts.get(key)
 
@@ -59,7 +59,7 @@ export function recordFailedAttempt(req: Request): void {
   }
 }
 
-export function clearAttempts(req: Request): void {
-  const key = getClientKey(req)
+export function clearAttempts(req: Request, scope?: string): void {
+  const key = getClientKey(req, scope)
   attempts.delete(key)
 }

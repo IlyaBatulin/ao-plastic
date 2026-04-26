@@ -68,133 +68,58 @@ export function DeliveryMapLeaflet({ factory, office, regions }: DeliveryMapLeaf
       stroke: am5.color(0x334155),
     })
 
-    const pointSeries = chart.series.push(
+    const regionPointSeries = chart.series.push(
       am5map.MapPointSeries.new(root, {
         latitudeField: "lat",
         longitudeField: "lon",
       })
     )
 
-    const pointData: {
+    const regionPointData: {
       lat: number
       lon: number
       name: string
       fill: am5.Color
-      radius: number
+      fillBright: am5.Color
       tooltipText: string
       productLabel?: string
-      isMain?: boolean
-    }[] = [
-      {
-        lat: factory.lat,
-        lon: factory.lon,
-        name: factory.label,
-        fill: am5.color(0x34d399),
-        fillBright: am5.color(0xa7f3d0),
-        radius: 12,
-        tooltipText: factory.label,
-        isMain: true,
-      },
-      {
-        lat: office.lat,
-        lon: office.lon,
-        name: office.label,
-        fill: am5.color(0x3b82f6),
-        fillBright: am5.color(0x93c5fd),
-        radius: 12,
-        tooltipText: office.label,
-        isMain: true,
-      },
-      ...regions.map((r) => ({
+    }[] = regions.map((r) => ({
         lat: r.lat,
         lon: r.lon,
         name: r.label,
-        fill: am5.color(0x3b82f6),
-        fillBright: am5.color(0x93c5fd),
-        radius: 5,
+        fill: am5.color(0x64748b),
+        fillBright: am5.color(0xcbd5e1),
         tooltipText: r.products ? `${r.label}\nТовары: ${r.products}` : r.label,
         productLabel: r.products ?? "",
-        isMain: false,
-      })),
-    ]
+      }))
 
-    pointSeries.data.setAll(pointData)
-
-    pointSeries.bullets.push(function (_root, _target, dataItem) {
+    regionPointSeries.data.setAll(regionPointData)
+    regionPointSeries.bullets.push(function (_root, _target, dataItem) {
       const ctx = dataItem.get("dataContext") as {
         fill?: am5.Color
         fillBright?: am5.Color
-        radius?: number
         tooltipText?: string
         productLabel?: string
-        isMain?: boolean
       }
-      const isMain = ctx?.isMain ?? false
-      if (isMain) {
-        circle.states.create("hover", { scale: 1.1 })
-        const fillColor = ctx?.fill ?? am5.color(0x22c55e)
-        const fillBright = ctx?.fillBright ?? am5.color(0xbbf7d0)
-        const container = am5.Container.new(root, {})
-        const glowOuter = am5.Circle.new(root, {
-          radius: 32,
-          fill: fillColor,
-          fillOpacity: 0.35,
-          strokeOpacity: 0,
-        })
-        const glowMid = am5.Circle.new(root, {
-          radius: 22,
-          fill: fillColor,
-          fillOpacity: 0.55,
-          strokeOpacity: 0,
-        })
-        const ring = am5.Circle.new(root, {
-          radius: 16,
-          fill: fillBright,
-          fillOpacity: 0.9,
-          stroke: am5.color(0xffffff),
-          strokeWidth: 3,
-          strokeOpacity: 1,
-        })
-        const core = am5.Circle.new(root, {
-          radius: 6,
-          fill: am5.color(0xffffff),
-          fillOpacity: 1,
-          strokeOpacity: 0,
-        })
-        container.children.push(glowOuter)
-        container.children.push(glowMid)
-        container.children.push(ring)
-        container.children.push(core)
-        container.set("tooltipText", "{tooltipText}")
-        glowOuter.animate({
-          key: "opacity",
-          from: 0.35,
-          to: 0.65,
-          duration: 1500,
-          loops: Infinity,
-          easing: am5.ease.yoyo(am5.ease.inOut(am5.ease.sine)),
-        })
-        return am5.Bullet.new(root, { sprite: container })
-      }
-      const fillColor = ctx?.fill ?? am5.color(0x3b82f6)
-      const fillBright = ctx?.fillBright ?? am5.color(0x93c5fd)
+      const fillColor = ctx?.fill ?? am5.color(0x64748b)
+      const fillBright = ctx?.fillBright ?? am5.color(0xcbd5e1)
       const container = am5.Container.new(root, { layout: root.verticalLayout })
       const glowOuter = am5.Circle.new(root, {
-        radius: 14,
+        radius: 10,
         fill: fillColor,
-        fillOpacity: 0.4,
+        fillOpacity: 0.22,
         strokeOpacity: 0,
       })
       const ring = am5.Circle.new(root, {
-        radius: 7,
+        radius: 5,
         fill: fillBright,
-        fillOpacity: 0.95,
+        fillOpacity: 0.88,
         stroke: am5.color(0xffffff),
-        strokeWidth: 1.5,
-        strokeOpacity: 1,
+        strokeWidth: 1,
+        strokeOpacity: 0.75,
       })
       const core = am5.Circle.new(root, {
-        radius: 2.5,
+        radius: 2,
         fill: am5.color(0xffffff),
         fillOpacity: 1,
         strokeOpacity: 0,
@@ -203,28 +128,156 @@ export function DeliveryMapLeaflet({ factory, office, regions }: DeliveryMapLeaf
       container.children.push(ring)
       container.children.push(core)
       container.set("tooltipText", "{tooltipText}")
-      glowOuter.animate({
-        key: "opacity",
-        from: 0.35,
-        to: 0.6,
-        duration: 1800,
-        loops: Infinity,
-        easing: am5.ease.yoyo(am5.ease.inOut(am5.ease.sine)),
-      })
       if (ctx?.productLabel) {
         const label = am5.Label.new(root, {
           text: "{productLabel}",
-          fill: am5.color(0x93c5fd),
-          fontSize: 9,
-          maxWidth: 90,
+          fill: am5.color(0x94a3b8),
+          fontSize: 8,
+          maxWidth: 86,
           wrap: true,
           centerX: am5.percent(50),
           textAlign: "center",
-          paddingTop: 3,
+          paddingTop: 2,
           populateText: true,
         })
         container.children.push(label)
       }
+      return am5.Bullet.new(root, { sprite: container })
+    })
+
+    const mainPointSeries = chart.series.push(
+      am5map.MapPointSeries.new(root, {
+        latitudeField: "lat",
+        longitudeField: "lon",
+      })
+    )
+
+    const mainPointData: {
+      lat: number
+      lon: number
+      name: string
+      fill: am5.Color
+      fillBright: am5.Color
+      tooltipText: string
+      labelText: string
+      captionText: string
+    }[] = [
+      {
+        lat: factory.lat,
+        lon: factory.lon,
+        name: factory.label,
+        fill: am5.color(0x2563eb),
+        fillBright: am5.color(0x60a5fa),
+        tooltipText: factory.label,
+        labelText: "ЗАВОД",
+        captionText: "Узловая",
+      },
+      {
+        lat: office.lat,
+        lon: office.lon,
+        name: office.label,
+        fill: am5.color(0x0284c7),
+        fillBright: am5.color(0x7dd3fc),
+        tooltipText: office.label,
+        labelText: "ОФИС ПРОДАЖ",
+        captionText: "Москва",
+      },
+    ]
+
+    mainPointSeries.data.setAll(mainPointData)
+
+    mainPointSeries.bullets.push(function (_root, _target, dataItem) {
+      const ctx = dataItem.get("dataContext") as {
+        fill?: am5.Color
+        fillBright?: am5.Color
+        tooltipText?: string
+        labelText?: string
+        captionText?: string
+      }
+      const fillColor = ctx?.fill ?? am5.color(0x2563eb)
+      const fillBright = ctx?.fillBright ?? am5.color(0x60a5fa)
+      const container = am5.Container.new(root, {})
+      const glowOuter = am5.Circle.new(root, {
+        radius: 44,
+        fill: fillColor,
+        fillOpacity: 0.16,
+        strokeOpacity: 0,
+      })
+      const pulse = am5.Circle.new(root, {
+        radius: 25,
+        fillOpacity: 0,
+        stroke: fillBright,
+        strokeWidth: 2,
+        strokeOpacity: 0.55,
+      })
+      const pinBase = am5.Circle.new(root, {
+        radius: 19,
+        fill: am5.color(0x020617),
+        fillOpacity: 0.9,
+        stroke: fillBright,
+        strokeWidth: 3,
+        strokeOpacity: 0.85,
+      })
+      const pinCore = am5.Circle.new(root, {
+        radius: 8,
+        fill: fillBright,
+        fillOpacity: 0.9,
+        stroke: am5.color(0xffffff),
+        strokeWidth: 1.5,
+      })
+      const label = am5.Label.new(root, {
+        text: "{labelText}\n[fontSize:11px; fontWeight:500]{captionText}[/]",
+        populateText: true,
+        fill: am5.color(0xffffff),
+        fontSize: 13,
+        fontWeight: "800",
+        centerX: am5.percent(50),
+        centerY: am5.percent(100),
+        y: -40,
+        textAlign: "center",
+        paddingTop: 8,
+        paddingRight: 12,
+        paddingBottom: 8,
+        paddingLeft: 12,
+        background: am5.RoundedRectangle.new(root, {
+          fill: am5.color(0x020617),
+          fillOpacity: 0.86,
+          stroke: fillBright,
+          strokeOpacity: 0.75,
+          strokeWidth: 1,
+        }),
+      })
+      container.children.push(glowOuter)
+      container.children.push(pulse)
+      container.children.push(pinBase)
+      container.children.push(pinCore)
+      container.children.push(label)
+      container.set("tooltipText", "{tooltipText}")
+      glowOuter.animate({
+        key: "scale",
+        from: 0.85,
+        to: 1.18,
+        duration: 1800,
+        loops: Infinity,
+        easing: am5.ease.yoyo(am5.ease.inOut(am5.ease.sine)),
+      })
+      pulse.animate({
+        key: "scale",
+        from: 0.85,
+        to: 1.35,
+        duration: 1800,
+        loops: Infinity,
+        easing: am5.ease.yoyo(am5.ease.inOut(am5.ease.sine)),
+      })
+      pulse.animate({
+        key: "opacity",
+        from: 0.55,
+        to: 0.18,
+        duration: 1800,
+        loops: Infinity,
+        easing: am5.ease.yoyo(am5.ease.inOut(am5.ease.sine)),
+      })
+      container.states.create("hover", { scale: 1.12 })
       return am5.Bullet.new(root, { sprite: container })
     })
 
@@ -238,7 +291,7 @@ export function DeliveryMapLeaflet({ factory, office, regions }: DeliveryMapLeaf
 
   return (
     <div
-      className="relative w-full rounded-xl overflow-hidden"
+      className="delivery-map-chart-frame relative w-full rounded-xl overflow-hidden bg-[#050d1c]"
       style={{ touchAction: "none" }}
       onWheel={(e) => {
         e.preventDefault()
@@ -254,7 +307,14 @@ export function DeliveryMapLeaflet({ factory, office, regions }: DeliveryMapLeaf
         className="w-full"
         style={{ height: 600 }}
       />
-      <div className="absolute top-3 right-3 z-10 flex rounded-lg overflow-hidden border border-white/10 bg-black/50">
+      <style>{`
+        .delivery-map-chart-frame canvas.am5-layer-30 {
+          left: 2px !important;
+          top: 10px !important;
+        }
+      `}</style>
+      <div className="pointer-events-none absolute inset-0 z-[2] rounded-xl ring-1 ring-cyan-300/20 [box-shadow:inset_0_0_80px_rgba(34,211,238,0.12)]" />
+      <div className="absolute right-3 top-3 z-10 flex rounded-lg overflow-hidden border border-white/10 bg-black/50">
         <button
           type="button"
           onClick={() => setGlobeMode(false)}

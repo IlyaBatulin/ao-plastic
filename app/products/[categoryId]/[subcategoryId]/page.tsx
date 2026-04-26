@@ -10,6 +10,7 @@ import productsData from "@/data/products.json"
 import { getSubcategorySeo } from "@/lib/seo/catalog-meta"
 import { truncateMeta } from "@/lib/seo/text"
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld"
+import { resolveProductImageUrl } from "@/lib/product-image"
 
 export const revalidate = 300
 
@@ -142,7 +143,12 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ ca
       ...(specifications ?? {}),
     }
 
-    const image = product.image || categoryImage || fallback?.image || fallbackCategory?.image || undefined
+    const imageRaw = product.image || categoryImage || fallback?.image || fallbackCategory?.image || undefined
+    const image = resolveProductImageUrl(
+      String(product.id),
+      imageRaw,
+      categoryImage || fallbackCategory?.image
+    )
     const description = product.description ?? fallback?.description ?? fallbackCategory?.description
 
     return {
@@ -177,14 +183,18 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ ca
           name: item.name,
           description: description || null,
           image: item.image || "/placeholder-logo.png",
-          // Спецификации только из полей документа/таблицы
+          // Как на странице товара — русские подписи (в т.ч. при EN-интерфейсе)
           specifications: {
-            type: item.type,
-            subtype: item.subtype,
-            size_raw: item.size_raw,
-            code: item.code,
-            length_raw: item.length_raw,
-            length_kind: item.length_kind,
+            "Тип изделия": item.type,
+            ...(item.subtype ? { Подтип: item.subtype } : {}),
+            ...(item.size_raw ? { "Габаритные размеры": item.size_raw } : {}),
+            ...(item.code ? { "Шифр изделия": item.code } : {}),
+            ...(item.length_raw ? { "Длина изделия": item.length_raw } : {}),
+            ...(item.length_kind === "coil"
+              ? { Поставка: "в бухтах" }
+              : item.length_kind === "fixed"
+                ? { Поставка: "фиксированная длина" }
+                : {}),
           },
         }
       })

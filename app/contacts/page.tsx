@@ -22,7 +22,6 @@ export default function ContactsPage() {
     { key: "abs", phone: "+7 (495) 201-03-33 доб.116", email: "info@td-plastic.ru" },
     { key: "polystyrene", phone: "+7 (495) 201-03-33 доб.108", email: "info@td-plastic.ru" },
     { key: "machineParts", phone: "+7 (487) 412-43-06, +7 (487) 312-48-99; +7 (495) 201-03-33 доб.206", email: "info@td-plastic.ru" },
-    { key: "absFilament", phone: "+7 (487) 312-43-06, +7 (487) 312-48-32", email: "info@td-plastic.ru" },
     { key: "cors", phone: "+7 (487) 312-48-32", email: "info@td-plastic.ru" },
     { key: "liquidation", phone: "+7 (487) 312-48-32", email: "info@td-plastic.ru" },
     { key: "consumerGoods", phone: "+7 (495) 201-03-33 доб.119", email: "tnp@td-plastic.ru" },

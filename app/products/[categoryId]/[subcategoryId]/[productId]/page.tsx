@@ -6,6 +6,7 @@ import productsData from "@/data/products.json"
 import { getProductSeo } from "@/lib/seo/catalog-meta"
 import { truncateMeta } from "@/lib/seo/text"
 import { ProductJsonLd } from "@/components/seo/product-json-ld"
+import { resolveProductImageUrl } from "@/lib/product-image"
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld"
 
 export const revalidate = 300
@@ -228,6 +229,12 @@ export default async function ProductPage({
     notFound()
   }
 
+  const productImageForLd = resolveProductImageUrl(
+    String(productId),
+    product.image,
+    typeof category?.image === "string" ? category.image : null
+  )
+
   const canonicalPath = `/products/${categoryId}/${subcategoryId}/${productId}`
   const rawProductDesc =
     typeof product.description === "string"
@@ -245,7 +252,7 @@ export default async function ProductPage({
       <ProductJsonLd
         name={product.name}
         description={productLdDescription}
-        image={product.image}
+        image={productImageForLd}
         sku={String(product.id)}
         category={typeof category?.name === "string" ? category.name : categoryId}
         urlPath={canonicalPath}

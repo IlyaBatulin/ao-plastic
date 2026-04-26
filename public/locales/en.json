@@ -65,7 +65,6 @@
         "abs": "ABS Plastics",
         "polystyrene": "Polystyrene",
         "machineParts": "Machine Parts",
-        "absFilament": "ABS Filament for 3D Printers",
         "cors": "CORS (Cubic Residue of Styrene Rectification)",
         "liquidation": "Liquidation",
         "consumerGoods": "Consumer Goods"
@@ -87,7 +86,7 @@
       "title": "Working Hours",
       "production": "Production",
       "salesOffice": "Sales Office",
-      "productionHours": "Mon-Fri: 08:00 – 17:00",
+      "productionHours": "Mon–Thu: 08:30 – 17:30, Fri: 08:30 – 16:30",
       "salesHours": "Mon-Fri: 09:00 – 18:00",
       "weekend": "Sat-Sun: Closed",
       "unifiedPhone": "For urgent contact, use the unified phone:"
@@ -189,7 +188,7 @@
     "about": {
       "title": "About Us",
       "paragraph1": "<strong>JSC «Plastik»</strong> is a leader in the Russian chemical industry in the ABS plastics segment. Founded in 1959, our enterprise continuously develops, exploring new directions and constantly modernizing.",
-      "paragraph2": "We produce and sell polymer raw materials through our Trading House that meet modern quality standards. Our products include <strong>six grades of expandable polystyrene</strong>, extrusion and injection grades of ABS plastics, as well as various plastic products used in industry and everyday life.",
+      "paragraph2": "We produce polymer raw materials that meet modern quality standards. Our products include <strong>six grades of expandable polystyrene</strong>, extrusion and injection grades of ABS plastics, as well as various plastic products used in industry and everyday life.",
       "paragraph3": "Our plant operates a <strong>quality management system certified for compliance with ISO 9001-2008 and GOST ISO 9001:2011</strong>. We do not inflate prices, so cooperation with JSC «Plastik» is profitable.",
       "feature1": {
         "title": "ABS Market Leader",
@@ -328,7 +327,7 @@
         "boxes": "Boxes"
       },
       "categoryDescriptions": {
-        "styrene": "High-quality monomeric styrene for polystyrene and copolymer production",
+        "styrene": "Styrene is a colorless liquid with a characteristic slightly sweet odor and high chemical reactivity",
         "abs": "Wide range of ABS plastics for automotive, appliances, medical and other applications",
         "polystyrene": "Expandable and general-purpose polystyrene grades for insulation and packaging",
         "dispersion": "Styrene-acrylic dispersion for water-based paints and coatings",
@@ -354,7 +353,7 @@
         "kuhnya": "Funnels, mugs, strainers and other kitchen accessories",
         "veshalki": "Clothes hangers in various sizes",
         "otdyh": "Picnic, barbecue and outdoor leisure products",
-        "canisters": "HDPE canisters (3–30 L) for storing liquids",
+        "canisters": "HDPE canisters for storing liquids",
         "boxes": "Plastic storage and transport crates (to order)"
       },
       "productList": {
@@ -362,7 +361,9 @@
         "countSuffix": "products",
         "emptySubcategory": "No products in this subsection yet",
         "extrusionSearchPlaceholder": "Search by product name or code…",
-        "extrusionTypeLabel": "Part type"
+        "extrusionTypeLabel": "Part type",
+        "extrusionTypeHint": "You can select multiple types",
+        "extrusionTypeReset": "Clear"
       }
     }
   }

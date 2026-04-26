@@ -18,7 +18,7 @@
     ]
   },
   { "label": "Продукция", "labelEn": "Products", "href": "/products", "type": "catalog" },
-  { "label": "ПАСФ", "labelEn": "PASF", "href": "/images/PASF-PLASTIK.pdf" },
+  { "label": "ПАСФ", "labelEn": "PASF", "href": "/pasf" },
   { "label": "Поставщикам", "labelEn": "Suppliers", "href": "/suppliers" },
   { "label": "Контакты", "labelEn": "Contacts", "href": "/contacts" },
   { "label": "Дилеры", "labelEn": "Dealers", "href": "/dealers" }

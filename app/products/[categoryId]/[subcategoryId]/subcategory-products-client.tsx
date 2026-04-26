@@ -3,6 +3,8 @@
 import { useEffect, useRef } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
+import { resolveProductImageUrl } from "@/lib/product-image"
+import { ProductCardPlasticLogo } from "@/app/products/_components/product-card-plastic-logo"
 import { ArrowLeft } from "lucide-react"
 
 export function SubcategoryProducts({ products }: { products: any[] }) {
@@ -41,6 +43,7 @@ export function SubcategoryProducts({ products }: { products: any[] }) {
         const specs = typeof product.specifications === 'string' 
           ? JSON.parse(product.specifications) 
           : product.specifications || {}
+        const imageUrl = resolveProductImageUrl(String(product.id), product.image)
 
         return (
           <div
@@ -54,11 +57,12 @@ export function SubcategoryProducts({ products }: { products: any[] }) {
             <div className="relative h-64 bg-gradient-to-br from-primary/10 to-primary/5 overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent z-10" />
               <Image
-                src={product.image || "/placeholder.svg"}
+                src={imageUrl}
                 alt={product.name}
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-700"
               />
+              <ProductCardPlasticLogo imageSrc={imageUrl} />
             </div>
 
             {/* Content */}

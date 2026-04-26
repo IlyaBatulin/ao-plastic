@@ -7,9 +7,6 @@ export async function isAdminAuthenticated(): Promise<boolean> {
   const session = cookieStore.get(COOKIE_NAME)
   if (!session?.value) return false
 
-  // Поддержка старого формата для плавной миграции
-  if (session.value === "authenticated") return true
-
   return verifySessionToken(session.value)
 }
 

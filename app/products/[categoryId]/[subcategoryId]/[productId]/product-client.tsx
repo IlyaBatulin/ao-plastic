@@ -22,6 +22,7 @@ import {
 import { RalColorPicker, type RalColor } from "@/components/ral-color-picker"
 import { useLanguage } from "@/contexts/language-context"
 import { getHouseholdProductEn } from "@/lib/household-product-en"
+import { resolveProductImageUrl } from "@/lib/product-image"
 
 type ProductPageClientProps = {
   product: any
@@ -71,6 +72,7 @@ export function ProductPageClient({
     isHouseholdProduct && lang === "en" ? getHouseholdProductEn(String(product.id)) : null
   const displayName = householdEn?.name ?? product.name
   const displayDescription = householdEn?.description ?? product.description
+  const productImageUrl = resolveProductImageUrl(String(product.id), product.image, category?.image)
 
   const sanitizeQuantity = (value: string, isPackages: boolean = false): number => {
     if (isPackages) {
@@ -160,7 +162,7 @@ export function ProductPageClient({
               }}
             >
               <Image
-                src={product.image || category?.image || "/placeholder.svg"}
+                src={productImageUrl}
                 alt={displayName}
                 fill
                 className="object-cover"
@@ -291,7 +293,7 @@ export function ProductPageClient({
                     addItem({
                       productId: product.id,
                       productName: displayName,
-                      productImage: product.image,
+                      productImage: productImageUrl,
                       categoryId: categoryId,
                       subcategoryId: subcategoryId,
                       quantity: n,

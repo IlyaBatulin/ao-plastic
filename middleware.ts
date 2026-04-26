@@ -2,6 +2,62 @@ import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
 const SITE_AUTH_COOKIE = "site_auth"
+const ADMIN_SESSION_COOKIE = "admin_session"
+
+function getAdminSessionSecret(): string {
+  return process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD || ""
+}
+
+function decodeBase64Url(value: string): string {
+  const normalized = value.replace(/-/g, "+").replace(/_/g, "/")
+  const padded = normalized.padEnd(normalized.length + ((4 - (normalized.length % 4)) % 4), "=")
+  return atob(padded)
+}
+
+function toHex(buffer: ArrayBuffer): string {
+  return Array.from(new Uint8Array(buffer))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("")
+}
+
+function secureCompare(left: string, right: string): boolean {
+  if (left.length !== right.length) return false
+
+  let mismatch = 0
+  for (let i = 0; i < left.length; i++) {
+    mismatch |= left.charCodeAt(i) ^ right.charCodeAt(i)
+  }
+  return mismatch === 0
+}
+
+async function verifyAdminSessionToken(token: string): Promise<boolean> {
+  try {
+    const secret = getAdminSessionSecret()
+    if (!secret) return false
+
+    const [payloadB64, signature] = token.split(".")
+    if (!payloadB64 || !signature) return false
+
+    const payload = decodeBase64Url(payloadB64)
+    const key = await crypto.subtle.importKey(
+      "raw",
+      new TextEncoder().encode(secret),
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["sign"]
+    )
+    const expectedSignature = toHex(
+      await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(payload))
+    )
+    if (!secureCompare(signature, expectedSignature)) return false
+
+    const [expStr] = payload.split(".")
+    const exp = Number.parseInt(expStr, 10)
+    return Number.isFinite(exp) && Date.now() < exp
+  } catch {
+    return false
+  }
+}
 
 /** Поисковые роботы: им нужен доступ к страницам и sitemap (иначе сайт не проиндексируется). */
 function isAllowedSearchCrawler(userAgent: string): boolean {
@@ -21,7 +77,7 @@ function isAllowedSearchCrawler(userAgent: string): boolean {
   return allow.some((token) => ua.includes(token))
 }
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
 
   // Исключаем статические файлы, API routes и страницу входа
@@ -102,10 +158,10 @@ export function middleware(request: NextRequest) {
 
   // Защита админ-роутов: проверка сессии (кроме страницы входа)
   if (isAdminRoute && !isLoginPage) {
-    const adminSession = request.cookies.get("admin_session")
-    const hasValidSession =
-      adminSession?.value &&
-      (adminSession.value === "authenticated" || adminSession.value.includes("."))
+    const adminSession = request.cookies.get(ADMIN_SESSION_COOKIE)
+    const hasValidSession = adminSession?.value
+      ? await verifyAdminSessionToken(adminSession.value)
+      : false
 
     if (!hasValidSession) {
       return NextResponse.redirect(new URL(adminBase, request.url))

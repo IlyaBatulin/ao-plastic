@@ -81,10 +81,11 @@ const PeriodBlock22 = ({ period, image }: PeriodBlockProps) => {
     [0, 1, 1, 0]
   );
   
+  // Не уводим в минус по Y — иначе верхние годы вылезают за вьюпорт/обрезаются
   const timelineY = useTransform(
     scrollYProgress, 
     [0.4, 0.55, 0.8, 0.85], 
-    [200, 0, 0, -50]
+    [200, 0, 0, 0]
   );
 
   // Infographic visibility - appears from BOTTOM after timeline, then HOLDS
@@ -97,7 +98,7 @@ const PeriodBlock22 = ({ period, image }: PeriodBlockProps) => {
   const infographicY = useTransform(
     scrollYProgress,
     [0.5, 0.65, 0.85, 0.9],
-    [250, 0, 0, -50]
+    [250, 0, 0, 0]
   );
 
   return (
@@ -160,10 +161,10 @@ const PeriodBlock22 = ({ period, image }: PeriodBlockProps) => {
         </motion.div>
 
         {/* Right side content container */}
-        <div className="absolute right-[5%] md:right-[7%] top-[6%] bottom-[6%] w-[40%] flex flex-col gap-4">
+        <div className="absolute right-[5%] md:right-[7%] top-[12%] bottom-[4%] w-[40%] flex flex-col gap-4">
           {/* Timeline */}
           <motion.div
-            className="flex-1 overflow-y-auto overflow-x-hidden pr-1 no-scrollbar"
+            className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden pr-1 pt-1 pb-1 scroll-pt-2 no-scrollbar"
             style={{ 
               opacity: timelineOpacity,
               y: timelineY 

@@ -1,12 +1,13 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import { Sparkles } from "lucide-react"
+import { Search, SlidersHorizontal, Sparkles, X } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
 import ProductsGrid from "./products-grid"
 import { ProductFilters } from "./product-filters"
 import { Input } from "@/components/ui/input"
-import { Checkbox } from "@/components/ui/checkbox"
 
 type Product = {
   id: string
@@ -42,6 +43,8 @@ export function FilteredProductsSection({
   const [extrusionSearch, setExtrusionSearch] = useState("")
   const [extrusionSelectedTypes, setExtrusionSelectedTypes] = useState<string[]>([])
 
+  const extrusionTypeKey = "Тип изделия"
+
   const extrusionTypeOptions = useMemo(() => {
     if (!isExtrusionSubcategory) return []
     const set = new Set<string>()
@@ -49,10 +52,11 @@ export function FilteredProductsSection({
       const specs = typeof p.specifications === "string"
         ? JSON.parse(p.specifications)
         : p.specifications || {}
-      const specType = specs.type as string | undefined
+      const specType =
+        (specs[extrusionTypeKey] as string | undefined) ?? (specs.type as string | undefined)
       if (specType) set.add(specType)
     })
-    return Array.from(set)
+    return Array.from(set).sort((a, b) => a.localeCompare(b, "ru"))
   }, [isExtrusionSubcategory, products])
 
   const extrusionFilteredProducts = useMemo(() => {
@@ -64,7 +68,10 @@ export function FilteredProductsSection({
       const specs = typeof p.specifications === "string"
         ? JSON.parse(p.specifications)
         : p.specifications || {}
-      const t = (specs.type as string | undefined) || ""
+      const t =
+        (specs[extrusionTypeKey] as string | undefined) ??
+        (specs.type as string | undefined) ??
+        ""
 
       if (extrusionSelectedTypes.length > 0 && !extrusionSelectedTypes.includes(t)) {
         return false
@@ -73,12 +80,16 @@ export function FilteredProductsSection({
       if (q) {
         const name = p.name?.toLowerCase() || ""
         const desc = p.description?.toLowerCase() || ""
-        return name.includes(q) || desc.includes(q)
+        const specHaystack = Object.values(specs)
+          .map((v) => (v != null ? String(v) : ""))
+          .join(" ")
+          .toLowerCase()
+        return name.includes(q) || desc.includes(q) || specHaystack.includes(q)
       }
 
       return true
     })
-  }, [isExtrusionSubcategory, products, extrusionSearch, extrusionSelectedTypes])
+  }, [isExtrusionSubcategory, products, extrusionSearch, extrusionSelectedTypes, extrusionTypeKey])
 
   const effectiveProducts = isExtrusionSubcategory ? extrusionFilteredProducts : filteredProducts
 
@@ -99,46 +110,78 @@ export function FilteredProductsSection({
 
       {/* Фильтры для экструзионных изделий ДМС */}
       {isExtrusionSubcategory && (
-        <div className="mb-8 space-y-4">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="relative flex-1">
-              <Input
-                type="text"
-                placeholder={
-                  t("homePage.catalog.productList.extrusionSearchPlaceholder") ||
-                  "Поиск по названию или шифру изделия..."
-                }
-                value={extrusionSearch}
-                onChange={(e) => setExtrusionSearch(e.target.value)}
-                className="h-11"
-              />
-            </div>
+        <div className="mb-8 space-y-5">
+          <div className="relative">
+            <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+            <Input
+              type="text"
+              placeholder={
+                t("homePage.catalog.productList.extrusionSearchPlaceholder") ||
+                "Поиск по названию или шифру изделия..."
+              }
+              value={extrusionSearch}
+              onChange={(e) => setExtrusionSearch(e.target.value)}
+              className="h-12 rounded-2xl border-border/80 bg-card/60 pl-11 pr-4 shadow-sm focus-visible:ring-2 focus-visible:ring-primary/30"
+            />
           </div>
 
           {extrusionTypeOptions.length > 0 && (
-            <div className="bg-muted/30 rounded-2xl p-4 border border-border">
-              <div className="text-sm font-semibold mb-3">
-                {t("homePage.catalog.productList.extrusionTypeLabel") || "Тип изделия"}
-              </div>
-              <div className="flex flex-wrap gap-3">
-                {extrusionTypeOptions.map((typeOption) => (
-                  <label
-                    key={typeOption}
-                    className="inline-flex items-center gap-2 cursor-pointer text-sm"
-                  >
-                    <Checkbox
-                      checked={extrusionSelectedTypes.includes(typeOption)}
-                      onCheckedChange={() =>
-                        setExtrusionSelectedTypes((prev) =>
-                          prev.includes(typeOption)
-                            ? prev.filter((x) => x !== typeOption)
-                            : [...prev, typeOption]
-                        )
-                      }
-                    />
-                    <span>{typeOption}</span>
-                  </label>
-                ))}
+            <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-card/80 via-card/60 to-muted/20 p-1 shadow-sm">
+              <div className="rounded-[0.9rem] bg-background/40 p-4 sm:p-5 backdrop-blur-sm">
+                <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                      <SlidersHorizontal className="h-4 w-4" />
+                    </span>
+                    <div>
+                      <div className="text-sm font-semibold tracking-tight text-foreground">
+                        {t("homePage.catalog.productList.extrusionTypeLabel") || "Тип изделия"}
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        {t("homePage.catalog.productList.extrusionTypeHint") ||
+                          "Можно выбрать несколько типов"}
+                      </p>
+                    </div>
+                  </div>
+                  {extrusionSelectedTypes.length > 0 && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="shrink-0 gap-1.5 text-muted-foreground hover:text-foreground"
+                      onClick={() => setExtrusionSelectedTypes([])}
+                    >
+                      <X className="h-3.5 w-3.5" />
+                      {t("homePage.catalog.productList.extrusionTypeReset") || "Сбросить"}
+                    </Button>
+                  )}
+                </div>
+                <div className="flex max-h-[200px] flex-wrap gap-2 overflow-y-auto pr-0.5 [scrollbar-gutter:stable]">
+                  {extrusionTypeOptions.map((typeOption) => {
+                    const active = extrusionSelectedTypes.includes(typeOption)
+                    return (
+                      <button
+                        key={typeOption}
+                        type="button"
+                        onClick={() =>
+                          setExtrusionSelectedTypes((prev) =>
+                            prev.includes(typeOption)
+                              ? prev.filter((x) => x !== typeOption)
+                              : [...prev, typeOption]
+                          )
+                        }
+                        className={cn(
+                          "inline-flex min-h-9 max-w-full items-center rounded-full border px-3.5 py-1.5 text-left text-sm font-medium transition-all duration-200",
+                          active
+                            ? "border-primary bg-primary text-primary-foreground shadow-md shadow-primary/25"
+                            : "border-border/80 bg-card/50 text-foreground hover:border-primary/40 hover:bg-muted/50"
+                        )}
+                      >
+                        <span className="whitespace-normal break-words text-balance">{typeOption}</span>
+                      </button>
+                    )
+                  })}
+                </div>
               </div>
             </div>
           )}

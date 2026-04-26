@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server"
 import productsData from "@/data/products.json"
 import { truncateMeta } from "@/lib/seo/text"
+import { resolveProductImageUrl } from "@/lib/product-image"
 
 export type SubcategorySeo = {
   subName: string
@@ -153,7 +154,7 @@ export async function getProductSeo(
   return {
     productName: product.name,
     description,
-    image: product.image,
+    image: resolveProductImageUrl(productId, product.image),
     categoryName,
     subName,
   }

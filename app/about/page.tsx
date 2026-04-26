@@ -38,17 +38,46 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-24 overflow-hidden">
+      <section className="relative min-h-[min(62vh,720px)] overflow-hidden flex flex-col justify-end pt-32 pb-16 md:pb-20 lg:pb-24">
         <div className="absolute inset-0 z-0">
-          <img src="/images/factory-2.jpg" alt="Производство" className="w-full h-full object-cover" loading="eager" fetchPriority="high" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/50" />
+          <img
+            src="/images/about-hero-production-winter.png"
+            alt="Производственные колонны АО «Пластик», зима"
+            className="w-full h-full object-cover object-center scale-[1.02]"
+            loading="eager"
+            fetchPriority="high"
+          />
+          <div
+            className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/45 to-black/70"
+            aria-hidden
+          />
+          <div
+            className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/30"
+            aria-hidden
+          />
         </div>
 
-        <div className="relative z-10 container mx-auto px-4 lg:px-8">
-          <h1 className="text-5xl lg:text-6xl font-bold text-white mb-6 text-balance">О компании</h1>
-          <p className="text-xl text-white/90 max-w-3xl leading-relaxed">
-            С 1959 года мы создаём будущее пластиковой индустрии
+        <div
+          className="pointer-events-none absolute bottom-0 left-0 right-0 z-[1] h-28 sm:h-36 bg-gradient-to-t from-secondary to-transparent"
+          aria-hidden
+        />
+
+        <div className="relative z-10 container mx-auto px-4 lg:px-8 max-w-5xl">
+          <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.28em] text-white/80 mb-4 drop-shadow-md">
+            АО «Пластик» · с 1959 года
           </p>
+          <h1
+            className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-white text-balance leading-[1.05] tracking-tight mb-6 [text-shadow:0_2px_40px_rgba(0,0,0,0.45)]"
+          >
+            О компании
+          </h1>
+          <p className="text-lg sm:text-xl md:text-2xl text-white/95 max-w-3xl leading-relaxed font-medium [text-shadow:0_1px_24px_rgba(0,0,0,0.4)]">
+            Создаём будущее пластиковой индустрии — от Узловой в Россию и на экспорт
+          </p>
+          <div
+            className="mt-10 h-1 w-20 rounded-full bg-gradient-to-r from-primary to-white/50"
+            aria-hidden
+          />
         </div>
       </section>
 
@@ -81,7 +110,7 @@ export default function AboutPage() {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">Наша история</h2>
+              <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-balance text-[#1e3a8a] dark:text-[#3b82f6]">Наша история</h2>
               <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
                 <p>
                   <strong className="text-foreground">АО «Пластик»</strong> было основано в 1959 году в г. Узловая
@@ -112,7 +141,7 @@ export default function AboutPage() {
       {/* Values */}
       <section className="py-24 bg-secondary">
         <div className="container mx-auto px-4 lg:px-8">
-          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-16 text-center">Наши ценности</h2>
+          <h2 className="text-4xl lg:text-5xl font-bold mb-16 text-center text-balance text-[#1e3a8a] dark:text-[#3b82f6]">Наши ценности</h2>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((value, index) => (
@@ -132,7 +161,7 @@ export default function AboutPage() {
       <section className="py-24">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-8">Наша миссия</h2>
+            <h2 className="text-4xl lg:text-5xl font-bold mb-8 text-balance text-[#1e3a8a] dark:text-[#3b82f6]">Наша миссия</h2>
             <p className="text-xl text-muted-foreground leading-relaxed mb-8">
               Производить высококачественное полимерное сырье, отвечающее современным стандартам качества, обеспечивая
               инновационные решения для промышленности и способствуя устойчивому развитию отрасли.

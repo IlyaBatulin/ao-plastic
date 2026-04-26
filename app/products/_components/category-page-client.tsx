@@ -156,7 +156,7 @@ export function CategoryPageClient({
                 className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border bg-muted/30 shadow-md"
               >
                 <Image
-                  src="/images/styrol1.png"
+                  src="/images/styrolmain.png"
                   alt="Стирол марки СДЭБ — прозрачная жидкость, производство АО «Пластик»"
                   fill
                   className="object-cover object-center"

@@ -66,7 +66,7 @@
         "titleEn": "Additional",
         "items": [
           { "label": "Наши дилеры", "labelEn": "Our Dealers", "href": "/dealers" },
-          { "label": "ПАСФ", "labelEn": "PASF", "href": "/images/PASF-PLASTIK.pdf" }
+          { "label": "ПАСФ", "labelEn": "PASF", "href": "/pasf" }
         ]
       }
     ]

@@ -10,6 +10,8 @@ import { useToast } from "@/hooks/use-toast"
 import { formatSpecKey, formatSpecValue } from "@/lib/formatters"
 import { useLanguage } from "@/contexts/language-context"
 import { getHouseholdProductEn } from "@/lib/household-product-en"
+import { resolveProductImageUrl } from "@/lib/product-image"
+import { ProductCardPlasticLogo } from "./product-card-plastic-logo"
 
 export default function ProductsGrid({ 
   products, 
@@ -76,6 +78,7 @@ export default function ProductsGrid({
           categoryId === "hoztovary" && lang === "en" ? getHouseholdProductEn(String(product.id)) : null
         const displayName = householdEn?.name ?? product.name
         const displayDescription = householdEn?.description ?? product.description
+        const imageUrl = resolveProductImageUrl(String(product.id), product.image)
 
         return (
           <Link
@@ -92,11 +95,12 @@ export default function ProductsGrid({
             <div className="relative h-64 bg-gradient-to-br from-primary/10 to-primary/5 overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent z-10" />
               <Image
-                src={product.image || "/placeholder.svg"}
+                src={imageUrl}
                 alt={displayName}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
+              <ProductCardPlasticLogo imageSrc={imageUrl} />
             </div>
 
             {/* Content */}
@@ -133,7 +137,7 @@ export default function ProductsGrid({
                   addItem({
                     productId: product.id,
                     productName: displayName,
-                    productImage: product.image,
+                    productImage: imageUrl,
                     categoryId: categoryId || '',
                     subcategoryId: subcategoryId,
                     quantity: 1,

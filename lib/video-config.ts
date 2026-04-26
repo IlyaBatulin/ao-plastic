@@ -3,8 +3,8 @@ export const DEFAULT_CATEGORY_VIDEO = '/videos/xoztov.mp4'
 
 // Конфигурация видео для категорий и подкатегорий
 export const videoConfig: Record<string, string> = {
-  // Категория: Стирол
-  styrene: "/videos/stirolmain.mp4",
+  // Категория: Стирол — тот же фон, что у «КОРС и Бентол»
+  styrene: "/videos/bentolmain.mp4",
 
   // Категория: Полистирол
   'polystyrene': '/videos/polystyrene-category.mp4',
@@ -25,8 +25,12 @@ export const videoConfig: Record<string, string> = {
   // Категория: Хозяйственные товары
   'hoztovary': '/videos/xoztov.mp4',
 
-  // ДМС, изготовление на заказ — общее фоновое видео
+  // ДМС — общее фоновое видео категории
   "machine-parts": "/videos/mainlogo.mp4",
+  // Экструзионные изделия (синие трубки / профили)
+  "machine-parts/parts-extrusion": "/images/bluetubes.mp4",
+  "machine-parts/extrusion": "/images/bluetubes.mp4",
+  "machine-parts/extrusion-parts": "/images/bluetubes.mp4",
   // КОРС и Бентол — отдельный ролик
   kors: "/videos/bentolmain.mp4",
   "custom-abs": "/videos/mainlogo.mp4",

@@ -50,7 +50,7 @@ export function SimpleLogoLoop({ logos, speed = 30 }: SimpleLogoLoopProps) {
                 <img
                   src={logo.src}
                   alt={logo.alt}
-                  className="max-w-full max-h-full object-contain"
+                  className={cn("max-w-full max-h-full object-contain", logo.imgClassName)}
                   loading="eager"
                 />
               </a>

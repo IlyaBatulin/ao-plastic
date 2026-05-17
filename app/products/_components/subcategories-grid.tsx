@@ -15,18 +15,18 @@ function getSubcategoryImage(subcategoryId: string, slug?: string): string | nul
     'ps-psv-l': '/images/polystyrene-pse-card.png',    // ПСВ-Л теперь с фото ПСЭ-1
     'ps-pse': '/images/polystyrene-psv-s-card.png',    // ПСЭ-1 теперь с фото ПСВ-С
     // АБС-пластики
-    'abs-injection': '/images/absiplast_main.png',
-    'abs-extrusion': '/images/absiplast_main.png',
-    'abs-custom': '/images/absiplast_main.png',
+    'abs-injection': '/images/absiplast-main.png',
+    'abs-extrusion': '/images/absiplast-main.png',
+    'abs-custom': '/images/absiplast-main.png',
     // Хозтовары
-    'vedra-tazy': '/images/xoztov/vedra_main.jpeg',
+    'vedra-tazy': '/images/xoztov/vedra-main.jpeg',
     // Детали машиностроения (литьё / экструзия — как на главной карточке категории)
     'injection-parts': '/images/litmain.jpeg',
     'parts-injection': '/images/litmain.jpeg',
     injection: '/images/litmain.jpeg',
-    'extrusion-parts': '/images/machine_main.png',
-    'parts-extrusion': '/images/machine_main.png',
-    extrusion: '/images/machine_main.png',
+    'extrusion-parts': '/images/machine-main.png',
+    'parts-extrusion': '/images/machine-main.png',
+    extrusion: '/images/machine-main.png',
   }
   
   return imageMap[subcategoryId] || imageMap[slug || ''] || null
@@ -104,7 +104,7 @@ export function SubcategoriesGrid({ categoryId, subcategories }: SubcategoriesGr
   return (
     <section className="py-24 -mt-20 relative z-20">
       <div className="container mx-auto px-4 lg:px-8">
-        <h2 className="text-4xl lg:text-5xl font-bold mb-12 text-center">{t("homePage.catalog.subcategoriesTitle")}</h2>
+        <h2 className="text-h2 mb-12 text-center">{t("homePage.catalog.subcategoriesTitle")}</h2>
         <div ref={gridRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {subcategories.map((subcategory, index) => {
             const imageSrc = subcategory.image || getSubcategoryImage(subcategory.id, subcategory.slug) || "/placeholder.svg"
@@ -166,7 +166,7 @@ export function SubcategoriesGrid({ categoryId, subcategories }: SubcategoriesGr
               </div>
 
               {/* Shadow on hover */}
-              <div className="absolute inset-0 rounded-3xl shadow-lg opacity-0 transition-opacity duration-500 group-hover:opacity-100 pointer-events-none" style={{ boxShadow: '0 20px 40px rgba(0, 70, 255, 0.15)' }} />
+              <div className="absolute inset-0 rounded-3xl shadow-lg opacity-0 transition-opacity duration-500 group-hover:opacity-100 pointer-events-none" style={{ boxShadow: '0 20px 40px rgba(30, 58, 138, 0.15)' }} />
             </Link>
             )
           })}

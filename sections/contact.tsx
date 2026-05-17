@@ -11,6 +11,7 @@ import { Mail, MapPin, Phone } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 import { useToast } from "@/hooks/use-toast"
 import Link from "next/link"
+import { SectionHeading } from "@/components/section-heading"
 
 export function Contact() {
   const { t } = useLanguage()
@@ -88,6 +89,11 @@ export function Contact() {
   return (
     <section id="contact" className="py-24 lg:py-32 bg-secondary">
       <div className="container mx-auto px-4 lg:px-8">
+        <SectionHeading
+          title={t("homePage.contact.title")}
+          subtitle={t("homePage.contact.description")}
+          className="mb-8 lg:mb-10"
+        />
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
           {/* Contact Form */}
           <div className="bg-background rounded-2xl p-8 shadow-sm">
@@ -172,7 +178,7 @@ export function Contact() {
           </div>
 
           {/* Contact Info */}
-          <div className="space-y-8">
+          <div className="space-y-6">
             <div className="bg-background rounded-2xl p-8 shadow-sm">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -187,9 +193,7 @@ export function Contact() {
                   </p>
                 </div>
               </div>
-            </div>
-
-            <div className="bg-background rounded-2xl p-8 shadow-sm">
+              <div className="my-6 h-px bg-border/70" />
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
                   <Phone className="w-6 h-6 text-primary" />
@@ -199,9 +203,7 @@ export function Contact() {
                   <p className="text-muted-foreground">+7 (495) 201-03-33</p>
                 </div>
               </div>
-            </div>
-
-            <div className="bg-background rounded-2xl p-8 shadow-sm">
+              <div className="my-6 h-px bg-border/70" />
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
                   <Mail className="w-6 h-6 text-primary" />

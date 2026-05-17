@@ -15,7 +15,7 @@
           "brand": "СМ-ОА",
           "type": "Мономер",
           "description": "Высококачественный стирол мономерный для производства полистирола и сополимеров. Используется в химической промышленности для синтеза полимеров.",
-          "image": "/images/products/styrene-monomer.jpg",
+          "image": "/placeholder.jpg",
           "specifications": {
             "Чистота": "99.8%",
             "Плотность": "0.906 г/см³",
@@ -33,7 +33,7 @@
       "technical_purpose": "Термопластичный сополимер акрилонитрил-бутадиен-стирол для литья и экструзии",
       "target_application": "Автомобильная промышленность, приборостроение, электроника, медицина, бытовая техника",
       "is_custom_order": false,
-      "image": "/images/absiplast_main.png",
+      "image": "/images/absiplast-main.png",
       "subcategories": [
         {
           "id": "abs-injection",
@@ -62,7 +62,7 @@
           "type": "Литьевые гранулы",
           "subcategory": "injection",
           "description": "Литьевой АБС-пластик общего назначения для автомобильных деталей и бытовых приборов",
-          "image": "/images/products/abs-l-121.jpg",
+          "image": "/placeholder.jpg",
           "specifications": {
             "Температура размягчения": "103°C",
             "Плотность": "1.05 г/см³",
@@ -80,7 +80,7 @@
           "type": "Экструзионные гранулы",
           "subcategory": "extrusion",
           "description": "Экструзионный АБС-пластик для производства листов и профилей",
-          "image": "/images/products/abs-e-110.jpg",
+          "image": "/placeholder.jpg",
           "specifications": {
             "Температура размягчения": "105°C",
             "Плотность": "1.04 г/см³",
@@ -99,7 +99,7 @@
       "technical_purpose": "Полимер стирола для производства теплоизоляционных материалов и упаковки",
       "target_application": "Теплоизоляция зданий, упаковочные материалы, одноразовая посуда",
       "is_custom_order": false,
-      "image": "/images/polist_main.png",
+      "image": "/images/polist-main.png",
       "subcategories": [
         {
           "id": "ps-psv-s",
@@ -178,7 +178,7 @@
       "technical_purpose": "Водная дисперсия стирол-акрилового сополимера для лакокрасочных материалов",
       "target_application": "Производство водоэмульсионных красок, строительных материалов, ЛКМ",
       "is_custom_order": false,
-      "image": "/images/products/dispersion.jpg",
+      "image": "/placeholder.jpg",
       "products": [
         {
           "id": "dispersion-paint",
@@ -186,7 +186,7 @@
           "brand": "ДСА-ОА-П",
           "type": "Жидкость",
           "description": "Стирол-акриловая дисперсия для производства водоэмульсионных красок, строительных материалов и лакокрасочных покрытий",
-          "image": "/images/products/dispersion-paint.jpg",
+          "image": "/placeholder.jpg",
           "specifications": {
             "Сухой остаток": "50%",
             "Вязкость": "500 мПа·с",
@@ -204,7 +204,7 @@
       "technical_purpose": "Пластиковые детали для автомобильной промышленности и машиностроения",
       "target_application": "Автомобильные комплектующие, декоративные элементы, защитные детали",
       "is_custom_order": true,
-      "image": "/images/machine_main.png",
+      "image": "/images/machine-main.png",
       "subcategories": [
         {
           "id": "extrusion-parts",
@@ -227,7 +227,7 @@
           "type": "Экструзионное изделие",
           "subcategory": "extrusion",
           "description": "Декоративный профиль для дверных ручек автомобилей",
-          "image": "/images/products/door-handle-profile.jpg",
+          "image": "/placeholder.jpg",
           "specifications": {
             "Материал": "АБС",
             "Длина": "По заказу",
@@ -242,7 +242,7 @@
           "type": "Литьевое изделие",
           "subcategory": "injection",
           "description": "Накладка для сточного желоба крыши автомобилей ВАЗ 2101-07",
-          "image": "/images/products/roof-trim.jpg",
+          "image": "/placeholder.jpg",
           "specifications": {
             "Материал": "АБС",
             "Цвет": "Черный",
@@ -256,7 +256,7 @@
           "type": "Экструзионное изделие",
           "subcategory": "extrusion",
           "description": "Желтая пластиковая трубка для различных применений",
-          "image": "/images/products/tube-yellow.jpg",
+          "image": "/placeholder.jpg",
           "specifications": {
             "Материал": "ПВХ",
             "Диаметр": "6 мм",
@@ -271,7 +271,7 @@
           "type": "Экструзионное изделие",
           "subcategory": "extrusion",
           "description": "Синяя пластиковая трубка для различных применений",
-          "image": "/images/products/tube-blue.jpg",
+          "image": "/placeholder.jpg",
           "specifications": {
             "Материал": "ПВХ",
             "Диаметр": "6 мм",
@@ -288,70 +288,70 @@
       "technical_purpose": "Производство товаров народного потребления из полипропилена и ПЭНД методом литья под давлением и выдувного формования",
       "target_application": "Бытовые товары для дома, кухни, санузла, уборки и отдыха, канистры и ящики для хранения",
       "is_custom_order": false,
-      "image": "/images/hoztov_main.png",
+      "image": "/images/hoztov-main.png",
       "subcategories": [
         {
           "id": "vedra-tazy",
           "name": "Ведра и тазы",
           "slug": "vedra-tazy",
           "description": "Прочные пластиковые ведра и тазы различных объемов",
-          "image": "/images/xoztov/П2171.jpg"
+          "image": "/images/xoztov/p2171.jpg"
         },
         {
           "id": "uborka",
           "name": "Уборочный инвентарь",
           "slug": "uborka",
           "description": "Совки, щетки, наборы для уборки",
-          "image": "/images/xoztov/П2709.jpg"
+          "image": "/images/xoztov/p2709.jpg"
         },
         {
           "id": "steklo",
           "name": "Стеклоочистители",
           "slug": "steklo",
           "description": "Стеклоочистители для окон и зеркал",
-          "image": "/images/xoztov/П2714.jpg"
+          "image": "/images/xoztov/p2714.jpg"
         },
         {
           "id": "sanuzel",
           "name": "Для санузла",
           "slug": "sanuzel",
           "description": "Комплекты для туалета, мыльницы и аксессуары",
-          "image": "/images/xoztov/П2717.jpg"
+          "image": "/images/xoztov/p2717.jpg"
         },
         {
           "id": "kuhnya",
           "name": "Кухонные принадлежности",
           "slug": "kuhnya",
           "description": "Воронки, кружки, фильтры и другие кухонные аксессуары",
-          "image": "/images/xoztov/П2040.jpg"
+          "image": "/images/xoztov/p2040.jpg"
         },
         {
           "id": "veshalki",
           "name": "Вешалки и плечики",
           "slug": "veshalki",
           "description": "Вешалки-плечики различных размеров",
-          "image": "/images/xoztov/П1896.jpg"
+          "image": "/images/xoztov/p1896.jpg"
         },
         {
           "id": "otdyh",
           "name": "Товары для отдыха",
           "slug": "otdyh",
           "description": "Товары для пикника, барбекю и отдыха на природе",
-          "image": "/images/xoztov/П2721.jpg"
+          "image": "/images/xoztov/p2721.jpg"
         },
         {
           "id": "canisters",
           "name": "Канистры",
           "slug": "canisters",
           "description": "Пластиковые канистры для хранения жидкостей",
-          "image": "/images/products/canisters.jpg"
+          "image": "/placeholder.jpg"
         },
         {
           "id": "boxes",
           "name": "Ящики",
           "slug": "boxes",
           "description": "Пластиковые ящики для хранения и транспортировки (под заказ)",
-          "image": "/images/products/boxes.jpg"
+          "image": "/placeholder.jpg"
         }
       ],
       "products": [
@@ -362,7 +362,7 @@
           "type": "Выдувное изделие",
           "subcategory": "canisters",
           "description": "Компактная пластиковая канистра малого объема",
-          "image": "/images/products/canister-3l.jpg",
+          "image": "/placeholder.jpg",
           "specifications": {
             "Материал": "ПНД",
             "Объем": "3 л",
@@ -377,7 +377,7 @@
           "type": "Выдувное изделие",
           "subcategory": "canisters",
           "description": "Пластиковая канистра для хранения жидкостей",
-          "image": "/images/products/canister-5l.jpg",
+          "image": "/placeholder.jpg",
           "specifications": {
             "Материал": "ПНД",
             "Объем": "5 л",
@@ -392,7 +392,7 @@
           "type": "Выдувное изделие",
           "subcategory": "canisters",
           "description": "Пластиковая канистра среднего объема",
-          "image": "/images/products/canister-10l.jpg",
+          "image": "/placeholder.jpg",
           "specifications": {
             "Материал": "ПНД",
             "Объем": "10 л",
@@ -407,7 +407,7 @@
           "type": "Выдувное изделие",
           "subcategory": "canisters",
           "description": "Промышленная канистра большого объема",
-          "image": "/images/products/canister-20l.jpg",
+          "image": "/placeholder.jpg",
           "specifications": {
             "Материал": "ПНД",
             "Объем": "20 л",
@@ -422,7 +422,7 @@
           "type": "Выдувное изделие",
           "subcategory": "canisters",
           "description": "Промышленная канистра увеличенного объема",
-          "image": "/images/products/canister-30l.jpg",
+          "image": "/placeholder.jpg",
           "specifications": {
             "Материал": "ПНД",
             "Объем": "30 л",
@@ -437,7 +437,7 @@
           "type": "Литьевое изделие",
           "subcategory": "boxes",
           "description": "Прочный пластиковый ящик для хранения",
-          "image": "/images/products/box-40l.jpg",
+          "image": "/placeholder.jpg",
           "specifications": {
             "Материал": "ПП",
             "Объем": "40 л",
@@ -452,7 +452,7 @@
           "type": "Литьевое изделие",
           "subcategory": "boxes",
           "description": "Большой пластиковый ящик",
-          "image": "/images/products/box-60l.jpg",
+          "image": "/placeholder.jpg",
           "specifications": {
             "Материал": "ПП",
             "Объем": "60 л",
@@ -468,7 +468,7 @@
       "technical_purpose": "Модифицирующая добавка для улучшения свойств ПВХ композиций",
       "target_application": "Производство ПВХ-профилей, труб, листов с улучшенными механическими свойствами",
       "is_custom_order": false,
-      "image": "/images/products/pvc-modifier.jpg",
+      "image": "/placeholder.jpg",
       "products": [
         {
           "id": "modifier-pvc",
@@ -476,7 +476,7 @@
           "brand": "МП-ОА",
           "type": "Порошок",
           "description": "Модификатор для улучшения прочности и термостабильности ПВХ композиций",
-          "image": "/images/products/modifier-pvc.jpg",
+          "image": "/placeholder.jpg",
           "specifications": {
             "Плотность": "1.05 г/см³",
             "Температура размягчения": "110°C",
@@ -493,7 +493,7 @@
       "technical_purpose": "Кубовый остаток ректификации стирола - побочный продукт производства",
       "target_application": "Топливо для промышленных печей, компонент лакокрасочных составов",
       "is_custom_order": false,
-      "image": "/images/kors_bentol_main.png",
+      "image": "/images/kors-bentol-main.png",
       "products": [
         {
           "id": "kors-fuel",
@@ -501,7 +501,7 @@
           "brand": "КОРС-ОА",
           "type": "Жидкость",
           "description": "Кубовый остаток ректификации стирола, используется как топливо или компонент в лакокрасочных составах",
-          "image": "/images/products/kors-fuel.jpg",
+          "image": "/placeholder.jpg",
           "specifications": {
             "Внешний вид": "Темная жидкость",
             "Плотность": "1.05 г/см³",
@@ -531,7 +531,7 @@
       "technical_purpose": "Производство изделий из АБС-пластика по индивидуальным заказам",
       "target_application": "Изготовление деталей по чертежам заказчика для различных отраслей",
       "is_custom_order": true,
-      "image": "/images/products/custom-abs.jpg",
+      "image": "/placeholder.jpg",
       "products": [
         {
           "id": "custom-molding",
@@ -539,7 +539,7 @@
           "brand": "Заказное производство",
           "type": "Услуга",
           "description": "Изготовление изделий из АБС-пластика методом литья под давлением по чертежам заказчика",
-          "image": "/images/products/custom-molding.jpg",
+          "image": "/placeholder.jpg",
           "specifications": {
             "Материал": "АБС-пластик",
             "Метод": "Литье под давлением",
@@ -553,7 +553,7 @@
           "brand": "Заказное производство",
           "type": "Услуга",
           "description": "Производство профилей и листов из АБС-пластика методом экструзии",
-          "image": "/images/products/custom-extrusion.jpg",
+          "image": "/placeholder.jpg",
           "specifications": {
             "Материал": "АБС-пластик",
             "Метод": "Экструзия",

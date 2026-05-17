@@ -307,6 +307,7 @@ export function ProductPageClient({
                     toast({
                       title: "Товар добавлен в корзину",
                       description: `${displayName}: ${formatted} ${unit}${isHouseholdProduct && packageQuantity > 1 ? ` (${n * packageQuantity} шт)` : ''}${colorInfo}`,
+                      className: "border-primary/40 bg-primary text-primary-foreground",
                     })
                   }}
                 >

@@ -179,7 +179,7 @@ export function HHVacanciesClient() {
               placeholder="Поиск по ключевым словам..."
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
-              className="pl-10 h-10 border-border focus:border-[#1e3a8a] dark:focus:border-[#3b82f6]"
+              className="pl-10 h-10 border-border focus:border-primary dark:focus:border-[#60a5fa]"
             />
           </div>
           <Button
@@ -190,7 +190,7 @@ export function HHVacanciesClient() {
             <SlidersHorizontal className="w-4 h-4" />
             Фильтры
             {hasActiveFilters && (
-              <span className="ml-1 px-2 py-0.5 bg-[#1e3a8a] dark:bg-[#3b82f6] text-white rounded-full text-xs font-medium">
+              <span className="ml-1 px-2 py-0.5 bg-primary dark:bg-[#60a5fa] text-white rounded-full text-xs font-medium">
                 {[searchText, minSalary, onlyWithSalary, selectedExperience, selectedEmployment, selectedSchedule].filter(Boolean).length}
               </span>
             )}
@@ -279,7 +279,7 @@ export function HHVacanciesClient() {
 
             {/* Кнопки действий */}
             <div className="flex items-center gap-3 pt-4">
-              <Button onClick={handleApplyFilters} className="flex items-center gap-2 bg-[#1e3a8a] hover:bg-[#1e40af] dark:bg-[#3b82f6] dark:hover:bg-[#2563eb]">
+              <Button onClick={handleApplyFilters} className="flex items-center gap-2 bg-primary hover:bg-[#1e40af] dark:bg-[#60a5fa] dark:hover:bg-[#93c5fd]">
                 <Search className="w-4 h-4" />
                 Применить фильтры
               </Button>
@@ -344,13 +344,13 @@ export function HHVacanciesClient() {
       {!isLoading && !error && vacancies.length > 0 && vacancies.map((vacancy) => (
         <div
           key={vacancy.id}
-          className="group relative bg-card rounded-lg p-6 border border-border hover:border-[#1e3a8a]/30 dark:hover:border-[#3b82f6]/30 hover:shadow-xl transition-all duration-200"
+          className="group relative bg-card rounded-lg p-6 border border-border hover:border-primary/30 dark:hover:border-[#60a5fa]/30 hover:shadow-xl transition-all duration-200"
         >
           <div className="relative">
             {/* Заголовок и логотип */}
             <div className="flex items-start justify-between mb-5">
               <div className="flex-1">
-                <h3 className="text-2xl font-bold mb-2 text-[#1e3a8a] dark:text-[#60a5fa]">{vacancy.name}</h3>
+                <h3 className="text-2xl font-bold mb-2 text-primary dark:text-[#60a5fa]">{vacancy.name}</h3>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Building className="w-4 h-4" />
                   <span className="text-sm">{vacancy.employer.name}</span>
@@ -364,7 +364,7 @@ export function HHVacanciesClient() {
                 />
               ) : (
                 <div className="w-16 h-16 rounded-lg bg-muted/50 flex items-center justify-center border border-border">
-                  <Briefcase className="w-8 h-8 text-[#1e3a8a] dark:text-[#3b82f6]" />
+                  <Briefcase className="w-8 h-8 text-primary dark:text-[#60a5fa]" />
                 </div>
               )}
             </div>
@@ -408,7 +408,7 @@ export function HHVacanciesClient() {
                 {vacancy.key_skills.slice(0, 6).map((skill, index) => (
                   <span
                     key={index}
-                    className="px-3 py-1.5 bg-[#1e3a8a]/5 dark:bg-[#3b82f6]/10 border border-[#1e3a8a]/20 dark:border-[#3b82f6]/20 text-[#1e3a8a] dark:text-[#93c5fd] text-xs font-medium rounded-md"
+                    className="px-3 py-1.5 bg-primary/5 dark:bg-[#60a5fa]/10 border border-primary/20 dark:border-[#60a5fa]/20 text-primary dark:text-[#93c5fd] text-xs font-medium rounded-md"
                   >
                     {skill.name}
                   </span>
@@ -425,7 +425,7 @@ export function HHVacanciesClient() {
           {/* Информация о вакансии */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
             <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-md border border-border">
-              <MapPin className="w-4 h-4 text-[#1e3a8a] dark:text-[#3b82f6]" />
+              <MapPin className="w-4 h-4 text-primary dark:text-[#60a5fa]" />
               <span className="text-sm">
                 {vacancy.area.name}
                 {vacancy.address?.metro?.station_name &&
@@ -477,7 +477,7 @@ export function HHVacanciesClient() {
                   "_blank"
                 )
               }}
-              className="flex-1 bg-[#1e3a8a] hover:bg-[#1e40af] dark:bg-[#3b82f6] dark:hover:bg-[#2563eb] text-white transition-colors"
+              className="flex-1 bg-primary hover:bg-[#1e40af] dark:bg-[#60a5fa] dark:hover:bg-[#93c5fd] text-white transition-colors"
             >
               <ExternalLink className="w-4 h-4 mr-2" />
               Откликнуться на HH.ru
@@ -501,7 +501,7 @@ export function HHVacanciesClient() {
                 year: "numeric",
               })}
             </span>
-            <span className="text-[#1e3a8a] dark:text-[#3b82f6] font-medium">ID: {vacancy.id}</span>
+            <span className="text-primary dark:text-[#60a5fa] font-medium">ID: {vacancy.id}</span>
           </div>
         </div>
         </div>

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 }
 
 const sectionClassBase = "py-12 md:py-16"
-const sectionClassAlt = "bg-[#1e3a8a]/5 dark:bg-[#3b82f6]/10"
+const sectionClassAlt = "bg-primary/5 dark:bg-[#60a5fa]/10"
 
 export default function EthicsPage() {
   return (
@@ -23,18 +23,18 @@ export default function EthicsPage() {
         <section className="pt-32 pb-16">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-5xl md:text-6xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6]">
+              <h1 className="text-5xl md:text-6xl font-bold mb-6 text-primary dark:text-[#60a5fa]">
                 Кодекс корпоративной этики
               </h1>
               <p className="text-xl text-foreground/80">
                 АО «Пластик»
               </p>
-              <div className="mt-6 h-0.5 w-24 mx-auto bg-[#1e3a8a] dark:bg-[#3b82f6]" />
+              <div className="mt-6 h-0.5 w-24 mx-auto bg-primary dark:bg-[#60a5fa]" />
               <Link
-                href="/docs/Корпоративный-кодекс.pdf"
+                href="/docs/korporativnyy-kodeks.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 mt-8 px-6 py-3 rounded-xl bg-[#1e3a8a] dark:bg-[#3b82f6] text-white font-medium hover:opacity-90 transition-opacity"
+                className="inline-flex items-center gap-2 mt-8 px-6 py-3 rounded-xl bg-primary dark:bg-[#60a5fa] text-white font-medium hover:opacity-90 transition-opacity"
               >
                 <Download className="w-5 h-5" />
                 Скачать корпоративный кодекс (PDF)
@@ -47,7 +47,7 @@ export default function EthicsPage() {
           {/* Оглавление */}
           <section id="toc" className={`${sectionClassBase} ${sectionClassAlt}`}>
             <div className="rounded-2xl border border-border bg-card p-8 shadow-sm">
-              <h2 className="text-2xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6]">Оглавление</h2>
+              <h2 className="text-2xl font-bold mb-6 text-primary dark:text-[#60a5fa]">Оглавление</h2>
               <ol className="list-decimal list-inside space-y-2 text-foreground/90">
                 <li><a href="#p1" className="hover:underline">Общие положения</a></li>
                 <li><a href="#p2" className="hover:underline">Термины, определения и сокращения</a></li>
@@ -73,7 +73,7 @@ export default function EthicsPage() {
           {/* 1. Общие положения */}
           <section id="p1" className={sectionClassBase}>
             <div className="rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm">
-              <h2 className="text-2xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6]">1. Общие положения</h2>
+              <h2 className="text-2xl font-bold mb-6 text-primary dark:text-[#60a5fa]">1. Общие положения</h2>
               <p className="mb-4 text-foreground/90 leading-relaxed">
                 1.1. Настоящий Кодекс корпоративной этики (далее – Кодекс) разработан в целях укрепления деловой репутации АО «Пластик» (далее Общество), содействия честному и этичному ведению бизнеса, предотвращения злоупотреблений и нарушений законодательства.
               </p>
@@ -102,7 +102,7 @@ export default function EthicsPage() {
           {/* 2. Термины */}
           <section id="p2" className={`${sectionClassBase} ${sectionClassAlt}`}>
             <div className="rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm">
-              <h2 className="text-2xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6]">2. Термины, определения и сокращения</h2>
+              <h2 className="text-2xl font-bold mb-6 text-primary dark:text-[#60a5fa]">2. Термины, определения и сокращения</h2>
               <div className="space-y-4 text-foreground/90 leading-relaxed">
                 <p><strong>2.1.</strong> Работник – физическое лицо, вступившее в трудовые правоотношения с работодателем.</p>
                 <p><strong>2.2.</strong> Работодатель – АО «Пластик» вступившее в трудовые отношения с работниками.</p>
@@ -133,7 +133,7 @@ export default function EthicsPage() {
           {/* 3. Ключевые правила */}
           <section id="p3" className={sectionClassBase}>
             <div className="rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm">
-              <h2 className="text-2xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6]">3. Ключевые правила, обязательства и ответственность</h2>
+              <h2 className="text-2xl font-bold mb-6 text-primary dark:text-[#60a5fa]">3. Ключевые правила, обязательства и ответственность</h2>
               <p className="mb-4 text-foreground/90 leading-relaxed"><strong>3.1.</strong> Ключевые правила АО «Пластик» включают:</p>
               <ul className="list-disc pl-6 space-y-1 text-foreground/90 mb-6">
                 <li>Безопасность – создавать и поддерживать безопасные условия труда;</li>
@@ -169,7 +169,7 @@ export default function EthicsPage() {
           {/* 4. Охрана труда */}
           <section id="p4" className={`${sectionClassBase} ${sectionClassAlt}`}>
             <div className="rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm">
-              <h2 className="text-2xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6]">4. Охрана труда, окружающей среды и промышленная безопасность</h2>
+              <h2 className="text-2xl font-bold mb-6 text-primary dark:text-[#60a5fa]">4. Охрана труда, окружающей среды и промышленная безопасность</h2>
               <p className="mb-4 text-foreground/90 leading-relaxed">В АО «Пластик» провозглашается принцип нетерпимости к нарушениям в сфере охраны труда и промышленной безопасности. Все, без исключения, травмы, инциденты и аварии на производстве, а также предпосылки к ним, подлежат расследованию.</p>
               <p className="mb-4 text-foreground/90 leading-relaxed">Нарушение требований охраны труда и промышленной безопасности и охраны окружающей среды неотвратимо влечет применение к Работникам мер ответственности в соответствии с действующим законодательством.</p>
               <p className="mb-4 text-foreground/90 leading-relaxed">Все Работники, независимо от занимаемой должности, обязаны:</p>
@@ -208,7 +208,7 @@ export default function EthicsPage() {
           {/* 5. Трудовые отношения */}
           <section id="p5" className={sectionClassBase}>
             <div className="rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm">
-              <h2 className="text-2xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6]">5. Трудовые отношения</h2>
+              <h2 className="text-2xl font-bold mb-6 text-primary dark:text-[#60a5fa]">5. Трудовые отношения</h2>
               <p className="mb-4 text-foreground/90 leading-relaxed">Работа и карьера в АО «Пластик» – сфера максимально честной конкуренции талантов, знаний и усилий. Для успешной карьеры необходимо следовать принципам корпоративной культуры, совершенствовать выполнение своих функций, овладевать новыми знаниями и умениями, самостоятельно выступать с инициативами по улучшению процессов. Рост уровня материального вознаграждения каждого работника зависит от результатов работы АО «Пластик» в рыночной среде. Личные успехи значимы только в контексте общего результата.</p>
               <p className="mb-4 text-foreground/90 leading-relaxed">АО «Пластик» считает не только юридической обязанностью, но и общественным долгом всех работников соблюдение ими трудового законодательства, включая положения о приеме на работу, обучении, повышении квалификации, аттестации, оценке, предоставлении гарантий и компенсаций, применении дисциплинарных взысканий, увольнении.</p>
               <p className="mb-4 text-foreground/90 leading-relaxed">Работники принимаются на работу в АО «Пластик» и получают равные возможности карьерного роста, независимо от:</p>
@@ -235,7 +235,7 @@ export default function EthicsPage() {
           {/* 6. Борьба с коррупцией */}
           <section id="p6" className={`${sectionClassBase} ${sectionClassAlt}`}>
             <div className="rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm">
-              <h2 className="text-2xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6]">6. Борьба с коррупцией, мошенничеством, защита имущества и предотвращение конфликта интересов</h2>
+              <h2 className="text-2xl font-bold mb-6 text-primary dark:text-[#60a5fa]">6. Борьба с коррупцией, мошенничеством, защита имущества и предотвращение конфликта интересов</h2>
               <p className="mb-4 text-foreground/90 leading-relaxed">Работники обязаны соблюдать законодательство и внутренние документы Работодателя по противодействию мошенничеству и коррупции. Запрещается предложение, обещание, дача, вымогательство или получение взятки в любой форме, коммерческий подкуп, злоупотребление полномочиями, демонстрация готовности осуществить или принять любые незаконные платежи. Запрещается, действуя от имени и (или) в интересах АО «Пластик», допускать любые неправомерные попытки оказания влияния на решения государственных органов и (или) органов местного самоуправления.</p>
               <p className="mb-4 text-foreground/90 leading-relaxed">Все активы АО «Пластик» использует по назначению и для достижения поставленных целей. Не допускаются хищения, неосторожное обращение с имуществом, умышленное уничтожение или повреждение имущества, несанкционированное использование информации, находящейся в собственности Общества. Работники обязаны защищать активы Работодателя от утраты, кражи, нецелевого, незаконного или неэффективного использования.</p>
               <p className="mb-4 text-foreground/90 leading-relaxed">Необходимым условием эффективного выполнения Работниками своих трудовых обязанностей является отсутствие Конфликта интересов, а при его наличии – его своевременное раскрытие и урегулирование.</p>
@@ -255,7 +255,7 @@ export default function EthicsPage() {
           {/* 7. Коммуникация */}
           <section id="p7" className={sectionClassBase}>
             <div className="rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm">
-              <h2 className="text-2xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6]">7. Коммуникация, обмен информацией и фирменный стиль</h2>
+              <h2 className="text-2xl font-bold mb-6 text-primary dark:text-[#60a5fa]">7. Коммуникация, обмен информацией и фирменный стиль</h2>
               <p className="mb-4 text-foreground/90 leading-relaxed">Поощряется обмен информацией между Функциональными областями и Работниками, при условии, что она не является конфиденциальной. Информационный обмен между Функциональными областями и работниками должен позволять работникам оперативно получать информацию, необходимую для исполнения их прямых обязанностей.</p>
               <p className="mb-4 text-foreground/90 leading-relaxed">Работник, формирующий информационный запрос в другую Функциональную область, должен придерживаться принятых в Обществе следующих правил этики информационного обмена:</p>
               <ul className="list-disc pl-6 space-y-1 text-foreground/90 mb-6">
@@ -289,7 +289,7 @@ export default function EthicsPage() {
           {/* 8. Взаимоотношения */}
           <section id="p8" className={`${sectionClassBase} ${sectionClassAlt}`}>
             <div className="rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm">
-              <h2 className="text-2xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6]">8. Взаимоотношения между структурными подразделениями</h2>
+              <h2 className="text-2xl font-bold mb-6 text-primary dark:text-[#60a5fa]">8. Взаимоотношения между структурными подразделениями</h2>
               <p className="mb-4 text-foreground/90 leading-relaxed">Взаимодействие между структурными подразделениями Общества и строится на основе открытости, доверия, взаимной поддержки, уважения и партнерства.</p>
               <p className="mb-4 text-foreground/90 leading-relaxed">Работники Общества обязаны знать и соблюдать следующие правила работы:</p>
               <ul className="list-disc pl-6 space-y-1 text-foreground/90">
@@ -309,7 +309,7 @@ export default function EthicsPage() {
           {/* 9. Риск-ориентированное управление */}
           <section id="p9" className={sectionClassBase}>
             <div className="rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm">
-              <h2 className="text-2xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6]">9. Риск-ориентированное управление и внутренний контроль</h2>
+              <h2 className="text-2xl font-bold mb-6 text-primary dark:text-[#60a5fa]">9. Риск-ориентированное управление и внутренний контроль</h2>
               <p className="mb-4 text-foreground/90 leading-relaxed">Деятельность АО «Пластик» связана с объективными рисками – техногенными, экологическими, финансовыми, экономическим, социальными, кадровыми, репутационными и другими.</p>
               <p className="mb-4 text-foreground/90 leading-relaxed">Работники ориентируются на превентивный подход к управлению рисками и используют базовые принципы управления рисками, включающие в себя: одобрение выявления рисков на всех управленческих уровнях, поддержку открытого обсуждения рисков; конкретность в определении рисков; постоянную оценку рисков и проведение процедур их актуализации; извлечение уроков из реализовавшихся событий, распределение ответственности.</p>
               <p className="mb-4 text-foreground/90 leading-relaxed">Работник не должен игнорировать возможные риски, даже если они находятся вне его компетенции. Необходимо незамедлительно сообщать о существующих или потенциальных угрозах непосредственному руководителю, а если на данном уровне меры не принимаются – передать информацию на вышестоящий уровень.</p>
@@ -320,7 +320,7 @@ export default function EthicsPage() {
           {/* 10. Учет и отчетность */}
           <section id="p10" className={`${sectionClassBase} ${sectionClassAlt}`}>
             <div className="rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm">
-              <h2 className="text-2xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6]">10. Учет и отчетность</h2>
+              <h2 className="text-2xl font-bold mb-6 text-primary dark:text-[#60a5fa]">10. Учет и отчетность</h2>
               <p className="mb-4 text-foreground/90 leading-relaxed">Точное ведение учета является важнейшим фактором для успешного бизнеса, поскольку учет является источником данных, обеспечивающих принятие решений акционерами, исполнительным руководством, инвесторами, Контрагентами, регуляторами и обществом. Точное ведение учета должно быть обеспечено как по финансовым, так и по нефинансовым показателям.</p>
               <p className="mb-4 text-foreground/90 leading-relaxed">Все учетные документы АО «Пластик» должны содержать полную, точную и достоверную информацию и соответствовать применимым стандартам, законодательству и регламентам по бухгалтерской, финансовой, управленческой и налоговой отчетности. Фальсификация документов, транзакций, а также их намеренно неправильная интерпретация недопустимы и не могут быть ничем оправданы.</p>
               <p className="mb-4 text-foreground/90 leading-relaxed">Все операции должны быть своевременно, аккуратно, правильно и с достаточным уровнем детализации отражены в учете, задокументированы и доступны для проверки и (или) аудита.</p>
@@ -332,7 +332,7 @@ export default function EthicsPage() {
           {/* 11. Культура речи */}
           <section id="p11" className={sectionClassBase}>
             <div className="rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm">
-              <h2 className="text-2xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6]">Культура речи</h2>
+              <h2 className="text-2xl font-bold mb-6 text-primary dark:text-[#60a5fa]">Культура речи</h2>
               <p className="mb-4 text-foreground/90 leading-relaxed">Культура речи обязывает сотрудника придерживаться следующих речевых норм: ясности, обеспечивающей доступность и простоту в общении; грамотности, основанной на использовании общепринятых правил русского литературного языка; содержательности, выражающейся в продуманности, осмысленности и информативности обращения; логичности, предполагающей последовательность, непротиворечивость и обоснованность изложения мыслей; доказательности, включающей в себя достоверность и объективность информации; лаконичности, отражающей краткость и понятность речи; уместности, означающей необходимость и важность сказанного применительно к конкретной ситуации.</p>
               <p className="mb-4 text-foreground/90 leading-relaxed">Работнику необходимо соблюдать и отстаивать чистоту русского языка. В речи сотрудника неприемлемо употребление: грубых шуток и злой иронии; неуместных слов и речевых оборотов, в том числе иностранного происхождения; вульгаризмов, примитивизмов, слов-«паразитов»; высказываний, которые могут быть истолкованы как оскорбления в адрес определенных социальных или национальных групп; резких и циничных выражений оскорбительного характера, связанных с физическими недостатками человека.</p>
               <p className="text-foreground/90 leading-relaxed">11.3. В речи сотрудников исключается использование нецензурной брани, сквернословия и выражений, подчеркивающих негативное, презрительное отношение к людям.</p>
@@ -342,7 +342,7 @@ export default function EthicsPage() {
           {/* 12. Требования к руководителю */}
           <section id="p12" className={`${sectionClassBase} ${sectionClassAlt}`}>
             <div className="rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm">
-              <h2 className="text-2xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6]">Профессионально-этические требования к руководителю</h2>
+              <h2 className="text-2xl font-bold mb-6 text-primary dark:text-[#60a5fa]">Профессионально-этические требования к руководителю</h2>
               <p className="mb-4 text-foreground/90 leading-relaxed"><strong>12.1.</strong> Руководитель любого уровня должен: быть примером неукоснительного соблюдения принципов и норм Кодекса; считать своей главной привилегией личную ответственность за безусловное выполнение служебных задач, обучение и воспитание подчиненных.</p>
               <p className="mb-4 text-foreground/90 leading-relaxed"><strong>12.2.</strong> Статус должности, занимаемой руководителем, должен подкрепляться его личным авторитетом.</p>
               <p className="mb-4 text-foreground/90 leading-relaxed"><strong>12.3.</strong> Подлинный авторитет руководителя создается его безупречной репутацией, профессиональной компетентностью, служебным опытом, требовательностью и принципиальностью в сочетании с гуманным и уважительным отношением к подчиненным.</p>
@@ -357,7 +357,7 @@ export default function EthicsPage() {
           {/* 13. Неформальные отношения */}
           <section id="p13" className={sectionClassBase}>
             <div className="rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm">
-              <h2 className="text-2xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6]">Неформальные отношения в трудовом коллективе</h2>
+              <h2 className="text-2xl font-bold mb-6 text-primary dark:text-[#60a5fa]">Неформальные отношения в трудовом коллективе</h2>
               <p className="mb-4 text-foreground/90 leading-relaxed"><strong>13.1.</strong> Неформальными являются личные отношения между сотрудниками вне рамок служебной субординации.</p>
               <p className="mb-4 text-foreground/90 leading-relaxed"><strong>13.2.</strong> Личные отношения не должны являться основанием для продвижения сотрудника по работе, его поощрения или наказания, решения кадровых, социальных вопросов.</p>
               <p className="mb-4 text-foreground/90 leading-relaxed"><strong>13.3.</strong> Коллеги по работе должны уважительно и внимательно относиться к работающим в коллективе сотрудникам-женщинам, которые в свою очередь не должны злоупотреблять своими преимуществами.</p>
@@ -369,7 +369,7 @@ export default function EthicsPage() {
           {/* 14. Внешний вид */}
           <section id="p14" className={`${sectionClassBase} ${sectionClassAlt}`}>
             <div className="rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm">
-              <h2 className="text-2xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6]">Внешний вид и рабочая одежда</h2>
+              <h2 className="text-2xl font-bold mb-6 text-primary dark:text-[#60a5fa]">Внешний вид и рабочая одежда</h2>
               <p className="mb-4 text-foreground/90 leading-relaxed"><strong>14.1.</strong> Работникам следует: носить рабочую одежду в соответствии с установленными требованиями; придерживаться здорового образа жизни, соблюдать правила личной и общественной гигиены.</p>
               <p className="mb-4 text-foreground/90 leading-relaxed"><strong>14.2.</strong> В случае выполнения должностных обязанностей в гражданской одежде допускается ношение костюма (платья) и обуви строгого делового стиля, неяркого цвета, подчеркивающих аккуратность и опрятность работника.</p>
               <p className="mb-4 text-foreground/90 leading-relaxed"><strong>14.3.</strong> Работник-мужчина должен быть всегда аккуратно подстрижен, тщательно выбрит, опрятно и со вкусом одет, может умеренно использовать парфюмерию.</p>
@@ -380,7 +380,7 @@ export default function EthicsPage() {
           {/* 15. Оформление помещений */}
           <section id="p15" className={sectionClassBase}>
             <div className="rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm">
-              <h2 className="text-2xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6]">Оформление и содержание служебных и рабочих помещений</h2>
+              <h2 className="text-2xl font-bold mb-6 text-primary dark:text-[#60a5fa]">Оформление и содержание служебных и рабочих помещений</h2>
               <p className="mb-4 text-foreground/90 leading-relaxed"><strong>15.1.</strong> Оформление и содержание служебных и рабочих помещений должны соответствовать правилам и нормам эстетической культуры, обеспечивать поддержание благоприятного морально-психологического климата в служебном коллективе, комфортные условия для работы и приема посетителей.</p>
               <p className="mb-4 text-foreground/90 leading-relaxed"><strong>15.2.</strong> Цветовая гамма интерьера служебных помещений должна быть выдержана в неярких, спокойных тонах. Служебная документация, плакаты и другие изображения оформляются на стендах или в рамках.</p>
               <p className="mb-4 text-foreground/90 leading-relaxed"><strong>15.3.</strong> Работник должен поддерживать внутренний порядок и чистоту на рабочем месте. Обстановка кабинета должна быть официальной и строгой, вместе с тем уютной, производящей благоприятное впечатление на коллег и посетителей и располагающей к доверительности.</p>
@@ -392,7 +392,7 @@ export default function EthicsPage() {
           {/* 16. Заключительные положения */}
           <section id="p16" className={`${sectionClassBase} ${sectionClassAlt}`}>
             <div className="rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm">
-              <h2 className="text-2xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6]">16. Заключительные положения</h2>
+              <h2 className="text-2xl font-bold mb-6 text-primary dark:text-[#60a5fa]">16. Заключительные положения</h2>
               <p className="mb-4 text-foreground/90 leading-relaxed">Трудовой договор любого Работника Общества должен содержать условие соблюдения настоящего Кодекса.</p>
               <p className="mb-4 text-foreground/90 leading-relaxed">Лица, занимающие руководящие должности в Обществе обязаны подавать пример законопослушного и этичного поведения, активно поддерживать соблюдение требований настоящего Кодекса.</p>
               <p className="text-foreground/90 leading-relaxed">Любые изменения, дополнения, поправки к настоящему Кодексу подлежат утверждению приказом Генерального директора.</p>
@@ -401,8 +401,8 @@ export default function EthicsPage() {
 
           {/* Антикоррупционная политика */}
           <section id="antikorr" className={sectionClassBase}>
-            <div className="rounded-2xl border-2 border-[#1e3a8a]/30 dark:border-[#3b82f6]/30 bg-card p-8 md:p-10 shadow-sm">
-              <h2 className="text-2xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6]">Антикоррупционная политика АО «Пластик»</h2>
+            <div className="rounded-2xl border-2 border-primary/30 dark:border-[#60a5fa]/30 bg-card p-8 md:p-10 shadow-sm">
+              <h2 className="text-2xl font-bold mb-6 text-primary dark:text-[#60a5fa]">Антикоррупционная политика АО «Пластик»</h2>
 
               <h3 className="text-xl font-semibold mt-8 mb-4">Введение</h3>
               <p className="mb-4 text-foreground/90 leading-relaxed">Открытое акционерное общество «ПЛАСТИК» (далее – Общество) убеждено в том, что одним из важнейших условий устойчивого развития бизнеса является строгое соблюдение действующего законодательства, регламентирующего вопросы противодействия коррупции.</p>

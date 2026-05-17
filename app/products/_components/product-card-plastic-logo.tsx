@@ -16,7 +16,7 @@ export function ProductCardPlasticLogo({ imageSrc }: ProductCardPlasticLogoProps
       aria-hidden
     >
       <Image
-        src="/images/logo1.png"
+        src="/images/logo123.png"
         alt="АО «Пластик»"
         width={100}
         height={36}

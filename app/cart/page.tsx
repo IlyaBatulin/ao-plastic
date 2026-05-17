@@ -5,20 +5,26 @@ import { useCart } from "@/contexts/cart-context"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { Checkbox } from "@/components/ui/checkbox"
 import { useMemo, useState } from "react"
 import Image from "next/image"
 import { Trash2, Plus, Minus, ShoppingBag } from "lucide-react"
 import Link from "next/link"
 import { useToast } from "@/hooks/use-toast"
+import { useLanguage } from "@/contexts/language-context"
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, clearCart } = useCart()
   const { toast } = useToast()
+  const { lang } = useLanguage()
+  const isEn = lang === "en"
   const [customerName, setCustomerName] = useState("")
   const [customerPhone, setCustomerPhone] = useState("")
   const [customerEmail, setCustomerEmail] = useState("")
   const [comment, setComment] = useState("")
+  const [consentAccepted, setConsentAccepted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [orderPlaced, setOrderPlaced] = useState(false)
   const [inputs, setInputs] = useState<Record<string, string>>({})
 
   const getInputValue = (productId: string, quantity: number) => {
@@ -48,8 +54,53 @@ export default function CartPage() {
     
     if (items.length === 0) {
       toast({
-        title: "Корзина пуста",
-        description: "Добавьте товары в корзину",
+        title: isEn ? "Cart is empty" : "Корзина пуста",
+        description: isEn ? "Add products to your cart" : "Добавьте товары в корзину",
+        variant: "destructive",
+      })
+      return
+    }
+
+    if (!customerName.trim() || !customerPhone.trim()) {
+      toast({
+        title: isEn ? "Validation error" : "Ошибка валидации",
+        description: isEn
+          ? "Please fill in required fields (name and phone)"
+          : "Пожалуйста, заполните обязательные поля (имя и телефон)",
+        variant: "destructive",
+      })
+      return
+    }
+
+    const phoneDigits = customerPhone.replace(/\D/g, "")
+    if (phoneDigits.length < 10) {
+      toast({
+        title: isEn ? "Invalid phone number" : "Некорректный телефон",
+        description: isEn
+          ? "Please enter a valid phone number"
+          : "Пожалуйста, укажите корректный номер телефона",
+        variant: "destructive",
+      })
+      return
+    }
+
+    if (customerEmail.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail.trim())) {
+      toast({
+        title: isEn ? "Invalid email" : "Некорректный email",
+        description: isEn
+          ? "Please enter a valid email address"
+          : "Пожалуйста, укажите корректный email",
+        variant: "destructive",
+      })
+      return
+    }
+
+    if (!consentAccepted) {
+      toast({
+        title: isEn ? "Consent required" : "Требуется согласие",
+        description: isEn
+          ? "You must agree to personal data processing"
+          : "Необходимо согласиться на обработку персональных данных",
         variant: "destructive",
       })
       return
@@ -82,31 +133,53 @@ export default function CartPage() {
       const result = await response.json()
 
       if (result.ok) {
-        toast({
-          title: "Заказ оформлен!",
-          description: "Мы свяжемся с вами в ближайшее время",
-        })
         clearCart()
         setCustomerName("")
         setCustomerPhone("")
         setCustomerEmail("")
         setComment("")
+        setConsentAccepted(false)
+        setOrderPlaced(true)
       } else {
         toast({
-          title: "Ошибка",
-          description: result.error || "Не удалось оформить заказ",
+          title: isEn ? "Error" : "Ошибка",
+          description: result.error || (isEn ? "Failed to place order" : "Не удалось оформить заказ"),
           variant: "destructive",
         })
       }
     } catch (error) {
       toast({
-        title: "Ошибка",
-        description: "Не удалось отправить заказ",
+        title: isEn ? "Error" : "Ошибка",
+        description: isEn ? "Failed to submit order" : "Не удалось отправить заказ",
         variant: "destructive",
       })
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  if (orderPlaced) {
+    return (
+      <div className="min-h-screen bg-background">
+        <section className="flex min-h-screen items-center justify-center px-4">
+          <div className="mx-auto w-full max-w-3xl rounded-3xl border border-primary/20 bg-card p-8 text-center shadow-sm md:p-12">
+            <h1 className="text-3xl font-bold text-primary md:text-5xl">
+              {isEn ? "Thank you for your order!" : "Спасибо за заказ!"}
+            </h1>
+            <p className="mt-4 text-lg text-muted-foreground md:text-xl">
+              {isEn
+                ? "Your order has been sent successfully. Our team will contact you shortly."
+                : "Ваша заявка успешно отправлена. Наши специалисты свяжутся с вами в ближайшее время."}
+            </p>
+            <div className="mt-8">
+              <Button asChild size="lg" className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70">
+                <Link href="/products">{isEn ? "Back to shopping" : "Вернуться к покупкам"}</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+      </div>
+    )
   }
 
   if (items.length === 0) {
@@ -296,6 +369,22 @@ export default function CartPage() {
                     />
                   </div>
 
+                  <div className="flex items-start gap-2">
+                    <Checkbox
+                      id="consent-cart"
+                      checked={consentAccepted}
+                      onCheckedChange={(checked) => setConsentAccepted(checked === true)}
+                      required
+                      className="mt-1"
+                    />
+                    <label htmlFor="consent-cart" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
+                      Я согласен(а) на{" "}
+                      <Link href="/legal/privacy-policy" className="text-primary hover:underline" target="_blank">
+                        обработку персональных данных
+                      </Link>
+                    </label>
+                  </div>
+
                   <div className="pt-3 md:pt-4 border-t border-border">
                     <div className="flex justify-between items-center mb-2 md:mb-4">
                       <span className="text-xs sm:text-sm text-muted-foreground">Позиций:</span>
@@ -311,7 +400,7 @@ export default function CartPage() {
                     <Button
                       type="submit"
                       className="w-full h-11 md:h-12 text-base md:text-lg bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
-                      disabled={isSubmitting}
+                      disabled={isSubmitting || !consentAccepted}
                     >
                       {isSubmitting ? "Отправка..." : "Оформить заказ"}
                     </Button>

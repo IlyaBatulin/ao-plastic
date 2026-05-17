@@ -56,32 +56,32 @@ const qualitySteps = [
 
 const certificates = [
   {
-    href: "/docs/quality/sertifikat-SMK-2026.jpg",
-    image: "/docs/quality/sertifikat-SMK-2026.jpg",
+    href: "/docs/quality/sertifikat-smk-2026.jpg",
+    image: "/docs/quality/sertifikat-smk-2026.jpg",
     title: "Сертификат системы менеджмента качества (СМК)",
     description: "Соответствие ISO 9001, действителен до 2026 г.",
   },
   {
-    href: "/docs/quality/ISO_2020.jpg",
-    image: "/docs/quality/ISO_2020.jpg",
+    href: "/docs/quality/iso-2020.jpg",
+    image: "/docs/quality/iso-2020.jpg",
     title: "Сертификат соответствия ISO 9001",
     description: "Система менеджмента качества (2020).",
   },
   {
-    href: "/docs/quality/СВИДЕТЕЛЬСТВО.jpg",
-    image: "/docs/quality/СВИДЕТЕЛЬСТВО.jpg",
+    href: "/docs/quality/svidetelstvo.jpg",
+    image: "/docs/quality/svidetelstvo.jpg",
     title: "Свидетельство о соответствии",
     description: "Подтверждение соответствия продукции установленным требованиям.",
   },
   {
-    href: "/docs/quality/Диплом_АБС.jpg",
-    image: "/docs/quality/Диплом_АБС.jpg",
+    href: "/docs/quality/diplom-abs.jpg",
+    image: "/docs/quality/diplom-abs.jpg",
     title: "Диплом в области АБС-пластиков",
     description: "Признание достижений в производстве и качестве АБС-пластиков.",
   },
   {
-    href: "/docs/quality/Kaski1.jpg",
-    image: "/docs/quality/Kaski1.jpg",
+    href: "/docs/quality/kaski1.jpg",
+    image: "/docs/quality/kaski1.jpg",
     title: "Сертификат на продукцию (СИЗ)",
     description: "Соответствие средств индивидуальной защиты требованиям безопасности.",
   },
@@ -89,7 +89,7 @@ const certificates = [
 
 const docLinks = [
   {
-    href: "/docs/Sertifikat-GOST-R-ISO-14001-2016_2023.pdf",
+    href: "/docs/sertifikat-gost-r-iso-14001-2016-2023.pdf",
     label: "Сертификат системы экологического менеджмента ГОСТ Р ИСО 14001-2016 (2023)",
   },
 ]
@@ -110,13 +110,13 @@ export default function QualityPage() {
         <section className="pt-32 pb-16">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="max-w-4xl mx-auto mb-16 text-center">
-              <h1 className="text-6xl md:text-7xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6] animate-in fade-in slide-in-from-bottom-4 duration-700">
+              <h1 className="text-6xl md:text-7xl font-bold mb-6 text-primary animate-in fade-in slide-in-from-bottom-4 duration-700">
                 Менеджмент качества и сертификация
               </h1>
               <p className="text-xl md:text-2xl text-foreground/70 leading-relaxed animate-in fade-in slide-in-from-bottom-5 duration-700 delay-200">
                 Системы качества и соответствие международным стандартам
               </p>
-              <div className="mt-6 h-0.5 w-24 mx-auto bg-[#1e3a8a] dark:bg-[#3b82f6] animate-in fade-in duration-700 delay-300" />
+              <div className="mt-6 h-0.5 w-24 mx-auto bg-primary animate-in fade-in duration-700 delay-300" />
             </div>
           </div>
         </section>
@@ -145,7 +145,7 @@ export default function QualityPage() {
             <div className="grid md:grid-cols-2 gap-6 mb-16">
               {principles.map((item, index) => (
                 <div key={index} className="flex items-start gap-3 bg-card rounded-xl p-6 border border-border hover:shadow-md transition-all">
-                  <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#1e3a8a] to-[#3b82f6] dark:from-[#2563eb] dark:to-[#60a5fa] flex items-center justify-center flex-shrink-0 shadow-lg shadow-blue-500/20">
+                  <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-primary to-blue-600 dark:to-[#60a5fa] flex items-center justify-center flex-shrink-0 shadow-lg shadow-blue-500/20">
                     <CheckCircle className="w-6 h-6 text-white flex-shrink-0" />
                   </div>
                   <div>
@@ -179,7 +179,7 @@ export default function QualityPage() {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-5xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 flex items-center justify-center gap-3 text-center text-foreground">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#1e3a8a] to-[#3b82f6] dark:from-[#2563eb] dark:to-[#60a5fa] flex items-center justify-center shadow-lg shadow-blue-500/20 flex-shrink-0">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-blue-600 dark:to-[#60a5fa] flex items-center justify-center shadow-lg shadow-blue-500/20 flex-shrink-0">
                 <Award className="w-7 h-7 text-white" />
               </div>
               Наши сертификаты

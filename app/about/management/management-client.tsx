@@ -40,7 +40,7 @@ export function ManagementClient({ members }: ManagementClientProps) {
         {members.map((member, index) => (
           <div
             key={member.id}
-            className="group relative flex flex-col bg-gradient-to-br from-[#1e3a8a]/10 to-[#0f172a]/5 backdrop-blur-sm rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border-2 border-[#1e3a8a]/20 hover:border-[#3b82f6]/50"
+            className="group relative flex flex-col bg-gradient-to-br from-primary/10 to-[#0f172a]/5 backdrop-blur-sm rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border-2 border-primary/20 hover:border-[#60a5fa]/50"
             style={{
               animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`,
             }}
@@ -56,9 +56,9 @@ export function ManagementClient({ members }: ManagementClientProps) {
             </div>
 
             {/* Информация под фото */}
-            <div className="flex flex-col p-8 bg-gradient-to-br from-[#1e3a8a]/5 to-transparent flex-grow">
+            <div className="flex flex-col p-8 bg-gradient-to-br from-primary/5 to-transparent flex-grow">
               <div className="flex-grow mb-4">
-                <h3 className="text-2xl font-bold mb-3 text-[#1e3a8a] dark:text-white group-hover:text-[#2563eb] dark:group-hover:text-[#60a5fa] transition-colors">
+                <h3 className="text-2xl font-bold mb-3 text-primary dark:text-white group-hover:text-[#2563eb] dark:group-hover:text-[#60a5fa] transition-colors">
                   {member.full_name}
                 </h3>
                 <p className="text-base text-foreground/70 dark:text-[#93c5fd] line-clamp-2 font-medium">
@@ -68,7 +68,7 @@ export function ManagementClient({ members }: ManagementClientProps) {
 
               <Button
                 onClick={() => handleCardClick(member)}
-                className="w-full bg-gradient-to-r from-[#1e3a8a] to-[#1e40af] hover:from-[#1e40af] hover:to-[#1d4ed8] text-white font-bold py-7 rounded-2xl transition-all shadow-lg shadow-[#1e3a8a]/30 hover:shadow-xl hover:shadow-[#3b82f6]/40"
+                className="w-full bg-gradient-to-r from-primary to-[#1e40af] hover:from-[#1e40af] hover:to-[#1d4ed8] text-white font-bold py-7 rounded-2xl transition-all shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-[#60a5fa]/40"
                 size="lg"
               >
                 Биография
@@ -85,7 +85,7 @@ export function ManagementClient({ members }: ManagementClientProps) {
             <>
               <div className="flex flex-col md:flex-row h-full w-full">
                   {/* Левая часть - Фото (30%) */}
-                  <div className="md:w-[30%] bg-gradient-to-br from-[#1e3a8a] to-[#0f172a] p-6 md:p-8 flex flex-col items-center justify-center">
+                  <div className="md:w-[30%] bg-gradient-to-br from-primary to-[#0f172a] p-6 md:p-8 flex flex-col items-center justify-center">
                     {selectedMember.image_url && (
                       <div className="mb-6">
                         <img
@@ -110,7 +110,7 @@ export function ManagementClient({ members }: ManagementClientProps) {
                     <div className="p-4 md:p-6 space-y-6">
                       {selectedMember.bio && (
                         <div>
-                          <h4 className="text-3xl font-bold mb-6 text-[#1e3a8a] dark:text-[#60a5fa] border-b-4 border-[#1e3a8a]/20 pb-4">
+                          <h4 className="text-3xl font-bold mb-6 text-primary dark:text-[#60a5fa] border-b-4 border-primary/20 pb-4">
                             Биография
                           </h4>
                           <div className="prose prose-lg max-w-none">
@@ -122,14 +122,14 @@ export function ManagementClient({ members }: ManagementClientProps) {
                       )}
 
                       {(selectedMember.email || selectedMember.phone) && (
-                        <div className="mt-8 pt-6 border-t-2 border-[#1e3a8a]/20">
-                          <h4 className="text-2xl font-bold mb-4 text-[#1e3a8a] dark:text-[#60a5fa]">
+                        <div className="mt-8 pt-6 border-t-2 border-primary/20">
+                          <h4 className="text-2xl font-bold mb-4 text-primary dark:text-[#60a5fa]">
                             Контактная информация
                           </h4>
                           <div className="space-y-3">
                             {selectedMember.email && (
                               <div className="flex items-center gap-3 text-base md:text-lg">
-                                <span className="font-semibold min-w-[100px] text-[#1e3a8a] dark:text-[#60a5fa]">Email:</span>
+                                <span className="font-semibold min-w-[100px] text-primary dark:text-[#60a5fa]">Email:</span>
                                 <a
                                   href={`mailto:${selectedMember.email}`}
                                   className="text-[#2563eb] hover:underline"
@@ -140,7 +140,7 @@ export function ManagementClient({ members }: ManagementClientProps) {
                             )}
                             {selectedMember.phone && (
                               <div className="flex items-center gap-3 text-base md:text-lg">
-                                <span className="font-semibold min-w-[100px] text-[#1e3a8a] dark:text-[#60a5fa]">Телефон:</span>
+                                <span className="font-semibold min-w-[100px] text-primary dark:text-[#60a5fa]">Телефон:</span>
                                 <a
                                   href={`tel:${selectedMember.phone}`}
                                   className="text-[#2563eb] hover:underline"

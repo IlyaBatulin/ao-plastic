@@ -113,7 +113,7 @@ export function AbsCustomInfo() {
         <div className="grid md:grid-cols-2 gap-5 lg:gap-6">
           {advantages.map((advantage, index) => (
             <ScrollReveal key={advantage} delayMs={index * 70}>
-              <div className="bg-background rounded-2xl p-6 lg:p-7 border border-border hover:border-primary/50 transition-all duration-500 hover:shadow-lg hover:shadow-primary/10 h-full">
+              <div className="bg-background rounded-2xl p-6 lg:p-7 border border-border transition-all duration-500 h-full">
                 <div className="flex items-start gap-3">
                   <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <span className="text-primary font-bold text-sm">✓</span>
@@ -146,8 +146,8 @@ export function AbsCustomInfo() {
           {applicationsList.map((item, index) => (
             <li key={item} className="list-none">
               <ScrollReveal delayMs={index * 90}>
-                <div className="flex items-start gap-3 group">
-                  <span className="text-primary font-semibold mt-1.5 text-2xl md:text-3xl group-hover:scale-125 transition-transform duration-300">
+                <div className="flex items-start gap-3">
+                  <span className="text-primary font-semibold mt-1.5 text-2xl md:text-3xl">
                     •
                   </span>
                   <span className="text-2xl sm:text-3xl md:text-4xl text-foreground leading-[1.35] font-normal">

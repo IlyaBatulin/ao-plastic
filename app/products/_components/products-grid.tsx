@@ -149,6 +149,7 @@ export default function ProductsGrid({
                   toast({
                     title: "Товар добавлен в корзину",
                     description: `${displayName}: 1 ${unit}${isHouseholdProduct && packageQuantity && packageQuantity > 1 ? ` (${packageQuantity} шт/уп)` : ''}`,
+                    className: "border-primary/40 bg-primary text-primary-foreground",
                   })
                 }}
               >
@@ -163,7 +164,7 @@ export default function ProductsGrid({
             </div>
 
             {/* Shadow on hover */}
-            <div className="absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 pointer-events-none" style={{ boxShadow: '0 20px 40px rgba(0, 70, 255, 0.15)' }} />
+            <div className="absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 pointer-events-none" style={{ boxShadow: '0 20px 40px rgba(30, 58, 138, 0.15)' }} />
           </Link>
         )
       })}

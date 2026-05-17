@@ -42,6 +42,30 @@ interface UnifiedMegaMenuProps {
 let categoriesCache: Category[] | null = null
 let categoriesCachePromise: Promise<Category[]> | null = null
 
+const mapJsonSubcategories = (category: any) =>
+  (category?.subcategories || [])
+    .filter((sub: any) => !(category.id === "abs" && (sub.id === "abs-specs" || sub.slug === "abs-specs")))
+    .map((sub: any) => ({
+      id: sub.id,
+      name: sub.name,
+      slug: sub.slug,
+    }))
+
+const getJsonCategories = (): Category[] =>
+  productsData.categories
+    .filter((cat) => cat.id !== 'dispersion' && cat.id !== 'pvc-modifier')
+    .map((cat) => ({
+      id: cat.id,
+      name: cat.name,
+      slug: cat.id,
+      subcategories: mapJsonSubcategories(cat),
+    }))
+
+const getJsonSubcategories = (categoryId: string) => {
+  const fallbackCategory = productsData.categories.find((cat) => cat.id === categoryId)
+  return mapJsonSubcategories(fallbackCategory)
+}
+
 export const loadCategoriesCached = async (): Promise<Category[]> => {
   if (categoriesCachePromise) {
     return categoriesCachePromise
@@ -65,20 +89,22 @@ export const loadCategoriesCached = async (): Promise<Category[]> => {
         const filteredCategories = categoriesData.filter((cat: any) => cat.id !== 'pvc-modifier')
         const categoriesWithSubs = await Promise.all(
           filteredCategories.map(async (cat: any) => {
-            const { data: subcatsData } = await supabase
+            const { data: subcatsData, error: subcatsError } = await supabase
               .from("subcategories")
               .select("id, name, slug")
               .eq("category_id", cat.id)
               .eq("is_active", true)
               .order("sort", { ascending: true })
+            const fallbackSubcategories = getJsonSubcategories(cat.id)
+            const loadedSubcategories = (subcatsData || []).filter(
+              (sub: any) => !(cat.id === "abs" && (sub.id === "abs-specs" || sub.slug === "abs-specs"))
+            )
 
             return {
               id: cat.id,
               name: cat.name,
               slug: cat.slug || cat.id,
-              subcategories: (subcatsData || []).filter(
-                (sub: any) => !(cat.id === "abs" && (sub.id === "abs-specs" || sub.slug === "abs-specs"))
-              ),
+              subcategories: subcatsError || loadedSubcategories.length === 0 ? fallbackSubcategories : loadedSubcategories,
             }
           })
         )
@@ -86,39 +112,13 @@ export const loadCategoriesCached = async (): Promise<Category[]> => {
         categoriesCache = categoriesWithSubs
         return categoriesWithSubs
       } else {
-        const jsonCategories = productsData.categories
-          .filter((cat) => cat.id !== 'dispersion' && cat.id !== 'pvc-modifier')
-          .map((cat) => ({
-            id: cat.id,
-            name: cat.name,
-            slug: cat.id,
-            subcategories: (cat.subcategories || [])
-              .filter((sub: any) => !(cat.id === "abs" && (sub.id === "abs-specs" || sub.slug === "abs-specs")))
-              .map((sub) => ({
-                id: sub.id,
-                name: sub.name,
-                slug: sub.slug,
-              })),
-          }))
+        const jsonCategories = getJsonCategories()
         categoriesCache = jsonCategories
         return jsonCategories
       }
     } catch (error) {
       console.error("Error loading categories:", error)
-      const jsonCategories = productsData.categories
-        .filter((cat) => cat.id !== 'dispersion' && cat.id !== 'pvc-modifier')
-        .map((cat) => ({
-          id: cat.id,
-          name: cat.name,
-          slug: cat.id,
-          subcategories: (cat.subcategories || [])
-            .filter((sub: any) => !(cat.id === "abs" && (sub.id === "abs-specs" || sub.slug === "abs-specs")))
-            .map((sub) => ({
-              id: sub.id,
-              name: sub.name,
-              slug: sub.slug,
-            })),
-        }))
+      const jsonCategories = getJsonCategories()
       categoriesCache = jsonCategories
       return jsonCategories
     } finally {
@@ -136,20 +136,7 @@ export function UnifiedMegaMenu({ isOpen, activeItem, onClose }: UnifiedMegaMenu
     if (categoriesCache) {
       return categoriesCache
     }
-    return productsData.categories
-      .filter((cat) => cat.id !== 'dispersion' && cat.id !== 'pvc-modifier')
-      .map((cat) => ({
-        id: cat.id,
-        name: cat.name,
-        slug: cat.id,
-        subcategories: (cat.subcategories || [])
-          .filter((sub: any) => !(cat.id === "abs" && (sub.id === "abs-specs" || sub.slug === "abs-specs")))
-          .map((sub) => ({
-            id: sub.id,
-            name: sub.name,
-            slug: sub.slug,
-          })),
-      }))
+    return getJsonCategories()
   })
   const [loading, setLoading] = useState(!categoriesCache)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -285,34 +272,36 @@ export function UnifiedMegaMenu({ isOpen, activeItem, onClose }: UnifiedMegaMenu
     const columnsCount = Math.min(4, Math.max(3, activeMenuItem.sections.length))
     const itemsPerColumn = Math.ceil(activeMenuItem.sections.length / columnsCount)
     const columns: MenuSection[][] = []
+    const isPartnership = activeMenuItem.label === "Партнерство" || activeMenuItem.labelEn === "Partnership"
 
     for (let i = 0; i < columnsCount; i++) {
       columns.push(activeMenuItem.sections.slice(i * itemsPerColumn, (i + 1) * itemsPerColumn))
     }
 
-    // Проверяем, это ли меню "Партнерство" для центрирования
-    const isPartnership = activeMenuItem.label === "Партнерство" || activeMenuItem.labelEn === "Partnership"
-
     content = (
       <div
-        className={`grid gap-16 ${isPartnership ? 'justify-items-center' : ''}`}
+        className={`grid gap-16 ${isPartnership ? "justify-items-center" : ""}`}
         style={{
-          gridTemplateColumns: isPartnership 
-            ? `repeat(${activeMenuItem.sections.length}, auto)` 
-            : `repeat(${columnsCount}, 1fr)`,
+          gridTemplateColumns: `repeat(${columnsCount}, 1fr)`,
         }}
       >
         {columns.map((column, colIndex) => (
-          <div key={colIndex} className={`flex flex-col gap-10 ${isPartnership ? 'items-center text-center' : ''}`}>
+          <div key={colIndex} className={`flex flex-col gap-10 ${isPartnership ? "items-center" : ""}`}>
             {column.map((section, sectionIndex) => (
-              <div key={sectionIndex} className={`flex flex-col gap-4 group ${isPartnership ? 'items-center' : ''}`}>
+              <div key={sectionIndex} className={`flex flex-col gap-4 group ${isPartnership ? "w-fit" : ""}`}>
                 <h3 
-                  className="text-base font-semibold text-gray-900 tracking-tight mb-1"
+                  className={`text-base font-semibold text-gray-900 tracking-tight mb-1 ${isPartnership ? "text-center" : ""}`}
                   style={{ fontFamily: 'system-ui, -apple-system, sans-serif', letterSpacing: '-0.01em', fontWeight: 600 }}
                 >
                   {lang === "en" && section.titleEn ? section.titleEn : section.title}
                 </h3>
-                <div className={`flex flex-col gap-3 ${isPartnership ? '' : 'pl-1 border-l-2 border-transparent group-hover:border-primary/20'} transition-colors duration-300`}>
+                <div
+                  className={`flex flex-col gap-3 transition-colors duration-300 ${
+                    isPartnership
+                      ? "items-center text-center"
+                      : "pl-1 border-l-2 border-transparent group-hover:border-primary/20"
+                  }`}
+                >
                   {section.items.map((item, itemIndex) => {
                     const label = lang === "en" && item.labelEn ? item.labelEn : item.label
                     const isExternal = item.href.startsWith("http") || item.href.endsWith(".pdf")
@@ -348,10 +337,9 @@ export function UnifiedMegaMenu({ isOpen, activeItem, onClose }: UnifiedMegaMenu
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -8 }}
       transition={{ duration: 0.2, ease: "easeOut" }}
-      className="fixed left-0 right-0 w-full z-[110] backdrop-blur-xl"
+      className="fixed left-0 right-0 w-full z-[110] bg-white"
       style={{ 
         top: `${topOffset}px`,
-        background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%)',
         boxShadow: '0 20px 60px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05)'
       }}
     >

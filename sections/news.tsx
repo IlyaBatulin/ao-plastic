@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { ArrowRight, Calendar, Newspaper } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
+import { SectionHeading } from "@/components/section-heading"
 
 interface NewsItem {
   id: number
@@ -46,12 +47,17 @@ export function News({ items = [] }: NewsProps) {
   return (
     <section ref={sectionRef} className="py-12 lg:py-16 pt-8 bg-background">
       <div className="container mx-auto px-4 lg:px-8">
+        <SectionHeading
+          title={t("homePage.news.title")}
+          subtitle={t("homePage.news.description")}
+          className="mb-8 lg:mb-10"
+        />
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 mb-12">
           {items.length > 0 ? (
             items.map((item, index) => (
               <Card
                 key={item.id}
-                className={`group hover:shadow-xl hover:-translate-y-2 transition-all duration-300 overflow-hidden ${
+                className={`transition-all duration-300 overflow-hidden ${
                   isVisible ? "animate-in fade-in slide-in-from-bottom-4" : "opacity-0"
                 }`}
                 style={{ animationDelay: `${index * 150}ms`, animationFillMode: "both" }}
@@ -62,7 +68,7 @@ export function News({ items = [] }: NewsProps) {
                       src={item.image_url}
                       alt={item.title}
                       fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-110"
+                      className="object-cover"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
@@ -81,7 +87,7 @@ export function News({ items = [] }: NewsProps) {
                         })
                       : ""}
                   </div>
-                  <h3 className="text-2xl font-semibold group-hover:text-primary transition-colors leading-tight">{item.title}</h3>
+                  <h3 className="text-2xl font-semibold leading-tight">{item.title}</h3>
                 </CardHeader>
                 <CardContent className="px-6 py-4">
                   <p className="text-muted-foreground text-base line-clamp-4">

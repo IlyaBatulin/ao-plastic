@@ -260,7 +260,7 @@ export function CategoryEditClient({
                         setFormData({ ...formData, image: e.target.value })
                         setImagePreview(e.target.value)
                       }}
-                      placeholder="/images/category.jpg"
+                      placeholder="/placeholder.jpg"
                     />
                   </div>
                 ) : (

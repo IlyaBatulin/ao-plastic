@@ -4,7 +4,10 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/hooks/use-toast"
+import Link from "next/link"
+import { useLanguage } from "@/contexts/language-context"
 
 export type CustomOrderFormProps = {
   categoryId?: string
@@ -29,7 +32,10 @@ export function CustomOrderForm({
   commentHint = "Укажите тип изделия, размеры, количество, цвет, особые требования и другие детали",
 }: CustomOrderFormProps = {}) {
   const { toast } = useToast()
+  const { lang } = useLanguage()
+  const isEn = lang === "en"
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [consentAccepted, setConsentAccepted] = useState(false)
   const [formData, setFormData] = useState({
     customerName: "",
     customerPhone: "",
@@ -42,8 +48,44 @@ export function CustomOrderForm({
     
     if (!formData.customerName.trim() || !formData.customerPhone.trim()) {
       toast({
-        title: "Ошибка",
-        description: "Пожалуйста, заполните обязательные поля (имя и телефон)",
+        title: isEn ? "Validation error" : "Ошибка валидации",
+        description: isEn
+          ? "Please fill in required fields (name and phone)"
+          : "Пожалуйста, заполните обязательные поля (имя и телефон)",
+        variant: "destructive",
+      })
+      return
+    }
+
+    const phoneDigits = formData.customerPhone.replace(/\D/g, "")
+    if (phoneDigits.length < 10) {
+      toast({
+        title: isEn ? "Invalid phone number" : "Некорректный телефон",
+        description: isEn
+          ? "Please enter a valid phone number"
+          : "Пожалуйста, укажите корректный номер телефона",
+        variant: "destructive",
+      })
+      return
+    }
+
+    if (formData.customerEmail.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.customerEmail.trim())) {
+      toast({
+        title: isEn ? "Invalid email" : "Некорректный email",
+        description: isEn
+          ? "Please enter a valid email address"
+          : "Пожалуйста, укажите корректный email",
+        variant: "destructive",
+      })
+      return
+    }
+
+    if (!consentAccepted) {
+      toast({
+        title: isEn ? "Consent required" : "Требуется согласие",
+        description: isEn
+          ? "You must agree to personal data processing"
+          : "Необходимо согласиться на обработку персональных данных",
         variant: "destructive",
       })
       return
@@ -84,8 +126,8 @@ export function CustomOrderForm({
 
       if (result.ok) {
         toast({
-          title: "Заявка отправлена!",
-          description: "Мы свяжемся с вами в ближайшее время",
+          title: isEn ? "Request sent!" : "Заявка отправлена!",
+          description: isEn ? "We will contact you shortly" : "Мы свяжемся с вами в ближайшее время",
         })
         setFormData({
           customerName: "",
@@ -93,17 +135,18 @@ export function CustomOrderForm({
           customerEmail: "",
           comment: "",
         })
+        setConsentAccepted(false)
       } else {
         toast({
-          title: "Ошибка",
-          description: result.error || "Не удалось отправить заявку",
+          title: isEn ? "Error" : "Ошибка",
+          description: result.error || (isEn ? "Failed to send request" : "Не удалось отправить заявку"),
           variant: "destructive",
         })
       }
     } catch (error) {
       toast({
-        title: "Ошибка",
-        description: "Не удалось отправить заявку",
+        title: isEn ? "Error" : "Ошибка",
+        description: isEn ? "Failed to send request" : "Не удалось отправить заявку",
         variant: "destructive",
       })
     } finally {
@@ -163,7 +206,23 @@ export function CustomOrderForm({
         <p className="text-xs text-muted-foreground mt-2">{commentHint}</p>
       </div>
 
-      <Button type="submit" className="w-full h-14 text-lg" disabled={isSubmitting}>
+      <div className="flex items-start gap-2">
+        <Checkbox
+          id="consent-custom-order"
+          checked={consentAccepted}
+          onCheckedChange={(checked) => setConsentAccepted(checked === true)}
+          required
+          className="mt-1"
+        />
+        <label htmlFor="consent-custom-order" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
+          Я согласен(а) на{" "}
+          <Link href="/legal/privacy-policy" className="text-primary hover:underline" target="_blank">
+            обработку персональных данных
+          </Link>
+        </label>
+      </div>
+
+      <Button type="submit" className="w-full h-14 text-lg" disabled={isSubmitting || !consentAccepted}>
         {isSubmitting ? "Отправка..." : "Отправить заявку"}
       </Button>
     </form>

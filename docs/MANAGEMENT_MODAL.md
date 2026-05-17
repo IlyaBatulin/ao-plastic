@@ -109,7 +109,7 @@ export interface ChromaGridProps {
   full_name: "Кизимов Николай Владимирович",
   position: "Генеральный директор",
   bio: "Опыт работы в химической промышленности более 30 лет...",
-  image_url: "/images/bosses/Кизимов_Николай_Владимирович.jpg",
+  image_url: "/images/bosses/kizimov-nikolay-vladimirovich.jpg",
   email: null, // опционально
   phone: null, // опционально
 }

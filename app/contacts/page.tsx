@@ -108,7 +108,7 @@ export default function ContactsPage() {
         {/* Градиентный overlay для мягкости */}
         <div className="absolute inset-0 bg-gradient-to-b from-blue-50/8 via-transparent to-background" />
         <div className="container mx-auto px-4 lg:px-8 relative z-10">
-          <h1 className="text-5xl lg:text-6xl font-bold text-foreground mb-6">{t("contactsPage.title")}</h1>
+          <h1 className="text-5xl lg:text-6xl font-bold text-primary mb-6">{t("contactsPage.title")}</h1>
           <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed">
             {t("contactsPage.description")}
           </p>

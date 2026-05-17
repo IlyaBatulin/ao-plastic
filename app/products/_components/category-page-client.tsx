@@ -142,14 +142,14 @@ export function CategoryPageClient({
               variants={korsStoryParent}
             >
               <motion.div variants={korsStoryChild} className="col-span-full">
-                <h2 className="text-balance text-3xl font-bold tracking-tight text-[#1e3a8a] sm:text-4xl lg:text-5xl dark:text-[#60a5fa]">
+                <h2 className="text-h2">
                   Стирол
                 </h2>
-                <p className="mt-4 max-w-2xl text-base leading-relaxed text-[#1e3a8a]/85 sm:text-lg dark:text-blue-100/85">
+                <p className="mt-4 max-w-2xl text-body text-primary/85 dark:text-blue-100/85">
                   Мономер для производства полистирола, сополимеров и синтетического каучука — основа многих полимерных
                   материалов, которые вы знаете по каталогу АО «Пластик».
                 </p>
-                <div className="mt-8 h-1 w-28 rounded-full bg-[#1e3a8a] dark:bg-[#60a5fa]" />
+                <div className="mt-8 h-1 w-28 rounded-full bg-primary" />
               </motion.div>
               <motion.div
                 variants={korsStoryChild}
@@ -194,7 +194,7 @@ export function CategoryPageClient({
               viewport={{ once: true, amount: 0.12 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h3 className="mb-6 text-balance text-2xl font-bold tracking-tight text-[#1e3a8a] sm:text-3xl dark:text-[#60a5fa]">
+              <h3 className="mb-6 text-h3 sm:text-3xl">
                 Норма по НТД — Высший сорт
               </h3>
               <div className="overflow-x-auto rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8">
@@ -203,7 +203,7 @@ export function CategoryPageClient({
               </div>
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className="bg-[#1e3a5f] text-white">
+                  <tr className="bg-primary text-white">
                     <th className="py-4 px-6 text-left font-semibold border border-gray-300">№ п/п</th>
                     <th className="py-4 px-6 text-left font-semibold border border-gray-300">Наименование показателей</th>
                     <th className="py-4 px-6 text-left font-semibold border border-gray-300">Ед. измерения</th>
@@ -299,21 +299,21 @@ export function CategoryPageClient({
               variants={korsStoryParent}
             >
               <motion.div variants={korsStoryChild} className="col-span-full">
-                <h2 className="text-balance text-3xl font-bold tracking-tight text-[#1e3a8a] sm:text-4xl lg:text-5xl dark:text-[#60a5fa]">
+                <h2 className="text-h2">
                   КОРС
                 </h2>
-                <p className="mt-4 max-w-2xl text-base leading-relaxed text-[#1e3a8a]/85 sm:text-lg dark:text-blue-100/85">
+                <p className="mt-4 max-w-2xl text-body text-primary/85 dark:text-blue-100/85">
                   Кубовый остаток ректификации стирола — побочный продукт производства стирола, используемый как топливо,
                   растворитель и компонент промышленных материалов.
                 </p>
-                <div className="mt-8 h-1 w-28 rounded-full bg-[#1e3a8a] dark:bg-[#60a5fa]" />
+                <div className="mt-8 h-1 w-28 rounded-full bg-primary" />
               </motion.div>
               <motion.div
                 variants={korsStoryChild}
                 className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border bg-muted/30 shadow-md"
               >
                 <Image
-                  src="/ПРЕВЬЮ/колбы/корс_1.jpeg"
+                  src="/prevyu/kolby/kors-1.jpeg"
                   alt="КОРС — кубовый остаток ректификации стирола"
                   fill
                   className="object-cover"
@@ -347,7 +347,7 @@ export function CategoryPageClient({
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h2 className="mb-6 text-balance text-2xl font-bold tracking-tight text-[#1e3a8a] sm:text-3xl dark:text-[#60a5fa]">
+              <h2 className="mb-6 text-h3 sm:text-3xl">
                 Норма по НТД — КОРС
               </h2>
               <KorsNormTable tuLabel={KORS_TU_LABEL} rows={KORS_NORM_ROWS} />
@@ -361,14 +361,14 @@ export function CategoryPageClient({
               variants={korsStoryParent}
             >
               <motion.div variants={korsStoryChild} className="col-span-full">
-                <h2 className="text-balance text-3xl font-bold tracking-tight text-[#1e3a8a] sm:text-4xl lg:text-5xl dark:text-[#60a5fa]">
+                <h2 className="text-h2">
                   Бентол
                 </h2>
-                <p className="mt-4 max-w-2xl text-base leading-relaxed text-[#1e3a8a]/85 sm:text-lg dark:text-blue-100/85">
+                <p className="mt-4 max-w-2xl text-body text-primary/85 dark:text-blue-100/85">
                   Фракция бензол-толуольная — продукт переработки, используемый как технологическое сырьё и растворитель в
                   серии отраслей промышленности.
                 </p>
-                <div className="mt-8 h-1 w-28 rounded-full bg-[#1e3a8a] dark:bg-[#60a5fa]" />
+                <div className="mt-8 h-1 w-28 rounded-full bg-primary" />
               </motion.div>
               <motion.div
                 variants={korsStoryChild}
@@ -412,7 +412,7 @@ export function CategoryPageClient({
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h3 className="mb-6 text-balance text-2xl font-bold tracking-tight text-[#1e3a8a] sm:text-3xl dark:text-[#60a5fa]">
+              <h3 className="mb-6 text-h3 sm:text-3xl">
                 Норма по НТД — Бентол
               </h3>
               <KorsNormTable tuLabel={BENTOL_TU_LABEL} rows={BENTOL_NORM_ROWS} />

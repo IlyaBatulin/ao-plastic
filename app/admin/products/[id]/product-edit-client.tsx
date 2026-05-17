@@ -410,7 +410,7 @@ export function ProductEditClient({
                         setFormData({ ...formData, image: e.target.value })
                         setImagePreview(e.target.value)
                       }}
-                      placeholder="/images/product.jpg"
+                      placeholder="/placeholder.jpg"
                     />
                   </div>
                 ) : (

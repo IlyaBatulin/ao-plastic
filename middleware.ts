@@ -3,6 +3,97 @@ import type { NextRequest } from "next/server"
 
 const SITE_AUTH_COOKIE = "site_auth"
 const ADMIN_SESSION_COOKIE = "admin_session"
+const CYRILLIC_MAP: Record<string, string> = {
+  а: "a",
+  б: "b",
+  в: "v",
+  г: "g",
+  д: "d",
+  е: "e",
+  ё: "e",
+  ж: "zh",
+  з: "z",
+  и: "i",
+  й: "y",
+  к: "k",
+  л: "l",
+  м: "m",
+  н: "n",
+  о: "o",
+  п: "p",
+  р: "r",
+  с: "s",
+  т: "t",
+  у: "u",
+  ф: "f",
+  х: "h",
+  ц: "ts",
+  ч: "ch",
+  ш: "sh",
+  щ: "sch",
+  ъ: "",
+  ы: "y",
+  ь: "",
+  э: "e",
+  ю: "yu",
+  я: "ya",
+}
+
+function transliterate(input: string): string {
+  let out = ""
+  for (const char of input) {
+    const lower = char.toLowerCase()
+    out += CYRILLIC_MAP[lower] ?? char
+  }
+  return out
+}
+
+function slugifyPart(input: string): string {
+  const transliterated = transliterate(input).toLowerCase().replace(/&/g, " and ")
+  const normalized = transliterated
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/-{2,}/g, "-")
+    .replace(/^-+|-+$/g, "")
+  return normalized || "file"
+}
+
+function normalizeSegment(segment: string): string {
+  if (!segment) return segment
+  const dot = segment.lastIndexOf(".")
+  if (dot <= 0 || dot === segment.length - 1) {
+    return slugifyPart(segment)
+  }
+
+  const stem = segment.slice(0, dot)
+  const extRaw = segment.slice(dot + 1).toLowerCase()
+  const ext = extRaw.replace(/[^a-z0-9]/g, "")
+  const normalizedStem = slugifyPart(stem)
+  return ext ? `${normalizedStem}.${ext}` : normalizedStem
+}
+
+function normalizeLegacyAssetPath(pathname: string): string {
+  if (!pathname.startsWith("/images/") && !pathname.startsWith("/docs/") && !pathname.startsWith("/videos/")) {
+    return pathname
+  }
+
+  let decoded = pathname
+  try {
+    decoded = decodeURIComponent(pathname)
+  } catch {
+    // Keep original pathname if malformed percent-encoding.
+  }
+
+  const parts = decoded.split("/")
+  if (parts.length <= 2) return pathname
+
+  const normalizedParts = parts.map((part, idx) => {
+    if (idx <= 1 || !part) return part
+    return normalizeSegment(part)
+  })
+
+  const normalized = normalizedParts.join("/")
+  return normalized || pathname
+}
 
 function getAdminSessionSecret(): string {
   return process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD || ""
@@ -79,6 +170,12 @@ function isAllowedSearchCrawler(userAgent: string): boolean {
 
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
+  const normalizedAssetPath = normalizeLegacyAssetPath(pathname)
+  if (normalizedAssetPath !== pathname) {
+    const rewriteUrl = request.nextUrl.clone()
+    rewriteUrl.pathname = normalizedAssetPath
+    return NextResponse.rewrite(rewriteUrl)
+  }
 
   // Исключаем статические файлы, API routes и страницу входа
   const isStaticFile = pathname.startsWith("/_next") || 

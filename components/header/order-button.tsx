@@ -15,7 +15,8 @@ export function OrderButton() {
     <Button
       asChild
       size="lg"
-      className="relative flex-shrink-0 whitespace-nowrap rounded-xl bg-blue-gradient px-0 text-white font-semibold transition-all duration-300 hover:shadow-blue-lg hover:shadow-primary/20 border border-primary/20"
+      variant="brand"
+      className="relative flex-shrink-0 whitespace-nowrap px-0 font-semibold transition-all duration-300 border border-primary/20"
     >
       <Link href="/cart" className="flex items-center gap-1.5 xl:gap-2 px-3 xl:px-4">
         <ShoppingCart className="w-4 h-4 xl:w-5 xl:h-5 flex-shrink-0" />

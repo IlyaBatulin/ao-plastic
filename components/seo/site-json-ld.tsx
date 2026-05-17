@@ -11,7 +11,7 @@ export function SiteJsonLd() {
       name: "АО «Пластик»",
       alternateName: ["Пластик Узловая", "AO Plastic"],
       url: base,
-      logo: `${base}/images/logo.png`,
+      logo: `${base}/images/logo123.png`,
       description:
         "Производство АБС-пластиков, полистирола, стирола и пластиковых изделий. Завод в г. Узловая, Тульская область.",
       address: {

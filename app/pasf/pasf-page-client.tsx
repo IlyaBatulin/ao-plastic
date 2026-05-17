@@ -201,7 +201,7 @@ const content = {
 
 export function PasfPageClient() {
   const { lang } = useLanguage()
-  const page = content[lang]
+  const page = content[lang as keyof typeof content]
 
   return (
     <div className="min-h-screen bg-background">
@@ -252,13 +252,13 @@ export function PasfPageClient() {
               <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground">
                 {page.mainBadge}
               </p>
-              <h2 className="text-3xl font-bold text-[#1e3a8a] text-balance dark:text-[#3b82f6] lg:text-4xl">
+              <h2 className="text-h2">
                 {page.mainTitle}
               </h2>
             </div>
             <div className="grid gap-4 md:grid-cols-2">
-              {page.summary.map((item) => (
-                <div key={item} className="border-l-2 border-[#1e3a8a] bg-card p-5 shadow-sm dark:border-[#3b82f6]">
+              {page.summary.map((item: string) => (
+                <div key={item} className="border-l-2 border-primary bg-card p-5 shadow-sm">
                   <p className="leading-relaxed text-muted-foreground">{item}</p>
                 </div>
               ))}
@@ -274,11 +274,11 @@ export function PasfPageClient() {
               <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground">
                 {page.outsourcingBadge}
               </p>
-              <h2 className="mb-6 text-4xl font-bold text-[#1e3a8a] text-balance dark:text-[#3b82f6]">
+              <h2 className="text-h2 mb-6">
                 {page.outsourcingTitle}
               </h2>
               <div className="space-y-5 text-lg leading-relaxed text-muted-foreground">
-                {page.outsourcingParagraphs.map((paragraph) => (
+                {page.outsourcingParagraphs.map((paragraph: string) => (
                   <p key={paragraph}>{paragraph}</p>
                 ))}
               </div>
@@ -287,7 +287,7 @@ export function PasfPageClient() {
             <div className="border border-border bg-card p-8 shadow-sm">
               <h3 className="mb-6 text-2xl font-bold">{page.benefitsTitle}</h3>
               <ul className="space-y-4 list-disc pl-5">
-                {page.benefits.map((item) => (
+                {page.benefits.map((item: string) => (
                   <li key={item} className="text-muted-foreground">
                     <span className="leading-relaxed">{item}</span>
                   </li>
@@ -304,7 +304,7 @@ export function PasfPageClient() {
             <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground">
               {page.servicesBadge}
             </p>
-            <h2 className="text-4xl font-bold text-[#1e3a8a] text-balance dark:text-[#3b82f6]">
+            <h2 className="text-h2">
               {page.servicesTitle}
             </h2>
           </div>
@@ -314,7 +314,7 @@ export function PasfPageClient() {
               <h3 className="mb-4 text-2xl font-bold">{page.gasTitle}</h3>
               <p className="mb-6 leading-relaxed text-muted-foreground">{page.gasText}</p>
               <ul className="space-y-3 list-disc pl-5">
-                {page.gasWorks.map((item) => (
+                {page.gasWorks.map((item: string) => (
                   <li key={item} className="text-muted-foreground">
                     <span>{item}</span>
                   </li>
@@ -326,7 +326,7 @@ export function PasfPageClient() {
               <h3 className="mb-4 text-2xl font-bold">{page.fireTitle}</h3>
               <p className="mb-6 leading-relaxed text-muted-foreground">{page.fireText}</p>
               <ul className="space-y-3 list-disc pl-5">
-                {page.fireWorks.map((item) => (
+                {page.fireWorks.map((item: string) => (
                   <li key={item} className="text-muted-foreground">
                     <span>{item}</span>
                   </li>
@@ -344,7 +344,7 @@ export function PasfPageClient() {
               <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground">
                 {page.resourcesBadge}
               </p>
-              <h2 className="mb-6 text-4xl font-bold text-[#1e3a8a] text-balance dark:text-[#3b82f6]">
+              <h2 className="text-h2 mb-6">
                 {page.resourcesTitle}
               </h2>
               <p className="mb-6 text-lg leading-relaxed text-muted-foreground">{page.resourcesText}</p>
@@ -360,7 +360,7 @@ export function PasfPageClient() {
               <div className="border border-border bg-card p-8 shadow-sm">
                 <h3 className="mb-5 text-2xl font-bold">{page.equipmentTitle}</h3>
                 <ul className="space-y-3 list-disc pl-5">
-                  {page.equipment.map((item) => (
+                  {page.equipment.map((item: string) => (
                     <li key={item} className="text-muted-foreground">
                       <span>{item}</span>
                     </li>
@@ -371,7 +371,7 @@ export function PasfPageClient() {
               <div className="border border-border bg-card p-8 shadow-sm">
                 <h3 className="mb-5 text-2xl font-bold">{page.preventiveTitle}</h3>
                 <ul className="space-y-3 list-disc pl-5">
-                  {page.preventiveWorks.map((item) => (
+                  {page.preventiveWorks.map((item: string) => (
                     <li key={item} className="text-muted-foreground">
                       <span>{item}</span>
                     </li>
@@ -390,7 +390,7 @@ export function PasfPageClient() {
               <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground">
                 {page.docsBadge}
               </p>
-              <h2 className="mb-6 text-4xl font-bold text-[#1e3a8a] text-balance dark:text-[#3b82f6]">
+              <h2 className="text-h2 mb-6">
                 {page.docsTitle}
               </h2>
               <p className="mb-8 text-lg leading-relaxed text-muted-foreground">{page.docsText}</p>
@@ -428,7 +428,7 @@ export function PasfPageClient() {
               <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground">
                 {page.cooperationBadge}
               </p>
-              <h2 className="text-4xl font-bold text-[#1e3a8a] text-balance dark:text-[#3b82f6]">
+              <h2 className="text-h2">
                 {page.cooperationTitle}
               </h2>
             </div>
@@ -436,7 +436,7 @@ export function PasfPageClient() {
           </div>
 
           <div className="flex flex-wrap gap-3">
-            {page.partners.map((partner) => (
+            {page.partners.map((partner: string) => (
               <span key={partner} className="border border-border bg-card px-5 py-3 font-medium shadow-sm">
                 {partner}
               </span>

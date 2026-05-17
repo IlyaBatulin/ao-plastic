@@ -21,13 +21,13 @@ export default function VacanciesPage() {
             <div className="max-w-4xl mx-auto">
               {/* Выделенный заголовок */}
               <div className="mb-16 text-center">
-                <h1 className="text-6xl md:text-7xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6] animate-in fade-in slide-in-from-bottom-4 duration-700">
+                <h1 className="text-6xl md:text-7xl font-bold mb-6 text-primary animate-in fade-in slide-in-from-bottom-4 duration-700">
                   Вакансии
                 </h1>
                 <p className="text-xl md:text-2xl text-foreground/70 leading-relaxed animate-in fade-in slide-in-from-bottom-5 duration-700 delay-200">
                   Присоединяйтесь к команде профессионалов
                 </p>
-                <div className="mt-6 h-0.5 w-24 mx-auto bg-[#1e3a8a] dark:bg-[#3b82f6] animate-in fade-in duration-700 delay-300" />
+                <div className="mt-6 h-0.5 w-24 mx-auto bg-primary animate-in fade-in duration-700 delay-300" />
               </div>
 
               <VacanciesSwitcher />

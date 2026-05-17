@@ -38,8 +38,8 @@ export const metadata: Metadata = {
     "полимеры",
   ],
   icons: {
-    icon: [{ url: "/images/logo.png", type: "image/png" }],
-    apple: [{ url: "/images/logo.png", type: "image/png" }],
+    icon: [{ url: "/images/logo123.png", type: "image/svg+xml" }],
+    apple: [{ url: "/images/logo123.png", type: "image/svg+xml" }],
   },
   robots: {
     index: true,
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
       "Производитель полимеров и пластиковых изделий с 1959 года: АБС, полистирол, стирол, автокомпоненты, товары для дома.",
     images: [
       {
-        url: "/images/logo.png",
+        url: "/images/logo123.png",
         width: 512,
         height: 512,
         alt: "Логотип АО «Пластик»",
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
     title: "АО «Пластик»",
     description:
       "Производство АБС-пластиков, полистирола и пластиковых изделий. Завод в Тульской области.",
-    images: ["/images/logo.png"],
+    images: ["/images/logo123.png"],
   },
   ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
     ? {

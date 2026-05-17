@@ -57,8 +57,7 @@
         "title": "Для поставщиков",
         "titleEn": "For Suppliers",
         "items": [
-          { "label": "Поставщикам", "labelEn": "Suppliers", "href": "/suppliers" },
-          { "label": "Запросы предложений", "labelEn": "RFP Requests", "href": "/suppliers" }
+          { "label": "Поставщикам", "labelEn": "Suppliers", "href": "/suppliers" }
         ]
       },
       {

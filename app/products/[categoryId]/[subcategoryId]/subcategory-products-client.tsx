@@ -48,7 +48,7 @@ export function SubcategoryProducts({ products }: { products: any[] }) {
         return (
           <div
             key={product.id}
-            className="product-card group relative bg-card rounded-3xl overflow-hidden border-2 border-border hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-2 opacity-0"
+            className="product-card group relative bg-card rounded-3xl overflow-hidden border-2 border-border transition-all duration-500 opacity-0"
             style={{
               animationDelay: `${index * 100}ms`,
             }}
@@ -60,14 +60,14 @@ export function SubcategoryProducts({ products }: { products: any[] }) {
                 src={imageUrl}
                 alt={product.name}
                 fill
-                className="object-cover group-hover:scale-110 transition-transform duration-700"
+                className="object-cover transition-transform duration-700"
               />
               <ProductCardPlasticLogo imageSrc={imageUrl} />
             </div>
 
             {/* Content */}
             <div className="p-8">
-              <h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors">{product.name}</h3>
+              <h3 className="text-2xl font-bold mb-3 transition-colors">{product.name}</h3>
               <p className="text-muted-foreground text-sm mb-6 leading-relaxed line-clamp-2">{product.description}</p>
 
               {/* Specifications */}
@@ -118,7 +118,7 @@ export function SubcategoryProducts({ products }: { products: any[] }) {
             </div>
 
             {/* Hover effect border */}
-            <div className="absolute inset-0 rounded-3xl border-2 border-primary/0 group-hover:border-primary/30 transition-colors duration-500 pointer-events-none" />
+            <div className="absolute inset-0 rounded-3xl border-2 border-primary/0 transition-colors duration-500 pointer-events-none" />
           </div>
         )
       })}

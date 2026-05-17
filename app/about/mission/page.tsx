@@ -1,32 +1,36 @@
 "use client"
 
 import { Footer } from "@/components/footer"
-import Ballpit from "@/components/ballpit"
+import { getCategoryVideo } from "@/lib/video-config"
 
 export default function MissionPage() {
+  const missionVideoSrc = getCategoryVideo("polystyrene") ?? "/videos/polystyrene-category.mp4"
+
   return (
     <div className="min-h-screen bg-background">
-      <section className="relative pt-32 pb-24 bg-background overflow-hidden min-h-[500px]">
-        {/* Белые «полимерные» шары на заднем плане */}
-        <div className="absolute inset-0 z-0 opacity-40 pointer-events-auto">
-          <div className="w-full h-full">
-            <Ballpit
-              count={120}
-              gravity={0.06}
-              friction={0.9985}
-              wallBounce={0.85}
-              followCursor
-              cursorLerp={0.04}
-              cursorControlSize={0.8}
-              cursorPushStrength={0.4}
-            />
-          </div>
+      <section className="relative overflow-hidden pt-32 pb-24 min-h-[500px]">
+        <div className="absolute inset-0 z-0">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            controls={false}
+            disablePictureInPicture
+            disableRemotePlayback
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{ pointerEvents: "none" }}
+          >
+            <source src={missionVideoSrc} type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/75 to-background/95" />
+          <div className="absolute inset-0 bg-gradient-to-t from-primary/40 via-transparent to-transparent" />
         </div>
 
-        <div className="container mx-auto px-4 lg:px-8 relative z-10 pointer-events-none">
-          <div className="max-w-4xl mx-auto pointer-events-auto">
+        <div className="container relative z-10 mx-auto px-4 lg:px-8">
+          <div className="mx-auto max-w-4xl">
             <div className="text-center border-2 border-border rounded-xl bg-card/95 backdrop-blur-sm shadow-xl p-8 md:p-12 lg:p-16">
-              <h1 className="text-5xl font-normal mb-8 text-balance bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+              <h1 className="text-h1 mb-8 text-balance font-semibold text-primary">
                 Миссия компании
               </h1>
               <div className="text-xl md:text-2xl text-foreground/90 leading-relaxed text-pretty space-y-5 text-left md:text-center md:space-y-6 antialiased font-normal">

@@ -75,24 +75,14 @@ export function Header() {
       >
         {/* Logo — прозрачный фон */}
         <Link href="/" prefetch={false} className="flex items-center gap-2 lg:gap-3 group flex-shrink-0 min-w-fit">
-          <div className="relative w-14 h-14 sm:w-12 sm:h-12 lg:w-12 lg:h-12 flex-shrink-0 transition-transform duration-300 group-hover:scale-110 bg-transparent" style={{ background: 'transparent' }}>
-            <Image src="/images/logo1.png" alt="АО Пластик" fill className="object-contain" priority />
-          </div>
-          <div className="hidden sm:flex flex-col min-w-fit">
-            <span className={`font-bold text-sm lg:text-base xl:text-lg leading-tight whitespace-nowrap ${
-              isScrolled || !isHomePage 
-                ? "text-foreground" 
-                : "text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
-            }`}>
-              АО Пластик
-            </span>
-            <span className={`text-xs leading-tight whitespace-nowrap hidden xl:block ${
-              isScrolled || !isHomePage 
-                ? "text-muted-foreground" 
-                : "text-white/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]"
-            }`}>
-              Узловая
-            </span>
+          <div className="relative h-16 w-16 flex-shrink-0 bg-transparent transition-transform duration-300 group-hover:scale-110 sm:h-16 sm:w-16 lg:h-20 lg:w-20" style={{ background: 'transparent' }}>
+            <Image
+              src="/images/logo123.png"
+              alt="АО Пластик"
+              fill
+              className={`object-contain ${isScrolled || !isHomePage ? "" : "brightness-0 invert"}`}
+              priority
+            />
           </div>
         </Link>
 

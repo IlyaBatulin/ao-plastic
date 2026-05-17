@@ -1,19 +1,13 @@
 "use client"
 
 import Image from "next/image"
-import { Cormorant_Garamond } from "next/font/google"
 import { motion } from "framer-motion"
 import { Factory, FlaskConical, Leaf, Award, Truck, HeadphonesIcon } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
-
-const aboutSerif = Cormorant_Garamond({
-  subsets: ["latin", "cyrillic"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-})
+import { FeatureCard } from "@/components/feature-card"
 
 const aboutTextClass =
-  "text-lg font-semibold leading-[1.65] tracking-[0.01em] text-[#f8fafc] antialiased sm:text-xl sm:leading-[1.65] lg:text-[1.65rem] lg:leading-[1.6] [text-shadow:0_1px_2px_rgba(0,0,0,0.55),0_2px_12px_rgba(0,0,0,0.35)] [&_a]:font-bold [&_a]:text-sky-100 [&_a]:underline [&_a]:decoration-sky-200/90 [&_a]:underline-offset-2 [&_strong]:font-bold [&_strong]:text-[#ffffff]"
+  "text-body text-2xl font-semibold leading-relaxed text-white sm:text-3xl lg:text-4xl [text-shadow:0_1px_2px_rgba(0,0,0,0.5),0_2px_10px_rgba(0,0,0,0.3)] [&_a]:font-semibold [&_a]:text-white [&_a]:underline [&_a]:decoration-white/90 [&_a]:underline-offset-2 [&_strong]:font-bold [&_strong]:text-white"
 
 const aboutTextContainerVariants = {
   hidden: { opacity: 0 },
@@ -67,7 +61,7 @@ export function About() {
       <div className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2">
         <div className="relative h-[100dvh] min-h-[100dvh] w-full">
           <Image
-            src="/images/FURS0027_1.jpeg"
+            src="/images/furs0027-1.jpeg"
             alt="Производственные мощности предприятия"
             fill
             className="object-cover object-center"
@@ -90,9 +84,7 @@ export function About() {
           />
 
           <div className="absolute inset-0 z-10 flex items-center">
-            <div
-              className={`container mx-auto px-4 py-12 sm:px-6 lg:px-8 lg:py-16 ${aboutSerif.className}`}
-            >
+            <div className="container mx-auto px-4 py-12 text-white sm:px-6 lg:px-8 lg:py-16">
               <motion.div
                 className="max-w-4xl space-y-6 sm:space-y-7"
                 initial="hidden"
@@ -100,11 +92,15 @@ export function About() {
                 viewport={{ once: true, amount: 0.12, margin: "0px 0px -8% 0px" }}
                 variants={aboutTextContainerVariants}
               >
+                <h2 className="text-h2 text-6xl text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)] sm:text-7xl lg:text-8xl">
+                  {t("homePage.about.title")}
+                </h2>
                 {aboutParagraphs.map((html, index) => (
                   <motion.p
                     key={index}
                     variants={aboutTextItemVariants}
-                    className={aboutTextClass}
+                    className={`${aboutTextClass} !text-white`}
+                    style={{ color: "#fff" }}
                     dangerouslySetInnerHTML={{ __html: html }}
                   />
                 ))}
@@ -119,20 +115,12 @@ export function About() {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid gap-8 md:grid-cols-2 md:gap-10 lg:grid-cols-3 lg:gap-12">
             {features.map((feature, index) => (
-              <div
+              <FeatureCard
                 key={index}
-                className="group rounded-2xl border-2 border-primary/10 bg-background p-8 shadow-blue-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-blue-lg"
-              >
-                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 transition-all duration-300 group-hover:scale-110 group-hover:bg-primary">
-                  <feature.icon className="h-7 w-7 text-primary transition-colors group-hover:text-primary-foreground" />
-                </div>
-                <h3 className="mb-3 text-xl font-semibold text-foreground transition-colors group-hover:text-primary">
-                  {t(`homePage.about.${feature.key}.title`)}
-                </h3>
-                <p className="leading-relaxed text-muted-foreground">
-                  {t(`homePage.about.${feature.key}.description`)}
-                </p>
-              </div>
+                icon={feature.icon}
+                title={t(`homePage.about.${feature.key}.title`)}
+                description={t(`homePage.about.${feature.key}.description`)}
+              />
             ))}
           </div>
         </div>

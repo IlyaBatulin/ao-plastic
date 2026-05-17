@@ -105,7 +105,7 @@ Authorization: Required
     "bio": "Опыт работы...",
     "email": null,
     "phone": null,
-    "image_url": "/images/bosses/Кизимов_Николай_Владимирович.jpg",
+    "image_url": "/images/bosses/kizimov-nikolay-vladimirovich.jpg",
     "sort_order": 10,
     "is_active": true,
     "created_at": "2026-01-26T...",

@@ -13,15 +13,15 @@ export const metadata: Metadata = {
 
 const documents = [
   {
-    href: "/docs/Sertifikat-GOST-R-ISO-14001-2016_2023.pdf",
+    href: "/docs/sertifikat-gost-r-iso-14001-2016-2023.pdf",
     label: "Сертификат системы экологического менеджмента ГОСТ Р ИСО 14001-2016 (2023)",
   },
   {
-    href: "/docs/quality/sertifikat-SMK-2026.jpg",
+    href: "/docs/quality/sertifikat-smk-2026.jpg",
     label: "Сертификат системы менеджмента качества (действителен до 2026 г.)",
   },
   {
-    href: "/docs/quality/ISO_2020.jpg",
+    href: "/docs/quality/iso-2020.jpg",
     label: "Сертификат соответствия ISO (2020)",
   },
 ]
@@ -36,18 +36,18 @@ export default function SafetyPage() {
           <div className="max-w-4xl mx-auto">
             {/* Выделенный заголовок */}
             <div className="mb-16 text-center">
-              <h1 className="text-6xl md:text-7xl font-bold mb-6 text-[#1e3a8a] dark:text-[#3b82f6] animate-in fade-in slide-in-from-bottom-4 duration-700">
+              <h1 className="text-6xl md:text-7xl font-bold mb-6 text-primary animate-in fade-in slide-in-from-bottom-4 duration-700">
                 Охрана труда и экология
               </h1>
               <p className="text-xl md:text-2xl text-foreground/70 leading-relaxed animate-in fade-in slide-in-from-bottom-5 duration-700 delay-200">
                 АО «Пластик» считает экологическую безопасность, охрану здоровья человека и окружающей среды неотъемлемой частью своей деятельности и одним из приоритетов.
               </p>
-              <div className="mt-6 h-0.5 w-24 mx-auto bg-[#1e3a8a] dark:bg-[#3b82f6] animate-in fade-in duration-700 delay-300" />
+              <div className="mt-6 h-0.5 w-24 mx-auto bg-primary animate-in fade-in duration-700 delay-300" />
             </div>
 
             <div className="grid md:grid-cols-3 gap-6 mb-16">
               <div className="bg-card rounded-xl p-6 text-center hover:shadow-lg transition-all">
-                <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-[#1e3a8a] to-[#3b82f6] mb-4">
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-primary to-blue-600 mb-4">
                   <Shield className="w-7 h-7 text-white" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">Безопасность труда</h3>

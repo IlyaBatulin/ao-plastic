@@ -49,24 +49,14 @@ export function HeroNavigation() {
       <div className="flex w-full items-center justify-between gap-2 lg:gap-4 max-w-[1440px] mx-auto px-4 lg:px-8 py-4 lg:py-6">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 lg:gap-4 group flex-shrink-0 min-w-fit">
-          <div className="relative w-20 h-20 sm:w-18 sm:h-18 lg:w-20 lg:h-20 xl:w-24 xl:h-24 flex-shrink-0 transition-transform duration-300 group-hover:scale-110">
-            <Image src="/images/logo123.png" alt="АО Пластик" fill className="object-contain" priority />
-          </div>
-          <div className="hidden sm:flex flex-col min-w-fit">
-            <span className={`font-bold text-base lg:text-lg xl:text-xl leading-tight whitespace-nowrap transition-colors duration-300 ${
-              isMegaMenuOpen 
-                ? "text-foreground" 
-                : "text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
-            }`}>
-              АО Пластик
-            </span>
-            <span className={`text-sm leading-tight whitespace-nowrap hidden xl:block transition-colors duration-300 ${
-              isMegaMenuOpen 
-                ? "text-muted-foreground" 
-                : "text-white/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]"
-            }`}>
-              Узловая
-            </span>
+          <div className="relative h-20 w-20 flex-shrink-0 transition-transform duration-300 group-hover:scale-110 sm:h-20 sm:w-20 lg:h-24 lg:w-24">
+            <Image
+              src="/images/logo123.png"
+              alt="АО Пластик"
+              fill
+              className={`object-contain transition-all duration-300 ${isMegaMenuOpen ? "" : "brightness-0 invert"}`}
+              priority
+            />
           </div>
         </Link>
 

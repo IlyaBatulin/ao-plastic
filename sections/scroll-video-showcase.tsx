@@ -6,8 +6,8 @@ export function ScrollVideoShowcase() {
   return (
     <section className="relative w-full">
       <ScrollVideo
-        src="/videos/factory-scroll.mp4"
-        poster="/images/factory-poster.jpg"
+        src="/videos/frontpage4.mp4"
+        poster="/images/factory-1.jpg"
         posterAlt="Завод АО «Пластик» в Узловой — постер к видео о производстве"
         scrollHeight={3000}
         startOffset={0}

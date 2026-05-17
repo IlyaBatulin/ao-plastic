@@ -2,7 +2,6 @@
 
 import { useState, useRef } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
 import { AnimatePresence } from "framer-motion"
 import { useTranslation } from "@/lib/i18n"
 import { UnifiedMegaMenu } from "./unified-mega-menu"
@@ -15,7 +14,6 @@ interface MainMenuCorporateProps {
 }
 
 export function MainMenuCorporate({ onMenuOpenChange, useDarkText = false }: MainMenuCorporateProps = {}) {
-  const pathname = usePathname()
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const navHoverRef = useRef(false) // Флаг, что курсор над навигацией
@@ -96,13 +94,12 @@ export function MainMenuCorporate({ onMenuOpenChange, useDarkText = false }: Mai
 
   // Определяем цвета: в hero — белый текст на видео; в основной шапке (useDarkText) — всегда тёмный
   const isMenuOpen = activeDropdown !== null
-  const isHomePage = pathname === "/"
-  const useWhiteColors = !useDarkText && isHomePage && !isMenuOpen
+  const useWhiteColors = !useDarkText && !isMenuOpen
   
   const textColorClass = useWhiteColors
     ? "text-white hover:text-white/90 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" 
     : "text-foreground hover:text-primary"
-  const activeColorClass = useWhiteColors
+  const dropdownColorClass = useWhiteColors
     ? "text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
     : "text-primary"
 
@@ -115,7 +112,6 @@ export function MainMenuCorporate({ onMenuOpenChange, useDarkText = false }: Mai
       >
         {corporateMenuData.map((item) => {
           const label = (lang === "en" && item.labelEn ? item.labelEn : item.label) || item.label
-          const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href))
           const hasDropdown = item.type === "mega" || item.type === "catalog"
           const isDropdownActive = activeDropdown === item.label
 
@@ -130,7 +126,7 @@ export function MainMenuCorporate({ onMenuOpenChange, useDarkText = false }: Mai
                 href={item.href}
                 prefetch={false}
                 className={`whitespace-nowrap text-sm font-semibold tracking-wider uppercase px-4 py-2.5 transition-all duration-300 relative ${
-                  isActive || isDropdownActive ? activeColorClass : textColorClass
+                  isDropdownActive ? dropdownColorClass : textColorClass
                 }`}
                 style={{ 
                   fontFamily: 'system-ui, -apple-system, sans-serif',
@@ -138,7 +134,7 @@ export function MainMenuCorporate({ onMenuOpenChange, useDarkText = false }: Mai
                 }}
               >
                 <span className="relative z-10">{label}</span>
-                {(isActive || isDropdownActive) && (
+                {isDropdownActive && (
                   <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-current opacity-30 transition-all duration-300" />
                 )}
               </Link>

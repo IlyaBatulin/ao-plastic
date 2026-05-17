@@ -31,13 +31,13 @@ export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps
       <section className="pt-32 pb-16">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="mb-10 text-center">
-            <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-balance text-[#1e3a8a] dark:text-[#3b82f6]">
+            <h1 className="text-h1 mb-6 text-primary">
               {t("homePage.catalog.title")}
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            <p className="text-body max-w-3xl mx-auto">
               {t("homePage.catalog.description")}
             </p>
-            <div className="mt-6 h-0.5 w-24 mx-auto bg-[#1e3a8a] dark:bg-[#3b82f6]" />
+            <div className="mt-6 h-0.5 w-24 mx-auto bg-primary" />
           </div>
         </div>
       </section>
@@ -62,17 +62,17 @@ export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps
                     <Image
                       src={
                         category.id === "abs"
-                          ? "/images/absiplast_main.png"
+                          ? "/images/absiplast-main.png"
                           : category.id === "kors"
-                            ? "/images/kors_bentol_main.png"
+                            ? "/images/kors-bentol-main.png"
                             : category.id === "styrene"
                               ? "/images/styrolmain.png"
                               : category.id === "polystyrene"
-                                ? "/images/polist_main.png"
+                                ? "/images/polist-main.png"
                                 : category.id === "hoztovary"
-                                  ? "/images/hoztov_main.png"
+                                  ? "/images/hoztov-main.png"
                                   : category.id === "machine-parts"
-                                    ? "/images/machine_main.png"
+                                    ? "/images/machine-main.png"
                                     : category.image ||
                                         `/placeholder.svg?height=400&width=600&query=${encodeURIComponent(categoryName)}`
                       }

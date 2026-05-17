@@ -65,6 +65,7 @@ export function Hero() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-delay-2">
           <Button
             size="lg"
+            variant="brand"
             asChild
             className="text-base px-8 transition-all hover:scale-105 hover-glow-blue shadow-blue-lg w-full sm:w-auto"
           >
@@ -77,7 +78,7 @@ export function Hero() {
             size="lg"
             variant="outline"
             asChild
-            className="text-base px-8 bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20 hover:border-primary/50 transition-all hover:scale-105 shadow-blue-md w-full sm:w-auto"
+            className="text-base rounded-xl px-8 bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20 hover:border-primary/50 transition-all hover:scale-105 shadow-blue-md w-full sm:w-auto"
           >
             <Link href="/about">{t("homePage.hero.aboutButton")}</Link>
           </Button>

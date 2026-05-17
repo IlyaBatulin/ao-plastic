@@ -1,7 +1,6 @@
 "use client"
 import Link from "next/link"
 import Image from "next/image"
-import { usePathname } from "next/navigation"
 import { useLanguage } from "@/contexts/language-context"
 import { Sheet, SheetContent, SheetTitle, SheetFooter } from "@/components/ui/sheet"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
@@ -79,7 +78,6 @@ function NestedAccordionTrigger({
 }
 
 export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
-  const pathname = usePathname()
   const { lang, setLang, t } = useLanguage()
   const { lang: i18nLang } = useTranslation()
   const [categories, setCategories] = useState<Category[]>([])
@@ -136,7 +134,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           <Link href="/" onClick={onClose} className="flex items-center gap-3">
             <div className="relative w-12 h-12 flex-shrink-0 bg-transparent">
               <Image 
-                src="/images/logo1.png" 
+                src="/images/logo123.png" 
                 alt="АО Пластик" 
                 fill 
                 className="object-contain" 
@@ -161,7 +159,6 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           <div className="px-4 lg:px-6 pt-4 space-y-1">
             {corporateMenuData.map((item) => {
               const label = (i18nLang === "en" && item.labelEn ? item.labelEn : item.label) || item.label
-              const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href))
 
               // Каталог продукции
               if (item.type === "catalog") {
@@ -254,9 +251,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   key={item.label}
                   href={item.href}
                   onClick={onClose}
-                  className={`block text-base font-semibold py-3 transition-colors hover:text-primary rounded-lg px-0 ${
-                    isActive ? "text-primary" : "text-foreground"
-                  }`}
+                  className="block text-base font-semibold py-3 transition-colors hover:text-primary rounded-lg px-0 text-foreground"
                 >
                   {label}
                 </Link>

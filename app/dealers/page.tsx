@@ -44,7 +44,7 @@ export default function DealersPage() {
               <Warehouse className="w-4 h-4" />
               {t("dealersPage.badge")}
             </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary leading-tight">
               {t("dealersPage.title")}
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed">

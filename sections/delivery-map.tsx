@@ -381,32 +381,32 @@ export function DeliveryMap() {
   const regionMarkers = buildRegionMarkers()
 
   return (
-    <section className="relative bg-[#050d1c] py-16 lg:py-20 overflow-hidden">
+    <section className="relative overflow-hidden bg-secondary py-16 lg:py-20">
       <div className="container mx-auto px-4 lg:px-8 mb-10">
         <div className="text-center">
-          <span className="inline-block text-xs font-semibold tracking-widest text-blue-400/70 uppercase mb-3">
+          <span className="mb-3 inline-block text-xs font-semibold uppercase tracking-widest text-primary/70">
             География поставок
           </span>
-          <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-4 tracking-tight">
+          <h2 className="text-h2 mb-4 tracking-tight">
             Продукция по всему миру
           </h2>
-          <p className="text-white/50 max-w-xl mx-auto text-sm lg:text-base">
+          <p className="mx-auto max-w-3xl text-sm text-muted-foreground lg:whitespace-nowrap lg:text-base">
             АО «Пластик» поставляет продукцию в&nbsp;
-            <span className="text-white font-semibold">80+</span>
+            <span className="font-semibold text-foreground">80+</span>
             &nbsp;регионов России и стран мира
           </p>
         </div>
       </div>
 
       <div className="relative w-full px-2 lg:px-8">
-        <div className="relative w-full rounded-2xl overflow-hidden border border-white/5 bg-[#060e1f]">
+        <div className="relative w-full overflow-hidden rounded-2xl border border-border bg-[#060e1f]">
           <DeliveryMapLeaflet
             factory={{ lat: FACTORY.lat, lon: FACTORY.lon, label: FACTORY.label }}
             office={{ lat: OFFICE.lat, lon: OFFICE.lon, label: OFFICE.label }}
             regions={regionMarkers}
           />
         </div>
-        <p className="text-white/40 text-center text-sm mt-3">
+        <p className="mt-3 text-center text-sm text-muted-foreground">
           Переключатель: плоская карта / глобус. Синие метки — завод в Узловой и офис продаж в Москве, серые точки — регионы поставки.
         </p>
       </div>

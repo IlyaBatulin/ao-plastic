@@ -10,20 +10,20 @@ export function Footer() {
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           {/* Company Info */}
           <div className="md:col-span-2">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-background/10 ring-1 ring-background/20">
+            <div className="mb-5">
+              <div className="relative h-16 w-16 shrink-0 lg:h-20 lg:w-20">
                 <Image
-                  src="/images/logo1.png"
+                  src="/images/logo123.png"
                   alt="АО «Пластик»"
                   fill
-                  className="object-contain p-1"
-                  sizes="40px"
+                  className="object-contain brightness-0 invert"
+                  sizes="(max-width: 1024px) 64px, 80px"
                 />
               </div>
-              <span className="font-semibold text-lg">АО «Пластик»</span>
             </div>
             <p className="text-background/70 leading-relaxed max-w-md">
-              Лидер химической индустрии по производству АБС-пластиков и полистиролов. Качество, надёжность, инновации.
+              Лидер химической индустрии по производству <span className="whitespace-nowrap">АБС-пластиков</span> и
+              полистиролов. Качество, надёжность, инновации.
             </p>
           </div>
 
@@ -32,22 +32,17 @@ export function Footer() {
             <h3 className="font-semibold mb-4">Навигация</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="#about" className="text-background/70 hover:text-background transition-colors">
+                <Link href="/about" className="text-background/70 hover:text-background transition-colors">
                   О компании
                 </Link>
               </li>
               <li>
-                <Link href="#products" className="text-background/70 hover:text-background transition-colors">
+                <Link href="/products" className="text-background/70 hover:text-background transition-colors">
                   Продукция
                 </Link>
               </li>
               <li>
-                <Link href="#technologies" className="text-background/70 hover:text-background transition-colors">
-                  Технологии
-                </Link>
-              </li>
-              <li>
-                <Link href="#contact" className="text-background/70 hover:text-background transition-colors">
+                <Link href="/contacts" className="text-background/70 hover:text-background transition-colors">
                   Контакты
                 </Link>
               </li>

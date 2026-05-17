@@ -5,6 +5,8 @@ import { SimpleLogoLoop } from "@/components/simple-logo-loop"
 import { useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import Link from "next/link"
+import { useLanguage } from "@/contexts/language-context"
+import { SectionHeading } from "@/components/section-heading"
 
 type PartnerLogo = {
   src: string
@@ -26,10 +28,7 @@ const partnerLogos: PartnerLogo[] = [
     href: "https://ruschem.ru",
     width: 200,
     height: 100,
-    loopSlotClass: "w-[205px] h-[88px]",
-    imgClassName: "scale-[1.08] origin-center",
-    mobileImgClass: "scale-110 origin-center",
-    mobileWrapClass: "max-w-[288px]",
+    imgClassName: "scale-[1.2] origin-center",
   },
   { src: "/images/partners/vtb-bank.png", alt: "ВТБ", href: "https://www.vtb.ru", width: 200, height: 100 },
   {
@@ -38,12 +37,9 @@ const partnerLogos: PartnerLogo[] = [
     href: "https://www.abr.ru",
     width: 200,
     height: 100,
-    loopSlotClass: "w-[205px] h-[88px]",
-    imgClassName: "scale-[1.08] origin-center",
-    mobileImgClass: "scale-110 origin-center",
-    mobileWrapClass: "max-w-[288px]",
+    imgClassName: "scale-[1.2] origin-center",
   },
-  { src: "/images/partners/GAZ-Logo.png", alt: "ГАЗ", href: "https://www.avtogaz.ru", width: 200, height: 100 },
+  { src: "/images/partners/gaz-logo.png", alt: "ГАЗ", href: "https://www.avtogaz.ru", width: 200, height: 100 },
   { src: "/images/partners/kamaz-logo.png", alt: "КАМАЗ", href: "https://kamaz.ru", width: 200, height: 100 },
   { src: "/images/partners/lada-logo.png", alt: "LADA", href: "https://www.lada.ru", width: 200, height: 100 },
   { src: "/images/partners/sibur-logo.png", alt: "СИБУР", href: "https://www.sibur.ru", width: 200, height: 100 },
@@ -51,6 +47,7 @@ const partnerLogos: PartnerLogo[] = [
 ]
 
 export function Partners() {
+  const { t } = useLanguage()
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const nextLogo = () => {
@@ -64,8 +61,13 @@ export function Partners() {
   const currentLogo = partnerLogos[currentIndex]
 
   return (
-    <section id="partners" className="py-12 lg:py-16 pb-8">
+    <section id="partners" className="py-12 pb-8 lg:py-16">
       <div className="container mx-auto px-4 lg:px-8">
+        <SectionHeading
+          title={t("homePage.partners.title")}
+          subtitle={t("homePage.partners.description")}
+          className="mb-6 lg:mb-8"
+        />
         <div>
           {/* Desktop: Animated Loop */}
           <div className="hidden lg:block relative py-6">

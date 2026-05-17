@@ -22,10 +22,10 @@ const Infographic22 = ({ items, isVisible }: InfographicProps) => {
           }}
         >
           {/* Анимированная синяя полоса сверху */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#1e3a8a] via-[#3b82f6] to-[#1e3a8a] animate-pulse" />
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-blue-600 to-primary animate-pulse" />
           
           {/* Дополнительная анимированная линия */}
-          <div className="absolute top-0 left-0 h-1 bg-[#3b82f6] animate-[slide_3s_ease-in-out_infinite]" 
+          <div className="absolute top-0 left-0 h-1 bg-primary animate-[slide_3s_ease-in-out_infinite]" 
                style={{ 
                  width: '30%',
                  animationDelay: `${index * 0.5}s`

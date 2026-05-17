@@ -55,7 +55,7 @@ export function SuppliersPageClient() {
               <PackageSearch className="w-4 h-4" />
               {t("suppliersPage.badge")}
             </span>
-            <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+            <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-bold text-primary leading-tight">
               {t("suppliersPage.title")}
             </h1>
             <p className="mt-6 text-lg text-muted-foreground leading-relaxed">

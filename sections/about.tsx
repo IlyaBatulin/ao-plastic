@@ -7,7 +7,7 @@ import { useLanguage } from "@/contexts/language-context"
 import { FeatureCard } from "@/components/feature-card"
 
 const aboutTextClass =
-  "text-body text-2xl font-semibold leading-relaxed text-white sm:text-3xl lg:text-4xl [text-shadow:0_1px_2px_rgba(0,0,0,0.5),0_2px_10px_rgba(0,0,0,0.3)] [&_a]:font-semibold [&_a]:text-white [&_a]:underline [&_a]:decoration-white/90 [&_a]:underline-offset-2 [&_strong]:font-bold [&_strong]:text-white"
+  "text-body text-lg font-semibold leading-relaxed text-white sm:text-xl lg:text-2xl [text-shadow:0_1px_2px_rgba(0,0,0,0.5),0_2px_10px_rgba(0,0,0,0.3)] [&_a]:font-semibold [&_a]:text-white [&_a]:underline [&_a]:decoration-white/90 [&_a]:underline-offset-2 [&_strong]:font-bold [&_strong]:text-white"
 
 const aboutTextContainerVariants = {
   hidden: { opacity: 0 },
@@ -59,7 +59,7 @@ export function About() {
     <section id="about" className="relative overflow-hidden bg-background">
       {/* Большое фото на всю ширину + затемнение + текст (как блок объёмов на главной) */}
       <div className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2">
-        <div className="relative h-[100dvh] min-h-[100dvh] w-full">
+        <div className="relative min-h-[100dvh] w-full md:h-[100dvh]">
           <Image
             src="/images/furs0027-1.jpeg"
             alt="Производственные мощности предприятия"
@@ -83,16 +83,16 @@ export function About() {
             aria-hidden
           />
 
-          <div className="absolute inset-0 z-10 flex items-center">
-            <div className="container mx-auto px-4 py-12 text-white sm:px-6 lg:px-8 lg:py-16">
+          <div className="relative z-10 flex min-h-[100dvh] items-start py-16 md:absolute md:inset-0 md:py-0 md:items-center">
+            <div className="container mx-auto px-4 text-white sm:px-6 lg:px-8">
               <motion.div
-                className="max-w-4xl space-y-6 sm:space-y-7"
+                className="max-w-3xl space-y-5 sm:max-w-4xl sm:space-y-6 lg:space-y-7"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.12, margin: "0px 0px -8% 0px" }}
                 variants={aboutTextContainerVariants}
               >
-                <h2 className="text-h2 text-6xl text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)] sm:text-7xl lg:text-8xl">
+                <h2 className="text-h2 text-4xl text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)] sm:text-6xl lg:text-7xl">
                   {t("homePage.about.title")}
                 </h2>
                 {aboutParagraphs.map((html, index) => (

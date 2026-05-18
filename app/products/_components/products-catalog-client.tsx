@@ -3,6 +3,8 @@
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight, Package } from "lucide-react"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { useLanguage } from "@/contexts/language-context"
 
 interface Category {
@@ -23,7 +25,14 @@ interface ProductsCatalogClientProps {
 
 export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps) {
   const { t } = useLanguage()
+  const router = useRouter()
   const catalogCategories = categories.filter((c) => c.id !== "custom-abs")
+
+  useEffect(() => {
+    // Явно подогреваем самые «тяжелые» разделы, чтобы переход не ощущался как «многократный клик».
+    router.prefetch("/products/hoztovary")
+    router.prefetch("/products/machine-parts")
+  }, [router])
 
   return (
     <div className="min-h-screen bg-transparent">
@@ -54,6 +63,9 @@ export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps
                 <Link
                   key={category.id}
                   href={`/products/${category.id}`}
+                  prefetch
+                  onMouseEnter={() => router.prefetch(`/products/${category.id}`)}
+                  onTouchStart={() => router.prefetch(`/products/${category.id}`)}
                   className="group relative flex h-full min-h-0 flex-col bg-card rounded-3xl overflow-hidden border-2 border-border hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-2"
                 >
                   {/* Image */}

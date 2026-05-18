@@ -31,7 +31,7 @@ export function Hero() {
   }
 
   return (
-    <section className="relative h-screen flex items-center justify-center">
+    <section className="relative flex min-h-[100svh] items-center justify-center md:min-h-screen">
       {/* Navigation Overlay */}
       <HeroNavigation />
 
@@ -89,7 +89,7 @@ export function Hero() {
       {/* Scroll Indicator */}
       <button
         onClick={handleScrollToStats}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce cursor-pointer"
+        className="absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 animate-bounce cursor-pointer sm:block"
         aria-label="Scroll down"
       >
         <ChevronDown className="w-8 h-8 text-white drop-shadow-lg" />

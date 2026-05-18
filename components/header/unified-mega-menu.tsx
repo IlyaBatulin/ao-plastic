@@ -140,6 +140,7 @@ export function UnifiedMegaMenu({ isOpen, activeItem, onClose }: UnifiedMegaMenu
   })
   const [loading, setLoading] = useState(!categoriesCache)
   const menuRef = useRef<HTMLDivElement>(null)
+  const MENU_HEADER_OVERLAP_PX = 3
 
   useEffect(() => {
     if (!isOpen) return
@@ -339,7 +340,7 @@ export function UnifiedMegaMenu({ isOpen, activeItem, onClose }: UnifiedMegaMenu
       transition={{ duration: 0.2, ease: "easeOut" }}
       className="fixed left-0 right-0 w-full z-[110] bg-white"
       style={{ 
-        top: `${topOffset}px`,
+        top: `${Math.max(0, topOffset - MENU_HEADER_OVERLAP_PX)}px`,
         boxShadow: '0 20px 60px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05)'
       }}
     >

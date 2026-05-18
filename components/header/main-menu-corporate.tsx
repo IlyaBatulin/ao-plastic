@@ -19,6 +19,7 @@ export function MainMenuCorporate({ onMenuOpenChange, useDarkText = false }: Mai
   const navHoverRef = useRef(false) // Флаг, что курсор над навигацией
   const menuHoverRef = useRef(false) // Флаг, что курсор над меню
   const { lang } = useTranslation()
+  const CLOSE_DELAY_MS = 550
 
   // Обработка наведения на пункт меню
   const handleMouseEnter = (itemLabel: string) => {
@@ -48,7 +49,7 @@ export function MainMenuCorporate({ onMenuOpenChange, useDarkText = false }: Mai
           setActiveDropdown(null)
           onMenuOpenChange?.(false)
         }
-      }, 200)
+      }, CLOSE_DELAY_MS)
     }
   }
 
@@ -68,7 +69,7 @@ export function MainMenuCorporate({ onMenuOpenChange, useDarkText = false }: Mai
       closeTimeoutRef.current = setTimeout(() => {
         setActiveDropdown(null)
         onMenuOpenChange?.(false)
-      }, 200)
+      }, CLOSE_DELAY_MS)
     }
   }
 
@@ -88,7 +89,7 @@ export function MainMenuCorporate({ onMenuOpenChange, useDarkText = false }: Mai
       closeTimeoutRef.current = setTimeout(() => {
         setActiveDropdown(null)
         onMenuOpenChange?.(false)
-      }, 200)
+      }, CLOSE_DELAY_MS)
     }
   }
 

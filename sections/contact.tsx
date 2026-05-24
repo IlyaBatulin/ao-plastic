@@ -11,6 +11,7 @@ import { Mail, MapPin, Phone } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 import { useToast } from "@/hooks/use-toast"
 import Link from "next/link"
+import { LEGAL_DOCUMENTS } from "@/lib/legal-documents"
 import { SectionHeading } from "@/components/section-heading"
 
 export function Contact() {
@@ -164,9 +165,23 @@ export function Contact() {
                   className="mt-1"
                 />
                 <label htmlFor="consent" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
-                  Я согласен(а) на{" "}
-                  <Link href="/legal/privacy-policy" className="text-primary hover:underline" target="_blank">
-                    обработку персональных данных
+                  Я согласен(а) с{" "}
+                  <Link
+                    href={LEGAL_DOCUMENTS.personalDataConsentPage}
+                    className="text-primary hover:underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    согласием на обработку персональных данных
+                  </Link>{" "}
+                  и{" "}
+                  <Link
+                    href={LEGAL_DOCUMENTS.privacyPolicyPage}
+                    className="text-primary hover:underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    политикой конфиденциальности
                   </Link>
                 </label>
               </div>

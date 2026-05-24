@@ -1,5 +1,8 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { Footer } from "@/components/footer"
+import { LegalRequisitesCard } from "@/components/legal/legal-requisites-card"
+import { LEGAL_DOCUMENTS, LEGAL_SITE } from "@/lib/legal-documents"
 
 export const metadata: Metadata = {
   title: "Реквизиты компании",
@@ -10,57 +13,63 @@ export const metadata: Metadata = {
 
 export default function CompanyDetailsPage() {
   return (
-    <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 lg:px-8 py-16">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold mb-8">Реквизиты компании</h1>
-          
-          <div className="prose prose-lg max-w-none space-y-6 text-foreground">
-            <section className="bg-card rounded-2xl p-8 shadow-sm">
-              <h2 className="text-2xl font-semibold mb-6">АО «Пластик»</h2>
-              
-              <div className="space-y-4">
-                <div>
-                  <h3 className="font-semibold mb-2">Юридический адрес:</h3>
-                  <p>301600, Тульская область, г. Узловая, ул. Тульская, д. 1</p>
-                </div>
-
-                <div>
-                  <h3 className="font-semibold mb-2">Фактический адрес:</h3>
-                  <p>301600, Тульская область, г. Узловая, ул. Тульская, д. 1</p>
-                </div>
-
-                <div>
-                  <h3 className="font-semibold mb-2">Контактная информация:</h3>
-                  <p>Телефон: +7 (495) 201-03-33</p>
-                  <p>Email: info@oaplastic.ru</p>
-                </div>
-
-                <div>
-                  <h3 className="font-semibold mb-2">Реквизиты:</h3>
-                  <p>ОГРН: [указать ОГРН]</p>
-                  <p>ИНН: [указать ИНН]</p>
-                  <p>КПП: [указать КПП]</p>
-                </div>
-
-                <div>
-                  <h3 className="font-semibold mb-2">Банковские реквизиты:</h3>
-                  <p>Банк: [название банка]</p>
-                  <p>БИК: [БИК]</p>
-                  <p>Расчетный счет: [р/с]</p>
-                  <p>Корреспондентский счет: [к/с]</p>
-                </div>
-              </div>
-            </section>
-
-            <p className="text-sm text-muted-foreground">
-              * Укажите актуальные реквизиты компании
-            </p>
+    <div className="min-h-screen bg-transparent">
+        <section className="pt-32 pb-12">
+          <div className="container mx-auto px-4 lg:px-8">
+            <div className="mx-auto max-w-4xl text-center">
+              <h1 className="mb-4 text-4xl font-bold text-primary dark:text-[#60a5fa] md:text-5xl">
+                Реквизиты компании
+              </h1>
+              <p className="text-lg text-foreground/80">
+                Актуальные данные АО «Пластик» для договоров, счетов и официальной переписки
+              </p>
+              <div className="mx-auto mt-6 h-0.5 w-24 bg-primary dark:bg-[#60a5fa]" />
+            </div>
           </div>
+        </section>
+
+        <div className="container mx-auto max-w-4xl px-4 pb-16 lg:px-8">
+          <LegalRequisitesCard showPageLink={false} />
+
+          <div className="mt-10 rounded-2xl border border-border bg-card p-6 shadow-sm md:p-8">
+            <h2 className="mb-4 text-xl font-bold text-primary dark:text-[#60a5fa]">
+              Юридические документы
+            </h2>
+            <ul className="space-y-2 text-foreground/90">
+              <li>
+                <Link
+                  href={LEGAL_DOCUMENTS.privacyPolicyPage}
+                  className="text-primary hover:underline"
+                >
+                  Политика конфиденциальности
+                </Link>
+              </li>
+              <li>
+                <Link href={LEGAL_DOCUMENTS.termsPage} className="text-primary hover:underline">
+                  Пользовательское соглашение
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href={LEGAL_DOCUMENTS.personalDataConsentPage}
+                  className="text-primary hover:underline"
+                >
+                  Согласие на обработку персональных данных
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <p className="mt-10 text-sm text-muted-foreground">
+            По вопросам:{" "}
+            <a href={`mailto:${LEGAL_SITE.email}`} className="text-primary hover:underline">
+              {LEGAL_SITE.email}
+            </a>
+            , тел. {LEGAL_SITE.phone}
+          </p>
         </div>
-      </div>
-      <Footer />
-    </main>
+
+        <Footer />
+    </div>
   )
 }
-

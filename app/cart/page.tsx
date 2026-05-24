@@ -10,6 +10,7 @@ import { useMemo, useState } from "react"
 import Image from "next/image"
 import { Trash2, Plus, Minus, ShoppingBag } from "lucide-react"
 import Link from "next/link"
+import { LEGAL_DOCUMENTS } from "@/lib/legal-documents"
 import { useToast } from "@/hooks/use-toast"
 import { useLanguage } from "@/contexts/language-context"
 
@@ -378,9 +379,23 @@ export default function CartPage() {
                       className="mt-1"
                     />
                     <label htmlFor="consent-cart" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
-                      Я согласен(а) на{" "}
-                      <Link href="/legal/privacy-policy" className="text-primary hover:underline" target="_blank">
-                        обработку персональных данных
+                      Я согласен(а) с{" "}
+                      <Link
+                        href={LEGAL_DOCUMENTS.personalDataConsentPage}
+                        className="text-primary hover:underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        согласием на обработку персональных данных
+                      </Link>{" "}
+                      и{" "}
+                      <Link
+                        href={LEGAL_DOCUMENTS.privacyPolicyPage}
+                        className="text-primary hover:underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        политикой конфиденциальности
                       </Link>
                     </label>
                   </div>

@@ -29,7 +29,7 @@ export function Stats() {
 
   return (
     <section id="stats" className="relative overflow-hidden bg-background">
-      <div className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2">
+      <div className="relative w-full max-w-full">
         <div className="flex min-h-[100dvh] w-full flex-col gap-8 bg-background px-3 py-8 sm:px-5 sm:py-10 lg:flex-row lg:items-stretch lg:gap-10 lg:px-8 lg:py-12 xl:px-10">
           {/* Слева: единый блок статистики */}
           <div className="flex min-h-0 flex-1 flex-col justify-center lg:max-w-[min(42rem,44%)]">

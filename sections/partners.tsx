@@ -61,7 +61,7 @@ export function Partners() {
   const currentLogo = partnerLogos[currentIndex]
 
   return (
-    <section id="partners" className="py-12 pb-8 lg:py-16">
+    <section id="partners" className="overflow-x-clip py-12 pb-8 lg:py-16">
       <div className="container mx-auto px-4 lg:px-8">
         <SectionHeading
           title={t("homePage.partners.title")}
@@ -70,7 +70,7 @@ export function Partners() {
         />
         <div>
           {/* Desktop: Animated Loop */}
-          <div className="hidden lg:block relative py-6">
+          <div className="relative hidden overflow-x-clip py-6 lg:block">
             <SimpleLogoLoop logos={partnerLogos} speed={40} />
           </div>
 

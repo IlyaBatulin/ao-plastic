@@ -1,8 +1,5 @@
 import { NextResponse } from "next/server"
-
-const EMPLOYER_ID = "541232"
-const HH_USER_AGENT = "AOPlasticSite/1.0 (info@oaplastic.ru)"
-const HH_EMPLOYER_URL = `https://hh.ru/employer/${EMPLOYER_ID}`
+import { HH_EMPLOYER_ID, HH_EMPLOYER_URL, HH_USER_AGENT } from "@/lib/hh-api"
 
 export async function GET(request: Request) {
   try {
@@ -18,7 +15,7 @@ export async function GET(request: Request) {
     const schedule = searchParams.get("schedule") || ""
 
     const params = new URLSearchParams({
-      employer_id: EMPLOYER_ID,
+      employer_id: HH_EMPLOYER_ID,
       per_page,
       page,
     })
@@ -49,7 +46,7 @@ export async function GET(request: Request) {
         fallbackUrl: HH_EMPLOYER_URL,
         warning:
           response.status === 403
-            ? "HeadHunter ограничил доступ с сервера. Откройте вакансии на hh.ru."
+            ? "Актуальные вакансии АО «Пластик» опубликованы на HeadHunter."
             : "Не удалось загрузить вакансии с HeadHunter.",
       })
     }

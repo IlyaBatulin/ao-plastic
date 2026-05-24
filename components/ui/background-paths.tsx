@@ -55,7 +55,7 @@ function FloatingPaths({ position }: FloatingPathsProps) {
 
 export function BackgroundPaths() {
   return (
-    <div className="fixed inset-0 -z-10 w-full overflow-hidden bg-background">
+    <div className="fixed inset-0 -z-10 w-full max-w-[100%] overflow-hidden bg-background">
       <div className="absolute inset-0">
         <FloatingPaths position={1} />
         <FloatingPaths position={-1} />

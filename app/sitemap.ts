@@ -22,6 +22,7 @@ const STATIC_PATHS = [
   "/dealers",
   "/legal/privacy-policy",
   "/legal/terms",
+  "/legal/personal-data-consent",
   "/legal/company-details",
   "/products",
   "/suppliers",

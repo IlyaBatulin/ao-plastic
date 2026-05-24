@@ -194,15 +194,30 @@
   src: url("/fonts/Zerno.woff2") format("woff2");
 }
 
-* {
-  scroll-behavior: smooth;
+/* Не использовать scroll-behavior: smooth глобально — ломает Lenis на десктопе */
+
+html {
+  width: 100%;
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+  background-color: var(--background);
 }
 
 body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  overscroll-behavior-x: none;
   font-feature-settings: "rlig" 1, "calt" 1;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#main-content,
+main {
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 /* Added custom animations */
@@ -702,13 +717,13 @@ video::-webkit-media-controls-overlay {
   }
 }
 
-/* Lenis: плавный скролл без конфликта с scroll-behavior */
+/* Lenis — дополняет lenis/dist/lenis.css */
 html.lenis,
 html.lenis body {
   height: auto;
 }
 
-html.lenis {
+html.lenis.lenis-smooth {
   scroll-behavior: auto !important;
 }
 

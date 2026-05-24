@@ -6,6 +6,10 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
+import {
+  fetchHhVacanciesFromBrowser,
+  HH_EMPLOYER_URL,
+} from "@/lib/hh-api"
 
 interface HHVacancy {
   id: string
@@ -74,7 +78,8 @@ export function HHVacanciesClient() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [warning, setWarning] = useState<string | null>(null)
-  const [fallbackUrl, setFallbackUrl] = useState("https://hh.ru/employer/541232")
+  const [fallbackUrl, setFallbackUrl] = useState(HH_EMPLOYER_URL)
+  const [hhBlocked, setHhBlocked] = useState(false)
   const [currentPage, setCurrentPage] = useState(0)
   const [totalPages, setTotalPages] = useState(0)
   const [totalFound, setTotalFound] = useState(0)
@@ -96,27 +101,53 @@ export function HHVacanciesClient() {
     setIsLoading(true)
     setError(null)
     setWarning(null)
+    setHhBlocked(false)
     try {
       const params = new URLSearchParams({
         page: page.toString(),
         per_page: "20",
       })
-      
+
       if (searchText) params.append("text", searchText)
       if (minSalary) params.append("salary", minSalary)
       if (onlyWithSalary) params.append("only_with_salary", "true")
       if (selectedExperience) params.append("experience", selectedExperience)
       if (selectedEmployment) params.append("employment", selectedEmployment)
       if (selectedSchedule) params.append("schedule", selectedSchedule)
-      
+
+      const applyList = (data: HHVacanciesResponse) => {
+        setVacancies((data.items ?? []) as HHVacancy[])
+        setTotalPages(data.pages ?? 0)
+        setTotalFound(data.found ?? 0)
+        if (data.fallbackUrl) setFallbackUrl(data.fallbackUrl)
+      }
+
       const response = await fetch(`/api/hh-vacancies?${params.toString()}`)
       const data: HHVacanciesResponse = await response.json()
-      setVacancies(data.items ?? [])
-      setTotalPages(data.pages ?? 0)
-      setTotalFound(data.found ?? 0)
-      if (data.fallbackUrl) setFallbackUrl(data.fallbackUrl)
-      if (data.warning) setWarning(data.warning)
-      if (!response.ok && !data.warning) {
+
+      if ((data.items?.length ?? 0) > 0) {
+        applyList(data)
+        return
+      }
+
+      const fromBrowser = await fetchHhVacanciesFromBrowser(params)
+      if (fromBrowser && (fromBrowser.items?.length ?? 0) > 0) {
+        applyList({
+          items: fromBrowser.items as HHVacancy[],
+          found: fromBrowser.found,
+          pages: fromBrowser.pages,
+          page: fromBrowser.page,
+          per_page: fromBrowser.per_page,
+          fallbackUrl: HH_EMPLOYER_URL,
+        })
+        return
+      }
+
+      applyList(data)
+      if (data.warning) {
+        setWarning(data.warning)
+        setHhBlocked(true)
+      } else if (!response.ok) {
         throw new Error("Не удалось загрузить вакансии")
       }
     } catch (err) {
@@ -316,21 +347,6 @@ export function HHVacanciesClient() {
         </div>
       </div>
 
-      {warning && (
-        <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-100">
-          <p>{warning}</p>
-          <a
-            href={fallbackUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-2 inline-flex items-center gap-1 font-semibold text-primary hover:underline"
-          >
-            Открыть вакансии на hh.ru
-            <ExternalLink className="w-3.5 h-3.5" />
-          </a>
-        </div>
-      )}
-
       {/* Состояния загрузки и ошибок */}
       {isLoading && (
         <div className="text-center py-12">
@@ -347,26 +363,46 @@ export function HHVacanciesClient() {
       )}
 
       {!isLoading && !error && vacancies.length === 0 && (
-        <div className="text-center py-12">
+        <div className="text-center py-12 rounded-2xl border border-border bg-card/50 px-6">
           <Briefcase className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
-          <p className="text-muted-foreground mb-2">
-            {hasActiveFilters
-              ? "Вакансий с такими параметрами не найдено"
-              : "На данный момент открытых вакансий нет"}
-          </p>
-          <a
-            href={fallbackUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center gap-2 text-primary font-semibold hover:underline"
-          >
-            Смотреть на HeadHunter
-            <ExternalLink className="w-4 h-4" />
-          </a>
-          {hasActiveFilters && (
-            <Button variant="outline" onClick={handleResetFilters} className="mt-4 ml-2">
-              Сбросить фильтры
-            </Button>
+          {hhBlocked ? (
+            <>
+              <p className="text-foreground font-medium mb-2">
+                Список на сайте временно недоступен
+              </p>
+              <p className="text-muted-foreground text-sm max-w-md mx-auto mb-6">
+                {warning ??
+                  "Актуальные вакансии АО «Пластик» опубликованы на HeadHunter."}
+              </p>
+              <Button asChild size="lg">
+                <a href={fallbackUrl} target="_blank" rel="noopener noreferrer">
+                  Все вакансии на hh.ru
+                  <ExternalLink className="w-4 h-4 ml-2" />
+                </a>
+              </Button>
+            </>
+          ) : (
+            <>
+              <p className="text-muted-foreground mb-2">
+                {hasActiveFilters
+                  ? "Вакансий с такими параметрами не найдено"
+                  : "На данный момент открытых вакансий нет"}
+              </p>
+              <a
+                href={fallbackUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center gap-2 text-primary font-semibold hover:underline"
+              >
+                Проверить на HeadHunter
+                <ExternalLink className="w-4 h-4" />
+              </a>
+              {hasActiveFilters && (
+                <Button variant="outline" onClick={handleResetFilters} className="mt-4 ml-2">
+                  Сбросить фильтры
+                </Button>
+              )}
+            </>
           )}
         </div>
       )}

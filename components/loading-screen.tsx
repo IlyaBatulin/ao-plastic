@@ -16,6 +16,12 @@ function shouldSkipSplash(): boolean {
   return false
 }
 
+function shouldShowSplashInitially(): boolean {
+  if (typeof window === "undefined") return false
+  if (sessionStorage.getItem("hasSeenLoading")) return false
+  return !shouldSkipSplash()
+}
+
 function revealMainContent() {
   const mainContent = document.getElementById("main-content")
   if (mainContent) {
@@ -23,10 +29,20 @@ function revealMainContent() {
     mainContent.classList.add("opacity-100")
   }
   document.body.style.overflow = ""
+  window.dispatchEvent(new Event("lenis:refresh"))
+}
+
+function hideMainContentForSplash() {
+  const mainContent = document.getElementById("main-content")
+  if (mainContent) {
+    mainContent.classList.add("opacity-0")
+    mainContent.classList.remove("opacity-100")
+  }
+  document.body.style.overflow = "hidden"
 }
 
 export function LoadingScreen() {
-  const [isVisible, setIsVisible] = useState(true)
+  const [isVisible, setIsVisible] = useState(shouldShowSplashInitially)
   const [isFading, setIsFading] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const dismissedRef = useRef(false)
@@ -53,14 +69,12 @@ export function LoadingScreen() {
   }, [])
 
   useEffect(() => {
-    const hasSeenLoading = sessionStorage.getItem("hasSeenLoading")
-
-    if (hasSeenLoading || shouldSkipSplash()) {
-      dismissedRef.current = true
-      setIsVisible(false)
+    if (!isVisible) {
       revealMainContent()
       return
     }
+
+    hideMainContentForSplash()
 
     const handleLoad = () => setPageLoaded(true)
     if (document.readyState === "complete") {
@@ -74,8 +88,9 @@ export function LoadingScreen() {
     return () => {
       window.removeEventListener("load", handleLoad)
       window.clearTimeout(maxTimer)
+      document.body.style.overflow = ""
     }
-  }, [dismissSplash])
+  }, [isVisible, dismissSplash])
 
   useEffect(() => {
     if (!isVisible || dismissedRef.current) return
@@ -97,23 +112,6 @@ export function LoadingScreen() {
       dismissSplash(true)
     }
   }, [pageLoaded, dismissSplash])
-
-  useEffect(() => {
-    if (!isVisible) {
-      document.body.style.overflow = ""
-      return
-    }
-
-    document.body.style.overflow = "hidden"
-    const mainContent = document.getElementById("main-content")
-    if (mainContent) {
-      mainContent.classList.add("opacity-0")
-    }
-
-    return () => {
-      document.body.style.overflow = ""
-    }
-  }, [isVisible])
 
   if (!isVisible) {
     return null

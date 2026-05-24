@@ -1,59 +1,86 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import "lenis/dist/lenis.css"
+import Lenis from "lenis"
+import { useEffect } from "react"
 import { usePathname } from "next/navigation"
-import { ReactLenis } from "lenis/react"
+import { getLenisInstance, setLenisInstance } from "@/lib/lenis-instance"
 
-const lenisOptions = {
-  duration: 1.2,
-  easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  orientation: "vertical" as const,
-  gestureOrientation: "vertical" as const,
-  smoothWheel: true,
-  wheelMultiplier: 1,
-  touchMultiplier: 1,
-  syncTouch: false,
-  infinite: false,
-  autoRaf: true,
-}
+const LENIS_EASING = (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
 
-function LenisHtmlClass({ enabled }: { enabled: boolean }) {
-  useEffect(() => {
-    if (!enabled) return
-    document.documentElement.classList.add("lenis")
-    return () => {
-      document.documentElement.classList.remove("lenis")
-    }
-  }, [enabled])
-
-  return null
-}
-
-function useLenisEnabled() {
-  const pathname = usePathname()
-  const [enabled, setEnabled] = useState(false)
-
-  useEffect(() => {
-    const isLegal = pathname.startsWith("/legal")
-    const isTouch = window.matchMedia("(pointer: coarse)").matches
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    setEnabled(!isLegal && !isTouch && !prefersReduced)
-  }, [pathname])
-
-  return enabled
+/** Нативный скролл только на чисто сенсорных устройствах (без мыши / тачпада). */
+function shouldUseNativeScroll(): boolean {
+  if (typeof window === "undefined") return false
+  const finePointer = window.matchMedia("(pointer: fine)").matches
+  const hover = window.matchMedia("(hover: hover)").matches
+  return !finePointer && !hover
 }
 
 export function LenisProvider({ children }: { children: React.ReactNode }) {
-  const enabled = useLenisEnabled()
+  const pathname = usePathname()
 
-  if (!enabled) {
-    return <>{children}</>
-  }
+  useEffect(() => {
+    if (shouldUseNativeScroll()) return
 
-  return (
-    <ReactLenis root options={lenisOptions}>
-      <LenisHtmlClass enabled />
-      {children}
-    </ReactLenis>
-  )
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: LENIS_EASING,
+      orientation: "vertical",
+      gestureOrientation: "vertical",
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 2,
+      infinite: false,
+    })
+
+    setLenisInstance(lenis)
+
+    let rafId = 0
+    const raf = (time: number) => {
+      lenis.raf(time)
+      rafId = requestAnimationFrame(raf)
+    }
+    rafId = requestAnimationFrame(raf)
+
+    const onLenisScroll = () => {
+      const st = (window as Window & { ScrollTrigger?: { update: () => void } }).ScrollTrigger
+      st?.update()
+    }
+    lenis.on("scroll", onLenisScroll)
+
+    const refresh = () => {
+      requestAnimationFrame(() => {
+        lenis.resize()
+        const st = (window as Window & { ScrollTrigger?: { refresh: () => void } }).ScrollTrigger
+        st?.refresh()
+      })
+    }
+
+    window.addEventListener("lenis:refresh", refresh)
+    const resizeTimer = window.setTimeout(refresh, 400)
+
+    return () => {
+      window.clearTimeout(resizeTimer)
+      window.removeEventListener("lenis:refresh", refresh)
+      lenis.off("scroll", onLenisScroll)
+      cancelAnimationFrame(rafId)
+      lenis.destroy()
+      setLenisInstance(null)
+    }
+  }, [])
+
+  useEffect(() => {
+    const lenis = getLenisInstance()
+    if (!lenis) return
+    const id = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        lenis.resize()
+        const st = (window as Window & { ScrollTrigger?: { refresh: () => void } }).ScrollTrigger
+        st?.refresh()
+      })
+    })
+    return () => cancelAnimationFrame(id)
+  }, [pathname])
+
+  return <>{children}</>
 }

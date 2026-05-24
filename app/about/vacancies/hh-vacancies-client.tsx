@@ -65,12 +65,16 @@ interface HHVacanciesResponse {
   pages: number
   page: number
   per_page: number
+  fallbackUrl?: string
+  warning?: string
 }
 
 export function HHVacanciesClient() {
   const [vacancies, setVacancies] = useState<HHVacancy[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [warning, setWarning] = useState<string | null>(null)
+  const [fallbackUrl, setFallbackUrl] = useState("https://hh.ru/employer/541232")
   const [currentPage, setCurrentPage] = useState(0)
   const [totalPages, setTotalPages] = useState(0)
   const [totalFound, setTotalFound] = useState(0)
@@ -91,6 +95,7 @@ export function HHVacanciesClient() {
   const fetchVacancies = async (page: number) => {
     setIsLoading(true)
     setError(null)
+    setWarning(null)
     try {
       const params = new URLSearchParams({
         page: page.toString(),
@@ -105,13 +110,15 @@ export function HHVacanciesClient() {
       if (selectedSchedule) params.append("schedule", selectedSchedule)
       
       const response = await fetch(`/api/hh-vacancies?${params.toString()}`)
-      if (!response.ok) {
+      const data: HHVacanciesResponse = await response.json()
+      setVacancies(data.items ?? [])
+      setTotalPages(data.pages ?? 0)
+      setTotalFound(data.found ?? 0)
+      if (data.fallbackUrl) setFallbackUrl(data.fallbackUrl)
+      if (data.warning) setWarning(data.warning)
+      if (!response.ok && !data.warning) {
         throw new Error("Не удалось загрузить вакансии")
       }
-      const data: HHVacanciesResponse = await response.json()
-      setVacancies(data.items)
-      setTotalPages(data.pages)
-      setTotalFound(data.found)
     } catch (err) {
       setError(err instanceof Error ? err.message : "Произошла ошибка")
     } finally {
@@ -309,6 +316,21 @@ export function HHVacanciesClient() {
         </div>
       </div>
 
+      {warning && (
+        <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-100">
+          <p>{warning}</p>
+          <a
+            href={fallbackUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 inline-flex items-center gap-1 font-semibold text-primary hover:underline"
+          >
+            Открыть вакансии на hh.ru
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+        </div>
+      )}
+
       {/* Состояния загрузки и ошибок */}
       {isLoading && (
         <div className="text-center py-12">
@@ -328,12 +350,21 @@ export function HHVacanciesClient() {
         <div className="text-center py-12">
           <Briefcase className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
           <p className="text-muted-foreground mb-2">
-            {hasActiveFilters 
-              ? "Вакансий с такими параметрами не найдено" 
+            {hasActiveFilters
+              ? "Вакансий с такими параметрами не найдено"
               : "На данный момент открытых вакансий нет"}
           </p>
+          <a
+            href={fallbackUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex items-center gap-2 text-primary font-semibold hover:underline"
+          >
+            Смотреть на HeadHunter
+            <ExternalLink className="w-4 h-4" />
+          </a>
           {hasActiveFilters && (
-            <Button variant="outline" onClick={handleResetFilters} className="mt-4">
+            <Button variant="outline" onClick={handleResetFilters} className="mt-4 ml-2">
               Сбросить фильтры
             </Button>
           )}

@@ -1,6 +1,7 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
 import { ReactLenis } from "lenis/react"
 
 const lenisOptions = {
@@ -10,34 +11,48 @@ const lenisOptions = {
   gestureOrientation: "vertical" as const,
   smoothWheel: true,
   wheelMultiplier: 1,
-  touchMultiplier: 2,
+  touchMultiplier: 1,
+  syncTouch: false,
   infinite: false,
   autoRaf: true,
 }
 
-function LenisHtmlClass() {
+function LenisHtmlClass({ enabled }: { enabled: boolean }) {
   useEffect(() => {
-    try {
-      document.documentElement.classList.add("lenis")
-    } catch {
-      // ignore
-    }
+    if (!enabled) return
+    document.documentElement.classList.add("lenis")
     return () => {
-      try {
-        document.documentElement.classList.remove("lenis")
-      } catch {
-        // ignore
-      }
+      document.documentElement.classList.remove("lenis")
     }
-  }, [])
+  }, [enabled])
 
   return null
 }
 
+function useLenisEnabled() {
+  const pathname = usePathname()
+  const [enabled, setEnabled] = useState(false)
+
+  useEffect(() => {
+    const isLegal = pathname.startsWith("/legal")
+    const isTouch = window.matchMedia("(pointer: coarse)").matches
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    setEnabled(!isLegal && !isTouch && !prefersReduced)
+  }, [pathname])
+
+  return enabled
+}
+
 export function LenisProvider({ children }: { children: React.ReactNode }) {
+  const enabled = useLenisEnabled()
+
+  if (!enabled) {
+    return <>{children}</>
+  }
+
   return (
     <ReactLenis root options={lenisOptions}>
-      <LenisHtmlClass />
+      <LenisHtmlClass enabled />
       {children}
     </ReactLenis>
   )

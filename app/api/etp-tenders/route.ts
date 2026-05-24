@@ -1,21 +1,16 @@
 import { NextResponse } from "next/server"
 
-/**
- * RSS ЭТП ГПБ — те же фильтры, что и на странице:
- * https://new.etpgpb.ru/procedures/?procedure[customers][10280]=АО "ПЛАСТИК"&procedure[stage][0]=accepting&procedure[stage][1]=commission&procedure[regions][0]=Тульская область
- */
-const ETP_RSS_BASE = "https://etpgpb.ru/procedures.rss"
 const ETP_GPB_CUSTOMER_NAME = 'АО "ПЛАСТИК"'
+const ETP_FILTER_URL =
+  "https://new.etpgpb.ru/procedures/?procedure[customers][10280]=" +
+  encodeURIComponent(ETP_GPB_CUSTOMER_NAME) +
+  "&procedure[stage][0]=accepting&procedure[stage][1]=commission&procedure[regions][0]=" +
+  encodeURIComponent("Тульская область")
 
-/** Параметры RSS, совпадающие с фильтрами страницы new.etpgpb.ru/procedures */
-function buildRssParams(): URLSearchParams {
-  const params = new URLSearchParams()
-  params.set("procedure[customers][10280]", ETP_GPB_CUSTOMER_NAME)
-  params.set("procedure[stage][0]", "accepting")   // приём заявок
-  params.set("procedure[stage][1]", "commission")  // работа комиссии
-  params.set("procedure[regions][0]", "Тульская область")
-  return params
-}
+const RSS_CANDIDATES = [
+  `https://etpgpb.ru/procedures.rss?procedure[customers][10280]=${encodeURIComponent(ETP_GPB_CUSTOMER_NAME)}&procedure[stage][0]=accepting&procedure[stage][1]=commission&procedure[regions][0]=${encodeURIComponent("Тульская область")}`,
+  "https://etpgpb.ru/procedures.rss",
+]
 
 export interface EtpTenderItem {
   title: string
@@ -33,7 +28,6 @@ function parseRssItems(xml: string): EtpTenderItem[] {
     const link = block.match(/<link>([\s\S]*?)<\/link>/i)?.[1]?.trim() ?? ""
     const pubDate = block.match(/<pubDate>([\s\S]*?)<\/pubDate>/i)?.[1]?.trim() ?? ""
     if (title && link) {
-      // Ссылки с ЭТП ведём на новую площадку
       const normalizedLink = link.replace(/^https?:\/\/etpgpb\.ru\//, "https://new.etpgpb.ru/")
       items.push({ title, link: normalizedLink, pubDate })
     }
@@ -41,32 +35,60 @@ function parseRssItems(xml: string): EtpTenderItem[] {
   return items
 }
 
+async function fetchRss(url: string): Promise<string | null> {
+  const response = await fetch(url, {
+    headers: {
+      "User-Agent": "AOPlasticSite/1.0 (info@oaplastic.ru)",
+      Accept: "application/rss+xml, application/xml, text/xml, */*",
+    },
+    redirect: "follow",
+    cache: "no-store",
+    signal: AbortSignal.timeout(15000),
+  })
+
+  if (!response.ok) return null
+
+  const text = await response.text()
+  if (!text.includes("<rss") && !text.includes("<item>")) {
+    return null
+  }
+
+  return text
+}
+
 export async function GET() {
   try {
-    const params = buildRssParams()
-    const url = `${ETP_RSS_BASE}?${params.toString()}`
-
-    const response = await fetch(url, {
-      headers: {
-        "User-Agent": "AOPlastic/1.0 (ao-plastic-website)",
-        Accept: "application/rss+xml, application/xml, text/xml",
-      },
-      next: { revalidate: 900 }, // 15 минут
-    })
-
-    if (!response.ok) {
-      throw new Error(`ETP RSS error: ${response.status}`)
+    for (const url of RSS_CANDIDATES) {
+      try {
+        const xml = await fetchRss(url)
+        if (!xml) continue
+        const items = parseRssItems(xml)
+        if (items.length > 0) {
+          return NextResponse.json({
+            items,
+            customerName: ETP_GPB_CUSTOMER_NAME,
+            filterUrl: ETP_FILTER_URL,
+          })
+        }
+      } catch {
+        continue
+      }
     }
 
-    const xml = await response.text()
-    const items = parseRssItems(xml)
-
-    return NextResponse.json({ items, customerName: ETP_GPB_CUSTOMER_NAME })
+    return NextResponse.json({
+      items: [],
+      customerName: ETP_GPB_CUSTOMER_NAME,
+      filterUrl: ETP_FILTER_URL,
+      warning:
+        "RSS ЭТП ГПБ сейчас недоступен с сервера. Актуальные закупки — на площадке.",
+    })
   } catch (error) {
     console.error("Error fetching ETP tenders:", error)
-    return NextResponse.json(
-      { error: "Не удалось загрузить тендеры с ЭТП ГПБ", items: [] },
-      { status: 500 }
-    )
+    return NextResponse.json({
+      items: [],
+      customerName: ETP_GPB_CUSTOMER_NAME,
+      filterUrl: ETP_FILTER_URL,
+      warning: "Не удалось загрузить тендеры. Откройте площадку ЭТП ГПБ.",
+    })
   }
 }

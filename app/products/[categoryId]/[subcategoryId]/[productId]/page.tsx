@@ -10,6 +10,7 @@ import { resolveProductImageUrl } from "@/lib/product-image"
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld"
 
 export const revalidate = 300
+export const dynamicParams = true
 
 export async function generateMetadata({
   params,
@@ -35,58 +36,11 @@ export async function generateMetadata({
   }
 }
 
-// Генерируем статические страницы для всех товаров
+// Не делаем массовый сетевой пререндер через Supabase во время билда:
+// из-за этого сборка периодически упиралась в таймауты и ретраи (60s, attempt 1/3...).
+// Страницы вне этого списка будут сгенерированы on-demand при первом запросе.
 export async function generateStaticParams() {
-  try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-    if (supabaseUrl && supabaseKey) {
-      const response = await fetch(
-        `${supabaseUrl}/rest/v1/products?is_active=eq.true&select=id,category_id,subcategory_id`,
-        {
-          headers: {
-            apikey: supabaseKey,
-            Authorization: `Bearer ${supabaseKey}`,
-          },
-          next: { revalidate: 300 },
-        }
-      )
-
-      if (response.ok) {
-        const products = await response.json()
-        
-        // Также получаем информацию о подкатегориях для slug
-        const subcatsResponse = await fetch(
-          `${supabaseUrl}/rest/v1/subcategories?select=id,slug,category_id`,
-          {
-            headers: {
-              apikey: supabaseKey,
-              Authorization: `Bearer ${supabaseKey}`,
-            },
-            next: { revalidate: 300 },
-          }
-        )
-        
-        if (subcatsResponse.ok) {
-          const subcategories = await subcatsResponse.json()
-          const subcatMap = new Map(subcategories.map((sub: any) => [sub.id, sub.slug]))
-          
-          if (products && products.length > 0) {
-            return products.map((product: any) => ({
-              categoryId: product.category_id,
-              subcategoryId: subcatMap.get(product.subcategory_id) || product.subcategory_id,
-              productId: product.id,
-            }))
-          }
-        }
-      }
-    }
-  } catch (error) {
-    console.error("Error fetching products for generateStaticParams:", error)
-  }
-
-  // Fallback на JSON
+  // Легкий локальный список для базового pre-render, без сетевой зависимости.
   const params: Array<{ categoryId: string; subcategoryId: string; productId: string }> = []
   productsData.categories.forEach((cat) => {
     cat.products?.forEach((product: any) => {

@@ -10,26 +10,35 @@ interface EtpTenderItem {
   pubDate: string
 }
 
-const ETP_LINK = "https://new.etpgpb.ru/procedures"
+const ETP_LINK_DEFAULT =
+  "https://new.etpgpb.ru/procedures/?procedure[customers][10280]=" +
+  encodeURIComponent('АО "ПЛАСТИК"') +
+  "&procedure[stage][0]=accepting&procedure[stage][1]=commission&procedure[regions][0]=" +
+  encodeURIComponent("Тульская область")
 
 export function EtpTendersClient() {
   const { t } = useLanguage()
   const [items, setItems] = useState<EtpTenderItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [warning, setWarning] = useState<string | null>(null)
+  const [etpLink, setEtpLink] = useState(ETP_LINK_DEFAULT)
 
   useEffect(() => {
     async function fetchTenders() {
       try {
         const res = await fetch("/api/etp-tenders")
         const data = await res.json()
-        if (res.ok && Array.isArray(data.items)) {
+        if (Array.isArray(data.items)) {
           setItems(data.items)
-        } else {
-          setError(data.error ?? null)
+        }
+        if (typeof data.filterUrl === "string") {
+          setEtpLink(data.filterUrl)
+        }
+        if (typeof data.warning === "string") {
+          setWarning(data.warning)
         }
       } catch {
-        setError("Не удалось загрузить тендеры")
+        setWarning("Не удалось загрузить тендеры")
       } finally {
         setIsLoading(false)
       }
@@ -49,7 +58,7 @@ export function EtpTendersClient() {
     )
   }
 
-  if (error || items.length === 0) {
+  if (items.length === 0) {
     return (
       <div className="rounded-3xl border border-border bg-gradient-to-b from-card to-card/80 p-10 sm:p-12 text-center shadow-sm">
         <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary/10 text-primary mb-5">
@@ -57,10 +66,11 @@ export function EtpTendersClient() {
         </div>
         <h3 className="text-lg font-semibold text-foreground">{t("suppliersPage.etpTenders.noTenders")}</h3>
         <p className="mt-2 text-sm text-muted-foreground max-w-sm mx-auto">
-          Актуальные закупки АО «Пластик» появятся здесь, когда будут опубликованы на площадке.
+          {warning ??
+            "Актуальные закупки АО «Пластик» появятся здесь, когда будут опубликованы на площадке."}
         </p>
         <a
-          href={ETP_LINK}
+          href={etpLink}
           target="_blank"
           rel="noopener noreferrer"
           className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm"
@@ -84,7 +94,7 @@ export function EtpTendersClient() {
           </span>
         </div>
         <a
-          href={ETP_LINK}
+          href={etpLink}
           target="_blank"
           rel="noopener noreferrer"
           className="text-sm font-medium text-primary hover:underline inline-flex items-center gap-1"
@@ -139,7 +149,7 @@ export function EtpTendersClient() {
 
       <div className="pt-2 text-center">
         <a
-          href={ETP_LINK}
+          href={etpLink}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"

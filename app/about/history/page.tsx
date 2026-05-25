@@ -1,8 +1,8 @@
 "use client"
 
 import { heroData, historyPeriods } from "@/data/historyPeriods22"
-import { HeroBlockSimple } from "@/components/history22/HeroBlockSimple"
-import { PeriodBlockSimple } from "@/components/history22/PeriodBlockSimple"
+import HeroBlock22 from "@/components/history22/HeroBlock22"
+import PeriodBlock22 from "@/components/history22/PeriodBlock22"
 
 const periodImages: Record<string, string> = {
   "period-1": "/images/history/period-1959-1992.jpeg",
@@ -14,10 +14,14 @@ const periodImages: Record<string, string> = {
 export default function HistoryPage() {
   return (
     <main className="min-h-screen bg-background">
-      <HeroBlockSimple title={heroData.heroTitle} subtitle={heroData.heroSubTitle} />
+      <HeroBlock22
+        title={heroData.heroTitle}
+        subtitle={heroData.heroSubTitle}
+        textSlides={heroData.heroTextSlides}
+      />
 
       {historyPeriods.map((period) => (
-        <PeriodBlockSimple key={period.id} period={period} image={periodImages[period.id]} />
+        <PeriodBlock22 key={period.id} period={period} image={periodImages[period.id]} />
       ))}
     </main>
   )

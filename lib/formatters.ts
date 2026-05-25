@@ -37,8 +37,43 @@ const SPEC_KEY_MAP: Record<string, string> = {
   "Порообразователь_число": "Порообразователь, %",
 }
 
-export function formatSpecKey(rawKey: string): string {
+const SPEC_KEY_EN: Record<string, string> = {
+  "Применение": "Application",
+  Application: "Application",
+  "Тип": "Type",
+  Type: "Type",
+  "Марка": "Grade",
+  Grade: "Grade",
+  "Упаковка": "Packaging",
+  Packaging: "Packaging",
+  "Размер гранул": "Granule size",
+  "Granule size": "Granule size",
+  "Тип изделия": "Part type",
+  "Подтип": "Subtype",
+  "Габаритные размеры": "Dimensions",
+  "Шифр изделия": "Product code",
+  "Длина изделия": "Length",
+  "Поставка": "Supply",
+  "Плотность": "Density",
+  "Цвет": "Color",
+  "Чистота": "Purity",
+  "Температура размягчения": "Vicat softening temperature",
+  "Прочность при изгибе": "Flexural strength",
+  "Ударная вязкость": "Impact strength",
+  "Насыпная плотность": "Bulk density",
+  "Коэффициент вспенивания": "Expansion ratio",
+  "Температура плавления": "Melting temperature",
+  "Сухой остаток": "Solids content",
+  "Вязкость": "Viscosity",
+  "Внешний вид": "Appearance",
+}
+
+export function formatSpecKey(rawKey: string, lang: "ru" | "en" = "ru"): string {
   if (!rawKey) return ""
+
+  if (lang === "en" && SPEC_KEY_EN[rawKey]) {
+    return SPEC_KEY_EN[rawKey]
+  }
 
   if (SPEC_KEY_MAP[rawKey]) {
     return SPEC_KEY_MAP[rawKey]

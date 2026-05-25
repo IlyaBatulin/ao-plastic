@@ -109,9 +109,7 @@
     "etpTenders": {
       "title": "Tenders on ETP GPB",
       "description": "Current procurements of JSC «Plastik» on Gazprombank's electronic trading platform. Participation is subject to ETP GPB rules.",
-      "openOnEtp": "Open on ETP GPB",
-      "noTenders": "No open tenders on ETP GPB at the moment",
-      "loading": "Loading tenders..."
+      "openOnEtp": "Go to tenders"
     },
     "rfps": {
       "title": "Active Requests for Proposals",
@@ -364,6 +362,29 @@
         "extrusionTypeLabel": "Part type",
         "extrusionTypeHint": "You can select multiple types",
         "extrusionTypeReset": "Clear"
+      },
+      "korsPage": {
+        "corsTitle": "CORS",
+        "corsLead": "Cubic residue of styrene rectification — a styrene production by-product used as fuel, solvent and a component of industrial materials.",
+        "corsAlt": "CORS — cubic residue of styrene rectification",
+        "corsP1": "CORS (cubic residue of styrene rectification) is a by-product of styrene production.",
+        "corsP2": "It is used as fuel in some modern heating systems and boilers. CORS is also a solvent and a component in various types of industrial production.",
+        "corsP3": "The main application is film-forming materials. CORS residues are also used to improve mechanical strength and reduce static in rubber-based floor coatings, and for impregnating wood and fibreboard to improve moisture resistance, strength and durability.",
+        "corsP4": "CORS quality from AO Plastik meets TU 2415-038-05762341-2012, rev. 1, 2, 3.",
+        "corsNormTitle": "Specification limits — CORS",
+        "bentolTitle": "Bentol",
+        "bentolLead": "Benzene-toluene fraction — a processing product used as feedstock and solvent across several industries.",
+        "bentolAlt": "Bentol — benzene-toluene fraction, 500 ml lab bottle",
+        "bentolP1": "Bentol is a liquid hydrocarbon mixture (mainly benzene and toluene) with composition and physico-chemical properties regulated by specifications. It is used as a solvent and feedstock component in paints, enamels and binders, and in rubber, adhesives and other organic synthesis where controlled aromatic hydrocarbon content is required.",
+        "bentolP2": "Depending on the customer's process chain, Bentol can be used to adjust viscosity of coatings, accelerate drying of film coatings, and in formulations for polymer and rubber product processing. Delivery complies with labelling, packaging and safe transport requirements for chemicals.",
+        "bentolP3": "AO Plastik ensures consistent batch quality: fraction parameters meet approved TU limits, confirmed by incoming raw material control and acceptance testing of finished product.",
+        "bentolP4": "Bentol from AO Plastik meets TU 2415-032-05762341-2009.",
+        "bentolNormTitle": "Specification limits — Bentol",
+        "contactUs": "Contact us",
+        "normColNo": "No.",
+        "normColName": "Parameter",
+        "normColUnit": "Unit",
+        "normColValue": "Specification limit"
       }
     }
   }

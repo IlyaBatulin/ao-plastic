@@ -9,6 +9,7 @@ import corporateMenuData from "@/data/menu-corporate.json"
 import { createClient } from "@/utils/supabase/client"
 import { useEffect, useState } from "react"
 import { useTranslation } from "@/lib/i18n"
+import { getCatalogCategoryLabel } from "@/lib/catalog-translations"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import { cn } from "@/lib/utils"
 
@@ -180,7 +181,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                                 onClick={onClose}
                                 className="block text-sm text-muted-foreground hover:text-primary py-2 px-4 transition-colors rounded-lg hover:bg-gray-100/50"
                               >
-                                {category.name}
+                                {getCatalogCategoryLabel(category.id, category.name, i18nLang === "en" ? "en" : "ru")}
                               </Link>
                             ))
                           ) : (

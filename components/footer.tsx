@@ -79,6 +79,14 @@ export function Footer() {
             <Link href="/about/ethics" className="hover:text-background transition-colors">
               Кодекс этики
             </Link>
+            <a
+              href="https://oaoplastic.ru/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-background transition-colors"
+            >
+              Предыдущая версия сайта
+            </a>
           </div>
         </div>
       </div>

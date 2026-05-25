@@ -8,9 +8,10 @@ import { getLenisInstance, setLenisInstance } from "@/lib/lenis-instance"
 
 const LENIS_EASING = (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
 
-/** Нативный скролл только на чисто сенсорных устройствах (без мыши / тачпада). */
+/** Нативный скролл на мобилках и чисто сенсорных устройствах (без мыши / тачпада). */
 function shouldUseNativeScroll(): boolean {
   if (typeof window === "undefined") return false
+  if (window.matchMedia("(max-width: 767px)").matches) return true
   const finePointer = window.matchMedia("(pointer: fine)").matches
   const hover = window.matchMedia("(hover: hover)").matches
   return !finePointer && !hover
@@ -57,11 +58,15 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
     }
 
     window.addEventListener("lenis:refresh", refresh)
+    window.addEventListener("load", refresh)
     const resizeTimer = window.setTimeout(refresh, 400)
+    const loadTimer = window.setTimeout(refresh, 1200)
 
     return () => {
       window.clearTimeout(resizeTimer)
+      window.clearTimeout(loadTimer)
       window.removeEventListener("lenis:refresh", refresh)
+      window.removeEventListener("load", refresh)
       lenis.off("scroll", onLenisScroll)
       cancelAnimationFrame(rafId)
       lenis.destroy()

@@ -1,7 +1,18 @@
 "use client"
 
 import Link from "next/link"
+import {
+  Award,
+  CheckCircle,
+  Flame,
+  Handshake,
+  Shield,
+  Target,
+  Wind,
+} from "lucide-react"
 import { Footer } from "@/components/footer"
+import { BackgroundPaths } from "@/components/ui/background-paths"
+import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
 
 const content = {
@@ -204,263 +215,287 @@ export function PasfPageClient() {
   const page = content[lang as keyof typeof content]
 
   return (
-    <div className="min-h-screen bg-background">
-      <section className="relative overflow-hidden bg-slate-950 pt-32 pb-24 text-white">
-        <div className="absolute inset-0">
-          <img
-            src="/images/pasf/team.png"
-            alt={page.heroTitle}
-            className="h-full w-full object-cover object-center opacity-45"
-            loading="eager"
-            fetchPriority="high"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-slate-950/45" />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/50" />
-        </div>
+    <>
+      <BackgroundPaths />
+      <div className="min-h-screen bg-transparent">
+        <section className="relative overflow-hidden pt-32 pb-16">
+          <div className="pointer-events-none absolute inset-0 overflow-hidden">
+            <div
+              className="absolute inset-0 animate-blue-flow"
+              style={{
+                background:
+                  "radial-gradient(ellipse at center, rgba(59, 130, 246, 0.35) 0%, rgba(147, 197, 253, 0.28) 30%, rgba(96, 165, 250, 0.22) 50%, rgba(147, 197, 253, 0.15) 70%, transparent 100%)",
+                backgroundSize: "180% 180%",
+                filter: "blur(70px)",
+              }}
+            />
+          </div>
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-blue-50/8 via-transparent to-transparent" />
 
-        <div className="container relative z-10 mx-auto px-4 lg:px-8">
-          <div className="max-w-3xl">
-            <p className="mb-5 text-sm font-semibold uppercase tracking-[0.28em] text-white/75">
-              {page.heroBadge}
-            </p>
-            <h1 className="mb-6 text-5xl font-bold leading-tight text-balance md:text-7xl">
-              {page.heroTitle}
-            </h1>
-            <p className="text-xl leading-relaxed text-white/90 md:text-2xl">{page.heroText}</p>
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-              <Link
-                href="/contacts"
-                className="inline-flex items-center justify-center rounded-md bg-white px-7 py-3 font-semibold text-slate-950 transition-colors hover:bg-white/90"
-              >
-                {page.requestButton}
-              </Link>
-              <a
-                href="#services"
-                className="inline-flex items-center justify-center rounded-md border border-white/35 px-7 py-3 font-semibold text-white transition-colors hover:bg-white/10"
-              >
-                {page.servicesButton}
-              </a>
+          <div className="container relative z-10 mx-auto px-4 lg:px-8">
+            <div className="mx-auto mb-12 max-w-4xl text-center">
+              <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-4 py-1 text-sm font-semibold text-primary">
+                <Shield className="h-4 w-4" />
+                {page.heroBadge}
+              </span>
+              <h1 className="mb-6 text-6xl font-bold text-primary animate-in fade-in slide-in-from-bottom-4 duration-700 md:text-7xl">
+                {page.heroTitle}
+              </h1>
+              <p className="text-xl leading-relaxed text-foreground/70 animate-in fade-in slide-in-from-bottom-5 duration-700 delay-200 md:text-2xl">
+                {page.heroText}
+              </p>
+              <div className="mt-6 h-0.5 w-24 mx-auto bg-primary animate-in fade-in duration-700 delay-300" />
+              <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center">
+                <Button asChild size="lg">
+                  <Link href="/contacts">{page.requestButton}</Link>
+                </Button>
+                <Button asChild variant="outline" size="lg">
+                  <a href="#services">{page.servicesButton}</a>
+                </Button>
+              </div>
+            </div>
+
+            <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+              <img
+                src="/images/pasf/team.png"
+                alt={page.heroTitle}
+                className="h-auto max-h-[560px] w-full object-cover object-center"
+                loading="eager"
+                fetchPriority="high"
+              />
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="border-b border-border bg-secondary py-16">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-            <div>
-              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-                {page.mainBadge}
-              </p>
-              <h2 className="text-h2">
-                {page.mainTitle}
+        <section className="py-20">
+          <div className="container mx-auto px-4 lg:px-8">
+            <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+              <div>
+                <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1 text-sm font-semibold text-primary">
+                  <Target className="h-4 w-4" />
+                  {page.mainBadge}
+                </span>
+                <h2 className="text-3xl font-bold text-balance text-foreground md:text-4xl">
+                  {page.mainTitle}
+                </h2>
+              </div>
+              <div className="grid gap-4 md:grid-cols-2">
+                {page.summary.map((item: string) => (
+                  <div key={item} className="rounded-2xl border border-border bg-card p-5 shadow-sm transition-all hover:border-primary/30 hover:shadow-md">
+                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+                      <CheckCircle className="h-5 w-5 text-primary" />
+                    </div>
+                    <p className="leading-relaxed text-muted-foreground">{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-20">
+          <div className="container mx-auto px-4 lg:px-8">
+            <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr]">
+              <div>
+                <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1 text-sm font-semibold text-primary">
+                  <Handshake className="h-4 w-4" />
+                  {page.outsourcingBadge}
+                </span>
+                <h2 className="mb-6 text-3xl font-bold text-balance text-foreground md:text-4xl">
+                  {page.outsourcingTitle}
+                </h2>
+                <div className="space-y-5 text-lg leading-relaxed text-muted-foreground">
+                  {page.outsourcingParagraphs.map((paragraph: string) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                </div>
+              </div>
+
+              <div className="rounded-3xl border border-border bg-card p-8 shadow-sm transition-all hover:border-primary/30 hover:shadow-md">
+                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-blue-600 shadow-lg shadow-blue-500/20">
+                  <Award className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="mb-6 text-2xl font-bold text-foreground">{page.benefitsTitle}</h3>
+                <ul className="space-y-4">
+                  {page.benefits.map((item: string) => (
+                    <li key={item} className="flex items-start gap-3">
+                      <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+                      <span className="leading-relaxed text-muted-foreground">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="services" className="bg-secondary/30 py-20">
+          <div className="container mx-auto px-4 lg:px-8">
+            <div className="mb-12 max-w-3xl">
+              <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1 text-sm font-semibold text-primary">
+                <Shield className="h-4 w-4" />
+                {page.servicesBadge}
+              </span>
+              <h2 className="text-3xl font-bold text-balance text-foreground md:text-4xl">
+                {page.servicesTitle}
               </h2>
             </div>
-            <div className="grid gap-4 md:grid-cols-2">
-              {page.summary.map((item: string) => (
-                <div key={item} className="border-l-2 border-primary bg-card p-5 shadow-sm">
-                  <p className="leading-relaxed text-muted-foreground">{item}</p>
+
+            <div className="grid gap-8 lg:grid-cols-2">
+              <article className="rounded-3xl border border-border bg-card p-8 shadow-sm transition-all hover:border-primary/30 hover:shadow-md">
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+                  <Wind className="h-6 w-6 text-primary" />
                 </div>
+                <h3 className="mb-4 text-2xl font-bold text-foreground">{page.gasTitle}</h3>
+                <p className="mb-6 leading-relaxed text-muted-foreground">{page.gasText}</p>
+                <ul className="space-y-3">
+                  {page.gasWorks.map((item: string) => (
+                    <li key={item} className="flex items-start gap-3">
+                      <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+                      <span className="text-muted-foreground">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+
+              <article className="rounded-3xl border border-border bg-card p-8 shadow-sm transition-all hover:border-primary/30 hover:shadow-md">
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-orange-500">
+                  <Flame className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="mb-4 text-2xl font-bold text-foreground">{page.fireTitle}</h3>
+                <p className="mb-6 leading-relaxed text-muted-foreground">{page.fireText}</p>
+                <ul className="space-y-3">
+                  {page.fireWorks.map((item: string) => (
+                    <li key={item} className="flex items-start gap-3">
+                      <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+                      <span className="text-muted-foreground">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-20">
+          <div className="container mx-auto px-4 lg:px-8">
+            <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+              <div>
+                <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground">
+                  {page.resourcesBadge}
+                </p>
+                <h2 className="text-h2 mb-6">{page.resourcesTitle}</h2>
+                <p className="mb-6 text-lg leading-relaxed text-muted-foreground">{page.resourcesText}</p>
+                <img
+                  src="/images/pasf/fire-truck.png"
+                  alt={page.fireTruckAlt}
+                  className="h-72 w-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+
+              <div className="space-y-8">
+                <div className="border border-border bg-card p-8 shadow-sm">
+                  <h3 className="mb-5 text-2xl font-bold">{page.equipmentTitle}</h3>
+                  <ul className="space-y-3 list-disc pl-5">
+                    {page.equipment.map((item: string) => (
+                      <li key={item} className="text-muted-foreground">
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="border border-border bg-card p-8 shadow-sm">
+                  <h3 className="mb-5 text-2xl font-bold">{page.preventiveTitle}</h3>
+                  <ul className="space-y-3 list-disc pl-5">
+                    {page.preventiveWorks.map((item: string) => (
+                      <li key={item} className="text-muted-foreground">
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-secondary py-20">
+          <div className="container mx-auto px-4 lg:px-8">
+            <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+              <div>
+                <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground">
+                  {page.docsBadge}
+                </p>
+                <h2 className="text-h2 mb-6">{page.docsTitle}</h2>
+                <p className="mb-8 text-lg leading-relaxed text-muted-foreground">{page.docsText}</p>
+                <div className="border border-border bg-card p-6">
+                  <p className="font-semibold text-foreground">{page.docsNote}</p>
+                </div>
+              </div>
+
+              <div className="grid gap-6 md:grid-cols-2">
+                <div className="overflow-hidden border border-border bg-card shadow-sm">
+                  <img
+                    src="/images/pasf/certificate.png"
+                    alt={page.certificateAlt}
+                    className="h-full max-h-[620px] w-full object-cover object-top"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="overflow-hidden border border-border bg-card shadow-sm">
+                  <img
+                    src="/images/pasf/license.png"
+                    alt={page.licenseAlt}
+                    className="h-full max-h-[620px] w-full object-cover object-top"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-20">
+          <div className="container mx-auto px-4 lg:px-8">
+            <div className="mb-10 grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+              <div>
+                <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground">
+                  {page.cooperationBadge}
+                </p>
+                <h2 className="text-h2">{page.cooperationTitle}</h2>
+              </div>
+              <p className="text-lg leading-relaxed text-muted-foreground">{page.cooperationText}</p>
+            </div>
+
+            <div className="flex flex-wrap gap-3">
+              {page.partners.map((partner: string) => (
+                <span key={partner} className="border border-border bg-card px-5 py-3 font-medium shadow-sm">
+                  {partner}
+                </span>
               ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="py-20">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-            <div>
-              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-                {page.outsourcingBadge}
-              </p>
-              <h2 className="text-h2 mb-6">
-                {page.outsourcingTitle}
-              </h2>
-              <div className="space-y-5 text-lg leading-relaxed text-muted-foreground">
-                {page.outsourcingParagraphs.map((paragraph: string) => (
-                  <p key={paragraph}>{paragraph}</p>
-                ))}
-              </div>
-            </div>
-
-            <div className="border border-border bg-card p-8 shadow-sm">
-              <h3 className="mb-6 text-2xl font-bold">{page.benefitsTitle}</h3>
-              <ul className="space-y-4 list-disc pl-5">
-                {page.benefits.map((item: string) => (
-                  <li key={item} className="text-muted-foreground">
-                    <span className="leading-relaxed">{item}</span>
-                  </li>
-                ))}
-              </ul>
+        <section className="bg-slate-950 py-16 text-white">
+          <div className="container mx-auto px-4 lg:px-8">
+            <div className="mx-auto max-w-3xl text-center">
+              <h2 className="mb-6 text-3xl font-bold text-balance lg:text-4xl">{page.ctaTitle}</h2>
+              <p className="mb-8 text-lg leading-relaxed text-white/75">{page.ctaText}</p>
+              <Link
+                href="/contacts"
+                className="inline-flex items-center justify-center rounded-md bg-white px-8 py-4 font-semibold text-slate-950 transition-colors hover:bg-white/90"
+              >
+                {page.ctaButton}
+              </Link>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="services" className="bg-secondary py-20">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="mb-12 max-w-3xl">
-            <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-              {page.servicesBadge}
-            </p>
-            <h2 className="text-h2">
-              {page.servicesTitle}
-            </h2>
-          </div>
-
-          <div className="grid gap-8 lg:grid-cols-2">
-            <article className="border border-border bg-card p-8 shadow-sm">
-              <h3 className="mb-4 text-2xl font-bold">{page.gasTitle}</h3>
-              <p className="mb-6 leading-relaxed text-muted-foreground">{page.gasText}</p>
-              <ul className="space-y-3 list-disc pl-5">
-                {page.gasWorks.map((item: string) => (
-                  <li key={item} className="text-muted-foreground">
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </article>
-
-            <article className="border border-border bg-card p-8 shadow-sm">
-              <h3 className="mb-4 text-2xl font-bold">{page.fireTitle}</h3>
-              <p className="mb-6 leading-relaxed text-muted-foreground">{page.fireText}</p>
-              <ul className="space-y-3 list-disc pl-5">
-                {page.fireWorks.map((item: string) => (
-                  <li key={item} className="text-muted-foreground">
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-            <div>
-              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-                {page.resourcesBadge}
-              </p>
-              <h2 className="text-h2 mb-6">
-                {page.resourcesTitle}
-              </h2>
-              <p className="mb-6 text-lg leading-relaxed text-muted-foreground">{page.resourcesText}</p>
-              <img
-                src="/images/pasf/fire-truck.png"
-                alt={page.fireTruckAlt}
-                className="h-72 w-full object-cover"
-                loading="lazy"
-              />
-            </div>
-
-            <div className="space-y-8">
-              <div className="border border-border bg-card p-8 shadow-sm">
-                <h3 className="mb-5 text-2xl font-bold">{page.equipmentTitle}</h3>
-                <ul className="space-y-3 list-disc pl-5">
-                  {page.equipment.map((item: string) => (
-                    <li key={item} className="text-muted-foreground">
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="border border-border bg-card p-8 shadow-sm">
-                <h3 className="mb-5 text-2xl font-bold">{page.preventiveTitle}</h3>
-                <ul className="space-y-3 list-disc pl-5">
-                  {page.preventiveWorks.map((item: string) => (
-                    <li key={item} className="text-muted-foreground">
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-secondary py-20">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-            <div>
-              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-                {page.docsBadge}
-              </p>
-              <h2 className="text-h2 mb-6">
-                {page.docsTitle}
-              </h2>
-              <p className="mb-8 text-lg leading-relaxed text-muted-foreground">{page.docsText}</p>
-              <div className="border border-border bg-card p-6">
-                <p className="font-semibold text-foreground">{page.docsNote}</p>
-              </div>
-            </div>
-
-            <div className="grid gap-6 md:grid-cols-2">
-              <div className="overflow-hidden border border-border bg-card shadow-sm">
-                <img
-                  src="/images/pasf/certificate.png"
-                  alt={page.certificateAlt}
-                  className="h-full max-h-[620px] w-full object-cover object-top"
-                  loading="lazy"
-                />
-              </div>
-              <div className="overflow-hidden border border-border bg-card shadow-sm">
-                <img
-                  src="/images/pasf/license.png"
-                  alt={page.licenseAlt}
-                  className="h-full max-h-[620px] w-full object-cover object-top"
-                  loading="lazy"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="mb-10 grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
-            <div>
-              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-                {page.cooperationBadge}
-              </p>
-              <h2 className="text-h2">
-                {page.cooperationTitle}
-              </h2>
-            </div>
-            <p className="text-lg leading-relaxed text-muted-foreground">{page.cooperationText}</p>
-          </div>
-
-          <div className="flex flex-wrap gap-3">
-            {page.partners.map((partner: string) => (
-              <span key={partner} className="border border-border bg-card px-5 py-3 font-medium shadow-sm">
-                {partner}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-slate-950 py-16 text-white">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <h2 className="mb-6 text-3xl font-bold text-balance lg:text-4xl">{page.ctaTitle}</h2>
-            <p className="mb-8 text-lg leading-relaxed text-white/75">{page.ctaText}</p>
-            <Link
-              href="/contacts"
-              className="inline-flex items-center justify-center rounded-md bg-white px-8 py-4 font-semibold text-slate-950 transition-colors hover:bg-white/90"
-            >
-              {page.ctaButton}
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </>
   )
 }

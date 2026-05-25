@@ -4,6 +4,8 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { useEffect, useMemo, useRef } from "react"
 import { useLanguage } from "@/contexts/language-context"
+import { getCatalogSubcategoryTranslationKey } from "@/lib/catalog-translations"
+import { getPublicSubcategorySlug } from "@/lib/catalog-slugs"
 import { CustomOrderForm } from "@/app/products/_components/custom-order-form"
 import { AbsShimmerCard } from "@/app/products/_components/abs-shimmer-card"
 
@@ -112,7 +114,7 @@ export function SubcategoriesGrid({ categoryId, subcategories }: SubcategoriesGr
             return (
             <Link
               key={subcategory.id}
-              href={`/products/${categoryId}/${subcategory.slug}`}
+              href={`/products/${categoryId}/${getPublicSubcategorySlug(categoryId, subcategory)}`}
               className="subcategory-card group relative h-80 rounded-3xl overflow-hidden border border-border/50 hover:border-primary/50"
               style={{
                 opacity: 0,
@@ -145,7 +147,8 @@ export function SubcategoriesGrid({ categoryId, subcategories }: SubcategoriesGr
                 {/* Title and CTA - единый блок без разделения */}
                 <div className="mt-auto bg-white/95 backdrop-blur-sm rounded-xl p-4 -mx-2 border border-white/50 shadow-sm">
                   <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 transition-colors duration-300 group-hover:text-primary text-balance break-words">
-                    {t(`homePage.catalog.subcategories.${subcategory.id}`) || subcategory.name}
+                    {t(`homePage.catalog.subcategories.${getCatalogSubcategoryTranslationKey(subcategory.slug)}`) ||
+                      subcategory.name}
                   </h3>
                   {subcategory.description && subcategory.id !== "abs-custom" && (
                     <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-3">

@@ -1,5 +1,7 @@
 "use client"
 
+import { useEffect, useState } from "react"
+import { createPortal } from "react-dom"
 import { motion } from "framer-motion"
 
 interface FloatingPathsProps {
@@ -22,7 +24,7 @@ function FloatingPaths({ position }: FloatingPathsProps) {
   return (
     <div className="absolute inset-0 pointer-events-none">
       <svg
-        className="w-full h-full"
+        className="h-full w-full"
         viewBox="0 0 696 316"
         fill="none"
         preserveAspectRatio="xMidYMid slice"
@@ -32,7 +34,7 @@ function FloatingPaths({ position }: FloatingPathsProps) {
           <motion.path
             key={path.id}
             d={path.d}
-            stroke="rgb(59, 130, 246)" // Синий цвет (blue-500)
+            stroke="rgb(59, 130, 246)"
             strokeWidth={path.width}
             strokeOpacity={0.15 + path.id * 0.02}
             initial={{ pathLength: 0.3, opacity: 0.4 }}
@@ -53,20 +55,22 @@ function FloatingPaths({ position }: FloatingPathsProps) {
   )
 }
 
-export function BackgroundPaths() {
+function BackgroundPathsLayer() {
   return (
-    <div className="fixed inset-0 -z-10 w-full max-w-[100%] overflow-hidden bg-background">
+    <div
+      aria-hidden="true"
+      className="pointer-events-none fixed inset-0 z-0 w-full max-w-full overflow-hidden"
+    >
       <div className="absolute inset-0">
         <FloatingPaths position={1} />
         <FloatingPaths position={-1} />
       </div>
-      
-      {/* Небольшой градиент overlay для лучшей читаемости */}
+
       <motion.div
-        className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background/60"
-        initial={{ opacity: 0.4 }}
+        className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/20 to-background/40"
+        initial={{ opacity: 0.35 }}
         animate={{
-          opacity: [0.4, 0.5, 0.4],
+          opacity: [0.35, 0.45, 0.35],
         }}
         transition={{
           duration: 8,
@@ -76,4 +80,16 @@ export function BackgroundPaths() {
       />
     </div>
   )
+}
+
+export function BackgroundPaths() {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) return null
+
+  return createPortal(<BackgroundPathsLayer />, document.body)
 }

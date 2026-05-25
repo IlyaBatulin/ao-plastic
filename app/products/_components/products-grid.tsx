@@ -9,7 +9,7 @@ import { useCart } from "@/contexts/cart-context"
 import { useToast } from "@/hooks/use-toast"
 import { formatSpecKey, formatSpecValue } from "@/lib/formatters"
 import { useLanguage } from "@/contexts/language-context"
-import { getHouseholdProductEn } from "@/lib/household-product-en"
+import { resolveProductDisplay } from "@/lib/product-en"
 import { resolveProductImageUrl } from "@/lib/product-image"
 import { ProductCardPlasticLogo } from "./product-card-plastic-logo"
 
@@ -74,10 +74,18 @@ export default function ProductsGrid({
           ? JSON.parse(product.specifications)
           : product.specifications || {}
 
-        const householdEn =
-          categoryId === "hoztovary" && lang === "en" ? getHouseholdProductEn(String(product.id)) : null
-        const displayName = householdEn?.name ?? product.name
-        const displayDescription = householdEn?.description ?? product.description
+        const { name: displayName, description: displayDescription } = resolveProductDisplay(
+          {
+            id: String(product.id),
+            name: product.name,
+            description: product.description,
+            slug: product.slug,
+            brand: product.brand,
+            specifications: specs,
+          },
+          lang === "en" ? "en" : "ru",
+          { categoryId, subcategoryId }
+        )
         const imageUrl = resolveProductImageUrl(String(product.id), product.image)
 
         return (
@@ -116,7 +124,9 @@ export default function ProductsGrid({
                 <div className="space-y-2 mb-4">
                   {Object.entries(specs).slice(0, 3).map(([key, value]) => (
                     <div key={key} className="flex items-start justify-between text-sm gap-2">
-                      <span className="text-muted-foreground flex-shrink-0">{formatSpecKey(key)}:</span>
+                      <span className="text-muted-foreground flex-shrink-0">
+                        {formatSpecKey(key, lang === "en" ? "en" : "ru")}:
+                      </span>
                       <span className="font-semibold text-right break-words">{formatSpecValue(key, value)}</span>
                     </div>
                   ))}

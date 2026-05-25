@@ -208,3 +208,5 @@ export function getHouseholdProductEn(
 ): { name: string; description: string } | null {
   return HOUSEHOLD_PRODUCT_EN[productId] ?? null
 }
+
+export { HOUSEHOLD_PRODUCT_EN }

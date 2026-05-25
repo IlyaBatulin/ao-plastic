@@ -1,9 +1,14 @@
 "use client"
 
 import Link from "next/link"
-import { Building2, FileText, Mail, PackageSearch, Phone, ArrowRight } from "lucide-react"
+import { Building2, ExternalLink, FileText, Mail, PackageSearch, Phone, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
-import { EtpTendersClient } from "./etp-tenders-client"
+
+const ETP_TENDERS_LINK =
+  "https://new.etpgpb.ru/procedures/?procedure[customers][10280]=" +
+  encodeURIComponent('АО "ПЛАСТИК"') +
+  "&procedure[stage][0]=accepting&procedure[stage][1]=commission&procedure[regions][0]=" +
+  encodeURIComponent("Тульская область")
 
 const tekSnabContact = {
   title: "ООО «ТЭК-СНАБ»",
@@ -151,15 +156,23 @@ export function SuppliersPageClient() {
       {/* Тендеры на ЭТП ГПБ */}
       <section className="py-20 bg-muted/30" id="etp-tenders">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-10">
-            <div>
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
               <h2 className="text-3xl font-bold text-foreground">{t("suppliersPage.etpTenders.title")}</h2>
-              <p className="mt-2 text-muted-foreground max-w-2xl">
+              <p className="mt-3 text-muted-foreground leading-relaxed">
                 {t("suppliersPage.etpTenders.description")}
               </p>
             </div>
+            <a
+              href={ETP_TENDERS_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 sm:self-start lg:self-auto"
+            >
+              {t("suppliersPage.etpTenders.openOnEtp")}
+              <ExternalLink className="h-4 w-4" />
+            </a>
           </div>
-          <EtpTendersClient />
         </div>
       </section>
 

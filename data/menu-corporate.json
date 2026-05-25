@@ -61,11 +61,18 @@
         ]
       },
       {
+        "title": "Компании группы",
+        "titleEn": "Group Companies",
+        "items": [
+          { "label": "Финндисп", "labelEn": "Finndisp", "href": "/finndisp" },
+          { "label": "ПАСФ", "labelEn": "PASF", "href": "/pasf" }
+        ]
+      },
+      {
         "title": "Дополнительно",
         "titleEn": "Additional",
         "items": [
-          { "label": "Наши дилеры", "labelEn": "Our Dealers", "href": "/dealers" },
-          { "label": "ПАСФ", "labelEn": "PASF", "href": "/pasf" }
+          { "label": "Наши дилеры", "labelEn": "Our Dealers", "href": "/dealers" }
         ]
       }
     ]

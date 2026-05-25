@@ -21,7 +21,8 @@ import {
 } from "@/components/ui/dialog"
 import { RalColorPicker, type RalColor } from "@/components/ral-color-picker"
 import { useLanguage } from "@/contexts/language-context"
-import { getHouseholdProductEn } from "@/lib/household-product-en"
+import { resolveProductDisplay } from "@/lib/product-en"
+import { isMachinePartsExtrusion } from "@/lib/catalog-slugs"
 import { resolveProductImageUrl } from "@/lib/product-image"
 
 type ProductPageClientProps = {
@@ -68,10 +69,18 @@ export function ProductPageClient({
   })
   const [consentAccepted, setConsentAccepted] = useState(false)
 
-  const householdEn =
-    isHouseholdProduct && lang === "en" ? getHouseholdProductEn(String(product.id)) : null
-  const displayName = householdEn?.name ?? product.name
-  const displayDescription = householdEn?.description ?? product.description
+  const { name: displayName, description: displayDescription } = resolveProductDisplay(
+    {
+      id: String(product.id),
+      name: product.name,
+      description: product.description,
+      slug: product.slug,
+      brand: product.brand,
+      specifications: product.specifications,
+    },
+    lang === "en" ? "en" : "ru",
+    { categoryId, subcategoryId }
+  )
   const productImageUrl = resolveProductImageUrl(String(product.id), product.image, category?.image)
 
   const sanitizeQuantity = (value: string, isPackages: boolean = false): number => {
@@ -130,7 +139,7 @@ export function ProductPageClient({
 
   // Для экструзионных изделий скрываем блок "ключевые фичи" и оставляем только описание/характеристики
   const isExtrusionProduct =
-    categoryId === "machine-parts" && subcategoryId === "parts-extrusion"
+    isMachinePartsExtrusion(categoryId, subcategoryId)
 
   return (
     <div className="min-h-screen bg-background">
@@ -337,7 +346,9 @@ export function ProductPageClient({
               <div className="grid md:grid-cols-2 gap-6">
                 {Object.entries(specifications).map(([key, value]) => (
                   <div key={key} className="flex flex-col border-b border-border pb-4 last:border-0">
-                    <span className="text-sm font-semibold text-muted-foreground mb-1">{formatSpecKey(key)}</span>
+                    <span className="text-sm font-semibold text-muted-foreground mb-1">
+                      {formatSpecKey(key, lang === "en" ? "en" : "ru")}
+                    </span>
                     <span className="text-lg font-medium">
                       {formatSpecValue(key, value)}
                     </span>

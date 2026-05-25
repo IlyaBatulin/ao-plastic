@@ -1,6 +1,22 @@
 type NormRow = { n: string; name: string; unit: string; norm: string }
 
-export function KorsNormTable({ tuLabel, rows }: { tuLabel: string; rows: NormRow[] }) {
+type KorsNormTableProps = {
+  tuLabel: string
+  rows: NormRow[]
+  colNo?: string
+  colName?: string
+  colUnit?: string
+  colValue?: string
+}
+
+export function KorsNormTable({
+  tuLabel,
+  rows,
+  colNo = "№ п/п",
+  colName = "Наименование показателей",
+  colUnit = "Ед. измерения",
+  colValue = "Норма по НТД",
+}: KorsNormTableProps) {
   return (
     <div className="bg-card rounded-3xl p-8 shadow-sm border border-border overflow-x-auto">
       <div className="mb-4">
@@ -9,10 +25,10 @@ export function KorsNormTable({ tuLabel, rows }: { tuLabel: string; rows: NormRo
       <table className="w-full border-collapse">
         <thead>
           <tr className="bg-[#1e3a5f] text-white">
-            <th className="py-4 px-6 text-left font-semibold border border-gray-300">№ п/п</th>
-            <th className="py-4 px-6 text-left font-semibold border border-gray-300">Наименование показателей</th>
-            <th className="py-4 px-6 text-left font-semibold border border-gray-300">Ед. измерения</th>
-            <th className="py-4 px-6 text-left font-semibold border border-gray-300">Норма по НТД</th>
+            <th className="py-4 px-6 text-left font-semibold border border-gray-300">{colNo}</th>
+            <th className="py-4 px-6 text-left font-semibold border border-gray-300">{colName}</th>
+            <th className="py-4 px-6 text-left font-semibold border border-gray-300">{colUnit}</th>
+            <th className="py-4 px-6 text-left font-semibold border border-gray-300">{colValue}</th>
           </tr>
         </thead>
         <tbody>

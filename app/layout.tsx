@@ -108,7 +108,7 @@ export default function RootLayout({
         <SiteJsonLd />
         <LoadingScreen />
         <LenisProvider>
-          <div id="main-content" className="w-full max-w-full overflow-x-clip transition-opacity duration-500">
+          <div id="main-content" className="relative z-10 w-full max-w-full overflow-x-clip transition-opacity duration-500">
             <LanguageProvider>
               <CartProvider>
                 <ConditionalHeader />

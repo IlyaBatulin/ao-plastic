@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
 import ProductsGrid from "./products-grid"
+import { isMachinePartsExtrusion } from "@/lib/catalog-slugs"
 import { ProductFilters } from "./product-filters"
 import { Input } from "@/components/ui/input"
 
@@ -33,7 +34,10 @@ export function FilteredProductsSection({
   // Для хозяйственных товаров скрываем фильтры и таблицу сравнения
   const isHouseholdCategory = categoryId === 'hoztovary'
   // Специальная логика для экструзионных изделий ДМС
-  const isExtrusionSubcategory = categoryId === "machine-parts" && subcategoryId === "parts-extrusion"
+  const isExtrusionSubcategory =
+    categoryId != null &&
+    subcategoryId != null &&
+    isMachinePartsExtrusion(categoryId, subcategoryId)
 
   // Для экструзии не показываем стандартные фильтры и сравнительные таблицы ABS/ПС
   const showFilters = !isHouseholdCategory && !isExtrusionSubcategory

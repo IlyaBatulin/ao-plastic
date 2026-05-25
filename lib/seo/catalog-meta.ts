@@ -2,6 +2,11 @@ import { createClient } from "@/utils/supabase/server"
 import productsData from "@/data/products.json"
 import { truncateMeta } from "@/lib/seo/text"
 import { resolveProductImageUrl } from "@/lib/product-image"
+import {
+  findJsonSubcategory,
+  getSubcategorySlugCandidates,
+  isMachinePartsExtrusion,
+} from "@/lib/catalog-slugs"
 
 export type SubcategorySeo = {
   subName: string
@@ -16,32 +21,20 @@ export async function getSubcategorySeo(
 ): Promise<SubcategorySeo | null> {
   const supabase = createClient()
 
-  let { data: sub, error: subError } = await supabase
+  const candidates = getSubcategorySlugCandidates(categoryId, subcategorySlug)
+  const { data: subRows } = await supabase
     .from("subcategories")
     .select("name, description, slug, id")
-    .eq("slug", subcategorySlug)
     .eq("category_id", categoryId)
     .eq("is_active", true)
-    .single()
+    .in("slug", candidates)
+    .limit(1)
 
-  if (subError && categoryId === "polystyrene") {
-    const { data, error } = await supabase
-      .from("subcategories")
-      .select("name, description, slug, id")
-      .eq("slug", `ps-${subcategorySlug}`)
-      .eq("category_id", categoryId)
-      .eq("is_active", true)
-      .single()
-    if (!error && data) {
-      sub = data
-      subError = null
-    }
-  }
+  let sub = Array.isArray(subRows) ? subRows[0] : subRows
+  let subError = sub ? null : { message: "not found" }
 
   const fromJsonCat = productsData.categories.find((c) => c.id === categoryId)
-  const fromJsonSub = fromJsonCat?.subcategories?.find(
-    (s: { slug?: string; id?: string }) => s.slug === subcategorySlug || s.id === subcategorySlug
-  )
+  const fromJsonSub = findJsonSubcategory(categoryId, subcategorySlug)
 
   if (subError || !sub) {
     if (!fromJsonSub) return null
@@ -81,8 +74,7 @@ export async function getProductSeo(
   let subName = subcategorySlug
 
   const isExtrusion =
-    categoryId === "machine-parts" &&
-    subcategorySlug === "parts-extrusion" &&
+    isMachinePartsExtrusion(categoryId, subcategorySlug) &&
     productId.startsWith("extrusion-")
 
   if (isExtrusion) {

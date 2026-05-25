@@ -11,6 +11,12 @@ import { getSubcategorySeo } from "@/lib/seo/catalog-meta"
 import { truncateMeta } from "@/lib/seo/text"
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld"
 import { resolveProductImageUrl } from "@/lib/product-image"
+import {
+  getPublicSubcategorySlug,
+  getSubcategorySlugCandidates,
+  isMachinePartsExtrusion,
+  resolveSubcategory,
+} from "@/lib/catalog-slugs"
 
 export const revalidate = 300
 
@@ -44,34 +50,16 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ ca
   const { categoryId, subcategoryId } = resolvedParams
   const supabase = createClient()
 
-  // Получаем подкатегорию по slug
-  let { data: subcategory, error: subError } = await supabase
-    .from("subcategories")
-    .select("*")
-    .eq("slug", subcategoryId)
-    .eq("category_id", categoryId)
-    .eq("is_active", true)
-    .single()
+  const subcategory = await resolveSubcategory(supabase, categoryId, subcategoryId)
 
-  // Если не найдено, пробуем с префиксом
-  if (subError && categoryId === "polystyrene") {
-    const { data, error } = await supabase
-      .from("subcategories")
-      .select("*")
-      .eq("slug", `ps-${subcategoryId}`)
-      .eq("category_id", categoryId)
-      .eq("is_active", true)
-      .single()
-    
-    if (!error && data) {
-      subcategory = data
-      subError = null
-    }
-  }
-
-  if (subError || !subcategory) {
+  if (!subcategory) {
     notFound()
   }
+
+  const publicSubcategorySlug = getPublicSubcategorySlug(categoryId, {
+    id: String(subcategory.id),
+    slug: String(subcategory.slug),
+  })
 
   const { data: catRowNav } = await supabase.from("categories").select("name").eq("id", categoryId).single()
   const categoryDisplayName =
@@ -99,13 +87,17 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ ca
   const fallbackCategory = productsData.categories.find((cat) => cat.id === categoryId)
   const fallbackProductsAll = fallbackCategory?.products ?? []
 
+  const slugCandidates = new Set(
+    getSubcategorySlugCandidates(categoryId, subcategoryId)
+  )
   const fallbackProducts = fallbackProductsAll.filter((product: any) => {
     const productSub = product.subcategory ?? ""
     return (
-      productSub === subcategory.slug ||
-      productSub === subcategoryId ||
-          `ps-${productSub}` === subcategory.slug ||
-      product.id === subcategory.id
+      slugCandidates.has(String(subcategory.slug)) ||
+      slugCandidates.has(subcategoryId) ||
+      slugCandidates.has(productSub) ||
+      slugCandidates.has(String(subcategory.id)) ||
+      slugCandidates.has(`ps-${productSub}`)
     )
   })
 
@@ -161,7 +153,7 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ ca
 
   // Получаем данные экструзионных изделий для machine-parts/parts-extrusion
   let extrusionDisplayProducts: any[] = []
-  if (categoryId === "machine-parts" && subcategoryId === "parts-extrusion") {
+  if (isMachinePartsExtrusion(categoryId, subcategoryId)) {
     const supabaseServer = createClient()
     const { data: extrusionData } = await supabaseServer
       .from("extrusion_products")
@@ -212,13 +204,13 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ ca
         ]}
       />
       <SubcategoryPageShell
-        subcategorySlug={subcategory.slug}
+        subcategorySlug={publicSubcategorySlug}
         fallbackTitle={subcategory.name}
         fallbackDescription={subcategory.description}
         skipDescription={subcategory.id === "abs-custom"}
         backHref={`/products/${categoryId}`}
-        hasVideo={!!getCategoryVideo(categoryId, subcategory.slug)}
-        videoSrc={getCategoryVideo(categoryId, subcategory.slug)}
+        hasVideo={!!getCategoryVideo(categoryId, publicSubcategorySlug)}
+        videoSrc={getCategoryVideo(categoryId, publicSubcategorySlug)}
         imageSrc={categoryImage || undefined}
       >
       {/* Информационная секция для изготовления изделий из АБС на заказ */}
@@ -240,12 +232,12 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ ca
           <div className="container mx-auto px-4 lg:px-8">
             <FilteredProductsSection
               products={
-                categoryId === "machine-parts" && subcategoryId === "parts-extrusion"
+                isMachinePartsExtrusion(categoryId, subcategoryId)
                   ? extrusionDisplayProducts
                   : displayProducts
               }
               categoryId={categoryId}
-              subcategoryId={subcategoryId}
+              subcategoryId={publicSubcategorySlug}
             />
           </div>
         </section>

@@ -90,3 +90,27 @@ export function getSubcategoryNameBySlug(slug: string, lang: "ru" | "en" = "ru")
   return getCategoryName(categoryId, lang)
 }
 
+/** Название категории: перевод по id или исходное из БД/JSON */
+export function getCatalogCategoryLabel(
+  categoryId: string,
+  fallbackName: string,
+  lang: "ru" | "en" = "ru"
+): string {
+  const translated = getCategoryName(categoryId, lang)
+  return translated !== categoryId ? translated : fallbackName
+}
+
+/** Название подкатегории: id → slug → fallback */
+export function getCatalogSubcategoryLabel(
+  subcategoryId: string,
+  slug: string,
+  fallbackName: string,
+  lang: "ru" | "en" = "ru"
+): string {
+  const byId = getCategoryName(subcategoryId, lang)
+  if (byId !== subcategoryId) return byId
+  const bySlug = getSubcategoryNameBySlug(slug, lang)
+  if (bySlug !== slug && bySlug !== subcategoryId) return bySlug
+  return fallbackName
+}
+

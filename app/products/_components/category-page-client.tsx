@@ -23,11 +23,12 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/hooks/use-toast"
 import { KorsNormTable } from "@/app/products/_components/kors-norm-table"
 import {
-  BENTOL_NORM_ROWS,
-  BENTOL_TU_LABEL,
-  KORS_NORM_ROWS,
-  KORS_TU_LABEL,
-} from "@/lib/kors-bentol-norms"
+  getBentolNormRows,
+  getBentolTuLabel,
+  getKorsNormRows,
+  getKorsTuLabel,
+  KORS_PAGE_KEYS,
+} from "@/lib/kors-bentol-en"
 
 const korsStoryParent = {
   hidden: { opacity: 0 },
@@ -72,7 +73,14 @@ export function CategoryPageClient({
   hasVideo,
   videoSrc,
 }: CategoryPageClientProps) {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
+  const k = KORS_PAGE_KEYS
+  const normTableCols = {
+    colNo: t(k.normColNo),
+    colName: t(k.normColName),
+    colUnit: t(k.normColUnit),
+    colValue: t(k.normColValue),
+  }
   const { toast } = useToast()
   const [isContactFormOpen, setIsContactFormOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -299,12 +307,9 @@ export function CategoryPageClient({
               variants={korsStoryParent}
             >
               <motion.div variants={korsStoryChild} className="col-span-full">
-                <h2 className="text-h2">
-                  КОРС
-                </h2>
+                <h2 className="text-h2">{t(k.corsTitle)}</h2>
                 <p className="mt-4 max-w-2xl text-body text-primary/85 dark:text-blue-100/85">
-                  Кубовый остаток ректификации стирола — побочный продукт производства стирола, используемый как топливо,
-                  растворитель и компонент промышленных материалов.
+                  {t(k.corsLead)}
                 </p>
                 <div className="mt-8 h-1 w-28 rounded-full bg-primary" />
               </motion.div>
@@ -314,29 +319,17 @@ export function CategoryPageClient({
               >
                 <Image
                   src="/prevyu/kolby/kors-1.jpeg"
-                  alt="КОРС — кубовый остаток ректификации стирола"
+                  alt={t(k.corsAlt)}
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
               </motion.div>
               <motion.div variants={korsStoryChild} className="space-y-5">
-                <p className="text-lg leading-relaxed text-muted-foreground">
-                  КОРС — Кубовый остаток ректификации стирола. Является побочным продуктом производства стирола.
-                </p>
-                <p className="text-lg leading-relaxed text-muted-foreground">
-                  Применяется в качестве топлива в некоторых современных системах отопления и котлах. КОРС является
-                  растворителем и используется в качестве компонента в различных видах промышленного производства.
-                </p>
-                <p className="text-lg leading-relaxed text-muted-foreground">
-                  Основное применение – получение пленкообразующих материалов. Также остатки кубовые ректификации стирола
-                  применяют для повышения механической прочности и снижения электризуемости покрытий для пола на основе
-                  каучука. Применяют КОРС для пропитки древесины и ДВП, что позволяет повысить ряд технических
-                  характеристик материала: его влагостойкость, прочность, долговечность.
-                </p>
-                <p className="text-base text-muted-foreground">
-                  Качество КОРС от АО «Пластик» соответствует ТУ 2415-038-05762341-2012, изм. 1,2,3.
-                </p>
+                <p className="text-lg leading-relaxed text-muted-foreground">{t(k.corsP1)}</p>
+                <p className="text-lg leading-relaxed text-muted-foreground">{t(k.corsP2)}</p>
+                <p className="text-lg leading-relaxed text-muted-foreground">{t(k.corsP3)}</p>
+                <p className="text-base text-muted-foreground">{t(k.corsP4)}</p>
               </motion.div>
             </motion.div>
 
@@ -347,10 +340,12 @@ export function CategoryPageClient({
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h2 className="mb-6 text-h3 sm:text-3xl">
-                Норма по НТД — КОРС
-              </h2>
-              <KorsNormTable tuLabel={KORS_TU_LABEL} rows={KORS_NORM_ROWS} />
+              <h2 className="mb-6 text-h3 sm:text-3xl">{t(k.corsNormTitle)}</h2>
+              <KorsNormTable
+                tuLabel={getKorsTuLabel(lang === "en" ? "en" : "ru")}
+                rows={getKorsNormRows(lang === "en" ? "en" : "ru")}
+                {...normTableCols}
+              />
             </motion.div>
 
             <motion.div
@@ -361,12 +356,9 @@ export function CategoryPageClient({
               variants={korsStoryParent}
             >
               <motion.div variants={korsStoryChild} className="col-span-full">
-                <h2 className="text-h2">
-                  Бентол
-                </h2>
+                <h2 className="text-h2">{t(k.bentolTitle)}</h2>
                 <p className="mt-4 max-w-2xl text-body text-primary/85 dark:text-blue-100/85">
-                  Фракция бензол-толуольная — продукт переработки, используемый как технологическое сырьё и растворитель в
-                  серии отраслей промышленности.
+                  {t(k.bentolLead)}
                 </p>
                 <div className="mt-8 h-1 w-28 rounded-full bg-primary" />
               </motion.div>
@@ -376,33 +368,17 @@ export function CategoryPageClient({
               >
                 <Image
                   src="/images/bentol.png"
-                  alt="Бентол — фракция бензол-толуольная, лабораторная бутыль 500 мл"
+                  alt={t(k.bentolAlt)}
                   fill
                   className="object-contain p-4"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
               </motion.div>
               <motion.div variants={korsStoryChild} className="space-y-5">
-                <p className="text-lg leading-relaxed text-muted-foreground">
-                  Бентол представляет собой жидкую углеводородную смесь (в первую очередь бензола и толуола) с
-                  регламентированным по нормативной документации составом и физико-химическими показателями. Продукт
-                  применяется как растворитель и компонент сырьевых смесей при изготовлении лаков, красок, эмалей и
-                  связующих в лакокрасочной отрасли, а также в производстве каучуков, клеев и других органических синтезов,
-                  где требуется контролируемое содержание ароматических углеводородов.
-                </p>
-                <p className="text-lg leading-relaxed text-muted-foreground">
-                  В зависимости от технологической цепочки заказчика Бентол может использоваться для регулирования
-                  вязкости лакокрасочных материалов, ускорения высыхания плёночных покрытий и как участник рецептур при
-                  переработке полимеров и резинотехнических изделий. Поставка осуществляется с соблюдением требований к
-                  маркировке, упаковке и безопасной транспортировке химической продукции.
-                </p>
-                <p className="text-lg leading-relaxed text-muted-foreground">
-                  АО «Пластик» обеспечивает стабильное качество партий: показатели фракции соответствуют утверждённым нормам
-                  по ТУ, что подтверждается входным контролем сырья и приёмочными испытаниями готовой продукции.
-                </p>
-                <p className="text-base text-muted-foreground">
-                  Продукция «Бентол» АО «Пластик» соответствует {BENTOL_TU_LABEL}.
-                </p>
+                <p className="text-lg leading-relaxed text-muted-foreground">{t(k.bentolP1)}</p>
+                <p className="text-lg leading-relaxed text-muted-foreground">{t(k.bentolP2)}</p>
+                <p className="text-lg leading-relaxed text-muted-foreground">{t(k.bentolP3)}</p>
+                <p className="text-base text-muted-foreground">{t(k.bentolP4)}</p>
               </motion.div>
             </motion.div>
 
@@ -412,10 +388,12 @@ export function CategoryPageClient({
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h3 className="mb-6 text-h3 sm:text-3xl">
-                Норма по НТД — Бентол
-              </h3>
-              <KorsNormTable tuLabel={BENTOL_TU_LABEL} rows={BENTOL_NORM_ROWS} />
+              <h3 className="mb-6 text-h3 sm:text-3xl">{t(k.bentolNormTitle)}</h3>
+              <KorsNormTable
+                tuLabel={getBentolTuLabel(lang === "en" ? "en" : "ru")}
+                rows={getBentolNormRows(lang === "en" ? "en" : "ru")}
+                {...normTableCols}
+              />
             </motion.div>
 
             <motion.div
@@ -429,7 +407,7 @@ export function CategoryPageClient({
                 onClick={() => setIsContactFormOpen(true)}
                 className="h-14 bg-gradient-to-r from-primary to-primary/80 px-8 text-lg hover:from-primary/90 hover:to-primary/70"
               >
-                Связаться с нами
+                {t(k.contactUs)}
               </Button>
             </motion.div>
           </div>

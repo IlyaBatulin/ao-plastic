@@ -5,12 +5,13 @@ import Link from "next/link"
 import { ChevronRight } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useLanguage } from "@/contexts/language-context"
+import { resolveProductDisplay } from "@/lib/product-en"
 import productsData from "@/data/products.json"
 
 export function MegaMenu() {
   const filteredCategories = productsData.categories.filter((cat) => cat.id !== 'dispersion')
   const [activeCategory, setActiveCategory] = useState<string | null>(filteredCategories[0]?.id || null)
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
 
   const activeCategoryData = filteredCategories.find((cat) => cat.id === activeCategory)
 
@@ -68,7 +69,10 @@ export function MegaMenu() {
                 <h3 className="text-sm font-semibold text-foreground mb-2">
                   {t(`homePage.catalog.categories.${activeCategoryData.id}`) || activeCategoryData.name}
                 </h3>
-                <p className="text-xs text-muted-foreground mb-4 line-clamp-2">{activeCategoryData.description}</p>
+                <p className="text-xs text-muted-foreground mb-4 line-clamp-2">
+                  {t(`homePage.catalog.categoryDescriptions.${activeCategoryData.id}`) ||
+                    activeCategoryData.description}
+                </p>
 
                 {activeCategoryData.subcategories && activeCategoryData.subcategories.length > 0 ? (
                   <div className="space-y-2">
@@ -93,15 +97,24 @@ export function MegaMenu() {
                     <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">
                       {t("homePage.catalog.productsLabel")}
                     </p>
-                    {activeCategoryData.products?.slice(0, 5).map((product) => (
+                    {activeCategoryData.products?.slice(0, 5).map((product) => {
+                      const { name: productLabel } = resolveProductDisplay(
+                        {
+                          id: product.id,
+                          name: product.name,
+                          description: product.description,
+                        },
+                        lang === "en" ? "en" : "ru"
+                      )
+                      return (
                       <Link
                         key={product.id}
                         href={`/products/${activeCategoryData.id}`}
                         className="block px-3 py-2 text-sm text-foreground hover:bg-primary/10 hover:text-primary rounded-lg transition-all duration-150"
                       >
-                        {product.name}
+                        {productLabel}
                       </Link>
-                    ))}
+                    )})}
                   </div>
                 )}
 

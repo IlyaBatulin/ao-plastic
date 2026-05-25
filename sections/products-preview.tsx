@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ArrowRight, Search } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
+import { resolveProductDisplay } from "@/lib/product-en"
+import { getCatalogCategoryLabel } from "@/lib/catalog-translations"
 
 interface Product {
   id: string
@@ -129,7 +131,19 @@ export function ProductsPreview({ products, allProducts, subcategories, categori
 
               // Определяем ссылку на товар
               const subcategory = product.subcategory_id ? subcategories[product.subcategory_id] : null
-              const categoryName = categories[product.category_id]?.name || ""
+              const categoryName = getCatalogCategoryLabel(
+                product.category_id,
+                categories[product.category_id]?.name || "",
+                lang === "en" ? "en" : "ru"
+              )
+              const { name: displayName, description: displayDescription } = resolveProductDisplay(
+                {
+                  id: String(product.id),
+                  name: product.name,
+                  description: product.description,
+                },
+                lang === "en" ? "en" : "ru"
+              )
               
               const productLink = subcategory
                 ? `/products/${product.category_id}/${subcategory.slug}/${product.id}`
@@ -146,7 +160,7 @@ export function ProductsPreview({ products, allProducts, subcategories, categori
                     <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent z-10" />
                     <Image
                       src={product.image || "/placeholder.svg"}
-                      alt={product.name}
+                      alt={displayName}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
@@ -158,11 +172,11 @@ export function ProductsPreview({ products, allProducts, subcategories, categori
                   {/* Content */}
                   <div className="p-6">
                     <h3 className="text-xl font-bold mb-2 transition-colors duration-300 group-hover:text-primary">
-                      {product.name}
+                      {displayName}
                     </h3>
-                    {product.description && (
+                    {displayDescription && (
                       <p className="text-muted-foreground text-sm mb-4 leading-relaxed line-clamp-2">
-                        {product.description}
+                        {displayDescription}
                       </p>
                     )}
 

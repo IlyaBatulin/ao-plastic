@@ -18,6 +18,7 @@
     ]
   },
   { "label": "Продукция", "labelEn": "Products", "href": "/products", "type": "catalog" },
+  { "label": "Финндисп", "labelEn": "Finndisp", "href": "/finndisp" },
   { "label": "ПАСФ", "labelEn": "PASF", "href": "/pasf" },
   { "label": "Поставщикам", "labelEn": "Suppliers", "href": "/suppliers" },
   { "label": "Контакты", "labelEn": "Contacts", "href": "/contacts" },

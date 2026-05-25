@@ -7,6 +7,11 @@ import { getProductSeo } from "@/lib/seo/catalog-meta"
 import { truncateMeta } from "@/lib/seo/text"
 import { ProductJsonLd } from "@/components/seo/product-json-ld"
 import { resolveProductImageUrl } from "@/lib/product-image"
+import {
+  findJsonSubcategory,
+  isMachinePartsExtrusion,
+  resolveSubcategory,
+} from "@/lib/catalog-slugs"
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld"
 
 export const revalidate = 300
@@ -72,8 +77,7 @@ export default async function ProductPage({
 
   try {
     // Если это экструзионные изделия ДМС, пробуем получить из extrusion_products
-    const isExtrusionCategory =
-      categoryId === "machine-parts" && subcategoryId === "parts-extrusion"
+    const isExtrusionCategory = isMachinePartsExtrusion(categoryId, subcategoryId)
 
     if (isExtrusionCategory && productId.startsWith("extrusion-")) {
       const numericId = Number(productId.replace("extrusion-", ""))
@@ -152,13 +156,7 @@ export default async function ProductPage({
       category = categoryData
     }
 
-    const { data: subcategoryData } = await supabase
-      .from("subcategories")
-      .select("*")
-      .eq("slug", subcategoryId)
-      .eq("category_id", categoryId)
-      .single()
-
+    const subcategoryData = await resolveSubcategory(supabase, categoryId, subcategoryId)
     if (subcategoryData) {
       subcategory = subcategoryData
     }
@@ -169,7 +167,7 @@ export default async function ProductPage({
   // Fallback на JSON
   if (!product) {
     const fallbackCategory = productsData.categories.find((cat) => cat.id === categoryId)
-    const fallbackSubcategory = fallbackCategory?.subcategories?.find((sub: any) => sub.slug === subcategoryId || sub.id === subcategoryId)
+    const fallbackSubcategory = findJsonSubcategory(categoryId, subcategoryId)
     const fallbackProduct = fallbackCategory?.products?.find((p: any) => p.id === productId)
 
     if (fallbackProduct) {

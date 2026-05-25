@@ -20,6 +20,8 @@ const STATIC_PATHS = [
   "/certificates",
   "/contacts",
   "/dealers",
+  "/finndisp",
+  "/pasf",
   "/legal/privacy-policy",
   "/legal/terms",
   "/legal/personal-data-consent",

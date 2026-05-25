@@ -3,23 +3,19 @@
 import { useEffect, useState, useRef, useCallback } from "react"
 
 const MAX_SPLASH_MS = 4500
-const SKIP_ON_COARSE_POINTER = true
 
-function shouldSkipSplash(): boolean {
+function isMobileViewport(): boolean {
   if (typeof window === "undefined") return false
-  if (SKIP_ON_COARSE_POINTER && window.matchMedia("(pointer: coarse)").matches) {
-    return true
-  }
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    return true
-  }
-  return false
+  return window.matchMedia("(max-width: 767px)").matches
 }
 
-function shouldShowSplashInitially(): boolean {
-  if (typeof window === "undefined") return false
-  if (sessionStorage.getItem("hasSeenLoading")) return false
-  return !shouldSkipSplash()
+function shouldSkipSplash(): boolean {
+  if (typeof window === "undefined") return true
+  if (isMobileViewport()) return true
+  if (window.matchMedia("(pointer: coarse)").matches) return true
+  if (window.matchMedia("(hover: none)").matches && navigator.maxTouchPoints > 0) return true
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return true
+  return false
 }
 
 function revealMainContent() {
@@ -42,7 +38,7 @@ function hideMainContentForSplash() {
 }
 
 export function LoadingScreen() {
-  const [isVisible, setIsVisible] = useState(shouldShowSplashInitially)
+  const [isVisible, setIsVisible] = useState(false)
   const [isFading, setIsFading] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const dismissedRef = useRef(false)
@@ -69,10 +65,31 @@ export function LoadingScreen() {
   }, [])
 
   useEffect(() => {
-    if (!isVisible) {
+    try {
+      if (sessionStorage.getItem("hasSeenLoading")) {
+        revealMainContent()
+        return
+      }
+    } catch {
+      // ignore
+    }
+
+    if (shouldSkipSplash()) {
       revealMainContent()
+      try {
+        sessionStorage.setItem("hasSeenLoading", "true")
+      } catch {
+        // ignore
+      }
       return
     }
+
+    dismissedRef.current = false
+    setIsVisible(true)
+  }, [])
+
+  useEffect(() => {
+    if (!isVisible) return
 
     hideMainContentForSplash()
 
@@ -101,9 +118,7 @@ export function LoadingScreen() {
     video.playbackRate = 2.0
     const playPromise = video.play()
     if (playPromise) {
-      playPromise.catch(() => {
-        dismissSplash(true)
-      })
+      playPromise.catch(() => dismissSplash(true))
     }
   }, [isVisible, dismissSplash])
 
@@ -113,9 +128,7 @@ export function LoadingScreen() {
     }
   }, [pageLoaded, dismissSplash])
 
-  if (!isVisible) {
-    return null
-  }
+  if (!isVisible) return null
 
   return (
     <div
@@ -126,7 +139,7 @@ export function LoadingScreen() {
       onClick={() => dismissSplash(true)}
     >
       <div className="flex items-center justify-center w-full h-full p-4 sm:p-8">
-        <div className="relative w-full max-w-2xl aspect-video overflow-hidden">
+        <div className="relative w-full max-w-xs sm:max-w-md md:max-w-2xl aspect-video overflow-hidden">
           <video
             ref={videoRef}
             autoPlay

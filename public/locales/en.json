@@ -29,6 +29,28 @@
   "vacancies": "Vacancies",
   "extrusion": "Plastic Extrusion",
   "cart": "Cart",
+  "common": {
+    "download": "Download",
+    "open": "Open",
+    "submitting": "Sending..."
+  },
+  "footer": {
+    "logoAlt": "JSC «Plastik»",
+    "description": "Leader in the chemical industry in ABS plastics and polystyrene production. Quality, reliability, innovation.",
+    "navigation": "Navigation",
+    "aboutLink": "About",
+    "productsLink": "Products",
+    "contactsLink": "Contacts",
+    "contactsHeading": "Contacts",
+    "addressLine1": "301600, Uzlovaya, Tula Region",
+    "addressLine2": "1 Tulskaya St.",
+    "copyright": "All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms of Use",
+    "companyDetails": "Company Details",
+    "ethicsCode": "Code of Ethics",
+    "legacySite": "Previous version of the website"
+  },
   "dealersPage": {
     "badge": "Dealer Network",
     "title": "Partners and Regional Warehouses of JSC «Plastik»",
@@ -36,7 +58,11 @@
     "location": "Nizhny Novgorod and other cities",
     "sectionTitle": "Nizhny Novgorod — Partner Warehouse",
     "sectionDescription": "Dealers based in Nizhny Novgorod provide warehouse stocks and shipment of JSC «Plastik» products throughout the Volga region and the Urals.",
-    "logoAlt": "Nizhny Novgorod dealers logos"
+    "logoAlt": "Nizhny Novgorod dealers logos",
+    "partners": {
+      "trastPolimer": "Trust Polimer NN LLC",
+      "kraftPolimer": "Kraft Polimer LLC"
+    }
   },
   "contactsPage": {
     "title": "Contacts",
@@ -46,17 +72,21 @@
       "title": "JSC «Plastik» — Production",
       "badge": "Production",
       "reception": "General Director's Office",
-      "correspondence": "For Correspondence"
+      "correspondence": "For Correspondence",
+      "address": "301600, Tula Region, Uzlovaya, 1 Tulskaya St."
     },
     "sales": {
       "title": "JSC «Plastik» — Sales and Promotion",
       "badge": "Legal Address",
       "mainContacts": "Main Contacts",
-      "ordersEmail": "Orders Email"
+      "ordersEmail": "Orders Email",
+      "address": "119361, Moscow, 41 Lobachevskogo St., premises 6, floor 1, office 102A"
     },
     "procurement": {
       "title": "Procurement and Supply",
-      "badge": "Supply"
+      "badge": "Supply",
+      "companyName": "LLC «TEK-SNAB»",
+      "address": "119361, Moscow, Ochakovo-Matveyevskoye municipal district, 41 Lobachevskogo St., premises 6, floor 1, office 102B"
     },
     "salesByDirection": {
       "title": "Sales by Direction",
@@ -80,7 +110,18 @@
       "emailPlaceholder": "your@email.com",
       "phonePlaceholder": "+7 (___) ___-__-__",
       "messagePlaceholder": "Tell us about your request...",
-      "submit": "Send Message"
+      "submit": "Send Message",
+      "submitting": "Sending...",
+      "consentPrefix": "I agree to the",
+      "consentPersonalData": "consent to personal data processing",
+      "consentAnd": "and",
+      "consentPrivacy": "privacy policy",
+      "toastConsentRequiredTitle": "Consent required",
+      "toastConsentRequiredDescription": "You must agree to personal data processing",
+      "toastSuccessTitle": "Message sent",
+      "toastSuccessDescription": "Your message has been sent and will be reviewed shortly. We will contact you using the details provided.",
+      "toastErrorTitle": "Send error",
+      "toastErrorDescription": "An error occurred while sending your message. Please try again."
     },
     "workingHours": {
       "title": "Working Hours",
@@ -104,7 +145,10 @@
       "phone": "Phone",
       "email": "Email",
       "address": "Address",
-      "mapTitle": "LLC «TEK-SNAB» — Moscow, Lobachevskogo St., 41"
+      "mapTitle": "LLC «TEK-SNAB» — Moscow, Lobachevskogo St., 41",
+      "tekSnabTitle": "LLC «TEK-SNAB»",
+      "tekSnabDescription": "Prompt procurement of raw materials and auxiliary supplies",
+      "tekSnabAddress": "119361, Moscow, Ochakovo-Matveyevskoye municipal district, 41 Lobachevskogo St., premises 6, floor 1, office 102B"
     },
     "etpTenders": {
       "title": "Tenders on ETP GPB",
@@ -163,6 +207,62 @@
       }
     }
   },
+  "vacanciesPage": {
+    "searchPlaceholder": "Search by keywords...",
+    "filters": "Filters",
+    "minSalaryLabel": "Minimum salary, RUB",
+    "minSalaryPlaceholder": "e.g. 50000",
+    "onlyWithSalary": "Only with salary specified",
+    "experienceLabel": "Work experience",
+    "experienceAny": "Any experience",
+    "experienceNo": "No experience",
+    "experience1to3": "1 to 3 years",
+    "experience3to6": "3 to 6 years",
+    "experience6plus": "More than 6 years",
+    "employmentLabel": "Employment type",
+    "employmentAny": "Any employment",
+    "employmentFull": "Full-time",
+    "employmentPart": "Part-time",
+    "employmentProject": "Project work",
+    "employmentVolunteer": "Volunteering",
+    "employmentProbation": "Internship",
+    "scheduleLabel": "Work schedule",
+    "scheduleAny": "Any schedule",
+    "scheduleFullDay": "Full day",
+    "scheduleShift": "Shift work",
+    "scheduleFlexible": "Flexible schedule",
+    "scheduleRemote": "Remote work",
+    "scheduleFlyInFlyOut": "Rotation (fly-in/fly-out)",
+    "applyFilters": "Apply filters",
+    "resetFilters": "Reset",
+    "foundCount": "Vacancies found:",
+    "dataSource": "Data from HeadHunter",
+    "loading": "Loading vacancies from HeadHunter...",
+    "loadError": "Failed to load vacancies",
+    "retry": "Try again",
+    "listUnavailableTitle": "List temporarily unavailable on the website",
+    "listUnavailableDefault": "Current vacancies at JSC Plastik are published on HeadHunter.",
+    "allOnHh": "All vacancies on hh.ru",
+    "noResultsFiltered": "No vacancies match these filters",
+    "noResultsEmpty": "There are no open vacancies at the moment",
+    "checkOnHh": "Check on HeadHunter",
+    "requirements": "Requirements:",
+    "responsibilities": "Responsibilities:",
+    "keySkills": "Key skills:",
+    "moreSkills": "more",
+    "experiencePrefix": "Experience:",
+    "applyOnHh": "Apply on HH.ru",
+    "details": "Details",
+    "published": "Published:",
+    "pageOf": "Page",
+    "of": "of",
+    "prev": "Previous",
+    "next": "Next",
+    "salaryNotSpecified": "Not specified",
+    "salaryFrom": "from",
+    "salaryTo": "to",
+    "genericError": "An error occurred"
+  },
   "homePage": {
     "hero": {
       "title": "Plastics Technology of the Future",
@@ -173,12 +273,12 @@
     "stats": {
       "title": "Production Volumes",
       "subtitle": "Our Enterprise Capacity",
-      "sadStyreneAcrylicDispersions": "Styrene-acrylic dispersions (SAD) per year",
+      "sadStyreneAcrylicDispersions": "Styrene-acrylic dispersions per year",
       "absPlastics": "ABS plastics per year",
       "expandablePolystyrene": "Expandable polystyrene (EPS) per year",
       "styrene": "Styrene per year",
-      "machineBuildingPartsDms": "Machine-building parts (DMS) per year",
-      "dispersionsInRamenskoye": "Dispersions at the Ramenskoye site per year",
+      "machineBuildingPartsDms": "Machine-building components per year",
+      "dispersionsInRamenskoye": "Dispersions at the Ramenskoye production site per year",
       "totalProductVolume": "Total product output per year",
       "suffix": " thousand tons",
       "suffixPlus": "+ thousand tons"
@@ -309,8 +409,8 @@
         "abs-injection": "Injection Grades",
         "abs-extrusion": "Extrusion Grades",
         "abs-custom": "Custom ABS Plastic Products Manufacturing",
-        "ps-psv-s": "Expandable Polystyrene PSV-S",
-        "ps-psv-l": "Expandable Polystyrene PSV-L",
+        "ps-psv-s": "Expandable Polystyrene EPS-S",
+        "ps-psv-l": "Expandable Polystyrene EPS-L",
         "ps-pse": "Polystyrene PSE-1",
         "extrusion-parts": "Extrusion Products",
         "injection-parts": "Injection Products",
@@ -340,7 +440,7 @@
         "abs-extrusion": "ABS grades for sheet and profile extrusion",
         "abs-custom": "Manufacturing of ABS parts to individual orders",
         "ps-psv-s": "Expandable polystyrene of standard density",
-        "ps-psv-l": "Expandable cast polystyrene",
+        "ps-psv-l": "Casting-grade expandable polystyrene",
         "ps-pse": "General-purpose emulsion polystyrene",
         "extrusion-parts": "Profiles, tubes, seals",
         "injection-parts": "Trim panels, inserts, protective parts",
@@ -362,6 +462,50 @@
         "extrusionTypeLabel": "Part type",
         "extrusionTypeHint": "You can select multiple types",
         "extrusionTypeReset": "Clear"
+      },
+      "absPage": {
+        "sectionTitle": "About ABS plastic grades",
+        "sectionIntro": "A brief overview of injection grades (injection molding machines) and extrusion grades (sheets and profiles). The product catalog is in the subcategories above.",
+        "injection": {
+          "title": "Injection ABS plastic",
+          "intro": "A wide range of injection ABS plastic grades. The main processing method is injection molding on thermoplastic machines.",
+          "propertiesHeading": "Grade properties",
+          "applicationsHeading": "Applications",
+          "footer": "To purchase granulated ABS plastic at a competitive price, contact our company — granulated plastic that meets all quality standards.",
+          "advantages": [
+            { "title": "High MFR", "desc": "Selected grades — flame retardancy, antistatic properties" },
+            { "title": "Heat resistance", "desc": "Automotive parts, compounding with polycarbonate" },
+            { "title": "Rigidity and flow", "desc": "Small instrument and equipment parts" }
+          ],
+          "applications": [
+            "Radiator grilles",
+            "Wheel caps",
+            "Household and office equipment housings",
+            "Metallized parts",
+            "Switches and toggles",
+            "Power tool housings",
+            "Stationery and desk accessories",
+            "Toys and construction sets",
+            "Door handles",
+            "Sanitary ware",
+            "Fittings",
+            "Medical devices"
+          ]
+        },
+        "extrusion": {
+          "title": "Extrusion ABS plastic",
+          "intro": "AO Plastik offers several grades of extrusion ABS plastic. In extrusion, the material is melted in an extruder, then pushed through a die, cooled and calibrated. Advantages of extrusion ABS include high impact properties, mechanical strength and rigidity.",
+          "applicationsHeading": "Applications",
+          "details": "Grades in this section are most often used to produce sheets of various thickness with glossy or matte surfaces, and in some cases with embossing. Sheets are later vacuum- or pressure-formed into finished parts.",
+          "applications": [
+            "interior and exterior automotive parts, including large body components;",
+            "structures used in the advertising industry;",
+            "housings for certain types of household appliances;",
+            "ABS furniture edge banding;",
+            "suitcases;",
+            "and other products made from extrusion ABS plastic."
+          ]
+        }
       },
       "korsPage": {
         "corsTitle": "CORS",

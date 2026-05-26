@@ -29,6 +29,7 @@ import {
   getKorsTuLabel,
   KORS_PAGE_KEYS,
 } from "@/lib/kors-bentol-en"
+import { ABS_PAGE_KEYS } from "@/lib/abs-category-i18n"
 
 const korsStoryParent = {
   hidden: { opacity: 0 },
@@ -75,6 +76,7 @@ export function CategoryPageClient({
 }: CategoryPageClientProps) {
   const { t, lang } = useLanguage()
   const k = KORS_PAGE_KEYS
+  const absK = ABS_PAGE_KEYS
   const normTableCols = {
     colNo: t(k.normColNo),
     colName: t(k.normColName),
@@ -123,11 +125,10 @@ export function CategoryPageClient({
           <div className="container mx-auto max-w-7xl px-4 lg:px-8">
             <header className="mb-10 text-center">
               <h2 className="text-2xl font-semibold tracking-tight text-foreground lg:text-3xl">
-                О марках АБС-пластика
+                {t(absK.sectionTitle)}
               </h2>
               <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground leading-relaxed">
-                Кратко о литьевых марках (термопластавтоматы) и экструзионных (листы и профили). Каталог позиций — в
-                подкатегориях выше.
+                {t(absK.sectionIntro)}
               </p>
             </header>
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-stretch">

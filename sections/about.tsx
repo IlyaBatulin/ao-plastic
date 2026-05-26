@@ -24,12 +24,10 @@ const aboutTextItemVariants = {
   hidden: {
     opacity: 0,
     y: 40,
-    filter: "blur(10px)",
   },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: {
       duration: 0.75,
       ease: [0.22, 1, 0.36, 1] as const,
@@ -59,7 +57,7 @@ export function About() {
     <section id="about" className="relative overflow-hidden bg-background">
       {/* Большое фото на всю ширину + затемнение + текст (как блок объёмов на главной) */}
       <div className="relative w-full max-w-full">
-        <div className="relative min-h-[100dvh] w-full md:h-[100dvh]">
+        <div className="relative min-h-[100svh] w-full md:h-[100dvh]">
           <Image
             src="/images/furs0027-1.jpeg"
             alt="Производственные мощности предприятия"
@@ -83,7 +81,7 @@ export function About() {
             aria-hidden
           />
 
-          <div className="relative z-10 flex min-h-[100dvh] items-start py-16 md:absolute md:inset-0 md:py-0 md:items-center">
+          <div className="relative z-10 flex min-h-[100svh] items-start py-16 md:absolute md:inset-0 md:min-h-[100dvh] md:py-0 md:items-center">
             <div className="container mx-auto px-4 text-white sm:px-6 lg:px-8">
               <motion.div
                 className="max-w-3xl space-y-6 sm:max-w-4xl sm:space-y-7 lg:max-w-5xl lg:space-y-8"

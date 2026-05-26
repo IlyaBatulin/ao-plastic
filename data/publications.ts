@@ -1,12 +1,72 @@
+import type { Language } from "@/lib/language"
+import { publicationEnglish } from "./publications-en"
+
 export interface PublicationLink {
   label: string
   url: string
+  labelEn?: string
 }
 
 export interface Publication {
   title: string
   subtitle?: string
+  titleEn?: string
+  subtitleEn?: string
   links: PublicationLink[]
+}
+
+export type LocalizedPublication = {
+  title: string
+  subtitle?: string
+  links: { label: string; url: string }[]
+}
+
+function localizeLinkLabel(label: string, lang: Language): string {
+  if (lang === "ru") return label
+  const replacements: [string, string][] = [
+    ["Новость на портале ", "News on "],
+    ["Новость в ", "News in "],
+    ["Новость ", "News "],
+    ["Статья в ", "Article in "],
+    ["Статья на ", "Article on "],
+    ["Статья ", "Article "],
+    ["Комментарий ", "Commentary "],
+    ["Интервью ", "Interview "],
+    ["Публикация ", "Publication "],
+    ["Пост-релиз ", "Post-release "],
+    ["Анонс ", "Announcement "],
+    ["Бюллетень ", "Bulletin "],
+    ["Отраслевой портал ", "Industry portal "],
+    ["Текстовая версия", "Text version"],
+    ["Печатная версия", "Print version"],
+    ["Версия статьи в Word", "Article version (Word)"],
+  ]
+  let result = label
+  for (const [from, to] of replacements) {
+    if (result.startsWith(from)) {
+      result = to + result.slice(from.length)
+      break
+    }
+  }
+  return result
+}
+
+export function getPublications(lang: Language): LocalizedPublication[] {
+  return publications.map((pub, index) => {
+    const en = publicationEnglish[index]
+    return {
+      title: lang === "en" ? (pub.titleEn ?? en?.title ?? pub.title) : pub.title,
+      subtitle:
+        lang === "en" ? (pub.subtitleEn ?? en?.subtitle ?? pub.subtitle) : pub.subtitle,
+      links: pub.links.map((link, linkIndex) => ({
+        url: link.url,
+        label:
+          lang === "en"
+            ? (link.labelEn ?? en?.linkLabels?.[linkIndex] ?? localizeLinkLabel(link.label, "en"))
+            : link.label,
+      })),
+    }
+  })
 }
 
 export const publications: Publication[] = [

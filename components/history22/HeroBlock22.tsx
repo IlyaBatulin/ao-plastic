@@ -6,9 +6,11 @@ interface HeroBlockProps {
   title: string;
   subtitle: string;
   textSlides: string[];
+  scrollHint?: string;
+  imageAlt?: string;
 }
 
-const HeroBlock22 = ({ title, subtitle, textSlides }: HeroBlockProps) => {
+const HeroBlock22 = ({ title, subtitle, textSlides, scrollHint = "Прокрутите вниз", imageAlt = "АО Пластик производство" }: HeroBlockProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   
   const { scrollYProgress } = useScroll({
@@ -41,9 +43,36 @@ const HeroBlock22 = ({ title, subtitle, textSlides }: HeroBlockProps) => {
   });
 
   return (
+    <>
+    <section className="relative overflow-hidden md:hidden">
+      <div className="relative min-h-[100svh] px-5 py-20 flex flex-col justify-center">
+        <img
+          src="/images/history/history-hero.jpeg"
+          alt={imageAlt}
+          className="absolute inset-0 h-full w-full object-cover image-industrial"
+        />
+        <div className="absolute inset-0 overlay-gradient" />
+        <div className="relative z-10 mx-auto max-w-2xl text-center">
+          <h1 className="text-4xl font-semibold tracking-tight text-foreground mb-5">
+            {title}
+          </h1>
+          <p className="text-lg font-light leading-relaxed text-foreground/90">
+            {subtitle}
+          </p>
+          <div className="mt-8 space-y-4">
+            {textSlides.map((text, index) => (
+              <p key={index} className="text-base leading-relaxed text-foreground/85">
+                {text}
+              </p>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
     <div 
       ref={containerRef} 
-      className="relative"
+      className="relative hidden md:block"
       style={{ height: `${150 + slideCount * 50}vh` }}
     >
       {/* Sticky container */}
@@ -55,7 +84,7 @@ const HeroBlock22 = ({ title, subtitle, textSlides }: HeroBlockProps) => {
         >
           <img
             src="/images/history/history-hero.jpeg"
-            alt="АО Пластик производство"
+            alt={imageAlt}
             className="w-full h-full object-cover image-industrial"
           />
           {/* Gradient overlay */}
@@ -91,7 +120,7 @@ const HeroBlock22 = ({ title, subtitle, textSlides }: HeroBlockProps) => {
           style={{ opacity: indicatorOpacity }}
         >
           <span className="text-sm text-muted-foreground tracking-widest uppercase">
-            Прокрутите вниз
+            {scrollHint}
           </span>
           <ChevronDown className="scroll-indicator w-6 h-6" />
         </motion.div>
@@ -115,6 +144,7 @@ const HeroBlock22 = ({ title, subtitle, textSlides }: HeroBlockProps) => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

@@ -26,36 +26,78 @@ export function Stats() {
     { icon: Cog, value: 3, label: "machineBuildingPartsDms" },
     { icon: Droplets, value: 20, label: "dispersionsInRamenskoye" },
   ]
+  const statGroups = [
+    {
+      key: "main-production",
+      items: stats.slice(0, 4),
+      image: "/images/furs0085.jpeg",
+      imageAlt: "Производственные мощности предприятия",
+      imageSide: "left",
+    },
+    {
+      key: "additional-production",
+      items: stats.slice(4),
+      image: "/prevyu/fasad/furs0072.jpeg",
+      imageAlt: "Фасад производственного корпуса АО Пластик",
+      imageSide: "right",
+    },
+  ]
 
   return (
     <section id="stats" className="relative overflow-hidden bg-background">
-      <div className="relative w-full max-w-full">
-        <div className="flex min-h-[100dvh] w-full flex-col gap-8 bg-background px-3 py-8 sm:px-5 sm:py-10 lg:flex-row lg:items-stretch lg:gap-10 lg:px-8 lg:py-12 xl:px-10">
-          {/* Слева: единый блок статистики */}
-          <div className="flex min-h-0 flex-1 flex-col justify-center lg:max-w-[min(42rem,44%)]">
-            <SectionHeading
-              title={t("homePage.stats.title")}
-              subtitle={t("homePage.stats.subtitle")}
-              centered={false}
-              className="mb-5 sm:mb-7"
-              titleClassName="text-2xl sm:text-3xl lg:text-4xl"
-              subtitleClassName="mt-3 text-sm sm:text-base"
-            />
-            <div className="overflow-hidden rounded-xl border border-border/80 bg-card shadow-lg dark:bg-card">
-              <div className="grid gap-3 p-4 sm:gap-4 sm:p-5">
-                {stats.map((stat, index) => (
+      <div className="container mx-auto max-w-7xl px-3 py-12 sm:px-5 sm:py-14 lg:px-8 lg:py-20">
+        <SectionHeading
+          title={t("homePage.stats.title")}
+          subtitle={t("homePage.stats.subtitle")}
+          centered
+          className="mb-8 sm:mb-10"
+          titleClassName="text-2xl sm:text-3xl lg:text-4xl"
+          subtitleClassName="mt-3 text-sm sm:text-base"
+        />
+
+        <div className="space-y-10 lg:space-y-16">
+          {statGroups.map((group, groupIndex) => (
+            <motion.div
+              key={group.key}
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.18 }}
+              transition={{ duration: 0.45, delay: groupIndex * 0.08, ease: "easeOut" }}
+              className="grid items-stretch gap-7 lg:grid-cols-2 lg:gap-12"
+            >
+              <motion.div
+                className={`relative h-72 w-full overflow-hidden rounded-3xl shadow-xl sm:h-80 lg:h-full lg:min-h-[420px] ${
+                  group.imageSide === "right" ? "lg:order-2" : ""
+                }`}
+                initial={{ opacity: 0, x: group.imageSide === "left" ? -44 : 44 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.25 }}
+                transition={{ duration: 0.65, ease: "easeOut" }}
+              >
+                <Image
+                  src={group.image}
+                  alt={group.imageAlt}
+                  fill
+                  className="object-cover object-center"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  priority={groupIndex === 0}
+                />
+              </motion.div>
+
+              <div className="grid content-center gap-4 sm:grid-cols-2 sm:gap-5">
+                {group.items.map((stat, index) => (
                   <motion.div
                     key={stat.label}
-                    initial={{ opacity: 0, x: -16 }}
-                    whileInView={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 18 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.35, delay: index * 0.06, ease: "easeOut" }}
-                    className="flex min-h-[86px] items-stretch rounded-lg border border-border/70 bg-background"
+                    transition={{ duration: 0.35, delay: 0.2 + index * 0.06, ease: "easeOut" }}
+                    className="flex min-h-[92px] items-stretch rounded-xl border border-border/70 bg-background shadow-sm"
                   >
                     <div className="flex w-14 shrink-0 items-center justify-center border-r border-primary/20 bg-primary/10 sm:w-16">
                       <stat.icon className="h-7 w-7 text-primary sm:h-8 sm:w-8" strokeWidth={1.7} aria-hidden />
                     </div>
-                    <div className="flex min-w-0 flex-1 flex-col justify-center px-3 py-2 sm:px-4">
+                    <div className="flex min-w-0 flex-1 flex-col justify-center px-3 py-3 sm:px-4">
                       <StatsCounter
                         end={stat.value}
                         suffix={t(stat.suffixKey ?? "homePage.stats.suffix")}
@@ -68,28 +110,8 @@ export function Stats() {
                   </motion.div>
                 ))}
               </div>
-            </div>
-          </div>
-
-          {/* Справа: увеличенный единый блок фото */}
-          <div className="relative w-full min-w-0 flex-1 self-stretch lg:basis-[56%]">
-            <motion.div
-              className="relative h-[48vh] min-h-[360px] w-full overflow-hidden rounded-2xl shadow-lg lg:h-full lg:min-h-0"
-              initial={{ opacity: 0, scale: 1.02 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.7, ease: "easeOut" }}
-            >
-              <Image
-                src="/images/furs0085.jpeg"
-                alt="Производственные мощности предприятия"
-                fill
-                className="object-cover object-center"
-                sizes="(max-width: 1024px) 100vw, 56vw"
-                priority
-              />
             </motion.div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

@@ -2,6 +2,14 @@
 
 import dynamic from "next/dynamic"
 import type { MapPoint } from "@/components/delivery-map-leaflet"
+import { useLanguage } from "@/contexts/language-context"
+import { useLocalizedContent } from "@/lib/use-localized-content"
+import {
+  deliveryMapContent,
+  getRegionLabel,
+  translateProductGroup,
+} from "@/data/about-pages/delivery-map-content"
+import type { Language } from "@/lib/language"
 
 const DeliveryMapLeaflet = dynamic(
   () => import("@/components/delivery-map-leaflet").then((m) => m.DeliveryMapLeaflet),
@@ -9,9 +17,9 @@ const DeliveryMapLeaflet = dynamic(
 )
 
 /** Завод АО «Пластик» — Узловая, Тульская область */
-const FACTORY = { lat: 53.9833, lon: 38.1667, label: "Завод (Узловая)" }
+const FACTORY = { lat: 53.9833, lon: 38.1667 }
 /** Офис продаж — Москва */
-const OFFICE = { lat: 55.7558, lon: 37.6173, label: "Офис продаж (Москва)" }
+const OFFICE = { lat: 55.7558, lon: 37.6173 }
 
 /** Координаты регионов поставки (центр/столица региона). Нормализованные названия. */
 const REGION_COORDS: Record<string, [number, number]> = {
@@ -362,7 +370,7 @@ const DESTINATION_REGIONS = [
   "Республика Дагестан",
 ]
 
-function buildRegionMarkers(): MapPoint[] {
+function buildRegionMarkers(lang: Language): MapPoint[] {
   const unique = Array.from(new Set(DESTINATION_REGIONS))
   const out: MapPoint[] = []
   unique.forEach((name) => {
@@ -371,29 +379,31 @@ function buildRegionMarkers(): MapPoint[] {
     if (!coords) return
     const [lat, lon] = coords
     const products = REGION_PRODUCTS[key]
-    const productsStr = products?.length ? products.join(", ") : undefined
-    out.push({ lat, lon, label: name, products: productsStr })
+    const productsStr = products?.length
+      ? products.map((group) => translateProductGroup(group, lang)).join(", ")
+      : undefined
+    out.push({ lat, lon, label: getRegionLabel(name, lang), products: productsStr })
   })
   return out
 }
 
 export function DeliveryMap() {
-  const regionMarkers = buildRegionMarkers()
+  const { lang } = useLanguage()
+  const copy = useLocalizedContent(deliveryMapContent)
+  const regionMarkers = buildRegionMarkers(lang)
 
   return (
     <section className="relative overflow-hidden bg-secondary py-16 lg:py-20">
       <div className="container mx-auto px-4 lg:px-8 mb-10">
         <div className="text-center">
           <span className="mb-3 inline-block text-xs font-semibold uppercase tracking-widest text-primary/70">
-            География поставок
+            {copy.badge}
           </span>
-          <h2 className="text-h2 mb-4 tracking-tight">
-            Продукция по всему миру
-          </h2>
+          <h2 className="text-h2 mb-4 tracking-tight">{copy.title}</h2>
           <p className="mx-auto max-w-3xl text-sm text-muted-foreground lg:whitespace-nowrap lg:text-base">
-            АО «Пластик» поставляет продукцию в&nbsp;
+            {copy.descriptionPrefix}&nbsp;
             <span className="font-semibold text-foreground">80+</span>
-            &nbsp;регионов России и стран мира
+            &nbsp;{copy.descriptionSuffix}
           </p>
         </div>
       </div>
@@ -401,14 +411,12 @@ export function DeliveryMap() {
       <div className="relative w-full px-2 lg:px-8">
         <div className="relative w-full overflow-hidden rounded-2xl border border-border bg-[#060e1f]">
           <DeliveryMapLeaflet
-            factory={{ lat: FACTORY.lat, lon: FACTORY.lon, label: FACTORY.label }}
-            office={{ lat: OFFICE.lat, lon: OFFICE.lon, label: OFFICE.label }}
+            factory={{ lat: FACTORY.lat, lon: FACTORY.lon, label: copy.factoryLabel }}
+            office={{ lat: OFFICE.lat, lon: OFFICE.lon, label: copy.officeLabel }}
             regions={regionMarkers}
           />
         </div>
-        <p className="mt-3 text-center text-sm text-muted-foreground">
-          Переключатель: плоская карта / глобус. Синие метки — завод в Узловой и офис продаж в Москве, серые точки — регионы поставки.
-        </p>
+        <p className="mt-3 text-center text-sm text-muted-foreground">{copy.mapHint}</p>
       </div>
     </section>
   )

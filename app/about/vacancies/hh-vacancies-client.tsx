@@ -10,6 +10,7 @@ import {
   fetchHhVacanciesFromBrowser,
   HH_EMPLOYER_URL,
 } from "@/lib/hh-api"
+import { useLanguage } from "@/contexts/language-context"
 
 interface HHVacancy {
   id: string
@@ -74,6 +75,7 @@ interface HHVacanciesResponse {
 }
 
 export function HHVacanciesClient() {
+  const { t, lang } = useLanguage()
   const [vacancies, setVacancies] = useState<HHVacancy[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -148,10 +150,10 @@ export function HHVacanciesClient() {
         setWarning(data.warning)
         setHhBlocked(true)
       } else if (!response.ok) {
-        throw new Error("Не удалось загрузить вакансии")
+        throw new Error(t("vacanciesPage.loadError"))
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Произошла ошибка")
+      setError(err instanceof Error ? err.message : t("vacanciesPage.genericError"))
     } finally {
       setIsLoading(false)
     }
@@ -175,7 +177,7 @@ export function HHVacanciesClient() {
   const hasActiveFilters = searchText || minSalary || onlyWithSalary || selectedExperience || selectedEmployment || selectedSchedule
 
   const formatSalary = (salary: HHVacancy["salary"]) => {
-    if (!salary) return "Не указана"
+    if (!salary) return t("vacanciesPage.salaryNotSpecified")
 
     const currencySymbols: Record<string, string> = {
       RUR: "₽",
@@ -188,16 +190,17 @@ export function HHVacanciesClient() {
     }
 
     const symbol = currencySymbols[salary.currency || "RUR"] || salary.currency
+    const locale = lang === "en" ? "en-US" : "ru-RU"
 
     if (salary.from && salary.to) {
-      return `${salary.from.toLocaleString()} — ${salary.to.toLocaleString()} ${symbol}`
+      return `${salary.from.toLocaleString(locale)} — ${salary.to.toLocaleString(locale)} ${symbol}`
     } else if (salary.from) {
-      return `от ${salary.from.toLocaleString()} ${symbol}`
+      return `${t("vacanciesPage.salaryFrom")} ${salary.from.toLocaleString()} ${symbol}`
     } else if (salary.to) {
-      return `до ${salary.to.toLocaleString()} ${symbol}`
+      return `${t("vacanciesPage.salaryTo")} ${salary.to.toLocaleString()} ${symbol}`
     }
 
-    return "Не указана"
+    return t("vacanciesPage.salaryNotSpecified")
   }
 
   const stripHtml = (html: string) => {
@@ -214,7 +217,7 @@ export function HHVacanciesClient() {
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
-              placeholder="Поиск по ключевым словам..."
+              placeholder={t("vacanciesPage.searchPlaceholder")}
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
               className="pl-10 h-10 border-border focus:border-primary dark:focus:border-[#60a5fa]"
@@ -226,7 +229,7 @@ export function HHVacanciesClient() {
             className="flex items-center gap-2 h-10 px-4"
           >
             <SlidersHorizontal className="w-4 h-4" />
-            Фильтры
+            {t("vacanciesPage.filters")}
             {hasActiveFilters && (
               <span className="ml-1 px-2 py-0.5 bg-primary dark:bg-[#60a5fa] text-white rounded-full text-xs font-medium">
                 {[searchText, minSalary, onlyWithSalary, selectedExperience, selectedEmployment, selectedSchedule].filter(Boolean).length}
@@ -241,11 +244,11 @@ export function HHVacanciesClient() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Фильтр по зарплате */}
               <div className="space-y-2">
-                <Label htmlFor="salary">Минимальная зарплата, ₽</Label>
+                <Label htmlFor="salary">{t("vacanciesPage.minSalaryLabel")}</Label>
                 <Input
                   id="salary"
                   type="number"
-                  placeholder="Например: 50000"
+                  placeholder={t("vacanciesPage.minSalaryPlaceholder")}
                   value={minSalary}
                   onChange={(e) => setMinSalary(e.target.value)}
                 />
@@ -256,61 +259,61 @@ export function HHVacanciesClient() {
                     onCheckedChange={(checked) => setOnlyWithSalary(checked as boolean)}
                   />
                   <Label htmlFor="only-with-salary" className="text-sm font-normal cursor-pointer">
-                    Только с указанием зарплаты
+                    {t("vacanciesPage.onlyWithSalary")}
                   </Label>
                 </div>
               </div>
 
               {/* Фильтр по опыту */}
               <div className="space-y-2">
-                <Label htmlFor="experience">Опыт работы</Label>
+                <Label htmlFor="experience">{t("vacanciesPage.experienceLabel")}</Label>
                 <select
                   id="experience"
                   value={selectedExperience}
                   onChange={(e) => setSelectedExperience(e.target.value)}
                   className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
-                  <option value="">Любой опыт</option>
-                  <option value="noExperience">Нет опыта</option>
-                  <option value="between1And3">От 1 года до 3 лет</option>
-                  <option value="between3And6">От 3 до 6 лет</option>
-                  <option value="moreThan6">Более 6 лет</option>
+                  <option value="">{t("vacanciesPage.experienceAny")}</option>
+                  <option value="noExperience">{t("vacanciesPage.experienceNo")}</option>
+                  <option value="between1And3">{t("vacanciesPage.experience1to3")}</option>
+                  <option value="between3And6">{t("vacanciesPage.experience3to6")}</option>
+                  <option value="moreThan6">{t("vacanciesPage.experience6plus")}</option>
                 </select>
               </div>
 
               {/* Фильтр по типу занятости */}
               <div className="space-y-2">
-                <Label htmlFor="employment">Тип занятости</Label>
+                <Label htmlFor="employment">{t("vacanciesPage.employmentLabel")}</Label>
                 <select
                   id="employment"
                   value={selectedEmployment}
                   onChange={(e) => setSelectedEmployment(e.target.value)}
                   className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
-                  <option value="">Любая занятость</option>
-                  <option value="full">Полная занятость</option>
-                  <option value="part">Частичная занятость</option>
-                  <option value="project">Проектная работа</option>
-                  <option value="volunteer">Волонтерство</option>
-                  <option value="probation">Стажировка</option>
+                  <option value="">{t("vacanciesPage.employmentAny")}</option>
+                  <option value="full">{t("vacanciesPage.employmentFull")}</option>
+                  <option value="part">{t("vacanciesPage.employmentPart")}</option>
+                  <option value="project">{t("vacanciesPage.employmentProject")}</option>
+                  <option value="volunteer">{t("vacanciesPage.employmentVolunteer")}</option>
+                  <option value="probation">{t("vacanciesPage.employmentProbation")}</option>
                 </select>
               </div>
 
               {/* Фильтр по графику работы */}
               <div className="space-y-2">
-                <Label htmlFor="schedule">График работы</Label>
+                <Label htmlFor="schedule">{t("vacanciesPage.scheduleLabel")}</Label>
                 <select
                   id="schedule"
                   value={selectedSchedule}
                   onChange={(e) => setSelectedSchedule(e.target.value)}
                   className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
-                  <option value="">Любой график</option>
-                  <option value="fullDay">Полный день</option>
-                  <option value="shift">Сменный график</option>
-                  <option value="flexible">Гибкий график</option>
-                  <option value="remote">Удаленная работа</option>
-                  <option value="flyInFlyOut">Вахтовый метод</option>
+                  <option value="">{t("vacanciesPage.scheduleAny")}</option>
+                  <option value="fullDay">{t("vacanciesPage.scheduleFullDay")}</option>
+                  <option value="shift">{t("vacanciesPage.scheduleShift")}</option>
+                  <option value="flexible">{t("vacanciesPage.scheduleFlexible")}</option>
+                  <option value="remote">{t("vacanciesPage.scheduleRemote")}</option>
+                  <option value="flyInFlyOut">{t("vacanciesPage.scheduleFlyInFlyOut")}</option>
                 </select>
               </div>
             </div>
@@ -319,12 +322,12 @@ export function HHVacanciesClient() {
             <div className="flex items-center gap-3 pt-4">
               <Button onClick={handleApplyFilters} className="flex items-center gap-2 bg-primary hover:bg-[#1e40af] dark:bg-[#60a5fa] dark:hover:bg-[#93c5fd]">
                 <Search className="w-4 h-4" />
-                Применить фильтры
+                {t("vacanciesPage.applyFilters")}
               </Button>
               {hasActiveFilters && (
                 <Button variant="outline" onClick={handleResetFilters} className="flex items-center gap-2">
                   <X className="w-4 h-4" />
-                  Сбросить
+                  {t("vacanciesPage.resetFilters")}
                 </Button>
               )}
             </div>
@@ -335,7 +338,7 @@ export function HHVacanciesClient() {
       {/* Информация о результатах */}
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">
-          Найдено вакансий: <span className="font-semibold">{totalFound}</span>
+          {t("vacanciesPage.foundCount")} <span className="font-semibold">{totalFound}</span>
         </p>
         <div className="flex items-center gap-2">
           <img
@@ -343,7 +346,7 @@ export function HHVacanciesClient() {
             alt="HeadHunter"
             className="w-5 h-5"
           />
-          <span className="text-sm text-muted-foreground">Данные с HeadHunter</span>
+          <span className="text-sm text-muted-foreground">{t("vacanciesPage.dataSource")}</span>
         </div>
       </div>
 
@@ -351,14 +354,14 @@ export function HHVacanciesClient() {
       {isLoading && (
         <div className="text-center py-12">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-          <p className="text-muted-foreground mt-4">Загрузка вакансий с HeadHunter...</p>
+          <p className="text-muted-foreground mt-4">{t("vacanciesPage.loading")}</p>
         </div>
       )}
 
       {error && (
         <div className="text-center py-12">
           <p className="text-red-500 mb-4">{error}</p>
-          <Button onClick={() => fetchVacancies(currentPage)}>Попробовать снова</Button>
+          <Button onClick={() => fetchVacancies(currentPage)}>{t("vacanciesPage.retry")}</Button>
         </div>
       )}
 
@@ -368,15 +371,14 @@ export function HHVacanciesClient() {
           {hhBlocked ? (
             <>
               <p className="text-foreground font-medium mb-2">
-                Список на сайте временно недоступен
+                {t("vacanciesPage.listUnavailableTitle")}
               </p>
               <p className="text-muted-foreground text-sm max-w-md mx-auto mb-6">
-                {warning ??
-                  "Актуальные вакансии АО «Пластик» опубликованы на HeadHunter."}
+                {warning ?? t("vacanciesPage.listUnavailableDefault")}
               </p>
               <Button asChild size="lg">
                 <a href={fallbackUrl} target="_blank" rel="noopener noreferrer">
-                  Все вакансии на hh.ru
+                  {t("vacanciesPage.allOnHh")}
                   <ExternalLink className="w-4 h-4 ml-2" />
                 </a>
               </Button>
@@ -385,8 +387,8 @@ export function HHVacanciesClient() {
             <>
               <p className="text-muted-foreground mb-2">
                 {hasActiveFilters
-                  ? "Вакансий с такими параметрами не найдено"
-                  : "На данный момент открытых вакансий нет"}
+                  ? t("vacanciesPage.noResultsFiltered")
+                  : t("vacanciesPage.noResultsEmpty")}
               </p>
               <a
                 href={fallbackUrl}
@@ -394,12 +396,12 @@ export function HHVacanciesClient() {
                 rel="noopener noreferrer"
                 className="mt-4 inline-flex items-center gap-2 text-primary font-semibold hover:underline"
               >
-                Проверить на HeadHunter
+                {t("vacanciesPage.checkOnHh")}
                 <ExternalLink className="w-4 h-4" />
               </a>
               {hasActiveFilters && (
                 <Button variant="outline" onClick={handleResetFilters} className="mt-4 ml-2">
-                  Сбросить фильтры
+                  {t("vacanciesPage.resetFilters")}
                 </Button>
               )}
             </>
@@ -442,7 +444,7 @@ export function HHVacanciesClient() {
               {vacancy.snippet.requirement && (
                 <div>
                   <h4 className="font-semibold text-sm text-foreground mb-1.5">
-                    Требования:
+                    {t("vacanciesPage.requirements")}
                   </h4>
                   <p className="text-sm text-muted-foreground leading-relaxed">{vacancy.snippet.requirement}</p>
                 </div>
@@ -450,7 +452,7 @@ export function HHVacanciesClient() {
               {vacancy.snippet.responsibility && (
                 <div>
                   <h4 className="font-semibold text-sm text-foreground mb-1.5">
-                    Обязанности:
+                    {t("vacanciesPage.responsibilities")}
                   </h4>
                   <p className="text-sm text-muted-foreground leading-relaxed">{vacancy.snippet.responsibility}</p>
                 </div>
@@ -470,7 +472,7 @@ export function HHVacanciesClient() {
           {/* Ключевые навыки */}
           {vacancy.key_skills && vacancy.key_skills.length > 0 && (
             <div className="mb-5">
-              <h4 className="font-semibold text-sm text-foreground mb-3">Ключевые навыки:</h4>
+              <h4 className="font-semibold text-sm text-foreground mb-3">{t("vacanciesPage.keySkills")}</h4>
               <div className="flex flex-wrap gap-2">
                 {vacancy.key_skills.slice(0, 6).map((skill, index) => (
                   <span
@@ -482,7 +484,7 @@ export function HHVacanciesClient() {
                 ))}
                 {vacancy.key_skills.length > 6 && (
                   <span className="px-3 py-1.5 text-muted-foreground text-xs border border-border rounded-md">
-                    +{vacancy.key_skills.length - 6} еще
+                    +{vacancy.key_skills.length - 6} {t("vacanciesPage.moreSkills")}
                   </span>
                 )}
               </div>
@@ -496,7 +498,7 @@ export function HHVacanciesClient() {
               <span className="text-sm">
                 {vacancy.area.name}
                 {vacancy.address?.metro?.station_name &&
-                  `, м. ${vacancy.address.metro.station_name}`}
+                  `, ${lang === "en" ? "metro" : "м."} ${vacancy.address.metro.station_name}`}
               </span>
             </div>
 
@@ -517,7 +519,7 @@ export function HHVacanciesClient() {
             {vacancy.experience && (
               <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-md border border-border">
                 <Briefcase className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm">Опыт: {vacancy.experience.name}</span>
+                <span className="text-sm">{t("vacanciesPage.experiencePrefix")} {vacancy.experience.name}</span>
               </div>
             )}
           </div>
@@ -547,22 +549,22 @@ export function HHVacanciesClient() {
               className="flex-1 bg-primary hover:bg-[#1e40af] dark:bg-[#60a5fa] dark:hover:bg-[#93c5fd] text-white transition-colors"
             >
               <ExternalLink className="w-4 h-4 mr-2" />
-              Откликнуться на HH.ru
+              {t("vacanciesPage.applyOnHh")}
             </Button>
             <Button
               variant="outline"
               onClick={() => window.open(vacancy.alternate_url, "_blank")}
               className="border-border hover:bg-muted transition-colors"
             >
-              Подробнее
+              {t("vacanciesPage.details")}
             </Button>
           </div>
 
           {/* Дата публикации */}
           <div className="mt-4 pt-4 border-t border-border flex items-center justify-between text-xs text-muted-foreground">
             <span>
-              Опубликовано:{" "}
-              {new Date(vacancy.published_at).toLocaleDateString("ru-RU", {
+              {t("vacanciesPage.published")}{" "}
+              {new Date(vacancy.published_at).toLocaleDateString(lang === "en" ? "en-US" : "ru-RU", {
                 day: "numeric",
                 month: "long",
                 year: "numeric",
@@ -582,17 +584,17 @@ export function HHVacanciesClient() {
             onClick={() => setCurrentPage((p) => Math.max(0, p - 1))}
             disabled={currentPage === 0}
           >
-            Назад
+            {t("vacanciesPage.prev")}
           </Button>
           <span className="text-sm text-muted-foreground px-4">
-            Страница {currentPage + 1} из {totalPages}
+            {t("vacanciesPage.pageOf")} {currentPage + 1} {t("vacanciesPage.of")} {totalPages}
           </span>
           <Button
             variant="outline"
             onClick={() => setCurrentPage((p) => Math.min(totalPages - 1, p + 1))}
             disabled={currentPage >= totalPages - 1}
           >
-            Вперед
+            {t("vacanciesPage.next")}
           </Button>
         </div>
       )}

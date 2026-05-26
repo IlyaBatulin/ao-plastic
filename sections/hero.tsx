@@ -5,22 +5,40 @@ import type React from "react"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, ChevronDown } from "lucide-react"
 import Link from "next/link"
-import { useRef, useEffect } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useLanguage } from "@/contexts/language-context"
 import { HeroNavigation } from "@/components/hero-navigation"
+
+const HERO_VIDEO_SRC = "/videos/frontpage4.mp4"
+const HERO_POSTER_SRC = "/prevyu/fasad/furs0079-1.jpeg"
 
 export function Hero() {
   const { t } = useLanguage()
   const videoRef = useRef<HTMLVideoElement>(null)
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
+  const [isVideoReady, setIsVideoReady] = useState(false)
 
   useEffect(() => {
-    // Автоматически запускаем видео
-    if (videoRef.current) {
-      videoRef.current.play().catch((error) => {
-        console.log("Video autoplay failed:", error)
-      })
+    const connection = (navigator as Navigator & {
+      connection?: { saveData?: boolean; effectiveType?: string }
+    }).connection
+    const isSlowConnection =
+      connection?.saveData || connection?.effectiveType === "slow-2g" || connection?.effectiveType === "2g"
+
+    if (!isSlowConnection) {
+      setShouldLoadVideo(true)
     }
-  }, [])
+  }, [shouldLoadVideo])
+
+  useEffect(() => {
+    if (!shouldLoadVideo || !videoRef.current) return
+
+    videoRef.current.muted = true
+    videoRef.current.playsInline = true
+    videoRef.current.play().catch((error) => {
+      console.log("Video autoplay failed:", error)
+    })
+  }, [shouldLoadVideo])
 
   const handleScrollToStats = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -37,17 +55,32 @@ export function Hero() {
 
       {/* Background Video with Overlay */}
       <div className="absolute inset-0 z-0">
+        <img
+          src={HERO_POSTER_SRC}
+          alt=""
+          aria-hidden
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+            isVideoReady ? "opacity-0" : "opacity-100"
+          }`}
+          fetchPriority="high"
+        />
         <video
           ref={videoRef}
-          src="/videos/frontpage4.mp4"
-          className="absolute inset-0 w-full h-full object-cover"
+          src={shouldLoadVideo ? HERO_VIDEO_SRC : undefined}
+          poster={HERO_POSTER_SRC}
+          className={`hero-bg-video absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+            isVideoReady ? "opacity-100" : "opacity-0"
+          }`}
           autoPlay
           loop
           muted
           playsInline
+          preload="metadata"
           controls={false}
+          controlsList="nodownload noplaybackrate noremoteplayback"
           disablePictureInPicture
           disableRemotePlayback
+          onPlaying={() => setIsVideoReady(true)}
           style={{ pointerEvents: "none" }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80" />

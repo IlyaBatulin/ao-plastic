@@ -17,6 +17,15 @@
   animation: fade-in 0.8s ease-in-out forwards;
 }
 
+.hero-bg-video::-webkit-media-controls,
+.hero-bg-video::-webkit-media-controls-panel,
+.hero-bg-video::-webkit-media-controls-play-button,
+.hero-bg-video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 :root {

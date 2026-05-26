@@ -9,7 +9,7 @@ interface TimelineProps {
 
 const Timeline22 = forwardRef<HTMLDivElement, TimelineProps>(({ events, isVisible }, ref) => {
   return (
-    <div ref={ref} className="relative pt-1 pb-3">
+    <div ref={ref} className="relative space-y-2 sm:space-y-2.5 md:space-y-3 pt-1 pb-3 pr-2 sm:pr-4">
       {events.map((event, index) => (
         <TimelineItem22
           key={`${event.year}-${index}`}

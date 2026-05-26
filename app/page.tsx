@@ -53,8 +53,8 @@ export default async function Home() {
   return (
     <main className="min-h-screen w-full max-w-full overflow-x-clip bg-background">
       <Hero />
-      <Stats />
       <About />
+      <Stats />
       <Partners />
       <News items={newsItems} />
       <Contact />

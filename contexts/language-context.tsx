@@ -1,8 +1,7 @@
 "use client"
 
 import { createContext, useContext, useState, useEffect, useMemo, type ReactNode } from "react"
-
-type Language = "ru" | "en"
+import { type Language, persistLanguage } from "@/lib/language"
 
 interface LanguageContextType {
   lang: Language
@@ -20,25 +19,18 @@ let translationsCache: Record<Language, Record<string, any> | null> = {
   en: null,
 }
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  // Определяем язык сразу при инициализации
-  const [lang, setLangState] = useState<Language>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("lang") as Language
-      if (saved && (saved === "ru" || saved === "en")) {
-        return saved
-      }
-    }
-    return "ru"
-  })
-  
-  const [translations, setTranslations] = useState<Record<string, any>>(() => {
-    // Пытаемся использовать кэш при инициализации
-    if (typeof window !== "undefined" && translationsCache[lang]) {
-      return translationsCache[lang] || {}
-    }
-    return {}
-  })
+export function LanguageProvider({
+  children,
+  initialLang = "ru",
+}: {
+  children: ReactNode
+  initialLang?: Language
+}) {
+  const [lang, setLangState] = useState<Language>(initialLang)
+
+  const [translations, setTranslations] = useState<Record<string, any>>(
+    () => translationsCache[initialLang] || {}
+  )
   
   const [isLoading, setIsLoading] = useState(true)
 
@@ -72,22 +64,35 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     loadTranslations()
   }, [lang])
 
-  // Обработка изменения языка из localStorage
+  // Синхронизация localStorage/cookie после гидратации (без чтения localStorage в useState)
+  useEffect(() => {
+    const saved = localStorage.getItem("lang") as Language | null
+    const validSaved = saved === "en" || saved === "ru" ? saved : null
+
+    if (validSaved && validSaved !== initialLang) {
+      setLangState(validSaved)
+      persistLanguage(validSaved)
+      return
+    }
+
+    persistLanguage(validSaved ?? initialLang)
+  }, [initialLang])
+
   useEffect(() => {
     const handleStorageChange = () => {
-      const saved = localStorage.getItem("lang") as Language
-      if (saved && (saved === "ru" || saved === "en") && saved !== lang) {
+      const saved = localStorage.getItem("lang") as Language | null
+      if ((saved === "ru" || saved === "en") && saved !== lang) {
         setLangState(saved)
       }
     }
-    
+
     window.addEventListener("storage", handleStorageChange)
     return () => window.removeEventListener("storage", handleStorageChange)
   }, [lang])
 
   const setLang = (newLang: Language) => {
     setLangState(newLang)
-    localStorage.setItem("lang", newLang)
+    persistLanguage(newLang)
   }
 
   const t = useMemo(() => {

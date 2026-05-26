@@ -5,6 +5,7 @@ import { notFound } from "next/navigation"
 import { CategoryPageClient } from "@/app/products/_components/category-page-client"
 import { getCategoryVideo } from "@/lib/video-config"
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld"
+import { isNextBuild } from "@/lib/next-build"
 
 export const revalidate = 300
 
@@ -60,8 +61,12 @@ export async function generateMetadata({
   }
 }
 
-// Генерируем статические страницы для всех категорий (SSG)
+// Генерируем статические страницы для категорий (без Supabase на билде)
 export async function generateStaticParams() {
+  if (isNextBuild()) {
+    return productsData.categories.map((cat) => ({ categoryId: cat.id }))
+  }
+
   // Используем простой fetch для Supabase без cookies (SSG контекст)
   try {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL

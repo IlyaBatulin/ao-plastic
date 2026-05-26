@@ -12,6 +12,7 @@ import {
   isMachinePartsExtrusion,
   resolveSubcategory,
 } from "@/lib/catalog-slugs"
+import { isNextBuild } from "@/lib/next-build"
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld"
 
 export const revalidate = 300
@@ -41,24 +42,10 @@ export async function generateMetadata({
   }
 }
 
-// Не делаем массовый сетевой пререндер через Supabase во время билда:
-// из-за этого сборка периодически упиралась в таймауты и ретраи (60s, attempt 1/3...).
-// Страницы вне этого списка будут сгенерированы on-demand при первом запросе.
+// Не пререндерим карточки товаров при билде — Supabase с VPS часто даёт ETIMEDOUT.
+// Страницы создаются on-demand при первом заходе (dynamicParams + revalidate).
 export async function generateStaticParams() {
-  // Легкий локальный список для базового pre-render, без сетевой зависимости.
-  const params: Array<{ categoryId: string; subcategoryId: string; productId: string }> = []
-  productsData.categories.forEach((cat) => {
-    cat.products?.forEach((product: any) => {
-      const productSub = product.subcategory || cat.subcategories?.[0]?.slug || ''
-      params.push({
-        categoryId: cat.id,
-        subcategoryId: productSub,
-        productId: product.id,
-      })
-    })
-  })
-  
-  return params
+  return []
 }
 
 export default async function ProductPage({
@@ -68,14 +55,25 @@ export default async function ProductPage({
 }) {
   const resolvedParams = await params
   const { categoryId, subcategoryId, productId } = resolvedParams
-  const supabase = createClient()
 
-  // Получаем продукт из Supabase
   let product: any = null
   let category: any = null
   let subcategory: any = null
 
-  try {
+  const fallbackCategory = productsData.categories.find((cat) => cat.id === categoryId)
+  const fallbackSubcategory = findJsonSubcategory(categoryId, subcategoryId)
+  const fallbackProduct = fallbackCategory?.products?.find((p: any) => p.id === productId)
+
+  if (isNextBuild()) {
+    if (fallbackProduct) {
+      product = fallbackProduct
+      category = fallbackCategory
+      subcategory = fallbackSubcategory
+    }
+  } else {
+    const supabase = createClient()
+
+    try {
     // Если это экструзионные изделия ДМС, пробуем получить из extrusion_products
     const isExtrusionCategory = isMachinePartsExtrusion(categoryId, subcategoryId)
 
@@ -163,13 +161,10 @@ export default async function ProductPage({
   } catch (error) {
     console.error("Error fetching product from Supabase:", error)
   }
+  }
 
   // Fallback на JSON
   if (!product) {
-    const fallbackCategory = productsData.categories.find((cat) => cat.id === categoryId)
-    const fallbackSubcategory = findJsonSubcategory(categoryId, subcategoryId)
-    const fallbackProduct = fallbackCategory?.products?.find((p: any) => p.id === productId)
-
     if (fallbackProduct) {
       product = fallbackProduct
       category = fallbackCategory

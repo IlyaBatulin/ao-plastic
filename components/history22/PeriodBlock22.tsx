@@ -2,7 +2,6 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import type { HistoryPeriod } from "@/data/historyPeriods22";
 import Timeline22 from "./Timeline22";
-import Infographic22 from "./Infographic22";
 
 interface PeriodBlockProps {
   period: HistoryPeriod;
@@ -19,7 +18,7 @@ const PeriodBlock22 = ({ period, image }: PeriodBlockProps) => {
 
   // Phase 1 (0-0.15): Image fullscreen, static
   // Phase 2 (0.15-0.4): Image shrinks to top-left corner
-  // Phase 3 (0.4-0.85): Image stays in corner, timeline + infographic visible
+  // Phase 3 (0.4-0.85): Image stays in corner, timeline visible
   // Phase 4 (0.85-1.0): Everything scrolls away
 
   // Image container size (percentage of viewport)
@@ -88,23 +87,37 @@ const PeriodBlock22 = ({ period, image }: PeriodBlockProps) => {
     [200, 0, 0, 0]
   );
 
-  // Infographic visibility - appears from BOTTOM after timeline, then HOLDS
-  const infographicOpacity = useTransform(
-    scrollYProgress,
-    [0.5, 0.65, 0.85, 0.9],
-    [0, 1, 1, 0]
-  );
-
-  const infographicY = useTransform(
-    scrollYProgress,
-    [0.5, 0.65, 0.85, 0.9],
-    [250, 0, 0, 0]
-  );
-
   return (
+    <>
+    <section className="md:hidden border-t border-border/60 bg-background px-4 py-12">
+      <div className="mx-auto max-w-2xl">
+        <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-lg">
+          <img
+            src={image}
+            alt={period.title}
+            className="h-full w-full object-cover image-industrial"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-background/10 to-transparent" />
+        </div>
+
+        <div className="mt-7">
+          <span className="text-primary text-sm font-medium tracking-widest uppercase">
+            {period.title}
+          </span>
+          <h2 className="mt-2 text-2xl font-semibold leading-tight text-foreground">
+            {period.subtitle}
+          </h2>
+        </div>
+
+        <div className="mt-7">
+          <Timeline22 events={period.timeline} isVisible={true} />
+        </div>
+      </div>
+    </section>
+
     <div 
       ref={containerRef} 
-      className="relative"
+      className="relative hidden md:block"
       style={{ height: "280vh" }}
     >
       {/* Sticky container - holds everything in place */}
@@ -160,11 +173,10 @@ const PeriodBlock22 = ({ period, image }: PeriodBlockProps) => {
           </h3>
         </motion.div>
 
-        {/* Right side content container */}
-        <div className="absolute right-[5%] md:right-[7%] top-[12%] bottom-[4%] w-[40%] flex flex-col gap-4">
-          {/* Timeline */}
+        {/* Right side — timeline only */}
+        <div className="absolute right-[5%] md:right-[7%] top-[12%] bottom-[4%] w-[40%]">
           <motion.div
-            className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden pr-1 pt-1 pb-1 scroll-pt-2 no-scrollbar"
+            className="h-full overflow-y-auto overflow-x-hidden pr-1 pt-1 pb-1 scroll-pt-2 no-scrollbar"
             style={{ 
               opacity: timelineOpacity,
               y: timelineY 
@@ -175,23 +187,10 @@ const PeriodBlock22 = ({ period, image }: PeriodBlockProps) => {
               isVisible={true}
             />
           </motion.div>
-
-          {/* Infographic */}
-          <motion.div
-            className="flex-shrink-0"
-            style={{
-              opacity: infographicOpacity,
-              y: infographicY
-            }}
-          >
-            <Infographic22
-              items={period.infographic}
-              isVisible={true}
-            />
-          </motion.div>
         </div>
       </div>
     </div>
+    </>
   );
 };
 

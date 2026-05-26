@@ -7,16 +7,16 @@ import { Footer } from "@/components/footer"
 
 const nizhnyPartners = [
   {
-    title: "ООО «Траст Полимер НН»",
+    id: "trastPolimer",
     contacts: ["https://www.trast-polimer.ru", "trastnnov@mail.ru"],
     phones: ["+7 (831) 270-41-04", "+7 (831) 270-86-59"],
   },
   {
-    title: "ООО «Крафт Полимер»",
+    id: "kraftPolimer",
     contacts: ["https://www.trast-polimer.ru", "trastnnov@mail.ru"],
     phones: ["+7 (831) 270-86-59", "+7 (831) 222-15-94", "+7 (831) 222-59-85"],
   },
-]
+] as const
 
 export default function DealersPage() {
   const { t } = useLanguage()
@@ -70,8 +70,8 @@ export default function DealersPage() {
               </p>
               <div className="grid md:grid-cols-2 gap-6">
                 {nizhnyPartners.map((partner) => (
-                  <div key={partner.title} className="rounded-2xl border border-border/60 bg-background p-5 space-y-3">
-                    <h3 className="text-lg font-semibold text-foreground">{partner.title}</h3>
+                  <div key={partner.id} className="rounded-2xl border border-border/60 bg-background p-5 space-y-3">
+                    <h3 className="text-lg font-semibold text-foreground">{t(`dealersPage.partners.${partner.id}`)}</h3>
                     <div className="text-sm text-muted-foreground space-y-1">
                       {partner.contacts.map((contact) => (
                         <p key={contact}>

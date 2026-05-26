@@ -1,5 +1,6 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
+import { cookies } from "next/headers"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import "./logo-loop.css"
@@ -11,6 +12,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { LoadingScreen } from "@/components/loading-screen"
 import { LenisProvider } from "@/components/lenis-provider"
 import { getSiteUrl } from "@/lib/site"
+import { parseLanguage } from "@/lib/language"
 import { SiteJsonLd } from "@/components/seo/site-json-ld"
 
 const inter = Inter({
@@ -91,13 +93,16 @@ export const metadata: Metadata = {
     : {}),
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const cookieStore = await cookies()
+  const initialLang = parseLanguage(cookieStore.get("lang")?.value)
+
   return (
-    <html lang="ru" className={`${inter.className} bg-background text-foreground`}>
+    <html lang={initialLang} className={`${inter.className} bg-background text-foreground`}>
       <head>
         <link rel="preload" href="/locales/ru.json" as="fetch" crossOrigin="anonymous" />
         <link rel="preload" href="/locales/en.json" as="fetch" crossOrigin="anonymous" />
@@ -109,7 +114,7 @@ export default function RootLayout({
         <LoadingScreen />
         <LenisProvider>
           <div id="main-content" className="relative z-10 w-full max-w-full overflow-x-clip transition-opacity duration-500">
-            <LanguageProvider>
+            <LanguageProvider initialLang={initialLang}>
               <CartProvider>
                 <ConditionalHeader />
                 {children}

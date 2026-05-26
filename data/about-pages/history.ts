@@ -1,0 +1,205 @@
+import type { HeroData, HistoryPeriod } from "@/data/historyPeriods22"
+
+export const historyPageContent: Record<
+  "ru" | "en",
+  { hero: HeroData; periods: HistoryPeriod[]; scrollHint: string; heroImageAlt: string; closingPhrase: string }
+> = {
+  ru: {
+    scrollHint: "Прокрутите вниз",
+    heroImageAlt: "АО Пластик производство",
+    closingPhrase:
+      "История не заканчивается — мы продолжаем расти, учиться и открывать новые горизонты вместе с вами.",
+    hero: {
+      heroImage: "/images/history/history-hero.jpeg",
+      heroTitle: "История АО «Пластик»",
+      heroSubTitle: "Более 60 лет инноваций и развития",
+      heroTextSlides: [
+        "АО «Пластик» — один из ведущих производителей полимерных изделий в России, история которого началась в послевоенные годы советской индустриализации.",
+        "На протяжении десятилетий предприятие непрерывно развивалось, осваивая новые технологии и расширяя производственные мощности.",
+        "Сегодня «Пластик» — это современное высокотехнологичное производство, сочетающее богатый опыт с инновационными решениями.",
+        "Наша история — это путь от небольшого завода до крупного промышленного холдинга с международным признанием.",
+      ],
+    },
+    periods: [
+      {
+        id: "period-1",
+        title: "1959–1973",
+        subtitle: "Формирование производства и освоение новых материалов",
+        image: "/images/history/period-1959-1992.jpeg",
+        timeline: [
+          { year: "1959", description: "Основание завода пластмассовых изделий в рамках государственной программы развития химической промышленности." },
+          { year: "1962", description: "Запуск первой производственной линии по выпуску изделий из полиэтилена." },
+          { year: "1965", description: "Освоение технологии литья под давлением, расширение ассортимента продукции." },
+          { year: "1968", description: "Получение государственной премии за разработку инновационных материалов." },
+          { year: "1971", description: "Строительство второго производственного корпуса, увеличение мощностей в 2 раза." },
+          { year: "1973", description: "Выход на всесоюзный рынок, поставки продукции во все республики СССР." },
+        ],
+        infographic: [
+          { value: "15", label: "лет развития" },
+          { value: "2x", label: "рост мощностей" },
+          { value: "100+", label: "сотрудников" },
+          { value: "15", label: "республик СССР" },
+        ],
+      },
+      {
+        id: "period-2",
+        title: "1974–1991",
+        subtitle: "Технологический прорыв и экспортная экспансия",
+        image: "/images/history/period-2001-2009.jpeg",
+        timeline: [
+          { year: "1975", description: "Внедрение автоматизированных систем управления производством." },
+          { year: "1978", description: "Начало экспортных поставок в страны СЭВ." },
+          { year: "1982", description: "Запуск цеха по производству технических пластмасс для автомобильной промышленности." },
+          { year: "1985", description: "Модернизация оборудования, переход на энергоэффективные технологии." },
+          { year: "1988", description: "Получение статуса предприятия союзного значения." },
+          { year: "1991", description: "Преобразование в акционерное общество в ходе приватизации." },
+        ],
+        infographic: [
+          { value: "8", label: "стран экспорта" },
+          { value: "500+", label: "сотрудников" },
+          { value: "3", label: "цеха" },
+          { value: "40%", label: "рост экспорта" },
+        ],
+      },
+      {
+        id: "period-3",
+        title: "1992–2010",
+        subtitle: "Рыночная трансформация и диверсификация",
+        image: "/images/history/period-2010-2014.jpeg",
+        timeline: [
+          { year: "1993", description: "Реструктуризация производства под требования рыночной экономики." },
+          { year: "1997", description: "Получение международного сертификата качества ISO 9001." },
+          { year: "2001", description: "Запуск линии по производству экологически чистых биоразлагаемых материалов." },
+          { year: "2005", description: "Строительство современного логистического комплекса." },
+          { year: "2008", description: "Выход на европейский рынок, открытие представительства в Германии." },
+          { year: "2010", description: "Инвестиции в НИОКР, создание собственного исследовательского центра." },
+        ],
+        infographic: [
+          { value: "ISO", label: "9001 сертификат" },
+          { value: "EU", label: "выход на рынок" },
+          { value: "1000+", label: "сотрудников" },
+          { value: "R&D", label: "центр" },
+        ],
+      },
+      {
+        id: "period-4",
+        title: "2011–Сегодня",
+        subtitle: "Цифровая эра и устойчивое развитие",
+        image: "/images/history/period-2019-present.jpeg",
+        timeline: [
+          { year: "2012", description: "Внедрение системы «Индустрия 4.0», цифровизация производственных процессов." },
+          { year: "2015", description: "Запуск программы устойчивого развития, переход на возобновляемые источники энергии." },
+          { year: "2018", description: "Открытие нового высокотехнологичного производственного комплекса." },
+          { year: "2020", description: "Разработка и выпуск инновационных композитных материалов." },
+          { year: "2022", description: "Внедрение систем прослеживаемости партий и цифрового учёта для крупных контрактов и экспортных поставок." },
+          { year: "2024", description: "Стратегическое партнёрство с ведущими мировыми производителями." },
+        ],
+        infographic: [
+          { value: "4.0", label: "Индустрия" },
+          { value: "130+", label: "контрагентов в РФ и СНГ" },
+          { value: "1000", label: "сотрудников" },
+          { value: "20+", label: "партнёров" },
+        ],
+      },
+    ],
+  },
+  en: {
+    scrollHint: "Scroll down",
+    heroImageAlt: "JSC Plastik production facility",
+    closingPhrase:
+      "Our story is not over — we keep growing, learning, and opening new horizons together with you.",
+    hero: {
+      heroImage: "/images/history/history-hero.jpeg",
+      heroTitle: "History of JSC «Plastik»",
+      heroSubTitle: "More than 60 years of innovation and growth",
+      heroTextSlides: [
+        "JSC «Plastik» is one of Russia's leading polymer manufacturers, with a history that began in the post-war years of Soviet industrialization.",
+        "Over the decades, the enterprise has continuously evolved, adopting new technologies and expanding production capacity.",
+        "Today, «Plastik» is a modern high-tech manufacturing facility combining rich experience with innovative solutions.",
+        "Our history is a journey from a small plant to a major industrial company with international recognition.",
+      ],
+    },
+    periods: [
+      {
+        id: "period-1",
+        title: "1959–1973",
+        subtitle: "Building production capacity and mastering new materials",
+        image: "/images/history/period-1959-1992.jpeg",
+        timeline: [
+          { year: "1959", description: "Foundation of a plastics plant as part of the state program to develop the chemical industry." },
+          { year: "1962", description: "Launch of the first production line for polyethylene products." },
+          { year: "1965", description: "Adoption of injection molding technology and expansion of the product range." },
+          { year: "1968", description: "State award for the development of innovative materials." },
+          { year: "1971", description: "Construction of a second production building, doubling capacity." },
+          { year: "1973", description: "Entry into the nationwide market with supplies to all Soviet republics." },
+        ],
+        infographic: [
+          { value: "15", label: "years of growth" },
+          { value: "2x", label: "capacity increase" },
+          { value: "100+", label: "employees" },
+          { value: "15", label: "Soviet republics" },
+        ],
+      },
+      {
+        id: "period-2",
+        title: "1974–1991",
+        subtitle: "Technological breakthrough and export expansion",
+        image: "/images/history/period-2001-2009.jpeg",
+        timeline: [
+          { year: "1975", description: "Implementation of automated production control systems." },
+          { year: "1978", description: "Start of export deliveries to COMECON countries." },
+          { year: "1982", description: "Launch of a shop producing engineering plastics for the automotive industry." },
+          { year: "1985", description: "Equipment modernization and transition to energy-efficient technologies." },
+          { year: "1988", description: "Recognition as an enterprise of union-wide significance." },
+          { year: "1991", description: "Conversion into a joint-stock company during privatization." },
+        ],
+        infographic: [
+          { value: "8", label: "export countries" },
+          { value: "500+", label: "employees" },
+          { value: "3", label: "production shops" },
+          { value: "40%", label: "export growth" },
+        ],
+      },
+      {
+        id: "period-3",
+        title: "1992–2010",
+        subtitle: "Market transformation and diversification",
+        image: "/images/history/period-2010-2014.jpeg",
+        timeline: [
+          { year: "1993", description: "Restructuring of production to meet market economy requirements." },
+          { year: "1997", description: "Awarded the international ISO 9001 quality certificate." },
+          { year: "2001", description: "Launch of a line for environmentally friendly biodegradable materials." },
+          { year: "2005", description: "Construction of a modern logistics complex." },
+          { year: "2008", description: "Entry into the European market and opening of a representative office in Germany." },
+          { year: "2010", description: "Investment in R&D and establishment of an in-house research center." },
+        ],
+        infographic: [
+          { value: "ISO", label: "9001 certificate" },
+          { value: "EU", label: "market entry" },
+          { value: "1000+", label: "employees" },
+          { value: "R&D", label: "center" },
+        ],
+      },
+      {
+        id: "period-4",
+        title: "2011–Present",
+        subtitle: "Digital era and sustainable development",
+        image: "/images/history/period-2019-present.jpeg",
+        timeline: [
+          { year: "2012", description: "Implementation of Industry 4.0 systems and digitalization of production processes." },
+          { year: "2015", description: "Launch of a sustainability program and transition to renewable energy sources." },
+          { year: "2018", description: "Opening of a new high-tech production complex." },
+          { year: "2020", description: "Development and launch of innovative composite materials." },
+          { year: "2022", description: "Implementation of batch traceability and digital accounting for major contracts and export deliveries." },
+          { year: "2024", description: "Strategic partnerships with leading global manufacturers." },
+        ],
+        infographic: [
+          { value: "4.0", label: "Industry" },
+          { value: "130+", label: "counterparties in Russia & CIS" },
+          { value: "1000", label: "employees" },
+          { value: "20+", label: "partners" },
+        ],
+      },
+    ],
+  },
+}

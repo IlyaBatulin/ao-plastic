@@ -11,11 +11,8 @@ const ETP_TENDERS_LINK =
   encodeURIComponent("Тульская область")
 
 const tekSnabContact = {
-  title: "ООО «ТЭК-СНАБ»",
-  description: "Оперативные закупки сырья и вспомогательных материалов",
   phones: ["+7 (910) 704-63-75"],
   emails: ["info@tek-snab.ru"],
-  address: "119361, г. Москва, муниципальный округ Очаково-Матвеевское вн.тер.г., ул. Лобачевского, д. 41, ПОМЕЩ. 6 ЭТАЖ 1 ОФИС 102Б",
 }
 
 export function SuppliersPageClient() {
@@ -97,8 +94,8 @@ export function SuppliersPageClient() {
                   <Building2 className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-foreground">{tekSnabContact.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed mt-2">{tekSnabContact.description}</p>
+                  <h3 className="text-2xl font-bold text-foreground">{t("suppliersPage.contacts.tekSnabTitle")}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed mt-2">{t("suppliersPage.contacts.tekSnabDescription")}</p>
                 </div>
               </div>
               
@@ -129,7 +126,7 @@ export function SuppliersPageClient() {
                 
                 <div>
                   <p className="font-semibold text-foreground mb-2">{t("suppliersPage.contacts.address")}</p>
-                  <p className="text-muted-foreground leading-relaxed">{tekSnabContact.address}</p>
+                  <p className="text-muted-foreground leading-relaxed">{t("suppliersPage.contacts.tekSnabAddress")}</p>
                 </div>
               </div>
             </div>

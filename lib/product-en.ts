@@ -20,13 +20,13 @@ const CATALOG_PRODUCT_EN: Record<string, ProductEnEntry> = {
     description: "Extrusion ABS for sheet, profile and pipe production.",
   },
   "psv-s": {
-    name: "Expandable Polystyrene PSV-S",
+    name: "Expandable Polystyrene EPS-S",
     description:
       "Expandable polystyrene for foam plastics, insulation boards and packaging materials.",
   },
   "psv-l": {
-    name: "Expandable Polystyrene PSV-L",
-    description: "Cast expandable polystyrene with a higher expansion ratio.",
+    name: "Expandable Polystyrene EPS-L",
+    description: "Casting-grade expandable polystyrene with a higher expansion ratio.",
   },
   "pse-1": {
     name: "Polystyrene PSE-1",
@@ -92,6 +92,8 @@ const PRODUCT_LOOKUP_ALIASES: Record<string, string> = {
   "псэ-1": "pse-1",
   "полистирол вспенивающийся псв-с": "psv-s",
   "полистирол вспенивающийся псв-л": "psv-l",
+  "expandable polystyrene eps-s": "psv-s",
+  "expandable polystyrene eps-l": "psv-l",
   "полистирол псэ-1": "pse-1",
   "стирол мономерный": "styrene-monomer",
   "корс": "kors-fuel",
@@ -141,12 +143,14 @@ const PRODUCT_NAME_PHRASES_EN: [RegExp, string][] = [
   [/сточного желоба/i, "gutter"],
 ]
 
-/** Кириллица в марках → латиница */
+/** Кириллица в марках → общепринятые EN-аббревиатуры */
 const CYRILLIC_MARK_REPLACEMENTS: [RegExp, string][] = [
-  [/ПСВ\s*[-–]?\s*С\b/gi, "PSV-S"],
-  [/ПСВ\s*[-–]?\s*Л\b/gi, "PSV-L"],
-  [/PSV\s*[-–]?\s*С\b/g, "PSV-S"],
-  [/PSV\s*[-–]?\s*Л\b/g, "PSV-L"],
+  [/ПСВ\s*[-–]?\s*С\b/gi, "EPS-S"],
+  [/ПСВ\s*[-–]?\s*Л\b/gi, "EPS-L"],
+  [/PSV\s*[-–]?\s*С\b/g, "EPS-S"],
+  [/PSV\s*[-–]?\s*Л\b/g, "EPS-L"],
+  [/EPS\s*[-–]?\s*С\b/g, "EPS-S"],
+  [/EPS\s*[-–]?\s*Л\b/g, "EPS-L"],
   [/ПСЭ\s*[-–]?\s*1\b/gi, "PSE-1"],
   [/ПСЭ-1\b/gi, "PSE-1"],
 ]
@@ -458,7 +462,7 @@ function translateProductNameFallback(name: string): string {
 function fallbackLatinProductName(name: string): string {
   return name
     .replace(/АБС/g, "ABS")
-    .replace(/ПСВ/g, "PSV")
+    .replace(/ПСВ/g, "EPS")
     .replace(/ПСЭ/g, "PSE")
     .replace(/ПТР/g, "MFR")
     .replace(/ПВХ/g, "PVC")

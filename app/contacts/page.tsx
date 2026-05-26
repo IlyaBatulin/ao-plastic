@@ -41,8 +41,8 @@ export default function ContactsPage() {
     
     if (!consentAccepted) {
       toast({
-        title: "Требуется согласие",
-        description: "Необходимо согласиться на обработку персональных данных",
+        title: t("contactsPage.form.toastConsentRequiredTitle"),
+        description: t("contactsPage.form.toastConsentRequiredDescription"),
         variant: "destructive",
         duration: 3000,
       })
@@ -63,16 +63,16 @@ export default function ContactsPage() {
 
       if (response.ok) {
         toast({
-          title: "Сообщение отправлено",
-          description: "Ваше сообщение отправлено и будет рассмотрено в ближайшее время. Мы свяжемся с вами по указанным контактам.",
+          title: t("contactsPage.form.toastSuccessTitle"),
+          description: t("contactsPage.form.toastSuccessDescription"),
           duration: 5000,
         })
         setFormData({ name: "", email: "", phone: "", message: "" })
       } else {
         const error = await response.json()
         toast({
-          title: "Ошибка отправки",
-          description: error.error || "Произошла ошибка при отправке сообщения. Пожалуйста, попробуйте еще раз.",
+          title: t("contactsPage.form.toastErrorTitle"),
+          description: error.error || t("contactsPage.form.toastErrorDescription"),
           variant: "destructive",
           duration: 5000,
         })
@@ -80,8 +80,8 @@ export default function ContactsPage() {
     } catch (error) {
       console.error("Ошибка:", error)
       toast({
-        title: "Ошибка отправки",
-        description: "Произошла ошибка при отправке сообщения. Пожалуйста, попробуйте еще раз.",
+        title: t("contactsPage.form.toastErrorTitle"),
+        description: t("contactsPage.form.toastErrorDescription"),
         variant: "destructive",
         duration: 5000,
       })
@@ -139,7 +139,7 @@ export default function ContactsPage() {
                           </span>
                         </div>
                         <p className="text-muted-foreground text-sm leading-relaxed mt-2">
-                          301600, Тульская область, г. Узловая, ул. Тульская, 1
+                          {t("contactsPage.production.address")}
                         </p>
                         <div className="mt-4 grid sm:grid-cols-2 gap-4 text-sm text-muted-foreground">
                           <div>
@@ -169,7 +169,7 @@ export default function ContactsPage() {
                           </span>
                         </div>
                         <p className="text-muted-foreground text-sm leading-relaxed mt-2">
-                          119361, Москва, ул. Лобачевского, д. 41, помещение 6, этаж 1, офис 102А
+                          {t("contactsPage.sales.address")}
                         </p>
                         <div className="mt-4 grid sm:grid-cols-2 gap-4 text-sm text-muted-foreground">
                           <div>
@@ -200,10 +200,10 @@ export default function ContactsPage() {
                         </div>
                         <div className="mt-4 text-sm text-muted-foreground">
                           <div>
-                            <p className="font-semibold text-foreground">ООО «ТЭК-СНАБ»</p>
+                            <p className="font-semibold text-foreground">{t("contactsPage.procurement.companyName")}</p>
                             <p>+7 (910) 704-63-75</p>
                             <p>info@tek-snab.ru</p>
-                            <p className="mt-2 text-xs leading-relaxed">119361, г. Москва, муниципальный округ Очаково-Матвеевское вн.тер.г., ул. Лобачевского, д. 41, ПОМЕЩ. 6 ЭТАЖ 1 ОФИС 102Б</p>
+                            <p className="mt-2 text-xs leading-relaxed">{t("contactsPage.procurement.address")}</p>
                           </div>
                         </div>
                       </div>
@@ -308,29 +308,29 @@ export default function ContactsPage() {
                     className="mt-1"
                   />
                   <label htmlFor="consent-contacts" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
-                    Я согласен(а) с{" "}
+                    {t("contactsPage.form.consentPrefix")}{" "}
                     <Link
                       href={LEGAL_DOCUMENTS.personalDataConsentPage}
                       className="text-primary hover:underline"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      согласием на обработку персональных данных
+                      {t("contactsPage.form.consentPersonalData")}
                     </Link>{" "}
-                    и{" "}
+                    {t("contactsPage.form.consentAnd")}{" "}
                     <Link
                       href={LEGAL_DOCUMENTS.privacyPolicyPage}
                       className="text-primary hover:underline"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      политикой конфиденциальности
+                      {t("contactsPage.form.consentPrivacy")}
                     </Link>
                   </label>
                 </div>
 
                 <Button type="submit" size="lg" className="w-full transition-transform hover:scale-105" disabled={isSubmitting || !consentAccepted}>
-                  {isSubmitting ? "Отправка..." : t("contactsPage.form.submit")}
+                  {isSubmitting ? t("common.submitting") : t("contactsPage.form.submit")}
                 </Button>
               </form>
 

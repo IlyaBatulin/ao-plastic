@@ -3,6 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { Download } from "lucide-react"
+import { useLanguage } from "@/contexts/language-context"
 import {
   Carousel,
   CarouselContent,
@@ -19,6 +20,8 @@ export type CertificateItem = {
 }
 
 export function CertificatesCarousel({ certificates }: { certificates: CertificateItem[] }) {
+  const { t } = useLanguage()
+
   return (
     <Carousel
       opts={{
@@ -53,7 +56,7 @@ export function CertificatesCarousel({ certificates }: { certificates: Certifica
                 <p className="text-sm text-muted-foreground">{cert.description}</p>
                 <span className="inline-flex items-center gap-1 mt-2 text-sm text-primary font-medium">
                   <Download className="w-4 h-4" />
-                  Открыть
+                  {t("common.open")}
                 </span>
               </div>
             </Link>

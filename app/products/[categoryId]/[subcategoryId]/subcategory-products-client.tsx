@@ -101,9 +101,11 @@ export function SubcategoryProducts({ products }: { products: any[] }) {
                     const displayKey = keyTranslations[key] || key
 
                     return (
-                      <div key={key} className="flex items-start justify-between text-sm gap-2">
-                        <span className="text-muted-foreground flex-shrink-0">{displayKey}:</span>
-                        <span className="font-semibold text-right break-words">{formattedValue}</span>
+                      <div key={key} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 text-sm">
+                        <span className="min-w-0 text-muted-foreground leading-snug">{displayKey}:</span>
+                        <span className="max-w-[7rem] text-right font-semibold leading-snug break-words">
+                          {formattedValue}
+                        </span>
                       </div>
                     )
                   })}

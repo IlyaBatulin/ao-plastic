@@ -167,11 +167,13 @@ export default function ProductsGrid({
               {cardSpecEntries.length > 0 && (
                 <div className="space-y-2 mb-4">
                   {cardSpecEntries.slice(0, 3).map(([key, value]) => (
-                    <div key={key} className="flex items-start justify-between text-sm gap-2">
-                      <span className="text-muted-foreground flex-shrink-0">
+                    <div key={key} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 text-sm">
+                      <span className="min-w-0 text-muted-foreground leading-snug">
                         {formatSpecKey(key, lang === "en" ? "en" : "ru")}:
                       </span>
-                      <span className="font-semibold text-right break-words">{formatSpecValue(key, value)}</span>
+                      <span className="max-w-[7rem] text-right font-semibold leading-snug break-words">
+                        {formatSpecValue(key, value)}
+                      </span>
                     </div>
                   ))}
                 </div>

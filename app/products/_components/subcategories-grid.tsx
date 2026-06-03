@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { ArrowRight } from "lucide-react"
 import { useEffect, useMemo, useRef } from "react"
 import { useLanguage } from "@/contexts/language-context"
@@ -19,7 +20,7 @@ function getSubcategoryImage(subcategoryId: string, slug?: string): string | nul
     // АБС-пластики
     'abs-injection': '/images/absiplast-main.png',
     'abs-extrusion': '/images/absiplast-main.png',
-    'abs-custom': '/images/absiplast-main.png',
+    'abs-custom': '/images/abs-custom/abs-production-materials.png',
     // Хозтовары
     'vedra-tazy': '/images/xoztov/vedra-main.jpeg',
     // Детали машиностроения (литьё / экструзия — как на главной карточке категории)
@@ -50,6 +51,7 @@ interface SubcategoriesGridProps {
 export function SubcategoriesGrid({ categoryId, subcategories }: SubcategoriesGridProps) {
   const { t } = useLanguage()
   const gridRef = useRef<HTMLDivElement>(null)
+  const router = useRouter()
 
   const categoryLabel = t(`homePage.catalog.categories.${categoryId}`) || categoryId
   const orderCommentPrefix = useMemo(() => {
@@ -108,13 +110,17 @@ export function SubcategoriesGrid({ categoryId, subcategories }: SubcategoriesGr
       <div className="container mx-auto px-4 lg:px-8">
         <h2 className="text-h2 mb-12 text-center">{t("homePage.catalog.subcategoriesTitle")}</h2>
         <div ref={gridRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {subcategories.map((subcategory, index) => {
+          {subcategories.map((subcategory) => {
             const imageSrc = subcategory.image || getSubcategoryImage(subcategory.id, subcategory.slug) || "/placeholder.svg"
+            const subcategoryHref = `/products/${categoryId}/${getPublicSubcategorySlug(categoryId, subcategory)}`
             
             return (
             <Link
               key={subcategory.id}
-              href={`/products/${categoryId}/${getPublicSubcategorySlug(categoryId, subcategory)}`}
+              href={subcategoryHref}
+              prefetch
+              onMouseEnter={() => router.prefetch(subcategoryHref)}
+              onTouchStart={() => router.prefetch(subcategoryHref)}
               className="subcategory-card group relative h-80 rounded-3xl overflow-hidden border border-border/50 hover:border-primary/50"
               style={{
                 opacity: 0,
@@ -139,14 +145,9 @@ export function SubcategoriesGrid({ categoryId, subcategories }: SubcategoriesGr
 
               {/* Content */}
               <div className="relative h-full flex flex-col justify-between p-4 sm:p-6 z-10">
-                {/* Number Badge */}
-                <div className="absolute top-4 right-4 w-14 h-14 rounded-full bg-primary/10 backdrop-blur-md border border-primary/20 flex items-center justify-center font-bold text-2xl text-primary transition-all duration-300 group-hover:bg-primary/20 group-hover:border-primary/30 group-hover:scale-110">
-                  {index + 1}
-                </div>
-
                 {/* Title and CTA - единый блок без разделения */}
-                <div className="mt-auto bg-white/95 backdrop-blur-sm rounded-xl p-4 -mx-2 border border-white/50 shadow-sm">
-                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 transition-colors duration-300 group-hover:text-primary text-balance break-words">
+                <div className="mt-auto -mx-2 flex min-h-[11.75rem] flex-col rounded-xl border border-white/50 bg-white/95 p-4 shadow-sm backdrop-blur-sm">
+                  <h3 className="mb-2 text-lg font-bold transition-colors duration-300 group-hover:text-primary sm:text-xl text-balance break-words">
                     {t(`homePage.catalog.subcategories.${getCatalogSubcategoryTranslationKey(subcategory.slug)}`) ||
                       subcategory.name}
                   </h3>
@@ -156,8 +157,8 @@ export function SubcategoriesGrid({ categoryId, subcategories }: SubcategoriesGr
                     </p>
                   )}
                   {/* CTA внутри того же блока без границы */}
-                  <div className="flex items-center gap-2 text-primary font-semibold transition-all duration-300 group-hover:gap-3 mt-2">
-                    <span className="text-xs sm:text-sm md:text-base">{t("homePage.catalog.readMore")}</span>
+                  <div className="mt-auto flex items-center gap-2 text-primary font-semibold transition-all duration-300 group-hover:gap-3">
+                    <span className="text-sm">{t("homePage.catalog.readMore")}</span>
                     <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </div>
                 </div>

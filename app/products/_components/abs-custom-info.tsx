@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { useEffect, useRef, useState, type ReactNode } from "react"
 import { CustomOrderForm } from "./custom-order-form"
 import { cn } from "@/lib/utils"
@@ -21,6 +22,25 @@ const applicationsList = [
   "бытовые изделия, игрушки и др.",
 ]
 
+const galleryImages = [
+  {
+    src: "/images/abs-custom/abs-production-materials.png",
+    alt: "АБС-пластик, гранулы и готовые изделия",
+  },
+  {
+    src: "/images/abs-custom/abs-colored-granules.png",
+    alt: "Цветные гранулы АБС-пластика",
+  },
+  {
+    src: "/images/abs-custom/abs-resin-granules.png",
+    alt: "Гранулы АБС-смолы",
+  },
+  {
+    src: "/prevyu/produktsiya/polimernye-granuly-lab.png",
+    alt: "Полимерные гранулы в лабораторных колбах",
+  },
+]
+
 const ioDefault: IntersectionObserverInit = {
   threshold: 0.12,
   rootMargin: "0px 0px -8% 0px",
@@ -31,6 +51,7 @@ function ScrollReveal({
   className,
   withScale = false,
   delayMs = 0,
+  direction = "up",
 }: {
   children: ReactNode
   className?: string
@@ -38,6 +59,8 @@ function ScrollReveal({
   withScale?: boolean
   /** задержка после пересечения (для лёгкого каскада) */
   delayMs?: number
+  /** направление плавного появления */
+  direction?: "up" | "left" | "right"
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const [shown, setShown] = useState(false)
@@ -80,9 +103,12 @@ function ScrollReveal({
       className={cn(
         "transition-[opacity,transform] duration-[850ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform",
         shown
-          ? "opacity-100 translate-y-0"
+          ? "opacity-100 translate-x-0 translate-y-0"
           : cn(
-              "opacity-0 translate-y-10",
+              "opacity-0",
+              direction === "left" && "-translate-x-10",
+              direction === "right" && "translate-x-10",
+              direction === "up" && "translate-y-10",
               withScale && "scale-[0.97]"
             ),
         shown && withScale && "scale-100",
@@ -96,75 +122,125 @@ function ScrollReveal({
 
 export function AbsCustomInfo() {
   return (
-    <div className="font-zerno w-full max-w-none space-y-14 lg:space-y-16">
-      <ScrollReveal className="py-6 lg:py-10">
-        <p className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl text-foreground leading-[1.35] font-normal tracking-tight">
-          {introText}
-        </p>
+    <div className="w-full max-w-none space-y-12 lg:space-y-14">
+      <ScrollReveal direction="left" className="py-2 lg:py-4">
+        <div className="max-w-5xl rounded-3xl border border-border bg-card/80 p-6 shadow-sm sm:p-8">
+          <p className="text-lg leading-relaxed text-muted-foreground sm:text-xl">
+            {introText}
+          </p>
+        </div>
       </ScrollReveal>
 
-      <div className="space-y-8 lg:space-y-10">
-        <ScrollReveal>
-          <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
-            Преимущества АБС-пластика
-          </h3>
+      <div className="grid gap-8 lg:grid-cols-[28rem_minmax(0,1fr)] lg:items-center">
+        <ScrollReveal direction="left">
+          <div className="group relative h-72 overflow-hidden rounded-3xl border border-border bg-muted shadow-sm lg:h-[30rem]">
+            <Image
+              src={galleryImages[0].src}
+              alt={galleryImages[0].alt}
+              fill
+              sizes="(min-width: 1024px) 28rem, 100vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+          </div>
         </ScrollReveal>
+        <div className="space-y-6 lg:space-y-8">
+          <ScrollReveal direction="right">
+            <h3 className="text-2xl font-bold tracking-tight sm:text-3xl">
+              Преимущества АБС-пластика
+            </h3>
+          </ScrollReveal>
 
-        <div className="grid md:grid-cols-2 gap-5 lg:gap-6">
-          {advantages.map((advantage, index) => (
-            <ScrollReveal key={advantage} delayMs={index * 70}>
-              <div className="bg-background rounded-2xl p-6 lg:p-7 border border-border transition-all duration-500 h-full">
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-primary font-bold text-sm">✓</span>
+          <div className="grid md:grid-cols-2 gap-5 lg:gap-6">
+            {advantages.map((advantage, index) => (
+              <ScrollReveal key={advantage} direction="right" delayMs={index * 70}>
+                <div className="bg-background rounded-2xl p-6 lg:p-7 border border-border transition-all duration-500 h-full">
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-primary font-bold text-sm">✓</span>
+                    </div>
+                    <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">{advantage}</p>
                   </div>
-                  <p className="text-lg md:text-xl lg:text-2xl text-muted-foreground leading-relaxed">{advantage}</p>
                 </div>
-              </div>
-            </ScrollReveal>
-          ))}
+              </ScrollReveal>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="space-y-8 lg:space-y-10">
-        <ScrollReveal>
-          <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
-            Что изготавливают из АБС-пластика
-          </h3>
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_28rem] lg:items-center">
+        <div className="space-y-6 lg:space-y-8">
+          <ScrollReveal direction="left">
+            <h3 className="text-2xl font-bold tracking-tight sm:text-3xl">
+              Что изготавливают из АБС-пластика
+            </h3>
+          </ScrollReveal>
+
+          <ScrollReveal direction="left" delayMs={40}>
+            <p className="max-w-5xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
+              Мы осуществляем экструзию или литье АБС-пластика в готовые изделия. Также имеется оборудование для
+              изготовления компаундов. Именно поэтому предлагается широкий спектр продукции с нужными характеристиками для
+              медицинской, радиотехнической, приборостроительной и других отраслей промышленности. Производственные
+              мощности позволяют изготавливать из АБС-пластика на заказ:
+            </p>
+          </ScrollReveal>
+
+          <ul className="space-y-5 lg:space-y-6">
+            {applicationsList.map((item, index) => (
+              <li key={item} className="list-none">
+                <ScrollReveal direction="left" delayMs={index * 90}>
+                  <div className="flex items-start gap-3">
+                    <span className="mt-1 text-xl font-semibold text-primary">
+                      •
+                    </span>
+                    <span className="text-lg leading-relaxed text-foreground sm:text-xl">
+                      {item}
+                    </span>
+                  </div>
+                </ScrollReveal>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <ScrollReveal direction="right" delayMs={100}>
+          <div className="group relative h-72 overflow-hidden rounded-3xl border border-border bg-muted shadow-sm lg:h-[30rem]">
+            <Image
+              src={galleryImages[1].src}
+              alt={galleryImages[1].alt}
+              fill
+              sizes="(min-width: 1024px) 28rem, 100vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+          </div>
         </ScrollReveal>
+      </div>
 
-        <ScrollReveal delayMs={40}>
-          <p className="text-2xl sm:text-3xl md:text-4xl text-foreground leading-[1.35] font-normal">
-            Мы осуществляем экструзию или литье АБС-пластика в готовые изделия. Также имеется оборудование для
-            изготовления компаундов. Именно поэтому предлагается широкий спектр продукции с нужными характеристиками для
-            медицинской, радиотехнической, приборостроительной и других отраслей промышленности. Производственные
-            мощности позволяют изготавливать из АБС-пластика на заказ:
-          </p>
+      <div className="grid gap-8 lg:grid-cols-[28rem_minmax(0,1fr)] lg:items-center">
+        <ScrollReveal direction="left">
+          <div className="group relative h-72 overflow-hidden rounded-3xl border border-border bg-muted shadow-sm lg:h-96">
+            <Image
+              src={galleryImages[2].src}
+              alt={galleryImages[2].alt}
+              fill
+              sizes="(min-width: 1024px) 28rem, 100vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+          </div>
         </ScrollReveal>
-
-        <ul className="space-y-5 lg:space-y-6">
-          {applicationsList.map((item, index) => (
-            <li key={item} className="list-none">
-              <ScrollReveal delayMs={index * 90}>
-                <div className="flex items-start gap-3">
-                  <span className="text-primary font-semibold mt-1.5 text-2xl md:text-3xl">
-                    •
-                  </span>
-                  <span className="text-2xl sm:text-3xl md:text-4xl text-foreground leading-[1.35] font-normal">
-                    {item}
-                  </span>
-                </div>
-              </ScrollReveal>
-            </li>
-          ))}
-        </ul>
-
-        <ScrollReveal delayMs={120}>
-          <p className="text-2xl sm:text-3xl md:text-4xl text-foreground leading-[1.35] font-normal">
-            Чтобы приобрести имеющиеся товары или заказать изготовление изделий из АБС-пластика под индивидуальные
-            требования, оставьте запрос на сайте либо свяжитесь с нашими специалистами по контактному номеру телефона.
-            Также можно написать письмо на электронную почту info@td-plastic.ru.
-          </p>
+        <ScrollReveal direction="right" delayMs={100}>
+          <div className="space-y-4">
+            <h3 className="text-2xl font-bold tracking-tight sm:text-3xl">
+              Материалы и примеры применения
+            </h3>
+            <p className="max-w-3xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
+              Визуальный ряд с гранулами, компаундами и готовыми пластиковыми изделиями показывает связь сырья с
+              конечной продукцией и помогает быстрее понять возможности производства.
+            </p>
+            <p className="max-w-3xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
+              Чтобы приобрести имеющиеся товары или заказать изготовление изделий из АБС-пластика под индивидуальные
+              требования, оставьте запрос на сайте либо свяжитесь с нашими специалистами по контактному номеру телефона.
+              Также можно написать письмо на электронную почту info@td-plastic.ru.
+            </p>
+          </div>
         </ScrollReveal>
       </div>
 

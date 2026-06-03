@@ -117,8 +117,7 @@ export const loadCategoriesCached = async (): Promise<Category[]> => {
         categoriesCache = jsonCategories
         return jsonCategories
       }
-    } catch (error) {
-      console.error("Error loading categories:", error)
+    } catch {
       const jsonCategories = getJsonCategories()
       categoriesCache = jsonCategories
       return jsonCategories

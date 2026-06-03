@@ -20,7 +20,7 @@ export default function NewsPage() {
             <div className="max-w-4xl mx-auto">
               {/* Выделенный заголовок */}
               <div className="mb-16 text-center">
-                <h1 className="text-6xl md:text-7xl font-bold mb-6 text-primary animate-in fade-in slide-in-from-bottom-4 duration-700">
+                <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 text-primary leading-tight break-words animate-in fade-in slide-in-from-bottom-4 duration-700">
                   Новости
                 </h1>
                 <p className="text-xl md:text-2xl text-foreground/70 leading-relaxed animate-in fade-in slide-in-from-bottom-5 duration-700 delay-200">

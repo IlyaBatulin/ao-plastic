@@ -238,7 +238,7 @@ export function FinndispPageClient() {
                 {page.heroSubtitle}
               </p>
               <h1
-                className="mb-6 text-6xl font-bold animate-in fade-in slide-in-from-bottom-4 duration-700 md:text-7xl"
+                className="mb-6 text-4xl font-bold leading-tight break-words animate-in fade-in slide-in-from-bottom-4 duration-700 sm:text-5xl md:text-7xl"
                 style={{ color: FINNDISP_BLUE }}
               >
                 {page.heroTitle}

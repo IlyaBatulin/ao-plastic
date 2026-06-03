@@ -233,7 +233,7 @@ export function Contact() {
             {/* Map */}
             <div className="bg-muted rounded-2xl overflow-hidden h-64">
               <iframe
-                src="https://yandex.ru/map-widget/v1/?ll=38.165000,53.977000&z=15&l=map"
+                src="https://yandex.ru/map-widget/v1/?ll=38.082549%2C54.014162&pt=38.082549%2C54.014162%2Cpm2rdm&z=16&l=map"
                 width="100%"
                 height="100%"
                 frameBorder="0"

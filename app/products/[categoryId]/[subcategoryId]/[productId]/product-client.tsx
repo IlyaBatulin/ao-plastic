@@ -136,6 +136,7 @@ export function ProductPageClient({
   // Удаляем штрихкод из specifications (не должен отображаться)
   const { Штрихкод, штрихкод, barcode, ...cleanSpecs } = specifications
   specifications = cleanSpecs
+  const detailSections = Array.isArray(product.detailSections) ? product.detailSections : []
 
   // Для экструзионных изделий скрываем блок "ключевые фичи" и оставляем только описание/характеристики
   const isExtrusionProduct =
@@ -327,6 +328,63 @@ export function ProductPageClient({
           </div>
         </div>
       </section>
+
+      {detailSections.length > 0 && (
+        <section className="py-16 bg-background">
+          <div className="container mx-auto px-4 lg:px-8">
+            <div className="grid gap-6">
+              {detailSections.map((section: any) => (
+                <article
+                  key={section.title}
+                  className="rounded-3xl border border-border bg-card p-6 shadow-sm lg:p-8"
+                >
+                  <h2 className="mb-5 text-2xl font-bold text-primary lg:text-3xl">
+                    {section.title}
+                  </h2>
+                  <div
+                    className={
+                      section.image
+                        ? "grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start"
+                        : ""
+                    }
+                  >
+                    <div className="space-y-4 text-base leading-relaxed text-muted-foreground lg:text-lg">
+                      {section.paragraphs?.map((paragraph: string) => (
+                        <p key={paragraph}>{paragraph}</p>
+                      ))}
+                      {section.items?.length > 0 && (
+                        <ul className="list-disc space-y-2 pl-6">
+                          {section.items.map((item: string) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      )}
+                      {section.after?.map((paragraph: string) => (
+                        <p key={paragraph}>{paragraph}</p>
+                      ))}
+                    </div>
+                    {section.image && (
+                      <div
+                        className={`relative min-h-64 overflow-hidden rounded-2xl border border-border shadow-sm lg:min-h-80 ${
+                          section.imageBackground === "black" ? "bg-black" : "bg-muted"
+                        }`}
+                      >
+                        <Image
+                          src={section.image}
+                          alt={section.imageAlt ?? section.title}
+                          fill
+                          sizes="(min-width: 1024px) 22rem, 100vw"
+                          className={section.imageFit === "contain" ? "object-contain" : "object-cover"}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Specifications */}
       {Object.keys(specifications).length > 0 && (

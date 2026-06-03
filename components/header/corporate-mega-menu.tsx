@@ -96,8 +96,7 @@ export const loadCategoriesCached = async (): Promise<Category[]> => {
         categoriesCache = jsonCategories
         return jsonCategories
       }
-    } catch (error) {
-      console.error("Error loading categories:", error)
+    } catch {
       // Fallback на JSON
       const jsonCategories = productsData.categories
         .filter((cat) => cat.id !== 'dispersion')

@@ -12,6 +12,7 @@ import {
   isMachinePartsExtrusion,
   resolveSubcategory,
 } from "@/lib/catalog-slugs"
+import { normalizeHouseholdProduct } from "@/lib/household-product-content"
 import { isNextBuild } from "@/lib/next-build"
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld"
 
@@ -170,6 +171,10 @@ export default async function ProductPage({
       category = fallbackCategory
       subcategory = fallbackSubcategory
     }
+  }
+
+  if (product) {
+    product = normalizeHouseholdProduct(product, categoryId, subcategoryId)
   }
 
   if (!product) {

@@ -5,6 +5,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useCart } from "@/contexts/cart-context"
 import { useToast } from "@/hooks/use-toast"
 import { formatSpecKey, formatSpecValue } from "@/lib/formatters"
@@ -12,6 +13,37 @@ import { useLanguage } from "@/contexts/language-context"
 import { resolveProductDisplay } from "@/lib/product-en"
 import { resolveProductImageUrl } from "@/lib/product-image"
 import { ProductCardPlasticLogo } from "./product-card-plastic-logo"
+
+const ABS_CARD_SPEC_KEYS = [
+  "Показатель_текучести_расплава_MFR_г_10мин",
+  "Температура_размягчения_по_Вика_градС",
+  "Ударная_вязкость_по_Изоду_кДж_м2",
+  "Предел_текучести_при_растяжении_МПа",
+  "Относительное_удлинение_при_разрыве_проц",
+  "Усадка_проц",
+  "Блеск_проц",
+]
+
+const LOW_VALUE_CARD_SPEC_KEYS = new Set(["Тип", "Марка", "Применение"])
+
+function getCardSpecEntries(specs: Record<string, any>, categoryId?: string) {
+  const entries = Object.entries(specs).filter(([, value]) => value !== null && value !== undefined && value !== "")
+
+  if (categoryId !== "abs") {
+    return entries
+  }
+
+  const prioritized = ABS_CARD_SPEC_KEYS.flatMap((key) =>
+    Object.prototype.hasOwnProperty.call(specs, key) && specs[key] !== null && specs[key] !== undefined && specs[key] !== ""
+      ? [[key, specs[key]] as [string, any]]
+      : []
+  )
+  const rest = entries.filter(
+    ([key]) => !ABS_CARD_SPEC_KEYS.includes(key) && !LOW_VALUE_CARD_SPEC_KEYS.has(key)
+  )
+
+  return [...prioritized, ...rest]
+}
 
 export default function ProductsGrid({ 
   products, 
@@ -26,6 +58,7 @@ export default function ProductsGrid({
   const { addItem } = useCart()
   const { toast } = useToast()
   const { lang, t } = useLanguage()
+  const router = useRouter()
 
   // ДМС (литьевые и экструзионные) — карточки сразу видимы, без анимации при скролле
   const isDms = categoryId === "machine-parts"
@@ -73,6 +106,7 @@ export default function ProductsGrid({
         const specs = typeof product.specifications === "string"
           ? JSON.parse(product.specifications)
           : product.specifications || {}
+        const cardSpecEntries = getCardSpecEntries(specs, categoryId)
 
         const { name: displayName, description: displayDescription } = resolveProductDisplay(
           {
@@ -87,11 +121,21 @@ export default function ProductsGrid({
           { categoryId, subcategoryId }
         )
         const imageUrl = resolveProductImageUrl(String(product.id), product.image)
+        const productHref = categoryId && subcategoryId
+          ? `/products/${categoryId}/${subcategoryId}/${product.id}`
+          : "#"
 
         return (
           <Link
             key={product.id}
-            href={categoryId && subcategoryId ? `/products/${categoryId}/${subcategoryId}/${product.id}` : '#'}
+            href={productHref}
+            prefetch={productHref !== "#"}
+            onMouseEnter={() => {
+              if (productHref !== "#") router.prefetch(productHref)
+            }}
+            onTouchStart={() => {
+              if (productHref !== "#") router.prefetch(productHref)
+            }}
             className="product-card group relative bg-card rounded-3xl overflow-hidden border border-border/50 hover:border-primary/50"
             style={isDms ? undefined : {
               opacity: 0,
@@ -120,9 +164,9 @@ export default function ProductsGrid({
                 {displayDescription}
               </p>
 
-              {Object.keys(specs).length > 0 && (
+              {cardSpecEntries.length > 0 && (
                 <div className="space-y-2 mb-4">
-                  {Object.entries(specs).slice(0, 3).map(([key, value]) => (
+                  {cardSpecEntries.slice(0, 3).map(([key, value]) => (
                     <div key={key} className="flex items-start justify-between text-sm gap-2">
                       <span className="text-muted-foreground flex-shrink-0">
                         {formatSpecKey(key, lang === "en" ? "en" : "ru")}:

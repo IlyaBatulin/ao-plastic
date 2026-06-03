@@ -238,7 +238,7 @@ export function PasfPageClient() {
                 <Shield className="h-4 w-4" />
                 {page.heroBadge}
               </span>
-              <h1 className="mb-6 text-6xl font-bold text-primary animate-in fade-in slide-in-from-bottom-4 duration-700 md:text-7xl">
+              <h1 className="mb-6 text-4xl font-bold text-primary leading-tight break-words animate-in fade-in slide-in-from-bottom-4 duration-700 sm:text-5xl md:text-7xl">
                 {page.heroTitle}
               </h1>
               <p className="text-xl leading-relaxed text-foreground/70 animate-in fade-in slide-in-from-bottom-5 duration-700 delay-200 md:text-2xl">

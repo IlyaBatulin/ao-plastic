@@ -25,12 +25,12 @@ export const videoConfig: Record<string, string> = {
   // Категория: Хозяйственные товары
   'hoztovary': '/videos/xoztov.mp4',
 
-  // ДМС — общее фоновое видео категории
-  "machine-parts": "/videos/mainlogo.mp4",
+  // ДМС и экструзионные изделия — фон с промышленными пластиковыми трубками
+  "machine-parts": "/videos/plastic-tubes-in-industrial.mp4",
   // Экструзионные изделия (синие трубки / профили)
-  "machine-parts/parts-extrusion": "/images/bluetubes.mp4",
-  "machine-parts/extrusion": "/images/bluetubes.mp4",
-  "machine-parts/extrusion-parts": "/images/bluetubes.mp4",
+  "machine-parts/parts-extrusion": "/videos/plastic-tubes-in-industrial.mp4",
+  "machine-parts/extrusion": "/videos/plastic-tubes-in-industrial.mp4",
+  "machine-parts/extrusion-parts": "/videos/plastic-tubes-in-industrial.mp4",
   // КОРС и Бентол — отдельный ролик
   kors: "/videos/bentolmain.mp4",
   "custom-abs": "/videos/mainlogo.mp4",

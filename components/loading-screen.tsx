@@ -2,7 +2,10 @@
 
 import { useEffect, useState, useRef, useCallback } from "react"
 
-const MAX_SPLASH_MS = 4500
+const MAX_SPLASH_MS = 12000
+const MIN_SPLASH_MS = 900
+const HERO_VIDEO_READY_EVENT = "ao-plastic:hero-video-ready"
+const FORCE_SPLASH_IN_DEV = process.env.NODE_ENV === "development"
 
 function isMobileViewport(): boolean {
   if (typeof window === "undefined") return false
@@ -40,9 +43,9 @@ function hideMainContentForSplash() {
 export function LoadingScreen() {
   const [isVisible, setIsVisible] = useState(false)
   const [isFading, setIsFading] = useState(false)
-  const videoRef = useRef<HTMLVideoElement>(null)
   const dismissedRef = useRef(false)
   const [pageLoaded, setPageLoaded] = useState(false)
+  const [heroVideoReady, setHeroVideoReady] = useState(false)
 
   const dismissSplash = useCallback((persist = true) => {
     if (dismissedRef.current) return
@@ -50,7 +53,7 @@ export function LoadingScreen() {
 
     setIsFading(true)
     revealMainContent()
-    if (persist) {
+    if (persist && !FORCE_SPLASH_IN_DEV) {
       try {
         sessionStorage.setItem("hasSeenLoading", "true")
       } catch {
@@ -66,7 +69,7 @@ export function LoadingScreen() {
 
   useEffect(() => {
     try {
-      if (sessionStorage.getItem("hasSeenLoading")) {
+      if (!FORCE_SPLASH_IN_DEV && sessionStorage.getItem("hasSeenLoading")) {
         revealMainContent()
         return
       }
@@ -76,10 +79,12 @@ export function LoadingScreen() {
 
     if (shouldSkipSplash()) {
       revealMainContent()
-      try {
-        sessionStorage.setItem("hasSeenLoading", "true")
-      } catch {
-        // ignore
+      if (!FORCE_SPLASH_IN_DEV) {
+        try {
+          sessionStorage.setItem("hasSeenLoading", "true")
+        } catch {
+          // ignore
+        }
       }
       return
     }
@@ -94,83 +99,53 @@ export function LoadingScreen() {
     hideMainContentForSplash()
 
     const handleLoad = () => setPageLoaded(true)
+    const shouldWaitForHeroVideo = window.location.pathname === "/"
+    const handleHeroVideoReady = () => setHeroVideoReady(true)
+
+    setHeroVideoReady(!shouldWaitForHeroVideo)
+
     if (document.readyState === "complete") {
       setPageLoaded(true)
     } else {
       window.addEventListener("load", handleLoad)
     }
+    window.addEventListener(HERO_VIDEO_READY_EVENT, handleHeroVideoReady)
 
     const maxTimer = window.setTimeout(() => dismissSplash(true), MAX_SPLASH_MS)
 
     return () => {
       window.removeEventListener("load", handleLoad)
+      window.removeEventListener(HERO_VIDEO_READY_EVENT, handleHeroVideoReady)
       window.clearTimeout(maxTimer)
       document.body.style.overflow = ""
     }
   }, [isVisible, dismissSplash])
 
   useEffect(() => {
-    if (!isVisible || dismissedRef.current) return
+    if (!isVisible || !pageLoaded || !heroVideoReady || dismissedRef.current) return
 
-    const video = videoRef.current
-    if (!video) return
-
-    video.playbackRate = 2.0
-    const playPromise = video.play()
-    if (playPromise) {
-      playPromise.catch(() => dismissSplash(true))
-    }
-  }, [isVisible, dismissSplash])
-
-  useEffect(() => {
-    if (pageLoaded && videoRef.current?.ended) {
-      dismissSplash(true)
-    }
-  }, [pageLoaded, dismissSplash])
+    const timer = window.setTimeout(() => dismissSplash(true), MIN_SPLASH_MS)
+    return () => window.clearTimeout(timer)
+  }, [isVisible, pageLoaded, heroVideoReady, dismissSplash])
 
   if (!isVisible) return null
 
   return (
     <div
       role="presentation"
-      className={`fixed inset-0 z-[9999] bg-background transition-opacity duration-400 ${
+      className={`fixed inset-0 z-[9999] bg-white transition-opacity duration-400 ${
         isFading ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
       onClick={() => dismissSplash(true)}
     >
       <div className="flex items-center justify-center w-full h-full p-4 sm:p-8">
-        <div className="relative w-full max-w-xs sm:max-w-md md:max-w-2xl aspect-video overflow-hidden">
-          <video
-            ref={videoRef}
-            autoPlay
-            muted
-            playsInline
-            preload="metadata"
-            controls={false}
-            disablePictureInPicture
-            disableRemotePlayback
-            className="w-full h-full object-cover"
-            style={{ pointerEvents: "none" }}
-            onEnded={() => dismissSplash(true)}
-            onError={() => dismissSplash(true)}
-            onLoadedMetadata={(e) => {
-              e.currentTarget.playbackRate = 2.0
-            }}
-            onTimeUpdate={(e) => {
-              const video = e.currentTarget
-              if (!Number.isFinite(video.duration) || video.duration <= 0) return
-              if (pageLoaded && video.currentTime >= video.duration - 0.15) {
-                dismissSplash(true)
-              }
-            }}
-          >
-            <source src="/videos/mainload.mp4" type="video/mp4" />
-          </video>
-        </div>
+        <img
+          src="/images/logo123.jpg"
+          alt="АО Пластик"
+          className="w-full max-w-xs animate-pulse select-none sm:max-w-md md:max-w-2xl"
+          draggable={false}
+        />
       </div>
-      <p className="absolute bottom-6 left-0 right-0 text-center text-xs text-muted-foreground">
-        Нажмите, чтобы пропустить
-      </p>
     </div>
   )
 }

@@ -6,6 +6,7 @@ import { Sheet, SheetContent, SheetTitle, SheetFooter } from "@/components/ui/sh
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import corporateMenuData from "@/data/menu-corporate.json"
+import productsData from "@/data/products.json"
 import { createClient } from "@/utils/supabase/client"
 import { useEffect, useState } from "react"
 import { useTranslation } from "@/lib/i18n"
@@ -24,6 +25,15 @@ interface Category {
   slug: string
 }
 
+const getJsonCategories = (): Category[] =>
+  productsData.categories
+    .filter((cat) => cat.id !== "dispersion" && cat.id !== "pvc-modifier")
+    .map((cat) => ({
+      id: cat.id,
+      name: cat.name,
+      slug: cat.id,
+    }))
+
 // Кастомный AccordionTrigger с + и -
 function CustomAccordionTrigger({
   className,
@@ -34,7 +44,7 @@ function CustomAccordionTrigger({
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
         className={cn(
-          'flex flex-1 items-center justify-between gap-4 rounded-md py-3 text-left text-base font-semibold transition-all outline-none hover:text-primary focus-visible:ring-2 focus-visible:ring-primary disabled:pointer-events-none',
+          'flex flex-1 items-center justify-between gap-4 rounded-md py-3.5 text-left text-lg font-semibold transition-all outline-none hover:text-primary focus-visible:ring-2 focus-visible:ring-primary disabled:pointer-events-none',
           className,
         )}
         {...props}
@@ -61,7 +71,7 @@ function NestedAccordionTrigger({
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
         className={cn(
-          'flex flex-1 items-center justify-between gap-4 rounded-md py-2 text-left text-sm font-medium transition-all outline-none hover:text-primary focus-visible:ring-2 focus-visible:ring-primary disabled:pointer-events-none',
+          'flex flex-1 items-center justify-between gap-4 rounded-md py-2.5 text-left text-base font-medium transition-all outline-none hover:text-primary focus-visible:ring-2 focus-visible:ring-primary disabled:pointer-events-none',
           className,
         )}
         {...props}
@@ -92,7 +102,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         // Проверяем наличие конфигурации Supabase
         if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
           // Используем fallback данные
-          setCategories([])
+          setCategories(getJsonCategories())
           setLoading(false)
           return
         }
@@ -104,14 +114,20 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           .order("sort", { ascending: true })
 
         if (error) {
-          console.error("Error loading categories:", error)
-          setCategories([])
+          setCategories(getJsonCategories())
         } else if (categoriesData) {
-          setCategories(categoriesData)
+          setCategories(
+            categoriesData.length > 0
+              ? categoriesData.map((category) => ({
+                  id: category.id,
+                  name: category.name,
+                  slug: category.slug || category.id,
+                }))
+              : getJsonCategories()
+          )
         }
-      } catch (error) {
-        console.error("Error loading categories:", error)
-        setCategories([])
+      } catch {
+        setCategories(getJsonCategories())
       } finally {
         setLoading(false)
       }
@@ -170,22 +186,22 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         {label}
                       </CustomAccordionTrigger>
                       <AccordionContent className="px-0 pb-2">
-                        <div className="space-y-1 pl-4">
+                        <div className="space-y-1.5 pl-4">
                           {loading ? (
-                            <div className="text-sm text-muted-foreground py-2">Загрузка...</div>
+                            <div className="py-2.5 text-base text-muted-foreground">Загрузка...</div>
                           ) : categories.length > 0 ? (
                             categories.map((category) => (
                               <Link
                                 key={category.id}
                                 href={`/products/${category.slug}`}
                                 onClick={onClose}
-                                className="block text-sm text-muted-foreground hover:text-primary py-2 px-4 transition-colors rounded-lg hover:bg-gray-100/50"
+                                className="block rounded-lg px-4 py-2.5 text-base text-muted-foreground transition-colors hover:bg-gray-100/50 hover:text-primary"
                               >
                                 {getCatalogCategoryLabel(category.id, category.name, i18nLang === "en" ? "en" : "ru")}
                               </Link>
                             ))
                           ) : (
-                            <div className="text-sm text-muted-foreground py-2 px-4">
+                            <div className="px-4 py-2.5 text-base text-muted-foreground">
                               Категории загружаются...
                             </div>
                           )}
@@ -205,7 +221,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         {label}
                       </CustomAccordionTrigger>
                       <AccordionContent className="px-0 pb-2">
-                        <div className="space-y-1 pl-4">
+                        <div className="space-y-1.5 pl-4">
                           {/* Вложенный аккордеон для секций */}
                           <Accordion type="single" collapsible className="w-full">
                             {item.sections.map((section, sectionIndex) => {
@@ -214,11 +230,11 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                               
                               return (
                                 <AccordionItem key={sectionValue} value={sectionValue} className="border-none">
-                                  <NestedAccordionTrigger className="px-0 py-2">
-                                    <span className="text-sm font-medium text-foreground">{sectionTitle}</span>
+                                  <NestedAccordionTrigger className="px-0 py-2.5">
+                                    <span className="text-base font-medium text-foreground">{sectionTitle}</span>
                                   </NestedAccordionTrigger>
                                   <AccordionContent className="px-0 pb-2">
-                                    <div className="space-y-1 pl-4">
+                                    <div className="space-y-1.5 pl-4">
                                       {section.items.map((subItem, subItemIndex) => {
                                         const subLabel = (i18nLang === "en" && subItem.labelEn ? subItem.labelEn : subItem.label) || subItem.label
                                         const uniqueKey = `${item.label}-${sectionIndex}-${subItemIndex}-${subItem.href}`
@@ -227,7 +243,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                                             key={uniqueKey}
                                             href={subItem.href}
                                             onClick={onClose}
-                                            className="block text-sm text-muted-foreground hover:text-primary py-2 px-4 transition-colors rounded-lg hover:bg-gray-100/50"
+                                            className="block rounded-lg px-4 py-2.5 text-base text-muted-foreground transition-colors hover:bg-gray-100/50 hover:text-primary"
                                           >
                                             {subLabel}
                                           </Link>
@@ -252,7 +268,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   key={item.label}
                   href={item.href}
                   onClick={onClose}
-                  className="block text-base font-semibold py-3 transition-colors hover:text-primary rounded-lg px-0 text-foreground"
+                  className="block rounded-lg px-0 py-3.5 text-lg font-semibold text-foreground transition-colors hover:text-primary"
                 >
                   {label}
                 </Link>

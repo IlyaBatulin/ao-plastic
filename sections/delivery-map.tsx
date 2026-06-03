@@ -17,7 +17,7 @@ const DeliveryMapLeaflet = dynamic(
 )
 
 /** Завод АО «Пластик» — Узловая, Тульская область */
-const FACTORY = { lat: 53.9833, lon: 38.1667 }
+const FACTORY = { lat: 54.014162, lon: 38.082549 }
 /** Офис продаж — Москва */
 const OFFICE = { lat: 55.7558, lon: 37.6173 }
 

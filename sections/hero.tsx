@@ -11,12 +11,18 @@ import { HeroNavigation } from "@/components/hero-navigation"
 
 const HERO_VIDEO_SRC = "/videos/frontpage4.mp4"
 const HERO_POSTER_SRC = "/prevyu/fasad/furs0079-1.jpeg"
+const HERO_VIDEO_READY_EVENT = "ao-plastic:hero-video-ready"
 
 export function Hero() {
   const { t } = useLanguage()
   const videoRef = useRef<HTMLVideoElement>(null)
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
   const [isVideoReady, setIsVideoReady] = useState(false)
+
+  const markVideoReady = () => {
+    setIsVideoReady(true)
+    window.dispatchEvent(new Event(HERO_VIDEO_READY_EVENT))
+  }
 
   useEffect(() => {
     const connection = (navigator as Navigator & {
@@ -25,9 +31,12 @@ export function Hero() {
     const isSlowConnection =
       connection?.saveData || connection?.effectiveType === "slow-2g" || connection?.effectiveType === "2g"
 
-    if (!isSlowConnection) {
-      setShouldLoadVideo(true)
+    if (isSlowConnection) {
+      window.dispatchEvent(new Event(HERO_VIDEO_READY_EVENT))
+      return
     }
+
+    setShouldLoadVideo(true)
   }, [shouldLoadVideo])
 
   useEffect(() => {
@@ -80,7 +89,9 @@ export function Hero() {
           controlsList="nodownload noplaybackrate noremoteplayback"
           disablePictureInPicture
           disableRemotePlayback
-          onPlaying={() => setIsVideoReady(true)}
+          onCanPlay={markVideoReady}
+          onPlaying={markVideoReady}
+          onError={markVideoReady}
           style={{ pointerEvents: "none" }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80" />

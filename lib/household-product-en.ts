@@ -173,33 +173,15 @@ const HOUSEHOLD_PRODUCT_EN: Record<string, { name: string; description: string }
     description:
       "Gets any fire going; comfortable in the hand — great for charcoal and barbecue.",
   },
-  "canister-3l": {
-    name: "Canister 3 L",
-    description: "Compact small-volume HDPE canister.",
+  "canister-21-5l": {
+    name: "Polymer Canisters with Caps",
+    description:
+      "Polymer canisters with caps, capacity 21.5 dm3, for packaging, transportation and storage of food, chemical and other products.",
   },
-  "canister-5l": {
-    name: "Canister 5 L",
-    description: "HDPE canister for storing liquids.",
-  },
-  "canister-10l": {
-    name: "Canister 10 L",
-    description: "Medium-volume plastic canister.",
-  },
-  "canister-20l": {
-    name: "Canister 20 L",
-    description: "Large industrial canister.",
-  },
-  "canister-30l": {
-    name: "Canister 30 L",
-    description: "Extra-large industrial canister for bulk liquids.",
-  },
-  "box-40l": {
-    name: "Storage Box 40 L",
-    description: "Strong plastic storage crate.",
-  },
-  "box-60l": {
-    name: "Storage Box 60 L",
-    description: "Large plastic storage crate.",
+  "box-polymer": {
+    name: "Polymer Crate (black, blue)",
+    description:
+      "Polymer crate for packaging, storage and transportation of fresh mushrooms, vegetables, berries, herbs and other food products.",
   },
 }
 

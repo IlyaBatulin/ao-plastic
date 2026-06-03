@@ -17,6 +17,7 @@ import {
   isMachinePartsExtrusion,
   resolveSubcategory,
 } from "@/lib/catalog-slugs"
+import { normalizeHouseholdProducts } from "@/lib/household-product-content"
 
 export const revalidate = 300
 
@@ -114,8 +115,13 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ ca
   )
 
   const baseProducts = (products && products.length > 0) ? products : fallbackProducts
+  const normalizedBaseProducts = normalizeHouseholdProducts(
+    baseProducts,
+    categoryId,
+    publicSubcategorySlug
+  )
 
-  const displayProducts = baseProducts.map((product: any) => {
+  const displayProducts = normalizedBaseProducts.map((product: any) => {
     const fallback =
       fallbackById.get(product.id) ||
       fallbackBySub.get(product.subcategory_id ?? "") ||
@@ -130,10 +136,8 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ ca
       }
     }
 
-    const mergedSpecs = {
-      ...(fallback?.specifications ?? {}),
-      ...(specifications ?? {}),
-    }
+    const hasProductSpecs = specifications && Object.keys(specifications).length > 0
+    const mergedSpecs = hasProductSpecs ? specifications : (fallback?.specifications ?? {})
 
     const imageRaw = product.image || categoryImage || fallback?.image || fallbackCategory?.image || undefined
     const image = resolveProductImageUrl(

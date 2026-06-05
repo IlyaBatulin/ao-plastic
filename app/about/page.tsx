@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { AboutPageClient } from "./about-page-client"
+import { type NextPageProps, unwrapNextPageProps } from "@/lib/next-page-props"
 
 export const metadata: Metadata = {
   title: "О компании",
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/about" },
 }
 
-export default function AboutPage() {
+export default async function AboutPage(props: NextPageProps) {
+  await unwrapNextPageProps(props)
   return <AboutPageClient />
 }

@@ -1,9 +1,11 @@
 "use client"
 
+import { use } from "react"
 import Link from "next/link"
 import { Warehouse, MapPinned } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 import { Footer } from "@/components/footer"
+import type { NextPageProps } from "@/lib/next-page-props"
 
 const nizhnyPartners = [
   {
@@ -18,7 +20,9 @@ const nizhnyPartners = [
   },
 ] as const
 
-export default function DealersPage() {
+export default function DealersPage({ params, searchParams }: NextPageProps) {
+  use(params ?? Promise.resolve({}))
+  use(searchParams ?? Promise.resolve({}))
   const { t } = useLanguage()
 
   return (

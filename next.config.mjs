@@ -24,7 +24,7 @@ const nextConfig = {
       "img-src 'self' data: blob: https:",
       "font-src 'self' data:",
       "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.hh.ru https://etpgpb.ru https://new.etpgpb.ru https://va.vercel-scripts.com",
-      "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com",
+      "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com https://yandex.ru https://*.yandex.ru https://yandex.com",
       "object-src 'none'",
       "base-uri 'self'",
       "frame-ancestors 'self'",

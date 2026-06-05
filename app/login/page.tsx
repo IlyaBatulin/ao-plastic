@@ -1,12 +1,15 @@
 "use client"
 
-import { useState } from "react"
+import { use, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Lock } from "lucide-react"
+import type { NextPageProps } from "@/lib/next-page-props"
 
-export default function SiteLogin() {
+export default function SiteLogin({ params, searchParams }: NextPageProps) {
+  use(params ?? Promise.resolve({}))
+  use(searchParams ?? Promise.resolve({}))
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)

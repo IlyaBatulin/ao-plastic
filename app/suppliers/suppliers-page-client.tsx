@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { Building2, ExternalLink, FileText, Mail, PackageSearch, Phone, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
+import { MOSCOW_OFFICE_YANDEX_MAP_EMBED_URL } from "@/lib/yandex-maps"
 
 const ETP_TENDERS_LINK =
   "https://new.etpgpb.ru/procedures/?procedure[customers][10280]=" +
@@ -135,7 +136,7 @@ export function SuppliersPageClient() {
             <div className="rounded-3xl border border-border bg-card shadow-sm overflow-hidden">
               <div className="relative h-full min-h-[400px]">
                 <iframe
-                  src="https://yandex.ru/map-widget/v1/?ll=37.471380%2C55.689065&pt=37.471380%2C55.689065&z=16"
+                  src={MOSCOW_OFFICE_YANDEX_MAP_EMBED_URL}
                   width="100%"
                   height="100%"
                   frameBorder="0"

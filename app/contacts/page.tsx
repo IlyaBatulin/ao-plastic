@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+import { use } from "react"
 
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -13,8 +14,12 @@ import { LEGAL_DOCUMENTS } from "@/lib/legal-documents"
 import { useState } from "react"
 import { useLanguage } from "@/contexts/language-context"
 import { useToast } from "@/hooks/use-toast"
+import type { NextPageProps } from "@/lib/next-page-props"
+import { FACTORY_YANDEX_MAP_EMBED_URL } from "@/lib/yandex-maps"
 
-export default function ContactsPage() {
+export default function ContactsPage({ params, searchParams }: NextPageProps) {
+  use(params ?? Promise.resolve({}))
+  use(searchParams ?? Promise.resolve({}))
   const { t } = useLanguage()
   const { toast } = useToast()
 
@@ -337,11 +342,13 @@ export default function ContactsPage() {
               <div className="space-y-6">
                 <div className="relative h-72 rounded-2xl overflow-hidden border border-border shadow-sm">
                   <iframe
-                    src="https://yandex.ru/map-widget/v1/?ll=38.082549%2C54.014162&pt=38.082549%2C54.014162%2Cpm2rdm&z=16&l=map"
+                    src={FACTORY_YANDEX_MAP_EMBED_URL}
                     width="100%"
                     height="100%"
                     frameBorder="0"
-                    allowFullScreen={true}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
                     title={t("contactsPage.mapTitle")}
                   />
                 </div>

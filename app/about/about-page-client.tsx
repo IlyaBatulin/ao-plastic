@@ -96,7 +96,13 @@ export function AboutPageClient() {
             </div>
 
             <div className="relative h-96 lg:h-[500px] rounded-2xl overflow-hidden">
-              <img src="/images/factory-3.jpg" alt={page.historyImageAlt} className="w-full h-full object-cover" />
+              <Image
+                src="/images/furs0074-distillation.png"
+                alt={page.historyImageAlt}
+                fill
+                className="object-cover object-center"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 "use client"
 
+import { use } from "react"
 import { Footer } from "@/components/footer"
 import { useCart } from "@/contexts/cart-context"
 import { Button } from "@/components/ui/button"
@@ -13,8 +14,11 @@ import Link from "next/link"
 import { LEGAL_DOCUMENTS } from "@/lib/legal-documents"
 import { useToast } from "@/hooks/use-toast"
 import { useLanguage } from "@/contexts/language-context"
+import type { NextPageProps } from "@/lib/next-page-props"
 
-export default function CartPage() {
+export default function CartPage({ params, searchParams }: NextPageProps) {
+  use(params ?? Promise.resolve({}))
+  use(searchParams ?? Promise.resolve({}))
   const { items, removeItem, updateQuantity, clearCart } = useCart()
   const { toast } = useToast()
   const { lang } = useLanguage()

@@ -1,13 +1,16 @@
 "use client"
 
-import { useState } from "react"
+import { use, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Lock } from "lucide-react"
 import { useAdminPath } from "@/hooks/use-admin-path"
+import type { NextPageProps } from "@/lib/next-page-props"
 
-export default function AdminLogin() {
+export default function AdminLogin({ params, searchParams }: NextPageProps) {
+  use(params ?? Promise.resolve({}))
+  use(searchParams ?? Promise.resolve({}))
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)

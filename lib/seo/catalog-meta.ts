@@ -7,6 +7,7 @@ import {
   getSubcategorySlugCandidates,
   isMachinePartsExtrusion,
 } from "@/lib/catalog-slugs"
+import { findJsonProduct } from "@/lib/catalog-product"
 
 export type SubcategorySeo = {
   subName: string
@@ -100,13 +101,24 @@ export async function getProductSeo(
       }
     }
   } else {
-    const { data: productData } = await supabase
+    const decodedProductId = decodeURIComponent(productId)
+    const { data: productById } = await supabase
       .from("products")
       .select("*")
-      .eq("id", productId)
+      .eq("id", decodedProductId)
       .eq("is_active", true)
-      .single()
-    if (productData) product = productData
+      .maybeSingle()
+    if (productById) {
+      product = productById
+    } else {
+      const { data: productBySlug } = await supabase
+        .from("products")
+        .select("*")
+        .eq("slug", decodedProductId)
+        .eq("is_active", true)
+        .maybeSingle()
+      if (productBySlug) product = productBySlug
+    }
   }
 
   const { data: categoryData } = await supabase.from("categories").select("name").eq("id", categoryId).single()
@@ -122,7 +134,7 @@ export async function getProductSeo(
 
   if (!product) {
     const fallbackCategory = productsData.categories.find((c) => c.id === categoryId)
-    const fallbackProduct = fallbackCategory?.products?.find((p: { id: string }) => p.id === productId)
+    const fallbackProduct = findJsonProduct(categoryId, productId)
     if (!fallbackProduct) return null
     product = fallbackProduct
     categoryName = fallbackCategory?.name || categoryName

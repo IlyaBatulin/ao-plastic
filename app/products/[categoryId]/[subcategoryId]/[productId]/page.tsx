@@ -7,11 +7,8 @@ import { getProductSeo } from "@/lib/seo/catalog-meta"
 import { truncateMeta } from "@/lib/seo/text"
 import { ProductJsonLd } from "@/components/seo/product-json-ld"
 import { resolveProductImageUrl } from "@/lib/product-image"
-import {
-  findJsonSubcategory,
-  isMachinePartsExtrusion,
-  resolveSubcategory,
-} from "@/lib/catalog-slugs"
+import { findJsonSubcategory, resolveSubcategory } from "@/lib/catalog-slugs"
+import { findJsonProduct, resolveProduct } from "@/lib/catalog-product"
 import { normalizeHouseholdProduct } from "@/lib/household-product-content"
 import { isNextBuild } from "@/lib/next-build"
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld"
@@ -63,9 +60,9 @@ export default async function ProductPage({
 
   const fallbackCategory = productsData.categories.find((cat) => cat.id === categoryId)
   const fallbackSubcategory = findJsonSubcategory(categoryId, subcategoryId)
-  const fallbackProduct = fallbackCategory?.products?.find((p: any) => p.id === productId)
 
   if (isNextBuild()) {
+    const fallbackProduct = findJsonProduct(categoryId, productId)
     if (fallbackProduct) {
       product = fallbackProduct
       category = fallbackCategory
@@ -75,101 +72,41 @@ export default async function ProductPage({
     const supabase = createClient()
 
     try {
-    // Если это экструзионные изделия ДМС, пробуем получить из extrusion_products
-    const isExtrusionCategory = isMachinePartsExtrusion(categoryId, subcategoryId)
-
-    if (isExtrusionCategory && productId.startsWith("extrusion-")) {
-      const numericId = Number(productId.replace("extrusion-", ""))
-      if (!Number.isNaN(numericId)) {
-        const { data: extrusionProduct } = await supabase
-          .from("extrusion_products")
-          .select("*")
-          .eq("id", numericId)
-          .eq("is_active", true)
-          .single()
-
-        if (extrusionProduct) {
-          const parts: string[] = []
-          if (extrusionProduct.size_raw) {
-            parts.push(`Габаритные размеры: ${extrusionProduct.size_raw}`)
-          }
-          if (extrusionProduct.length_raw) {
-            parts.push(`Длина изделия: ${extrusionProduct.length_raw}`)
-          }
-          if (extrusionProduct.code) {
-            parts.push(`Шифр: ${extrusionProduct.code}`)
-          }
-
-          const description = parts.join(" · ")
-
-          product = {
-            id: productId,
-            name: extrusionProduct.name,
-            description: description || null,
-            image: extrusionProduct.image || "/placeholder-logo.png",
-            specifications: {
-              "Тип изделия": extrusionProduct.type,
-              ...(extrusionProduct.subtype
-                ? { "Подтип": extrusionProduct.subtype }
-                : {}),
-              ...(extrusionProduct.size_raw
-                ? { "Габаритные размеры": extrusionProduct.size_raw }
-                : {}),
-              ...(extrusionProduct.code
-                ? { "Шифр изделия": extrusionProduct.code }
-                : {}),
-              ...(extrusionProduct.length_raw
-                ? { "Длина изделия": extrusionProduct.length_raw }
-                : {}),
-              ...(extrusionProduct.length_kind === "coil"
-                ? { "Поставка": "в бухтах" }
-                : extrusionProduct.length_kind === "fixed"
-                ? { "Поставка": "фиксированная длина" }
-                : {}),
-            },
-          }
-        }
+      const resolved = await resolveProduct(supabase, categoryId, subcategoryId, productId)
+      if (resolved.product) {
+        product = resolved.product
       }
-    } else {
-      // Обычный путь: продукт из таблицы products
-      const { data: productData } = await supabase
-        .from("products")
+
+      const { data: categoryData } = await supabase
+        .from("categories")
         .select("*")
-        .eq("id", productId)
-        .eq("is_active", true)
+        .eq("id", categoryId)
         .single()
 
-      if (productData) {
-        product = productData
+      if (categoryData) {
+        category = categoryData
+      } else if (resolved.category) {
+        category = resolved.category
+      } else {
+        category = fallbackCategory
       }
-    }
 
-    // Получаем категорию и подкатегорию
-    const { data: categoryData } = await supabase
-      .from("categories")
-      .select("*")
-      .eq("id", categoryId)
-      .single()
-
-    if (categoryData) {
-      category = categoryData
-    }
-
-    const subcategoryData = await resolveSubcategory(supabase, categoryId, subcategoryId)
-    if (subcategoryData) {
-      subcategory = subcategoryData
-    }
-  } catch (error) {
-    console.error("Error fetching product from Supabase:", error)
-  }
-  }
-
-  // Fallback на JSON
-  if (!product) {
-    if (fallbackProduct) {
-      product = fallbackProduct
-      category = fallbackCategory
-      subcategory = fallbackSubcategory
+      const subcategoryData = await resolveSubcategory(supabase, categoryId, subcategoryId)
+      if (subcategoryData) {
+        subcategory = subcategoryData
+      } else if (resolved.subcategory) {
+        subcategory = resolved.subcategory
+      } else {
+        subcategory = fallbackSubcategory
+      }
+    } catch (error) {
+      console.error("Error fetching product from Supabase:", error)
+      const fallbackProduct = findJsonProduct(categoryId, productId)
+      if (fallbackProduct) {
+        product = fallbackProduct
+        category = fallbackCategory
+        subcategory = fallbackSubcategory
+      }
     }
   }
 

@@ -1,27 +1,44 @@
 "use client"
 
 import { useEffect, useState, useRef, useCallback } from "react"
+import { HERO_VIDEO_READY_EVENT, HERO_VIDEO_SRC } from "@/lib/hero-media"
 
-const MAX_SPLASH_MS = 12000
-const MIN_SPLASH_MS = 900
-const HERO_VIDEO_READY_EVENT = "ao-plastic:hero-video-ready"
+const MAX_SPLASH_MS = 15000
+const MIN_SPLASH_MS = 600
 const FORCE_SPLASH_IN_DEV = process.env.NODE_ENV === "development"
 
-function isMobileViewport(): boolean {
+function isHomePage(): boolean {
   if (typeof window === "undefined") return false
-  return window.matchMedia("(max-width: 767px)").matches
+  const path = window.location.pathname
+  return path === "/" || path === ""
 }
 
 function shouldSkipSplash(): boolean {
   if (typeof window === "undefined") return true
-  if (isMobileViewport()) return true
-  if (window.matchMedia("(pointer: coarse)").matches) return true
-  if (window.matchMedia("(hover: none)").matches && navigator.maxTouchPoints > 0) return true
+  if (!isHomePage()) return true
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return true
   return false
 }
 
+function hasSeenSplash(): boolean {
+  if (FORCE_SPLASH_IN_DEV) return false
+  try {
+    return sessionStorage.getItem("hasSeenLoading") === "true"
+  } catch {
+    return false
+  }
+}
+
+function clearSplashPending() {
+  document.documentElement.classList.remove("splash-pending")
+  const staticSplash = document.getElementById("splash-static")
+  if (staticSplash) {
+    staticSplash.style.display = "none"
+  }
+}
+
 function revealMainContent() {
+  clearSplashPending()
   const mainContent = document.getElementById("main-content")
   if (mainContent) {
     mainContent.classList.remove("opacity-0")
@@ -38,6 +55,32 @@ function hideMainContentForSplash() {
     mainContent.classList.remove("opacity-100")
   }
   document.body.style.overflow = "hidden"
+}
+
+function preloadHeroVideo(onReady: () => void): () => void {
+  const video = document.createElement("video")
+  video.preload = "auto"
+  video.muted = true
+  video.playsInline = true
+  video.src = HERO_VIDEO_SRC
+
+  const handleReady = () => {
+    onReady()
+    window.dispatchEvent(new Event(HERO_VIDEO_READY_EVENT))
+  }
+
+  video.addEventListener("canplaythrough", handleReady, { once: true })
+  video.addEventListener("playing", handleReady, { once: true })
+  video.addEventListener("error", handleReady, { once: true })
+  video.load()
+
+  return () => {
+    video.removeEventListener("canplaythrough", handleReady)
+    video.removeEventListener("playing", handleReady)
+    video.removeEventListener("error", handleReady)
+    video.removeAttribute("src")
+    video.load()
+  }
 }
 
 export function LoadingScreen() {
@@ -68,13 +111,9 @@ export function LoadingScreen() {
   }, [])
 
   useEffect(() => {
-    try {
-      if (!FORCE_SPLASH_IN_DEV && sessionStorage.getItem("hasSeenLoading")) {
-        revealMainContent()
-        return
-      }
-    } catch {
-      // ignore
+    if (hasSeenSplash()) {
+      revealMainContent()
+      return
     }
 
     if (shouldSkipSplash()) {
@@ -91,6 +130,8 @@ export function LoadingScreen() {
 
     dismissedRef.current = false
     setIsVisible(true)
+    document.documentElement.classList.add("splash-pending")
+    hideMainContentForSplash()
   }, [])
 
   useEffect(() => {
@@ -99,7 +140,7 @@ export function LoadingScreen() {
     hideMainContentForSplash()
 
     const handleLoad = () => setPageLoaded(true)
-    const shouldWaitForHeroVideo = window.location.pathname === "/"
+    const shouldWaitForHeroVideo = isHomePage()
     const handleHeroVideoReady = () => setHeroVideoReady(true)
 
     setHeroVideoReady(!shouldWaitForHeroVideo)
@@ -111,12 +152,15 @@ export function LoadingScreen() {
     }
     window.addEventListener(HERO_VIDEO_READY_EVENT, handleHeroVideoReady)
 
+    const cleanupPreload = shouldWaitForHeroVideo ? preloadHeroVideo(() => setHeroVideoReady(true)) : undefined
+
     const maxTimer = window.setTimeout(() => dismissSplash(true), MAX_SPLASH_MS)
 
     return () => {
       window.removeEventListener("load", handleLoad)
       window.removeEventListener(HERO_VIDEO_READY_EVENT, handleHeroVideoReady)
       window.clearTimeout(maxTimer)
+      cleanupPreload?.()
       document.body.style.overflow = ""
     }
   }, [isVisible, dismissSplash])

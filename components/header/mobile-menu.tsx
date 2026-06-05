@@ -288,7 +288,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             >
               {lang === "ru" ? "English" : "Русский"}
             </Button>
-            <Button asChild className="w-full bg-slate-700 hover:bg-slate-800 text-white transition-colors duration-200 shadow-sm">
+            <Button asChild variant="brand" className="w-full">
               <Link href="/contacts" onClick={onClose}>
                 {t("contactUs") || "Связаться с нами"}
               </Link>

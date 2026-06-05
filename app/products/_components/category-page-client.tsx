@@ -30,6 +30,11 @@ import {
   KORS_PAGE_KEYS,
 } from "@/lib/kors-bentol-en"
 import { ABS_PAGE_KEYS } from "@/lib/abs-category-i18n"
+import {
+  getStyreneNormRows,
+  STYRENE_OKP_LABEL,
+  STYRENE_PAGE_KEYS,
+} from "@/lib/styrene-category-i18n"
 
 const korsStoryParent = {
   hidden: { opacity: 0 },
@@ -76,6 +81,7 @@ export function CategoryPageClient({
 }: CategoryPageClientProps) {
   const { t, lang } = useLanguage()
   const k = KORS_PAGE_KEYS
+  const styreneK = STYRENE_PAGE_KEYS
   const absK = ABS_PAGE_KEYS
   const normTableCols = {
     colNo: t(k.normColNo),
@@ -151,12 +157,9 @@ export function CategoryPageClient({
               variants={korsStoryParent}
             >
               <motion.div variants={korsStoryChild} className="col-span-full">
-                <h2 className="text-h2">
-                  Стирол
-                </h2>
+                <h2 className="text-h2">{t(styreneK.title)}</h2>
                 <p className="mt-4 max-w-2xl text-body text-primary/85 dark:text-blue-100/85">
-                  Мономер для производства полистирола, сополимеров и синтетического каучука — основа многих полимерных
-                  материалов, которые вы знаете по каталогу АО «Пластик».
+                  {t(styreneK.lead)}
                 </p>
                 <div className="mt-8 h-1 w-28 rounded-full bg-primary" />
               </motion.div>
@@ -166,32 +169,19 @@ export function CategoryPageClient({
               >
                 <Image
                   src="/images/styrolmain.png"
-                  alt="Стирол марки СДЭБ — прозрачная жидкость, производство АО «Пластик»"
+                  alt={t(styreneK.imageAlt)}
                   fill
                   className="object-cover object-center"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
               </motion.div>
               <motion.div variants={korsStoryChild} className="space-y-5">
-                <p className="text-lg leading-relaxed text-muted-foreground">
-                  <span className="font-semibold text-foreground">Стирол (винилбензол)</span> — жидкий ароматический
-                  углеводород и главный строительный блок для цепочки полимеров: вспенивающийся и экструзионный полистирол,
-                  АБС-пластики, стирол-бутадиен-стирольные и стирол-содержащие каучуки, латексы и другие продукты глубокой
-                  переработки.
-                </p>
-                <p className="text-lg leading-relaxed text-muted-foreground">
-                  Высокая химическая чистота мономера напрямую влияет на стабильность полимеризации и качество конечного
-                  изделия: от листов и профилей до деталей машиностроения и товаров народного потребления. Поэтому на
-                  предприятии поддерживают строгий контроль показателей по нормативной документации и условия хранения и
-                  отгрузки продукции.
-                </p>
+                <p className="text-lg leading-relaxed text-muted-foreground">{t(styreneK.p1)}</p>
+                <p className="text-lg leading-relaxed text-muted-foreground">{t(styreneK.p2)}</p>
                 <div className="rounded-xl border border-border/80 bg-card/80 px-4 py-4 shadow-sm dark:bg-card/50">
-                  <p className="text-lg font-semibold text-foreground">СТИРОЛ, марка СДЭБ</p>
-                  <p className="mt-1 text-sm text-muted-foreground">ГОСТ 10003-90 «Стирол», Изменение №1</p>
-                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                    Марка соответствует требованиям к стиролу высшего сорта по показателям внешнего вида, массовой доле
-                    основного вещества и примесей — см. таблицу ниже.
-                  </p>
+                  <p className="text-lg font-semibold text-foreground">{t(styreneK.gradeTitle)}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{t(styreneK.gradeGost)}</p>
+                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{t(styreneK.gradeNote)}</p>
                 </div>
               </motion.div>
             </motion.div>
@@ -203,80 +193,12 @@ export function CategoryPageClient({
               viewport={{ once: true, amount: 0.12 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h3 className="mb-6 text-h3 sm:text-3xl">
-                Норма по НТД — Высший сорт
-              </h3>
-              <div className="overflow-x-auto rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8">
-              <div className="mb-4">
-                <p className="text-sm text-muted-foreground mb-2">ОКП 24 14930120</p>
-              </div>
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="bg-primary text-white">
-                    <th className="py-4 px-6 text-left font-semibold border border-gray-300">№ п/п</th>
-                    <th className="py-4 px-6 text-left font-semibold border border-gray-300">Наименование показателей</th>
-                    <th className="py-4 px-6 text-left font-semibold border border-gray-300">Ед. измерения</th>
-                    <th className="py-4 px-6 text-left font-semibold border border-gray-300">Норма по НТД</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="bg-white border-b border-gray-200">
-                    <td className="py-4 px-6 border border-gray-300">1</td>
-                    <td className="py-4 px-6 border border-gray-300">Внешний вид</td>
-                    <td className="py-4 px-6 border border-gray-300 text-center">—</td>
-                    <td className="py-4 px-6 border border-gray-300">Прозрачная однородная жидкость без механических примесей и нерастворенной влаги</td>
-                  </tr>
-                  <tr className="bg-gray-50 border-b border-gray-200">
-                    <td className="py-4 px-6 border border-gray-300">2</td>
-                    <td className="py-4 px-6 border border-gray-300">Массовая доля стирола, не менее</td>
-                    <td className="py-4 px-6 border border-gray-300 text-center">%</td>
-                    <td className="py-4 px-6 border border-gray-300">99,80</td>
-                  </tr>
-                  <tr className="bg-white border-b border-gray-200">
-                    <td className="py-4 px-6 border border-gray-300">3</td>
-                    <td className="py-4 px-6 border border-gray-300">Массовая доля дивинилбензола, не более</td>
-                    <td className="py-4 px-6 border border-gray-300 text-center">%</td>
-                    <td className="py-4 px-6 border border-gray-300">0,0005</td>
-                  </tr>
-                  <tr className="bg-gray-50 border-b border-gray-200">
-                    <td className="py-4 px-6 border border-gray-300">4</td>
-                    <td className="py-4 px-6 border border-gray-300">Массовая доля карбонильных соединений в пересчете на бензальдегид, не более</td>
-                    <td className="py-4 px-6 border border-gray-300 text-center">%</td>
-                    <td className="py-4 px-6 border border-gray-300">0,01</td>
-                  </tr>
-                  <tr className="bg-white border-b border-gray-200">
-                    <td className="py-4 px-6 border border-gray-300">5</td>
-                    <td className="py-4 px-6 border border-gray-300">Массовая доля перекисных соединений в пересчете на активный кислород, не более</td>
-                    <td className="py-4 px-6 border border-gray-300 text-center">%</td>
-                    <td className="py-4 px-6 border border-gray-300">0,0005</td>
-                  </tr>
-                  <tr className="bg-gray-50 border-b border-gray-200">
-                    <td className="py-4 px-6 border border-gray-300">6</td>
-                    <td className="py-4 px-6 border border-gray-300">Массовая доля полимера, не более</td>
-                    <td className="py-4 px-6 border border-gray-300 text-center">%</td>
-                    <td className="py-4 px-6 border border-gray-300">0,001</td>
-                  </tr>
-                  <tr className="bg-white border-b border-gray-200">
-                    <td className="py-4 px-6 border border-gray-300">7</td>
-                    <td className="py-4 px-6 border border-gray-300">Массовая доля фенилацетилена, не более</td>
-                    <td className="py-4 px-6 border border-gray-300 text-center">%</td>
-                    <td className="py-4 px-6 border border-gray-300">0,01</td>
-                  </tr>
-                  <tr className="bg-gray-50 border-b border-gray-200">
-                    <td className="py-4 px-6 border border-gray-300">8</td>
-                    <td className="py-4 px-6 border border-gray-300">Массовая доля стабилизатора пара-трет-бутилпирокатехина, в пределах</td>
-                    <td className="py-4 px-6 border border-gray-300 text-center">%</td>
-                    <td className="py-4 px-6 border border-gray-300">0,0005-0,0010</td>
-                  </tr>
-                  <tr className="bg-white">
-                    <td className="py-4 px-6 border border-gray-300">9</td>
-                    <td className="py-4 px-6 border border-gray-300">Цветность по платиново-кобальтовой шкале, не более</td>
-                    <td className="py-4 px-6 border border-gray-300 text-center">ед. Хазена</td>
-                    <td className="py-4 px-6 border border-gray-300">10</td>
-                  </tr>
-                </tbody>
-              </table>
-              </div>
+              <h3 className="mb-6 text-h3 sm:text-3xl">{t(styreneK.normTitle)}</h3>
+              <KorsNormTable
+                tuLabel={STYRENE_OKP_LABEL}
+                rows={getStyreneNormRows(lang === "en" ? "en" : "ru")}
+                {...normTableCols}
+              />
             </motion.div>
             <motion.div
               className="mt-10 flex justify-center"
@@ -289,7 +211,7 @@ export function CategoryPageClient({
                 onClick={() => setIsContactFormOpen(true)}
                 className="h-14 bg-gradient-to-r from-primary to-primary/80 px-8 text-lg hover:from-primary/90 hover:to-primary/70"
               >
-                Связаться с нами
+                {t(styreneK.contactUs)}
               </Button>
             </motion.div>
           </div>

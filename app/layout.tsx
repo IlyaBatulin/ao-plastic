@@ -4,8 +4,7 @@ import { cookies } from "next/headers"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import "./logo-loop.css"
-import { LanguageProvider } from "@/contexts/language-context"
-import { CartProvider } from "@/contexts/cart-context"
+import { AppProviders } from "@/components/app-providers"
 import { ConditionalHeader } from "@/components/conditional-header"
 import { Toaster } from "@/components/ui/toaster"
 import { LoadingScreen } from "@/components/loading-screen"
@@ -14,6 +13,7 @@ import { GsapInit } from "@/components/gsap-init"
 import { getSiteUrl } from "@/lib/site"
 import { parseLanguage } from "@/lib/language"
 import { SiteJsonLd } from "@/components/seo/site-json-ld"
+import { HERO_VIDEO_SRC } from "@/lib/hero-media"
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -108,26 +108,55 @@ export default async function RootLayout({
   const initialLang = parseLanguage(cookieStore.get("lang")?.value)
 
   return (
-    <html lang={initialLang} className={`${inter.className} bg-background text-foreground`}>
+    <html
+      lang={initialLang}
+      className={`${inter.className} bg-background text-foreground`}
+      suppressHydrationWarning
+    >
       <head>
         <link rel="preload" href="/locales/ru.json" as="fetch" crossOrigin="anonymous" />
         <link rel="preload" href="/locales/en.json" as="fetch" crossOrigin="anonymous" />
+        <link rel="preload" href="/images/logo123.jpg" as="image" />
+        <link rel="preload" href={HERO_VIDEO_SRC} as="fetch" type="video/mp4" crossOrigin="anonymous" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{
+              var p=location.pathname;
+              if(p!=='/'&&p!=='')return;
+              var dev=location.hostname==='localhost'||location.hostname==='127.0.0.1';
+              if(!dev&&sessionStorage.getItem('hasSeenLoading'))return;
+              if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+              document.documentElement.classList.add('splash-pending');
+              document.body.style.overflow='hidden';
+            }catch(e){}})();`,
+          }}
+        />
       </head>
       <body className="min-h-screen overflow-x-clip bg-background text-foreground antialiased">
-        <GsapInit />
-        <SiteJsonLd />
-        <LoadingScreen />
-        <LenisProvider>
-          <div id="main-content" className="relative z-10 w-full max-w-full overflow-x-clip transition-opacity duration-500">
-            <LanguageProvider initialLang={initialLang}>
-              <CartProvider>
-                <ConditionalHeader />
-                {children}
-              </CartProvider>
-            </LanguageProvider>
-            <Toaster />
-          </div>
-        </LenisProvider>
+        <div
+          id="splash-static"
+          aria-hidden
+          className="fixed inset-0 z-[9998] items-center justify-center bg-white p-4 sm:p-8"
+        >
+          <img
+            src="/images/logo123.jpg"
+            alt=""
+            className="w-full max-w-xs animate-pulse select-none sm:max-w-md md:max-w-2xl"
+            draggable={false}
+          />
+        </div>
+        <AppProviders initialLang={initialLang}>
+          <GsapInit />
+          <SiteJsonLd />
+          <LoadingScreen />
+          <LenisProvider>
+            <div id="main-content" className="relative z-10 w-full max-w-full overflow-x-clip transition-opacity duration-500">
+              <ConditionalHeader />
+              {children}
+              <Toaster />
+            </div>
+          </LenisProvider>
+        </AppProviders>
       </body>
     </html>
   )

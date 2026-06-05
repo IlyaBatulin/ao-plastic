@@ -193,7 +193,11 @@ export function FilteredProductsSection({
       )}
 
       {showFilters && (
-        <ProductFilters products={products} onFilterChange={setFilteredProducts} />
+        <ProductFilters
+          products={products}
+          categoryId={categoryId}
+          onFilterChange={setFilteredProducts}
+        />
       )}
 
       <ProductsGrid 

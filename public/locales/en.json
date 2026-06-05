@@ -507,6 +507,17 @@
           ]
         }
       },
+      "styrenePage": {
+        "title": "Styrene",
+        "lead": "A monomer for polystyrene, copolymers and synthetic rubber — the foundation of many polymer materials in the AO Plastik product range.",
+        "imageAlt": "SDEB grade styrene — clear liquid, AO Plastik production",
+        "p1": "Styrene (vinylbenzene) is a liquid aromatic hydrocarbon and the key building block in the polymer chain: expandable and extrusion polystyrene, ABS plastics, styrene-butadiene and styrene-containing rubbers, latices and other downstream products.",
+        "p2": "High chemical purity of the monomer directly affects polymerization stability and the quality of the finished product — from sheets and profiles to machine parts and consumer goods. AO Plastik maintains strict control of specification parameters plus storage and shipping conditions.",
+        "gradeTitle": "STYRENE, grade SDEB",
+        "gradeGost": "GOST 10003-90 \"Styrene\", Amendment No. 1",
+        "gradeNote": "This grade meets premium-grade styrene requirements for appearance, main substance content and impurities — see the table below.",
+        "normTitle": "Specification limits — Premium grade"
+      },
       "korsPage": {
         "corsTitle": "CORS",
         "corsLead": "Cubic residue of styrene rectification — a styrene production by-product used as fuel, solvent and a component of industrial materials.",

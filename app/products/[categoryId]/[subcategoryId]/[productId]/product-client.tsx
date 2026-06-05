@@ -12,6 +12,7 @@ import { Footer } from "@/components/footer"
 import { useCart } from "@/contexts/cart-context"
 import { useToast } from "@/hooks/use-toast"
 import { formatSpecKey, formatSpecValue } from "@/lib/formatters"
+import { stripHiddenSpecs } from "@/lib/product-specs"
 import {
   Dialog,
   DialogContent,
@@ -133,9 +134,7 @@ export function ProductPageClient({
     }
   }
   
-  // Удаляем штрихкод из specifications (не должен отображаться)
-  const { Штрихкод, штрихкод, barcode, ...cleanSpecs } = specifications
-  specifications = cleanSpecs
+  specifications = stripHiddenSpecs(specifications)
   const detailSections = Array.isArray(product.detailSections) ? product.detailSections : []
 
   // Для экструзионных изделий скрываем блок "ключевые фичи" и оставляем только описание/характеристики

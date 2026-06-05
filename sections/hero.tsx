@@ -8,10 +8,7 @@ import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { useLanguage } from "@/contexts/language-context"
 import { HeroNavigation } from "@/components/hero-navigation"
-
-const HERO_VIDEO_SRC = "/videos/factory-video-day.mp4"
-const HERO_POSTER_SRC = "/prevyu/fasad/furs0079-1.jpeg"
-const HERO_VIDEO_READY_EVENT = "ao-plastic:hero-video-ready"
+import { HERO_POSTER_SRC, HERO_VIDEO_READY_EVENT, HERO_VIDEO_SRC } from "@/lib/hero-media"
 
 export function Hero() {
   const { t } = useLanguage()

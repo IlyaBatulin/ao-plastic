@@ -18,6 +18,7 @@ import {
   resolveSubcategory,
 } from "@/lib/catalog-slugs"
 import { normalizeHouseholdProducts } from "@/lib/household-product-content"
+import { stripHiddenSpecs } from "@/lib/product-specs"
 
 export const revalidate = 300
 
@@ -137,7 +138,9 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ ca
     }
 
     const hasProductSpecs = specifications && Object.keys(specifications).length > 0
-    const mergedSpecs = hasProductSpecs ? specifications : (fallback?.specifications ?? {})
+    const mergedSpecs = stripHiddenSpecs(
+      hasProductSpecs ? specifications : (fallback?.specifications ?? {})
+    )
 
     const imageRaw = product.image || categoryImage || fallback?.image || fallbackCategory?.image || undefined
     const image = resolveProductImageUrl(

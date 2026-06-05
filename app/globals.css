@@ -26,6 +26,23 @@
   pointer-events: none !important;
 }
 
+#splash-static {
+  display: none;
+}
+
+html.splash-pending #splash-static {
+  display: flex;
+}
+
+html.splash-pending #main-content {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+html.splash-pending body {
+  overflow: hidden;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 :root {

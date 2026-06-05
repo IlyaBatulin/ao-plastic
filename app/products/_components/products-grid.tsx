@@ -12,38 +12,8 @@ import { formatSpecKey, formatSpecValue } from "@/lib/formatters"
 import { useLanguage } from "@/contexts/language-context"
 import { resolveProductDisplay } from "@/lib/product-en"
 import { resolveProductImageUrl } from "@/lib/product-image"
+import { getCardSpecEntries } from "@/lib/product-specs"
 import { ProductCardPlasticLogo } from "./product-card-plastic-logo"
-
-const ABS_CARD_SPEC_KEYS = [
-  "Показатель_текучести_расплава_MFR_г_10мин",
-  "Температура_размягчения_по_Вика_градС",
-  "Ударная_вязкость_по_Изоду_кДж_м2",
-  "Предел_текучести_при_растяжении_МПа",
-  "Относительное_удлинение_при_разрыве_проц",
-  "Усадка_проц",
-  "Блеск_проц",
-]
-
-const LOW_VALUE_CARD_SPEC_KEYS = new Set(["Тип", "Марка", "Применение"])
-
-function getCardSpecEntries(specs: Record<string, any>, categoryId?: string) {
-  const entries = Object.entries(specs).filter(([, value]) => value !== null && value !== undefined && value !== "")
-
-  if (categoryId !== "abs") {
-    return entries
-  }
-
-  const prioritized = ABS_CARD_SPEC_KEYS.flatMap((key) =>
-    Object.prototype.hasOwnProperty.call(specs, key) && specs[key] !== null && specs[key] !== undefined && specs[key] !== ""
-      ? [[key, specs[key]] as [string, any]]
-      : []
-  )
-  const rest = entries.filter(
-    ([key]) => !ABS_CARD_SPEC_KEYS.includes(key) && !LOW_VALUE_CARD_SPEC_KEYS.has(key)
-  )
-
-  return [...prioritized, ...rest]
-}
 
 export default function ProductsGrid({ 
   products, 

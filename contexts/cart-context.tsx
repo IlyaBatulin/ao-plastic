@@ -129,10 +129,20 @@ export function CartProvider({ children }: { children: ReactNode }) {
   )
 }
 
+const fallbackCartContext: CartContextType = {
+  items: [],
+  addItem: () => {},
+  removeItem: () => {},
+  updateQuantity: () => {},
+  updateColorCode: () => {},
+  clearCart: () => {},
+  itemCount: 0,
+}
+
 export function useCart() {
   const context = useContext(CartContext)
   if (context === undefined) {
-    throw new Error("useCart must be used within a CartProvider")
+    return fallbackCartContext
   }
   return context
 }

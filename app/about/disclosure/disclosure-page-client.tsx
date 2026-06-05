@@ -1,14 +1,55 @@
 "use client"
 
+import { useState } from "react"
 import { Footer } from "@/components/footer"
 import { BackgroundPaths } from "@/components/ui/background-paths"
-import { FileText, Download } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { FileText, Download, ChevronDown, FolderOpen } from "lucide-react"
 import { useLocalizedContent } from "@/lib/use-localized-content"
-import { disclosurePageContent } from "@/data/about-pages/disclosure"
+import {
+  disclosureHero,
+  disclosureSections,
+  type DisclosureDocument,
+} from "@/data/about-pages/disclosure"
+
+function formatSize(bytes?: number): string {
+  if (!bytes || bytes <= 0) return ""
+  const kb = bytes / 1024
+  if (kb < 1024) return `${Math.max(1, Math.round(kb))} KB`
+  return `${(kb / 1024).toFixed(1)} MB`
+}
+
+function DocumentRow({ doc, download }: { doc: DisclosureDocument; download: string }) {
+  const meta = [doc.fileType, formatSize(doc.size)].filter(Boolean).join(" • ")
+  return (
+    <a
+      href={doc.file}
+      target="_blank"
+      rel="noopener noreferrer"
+      download
+      className="group flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-3 transition-all hover:border-primary/40 hover:bg-primary/5 hover:shadow-sm sm:gap-4"
+    >
+      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-transform group-hover:scale-110">
+        <FileText className="h-5 w-5" />
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="text-sm font-medium leading-snug text-foreground break-words sm:text-base">
+          {doc.title}
+        </p>
+        {meta ? <p className="mt-0.5 text-xs text-muted-foreground">{meta}</p> : null}
+      </div>
+      <span className="flex flex-shrink-0 items-center gap-1.5 rounded-lg border border-primary/30 px-3 py-1.5 text-xs font-semibold text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+        <Download className="h-4 w-4" />
+        <span className="hidden sm:inline">{download}</span>
+      </span>
+    </a>
+  )
+}
 
 export function DisclosurePageClient() {
-  const page = useLocalizedContent(disclosurePageContent)
+  const t = useLocalizedContent(disclosureHero)
+  const [openKey, setOpenKey] = useState<string | null>(null)
+
+  const toggle = (key: string) => setOpenKey((cur) => (cur === key ? null : key))
 
   return (
     <>
@@ -16,39 +57,84 @@ export function DisclosurePageClient() {
       <div className="min-h-screen bg-transparent">
         <section className="pt-32 pb-24">
           <div className="container mx-auto px-4 lg:px-8">
-            <div className="max-w-4xl mx-auto">
-              <div className="mb-16 text-center">
-                <h1 className="text-5xl md:text-6xl font-bold mb-6 text-primary">{page.heroTitle}</h1>
-                <p className="text-xl md:text-2xl text-foreground/70 leading-relaxed">{page.heroSubtitle}</p>
-                <div className="mt-6 h-0.5 w-24 mx-auto bg-primary" />
+            <div className="mx-auto max-w-5xl">
+              {/* Hero */}
+              <div className="mb-12 text-center">
+                <h1 className="mb-4 text-4xl font-bold text-primary sm:text-5xl md:text-6xl">
+                  {t.heroTitle}
+                </h1>
+                <p className="text-lg leading-relaxed text-foreground/70 sm:text-xl">
+                  {t.heroSubtitle}
+                </p>
+                <div className="mx-auto mt-6 h-0.5 w-24 bg-primary" />
+                <p className="mx-auto mt-6 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+                  {t.note}
+                </p>
               </div>
 
-              <div className="space-y-4">
-                {page.documents.map((doc, index) => (
-                  <div
-                    key={index}
-                    className="bg-card rounded-xl p-6 border border-border hover:shadow-lg hover:border-primary/30 transition-all flex items-center justify-between"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                        <FileText className="w-6 h-6 text-primary" />
+              {/* Sections */}
+              <div className="space-y-10">
+                {disclosureSections.map((section, sIdx) => (
+                  <section key={sIdx} className="rounded-2xl border border-border bg-card/40 p-5 sm:p-7">
+                    <h2 className="mb-5 flex items-start gap-3 text-xl font-bold text-foreground sm:text-2xl">
+                      <span className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-primary text-sm text-primary-foreground">
+                        {sIdx + 1}
+                      </span>
+                      <span className="break-words">{section.title}</span>
+                    </h2>
+
+                    {/* Документы верхнего уровня */}
+                    {section.docs.length > 0 && (
+                      <div className="mb-4 space-y-2.5">
+                        {section.docs.map((doc, dIdx) => (
+                          <DocumentRow key={dIdx} doc={doc} download={t.download} />
+                        ))}
                       </div>
-                      <div>
-                        <h3 className="text-lg font-semibold text-foreground">{doc.title}</h3>
-                        <p className="text-sm text-muted-foreground">
-                          {doc.type} • {doc.size}
-                        </p>
+                    )}
+
+                    {/* Подразделы (сворачиваемые) */}
+                    {section.subsections.length > 0 && (
+                      <div className="space-y-3">
+                        {section.subsections.map((sub, subIdx) => {
+                          const key = `${sIdx}-${subIdx}`
+                          const isOpen = openKey === key
+                          return (
+                            <div
+                              key={key}
+                              className="overflow-hidden rounded-xl border border-border bg-background/50"
+                            >
+                              <button
+                                type="button"
+                                onClick={() => toggle(key)}
+                                aria-expanded={isOpen}
+                                className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition-colors hover:bg-primary/5"
+                              >
+                                <FolderOpen className="h-5 w-5 flex-shrink-0 text-primary" />
+                                <span className="min-w-0 flex-1 break-words text-sm font-semibold text-foreground sm:text-base">
+                                  {sub.title}
+                                </span>
+                                <span className="flex-shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+                                  {sub.docs.length}
+                                </span>
+                                <ChevronDown
+                                  className={`h-5 w-5 flex-shrink-0 text-muted-foreground transition-transform duration-300 ${
+                                    isOpen ? "rotate-180" : ""
+                                  }`}
+                                />
+                              </button>
+                              {isOpen && (
+                                <div className="space-y-2.5 border-t border-border px-3 py-3 sm:px-4">
+                                  {sub.docs.map((doc, dIdx) => (
+                                    <DocumentRow key={dIdx} doc={doc} download={t.download} />
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          )
+                        })}
                       </div>
-                    </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="border-primary/30 text-primary hover:bg-primary/10"
-                    >
-                      <Download className="w-4 h-4 mr-2" />
-                      {page.download}
-                    </Button>
-                  </div>
+                    )}
+                  </section>
                 ))}
               </div>
             </div>

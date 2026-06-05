@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next"
 import { getSiteUrl } from "@/lib/site"
 import productsData from "@/data/products.json"
 
+export const revalidate = 3600
+
 const HIDDEN_CATEGORIES = new Set(["dispersion", "pvc-modifier"])
 
 const STATIC_PATHS = [
@@ -31,13 +33,19 @@ const STATIC_PATHS = [
   "/technologies",
 ] as const
 
+function staticPriority(path: string): number {
+  if (path === "") return 1
+  if (path === "/products") return 0.95
+  if (path.startsWith("/about")) return 0.85
+  if (path === "/contacts" || path === "/dealers" || path === "/suppliers") return 0.9
+  return 0.75
+}
+
 function staticEntries(base: string): MetadataRoute.Sitemap {
-  const now = new Date()
   return STATIC_PATHS.map((path) => ({
     url: `${base}${path || "/"}`,
-    lastModified: now,
-    changeFrequency: path === "" ? "weekly" : "monthly",
-    priority: path === "" ? 1 : path.startsWith("/products") ? 0.9 : 0.8,
+    changeFrequency: path === "" || path === "/about/news" ? ("weekly" as const) : ("monthly" as const),
+    priority: staticPriority(path),
   }))
 }
 

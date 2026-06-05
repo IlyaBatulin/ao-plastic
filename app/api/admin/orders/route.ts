@@ -31,44 +31,50 @@ export async function GET() {
 
     if (error) {
       console.error("Ошибка получения заказов:", error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      return NextResponse.json({ error: "Не удалось загрузить заказы" }, { status: 500 })
     }
 
-    // Получаем позиции для каждого заказа
-    const ordersWithItems = await Promise.all(
-      (orders || []).map(async (order) => {
-        const { data: items } = await supabase
-          .from("order_items")
-          .select(`
-            id,
-            product_id,
-            category_id,
-            subcategory_id,
-            quantity,
-            price,
-            products:product_id (
-              name
-            ),
-            categories:category_id (
-              name
-            ),
-            subcategories:subcategory_id (
-              name
-            )
-          `)
-          .eq("order_id", order.id)
+    const orderIds = (orders || []).map((o) => o.id)
 
-        return {
-          ...order,
-          items: items || [],
+    // Один запрос на все позиции вместо N+1 (по запросу на каждый заказ).
+    let itemsByOrder = new Map<number, any[]>()
+    if (orderIds.length > 0) {
+      const { data: allItems, error: itemsError } = await supabase
+        .from("order_items")
+        .select(`
+          id,
+          order_id,
+          product_id,
+          category_id,
+          subcategory_id,
+          quantity,
+          price,
+          products:product_id ( name ),
+          categories:category_id ( name ),
+          subcategories:subcategory_id ( name )
+        `)
+        .in("order_id", orderIds)
+
+      if (itemsError) {
+        console.error("Ошибка получения позиций заказов:", itemsError)
+      } else {
+        for (const item of allItems || []) {
+          const list = itemsByOrder.get(item.order_id) || []
+          list.push(item)
+          itemsByOrder.set(item.order_id, list)
         }
-      })
-    )
+      }
+    }
+
+    const ordersWithItems = (orders || []).map((order) => ({
+      ...order,
+      items: itemsByOrder.get(order.id) || [],
+    }))
 
     return NextResponse.json(ordersWithItems)
   } catch (error: any) {
     console.error("Ошибка API заказов:", error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ error: "Внутренняя ошибка сервера" }, { status: 500 })
   }
 }
 

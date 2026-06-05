@@ -16,6 +16,21 @@ const nextConfig = {
     ]
   },
   async headers() {
+    const csp = [
+      "default-src 'self'",
+      // Next.js использует inline-скрипты для гидрации; eval нужен в dev-режиме.
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com",
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data: blob: https:",
+      "font-src 'self' data:",
+      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.hh.ru https://etpgpb.ru https://new.etpgpb.ru https://va.vercel-scripts.com",
+      "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "frame-ancestors 'self'",
+      "form-action 'self'",
+    ].join("; ")
+
     const security = [
       { key: "X-DNS-Prefetch-Control", value: "on" },
       { key: "X-Frame-Options", value: "SAMEORIGIN" },
@@ -25,6 +40,7 @@ const nextConfig = {
         key: "Permissions-Policy",
         value: "camera=(), microphone=(), geolocation=()",
       },
+      { key: "Content-Security-Policy", value: csp },
     ]
     if (process.env.NODE_ENV === "production") {
       security.push({

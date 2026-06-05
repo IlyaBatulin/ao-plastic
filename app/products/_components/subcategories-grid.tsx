@@ -108,8 +108,7 @@ export function SubcategoriesGrid({ categoryId, subcategories }: SubcategoriesGr
   return (
     <section className="py-24 -mt-20 relative z-20">
       <div className="container mx-auto px-4 lg:px-8">
-        <h2 className="text-h2 mb-12 text-center">{t("homePage.catalog.subcategoriesTitle")}</h2>
-        <div ref={gridRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {subcategories.map((subcategory) => {
             const imageSrc = subcategory.image || getSubcategoryImage(subcategory.id, subcategory.slug) || "/placeholder.svg"
             const subcategoryHref = `/products/${categoryId}/${getPublicSubcategorySlug(categoryId, subcategory)}`
@@ -121,7 +120,7 @@ export function SubcategoriesGrid({ categoryId, subcategories }: SubcategoriesGr
               prefetch
               onMouseEnter={() => router.prefetch(subcategoryHref)}
               onTouchStart={() => router.prefetch(subcategoryHref)}
-              className="subcategory-card group relative h-80 rounded-3xl overflow-hidden border border-border/50 hover:border-primary/50"
+              className="subcategory-card group relative h-72 sm:h-80 rounded-3xl overflow-hidden border border-border/50 hover:border-primary/50"
               style={{
                 opacity: 0,
                 transform: 'translateY(30px)',
@@ -144,22 +143,22 @@ export function SubcategoriesGrid({ categoryId, subcategories }: SubcategoriesGr
               </div>
 
               {/* Content */}
-              <div className="relative h-full flex flex-col justify-between p-4 sm:p-6 z-10">
+              <div className="relative h-full flex flex-col justify-between p-5 sm:p-7 z-10">
                 {/* Title and CTA - единый блок без разделения */}
-                <div className="mt-auto -mx-2 flex min-h-[11.75rem] flex-col rounded-xl border border-white/50 bg-white/95 p-4 shadow-sm backdrop-blur-sm">
-                  <h3 className="mb-2 text-lg font-bold transition-colors duration-300 group-hover:text-primary sm:text-xl text-balance break-words">
+                <div className="mt-auto -mx-2 flex min-h-[11.75rem] flex-col rounded-xl border border-white/50 bg-white/95 p-4 sm:p-5 shadow-sm backdrop-blur-sm">
+                  <h3 className="mb-3 text-xl font-bold transition-colors duration-300 group-hover:text-primary sm:text-2xl text-balance break-words">
                     {t(`homePage.catalog.subcategories.${getCatalogSubcategoryTranslationKey(subcategory.slug)}`) ||
                       subcategory.name}
                   </h3>
                   {subcategory.description && subcategory.id !== "abs-custom" && (
-                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-3">
+                    <p className="text-sm sm:text-base text-muted-foreground leading-relaxed line-clamp-3 mb-4">
                       {subcategory.description}
                     </p>
                   )}
                   {/* CTA внутри того же блока без границы */}
                   <div className="mt-auto flex items-center gap-2 text-primary font-semibold transition-all duration-300 group-hover:gap-3">
-                    <span className="text-sm">{t("homePage.catalog.readMore")}</span>
-                    <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    <span className="text-sm sm:text-base">{t("homePage.catalog.readMore")}</span>
+                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </div>
                 </div>
               </div>

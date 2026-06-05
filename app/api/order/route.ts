@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server"
 import { createClient, createServiceClient } from "@/utils/supabase/server"
+import { checkRateLimit, isBodyTooLarge, rateLimitedResponse } from "@/lib/form-guard"
+
+const MAX_ITEMS = 100
 
 type OrderItem = {
 	productId?: string
@@ -29,10 +32,18 @@ type OrderInput = {
 
 export async function POST(req: Request) {
 	try {
+	if (isBodyTooLarge(req, 200_000)) {
+		return NextResponse.json({ ok: false, error: "Слишком большой запрос" }, { status: 413 })
+	}
+
+	const limit = checkRateLimit(req, "order", 15)
+	if (!limit.ok) {
+		const res = rateLimitedResponse(limit.retryAfter)
+		return NextResponse.json({ ok: false, error: "Слишком много запросов. Попробуйте позже." }, { status: 429, headers: res.headers })
+	}
+
 	const body = (await req.json()) as OrderInput
-	
-	console.log('[API/Order] Received request:', JSON.stringify(body, null, 2))
-	
+
 	const supabase = createClient()
 
 		// Проверяем подключение к Supabase
@@ -49,8 +60,11 @@ export async function POST(req: Request) {
 				: []
 
 		if (!items.length) {
-			console.error('[API/Order] No items in order')
 			return NextResponse.json({ ok: false, error: "No items in order" }, { status: 400 })
+		}
+
+		if (items.length > MAX_ITEMS) {
+			return NextResponse.json({ ok: false, error: "Слишком много позиций в заказе" }, { status: 400 })
 		}
 
 		// Создаём заказ
@@ -67,9 +81,7 @@ export async function POST(req: Request) {
 		if (orderData.customer_phone === '') orderData.customer_phone = null
 		if (orderData.customer_email === '') orderData.customer_email = null
 		if (orderData.comment === '') orderData.comment = null
-		
-		console.log('[API/Order] Inserting order data:', JSON.stringify(orderData, null, 2))
-		
+
 		const { data: order, error: orderError } = await supabase
 			.from("orders")
 			.insert(orderData)
@@ -78,8 +90,7 @@ export async function POST(req: Request) {
 
 		if (orderError || !order) {
 			console.error('[API/Order] Failed to create order:', orderError)
-			console.error('[API/Order] Full error details:', JSON.stringify(orderError, null, 2))
-			return NextResponse.json({ ok: false, error: orderError?.message ?? "Failed to create order" }, { status: 400 })
+			return NextResponse.json({ ok: false, error: "Не удалось создать заказ" }, { status: 400 })
 		}
 
 	// Получаем информацию о товарах для позиций
@@ -101,18 +112,20 @@ export async function POST(req: Request) {
 			}
 		}
 
-		// Резолвим slug в ID для подкатегории, если необходимо
-		if (item.subcategoryId && categoryId) {
-			const slugCandidate = item.subcategoryId
-			const altSlugCandidate = `ps-${item.subcategoryId}`
-			
+		// Резолвим slug в ID для подкатегории, если необходимо.
+		// Используем .in() со списком значений вместо интерполяции в .or(),
+		// чтобы исключить инъекцию синтаксиса фильтров PostgREST.
+		if (typeof item.subcategoryId === "string" && item.subcategoryId && categoryId) {
+			const slugCandidates = [item.subcategoryId, `ps-${item.subcategoryId}`]
+
 			const { data: subcategory } = await supabase
 				.from("subcategories")
 				.select("id")
 				.eq("category_id", categoryId)
-				.or(`slug.eq.${slugCandidate},slug.eq.${altSlugCandidate}`)
-				.single()
-			
+				.in("slug", slugCandidates)
+				.limit(1)
+				.maybeSingle()
+
 			if (subcategory) {
 				subcategoryId = subcategory.id
 			}
@@ -129,17 +142,12 @@ export async function POST(req: Request) {
 	}
 
 	// Создаём позиции корзины
-	console.log('[API/Order] Inserting order items:', JSON.stringify(orderItemsData, null, 2))
 	const { error: itemsError } = await supabase.from("order_items").insert(orderItemsData)
 
 	if (itemsError) {
 		console.error('[API/Order] Failed to insert order items:', itemsError)
-		console.error('[API/Order] Full items error:', JSON.stringify(itemsError, null, 2))
-		// Откатываем заказ (или оставляем, но логируем ошибку)
-		return NextResponse.json({ ok: false, error: `Order created but items failed: ${itemsError.message}` }, { status: 400 })
+		return NextResponse.json({ ok: false, error: "Не удалось сохранить позиции заказа" }, { status: 400 })
 	}
-	
-	console.log('[API/Order] Order items inserted successfully')
 
 		// Назначаем менеджеров (триггер в БД или вызываем функцию)
 		// После вставки items триггер сам вызовет assign_manager_to_order
@@ -169,7 +177,8 @@ export async function POST(req: Request) {
 
 		return NextResponse.json({ ok: true, id: order.id, managerId: finalOrder?.manager_id ?? null })
 	} catch (e: any) {
-		return NextResponse.json({ ok: false, error: e?.message ?? "Unexpected error" }, { status: 500 })
+		console.error('[API/Order] Unexpected error:', e)
+		return NextResponse.json({ ok: false, error: "Внутренняя ошибка сервера" }, { status: 500 })
 	}
 }
 

@@ -9,45 +9,40 @@ import { useEffect, useRef, useState } from "react"
 import { useLanguage } from "@/contexts/language-context"
 import { HeroNavigation } from "@/components/hero-navigation"
 
-const HERO_VIDEO_SRC = "/videos/frontpage4.mp4"
+const HERO_VIDEO_SRC = "/videos/factory-video-day.mp4"
 const HERO_POSTER_SRC = "/prevyu/fasad/furs0079-1.jpeg"
 const HERO_VIDEO_READY_EVENT = "ao-plastic:hero-video-ready"
 
 export function Hero() {
   const { t } = useLanguage()
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
   const [isVideoReady, setIsVideoReady] = useState(false)
 
-  const markVideoReady = () => {
-    setIsVideoReady(true)
+  const notifySplashReady = () => {
     window.dispatchEvent(new Event(HERO_VIDEO_READY_EVENT))
   }
 
-  useEffect(() => {
-    const connection = (navigator as Navigator & {
-      connection?: { saveData?: boolean; effectiveType?: string }
-    }).connection
-    const isSlowConnection =
-      connection?.saveData || connection?.effectiveType === "slow-2g" || connection?.effectiveType === "2g"
+  const handleVideoReady = () => {
+    setIsVideoReady(true)
+    notifySplashReady()
+  }
 
-    if (isSlowConnection) {
-      window.dispatchEvent(new Event(HERO_VIDEO_READY_EVENT))
-      return
-    }
-
-    setShouldLoadVideo(true)
-  }, [shouldLoadVideo])
+  const handleVideoError = () => {
+    console.error("Hero video failed to load:", HERO_VIDEO_SRC)
+    notifySplashReady()
+  }
 
   useEffect(() => {
-    if (!shouldLoadVideo || !videoRef.current) return
+    const video = videoRef.current
+    if (!video) return
 
-    videoRef.current.muted = true
-    videoRef.current.playsInline = true
-    videoRef.current.play().catch((error) => {
+    video.muted = true
+    video.playsInline = true
+    video.load()
+    void video.play().catch((error) => {
       console.log("Video autoplay failed:", error)
     })
-  }, [shouldLoadVideo])
+  }, [])
 
   const handleScrollToStats = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -75,8 +70,7 @@ export function Hero() {
         />
         <video
           ref={videoRef}
-          src={shouldLoadVideo ? HERO_VIDEO_SRC : undefined}
-          poster={HERO_POSTER_SRC}
+          src={HERO_VIDEO_SRC}
           className={`hero-bg-video absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
             isVideoReady ? "opacity-100" : "opacity-0"
           }`}
@@ -84,14 +78,14 @@ export function Hero() {
           loop
           muted
           playsInline
-          preload="metadata"
+          preload="auto"
           controls={false}
           controlsList="nodownload noplaybackrate noremoteplayback"
           disablePictureInPicture
           disableRemotePlayback
-          onCanPlay={markVideoReady}
-          onPlaying={markVideoReady}
-          onError={markVideoReady}
+          onCanPlayThrough={handleVideoReady}
+          onPlaying={handleVideoReady}
+          onError={handleVideoError}
           style={{ pointerEvents: "none" }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80" />

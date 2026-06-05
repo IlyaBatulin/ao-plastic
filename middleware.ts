@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
+import { isSearchCrawler, isSeoBot } from "@/lib/seo/crawlers"
 
 const SITE_AUTH_COOKIE = "site_auth"
 const ADMIN_SESSION_COOKIE = "admin_session"
@@ -150,24 +151,6 @@ async function verifyAdminSessionToken(token: string): Promise<boolean> {
   }
 }
 
-/** Поисковые роботы: им нужен доступ к страницам и sitemap (иначе сайт не проиндексируется). */
-function isAllowedSearchCrawler(userAgent: string): boolean {
-  const ua = userAgent.toLowerCase()
-  const allow = [
-    "googlebot",
-    "google-inspectiontool",
-    "bingbot",
-    "slurp",
-    "duckduckbot",
-    "yandexbot",
-    "yandeximages",
-    "yandexmetrika",
-    "applebot",
-    "petalbot",
-  ]
-  return allow.some((token) => ua.includes(token))
-}
-
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
   const normalizedAssetPath = normalizeLegacyAssetPath(pathname)
@@ -190,8 +173,11 @@ export async function middleware(request: NextRequest) {
   const isRobotsTxt = pathname === "/robots.txt"
   const isSitemapXml = pathname === "/sitemap.xml"
   const isSiteLoginPage = pathname === "/login"
+  const userAgent = request.headers.get("user-agent") || ""
+  const isSearchBot = isSearchCrawler(userAgent)
 
-  // Временная защита сайта паролем (если задан SITE_PASSWORD в .env)
+  // Временная защита сайта паролем (если задан SITE_PASSWORD в .env).
+  // Поисковые роботы пропускаем — иначе сайт не проиндексируется в Google/Яндекс.
   const sitePassword = process.env.SITE_PASSWORD
   if (
     sitePassword &&
@@ -199,7 +185,8 @@ export async function middleware(request: NextRequest) {
     !isApiRoute &&
     !isRobotsTxt &&
     !isSitemapXml &&
-    !isSiteLoginPage
+    !isSiteLoginPage &&
+    !isSearchBot
   ) {
     const siteAuth = request.cookies.get(SITE_AUTH_COOKIE)
     const hasSiteAuth = siteAuth?.value === "authenticated"
@@ -211,9 +198,8 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // Блокировка ботов и скраперов
-  if (!isStaticFile && !isApiRoute && !isRobotsTxt) {
-    const userAgent = request.headers.get("user-agent") || ""
+  // Блокировка ботов и скраперов (поисковики, sitemap и боты превью соцсетей — пропускаем)
+  if (!isStaticFile && !isApiRoute && !isRobotsTxt && !isSitemapXml) {
     const botPatterns = [
       /bot/i,
       /crawler/i,
@@ -242,7 +228,7 @@ export async function middleware(request: NextRequest) {
 
     const isBot = botPatterns.some((pattern) => pattern.test(userAgent))
 
-    if (isBot && !isAllowedSearchCrawler(userAgent)) {
+    if (isBot && !isSeoBot(userAgent)) {
       return new NextResponse("Access Denied", { status: 403 })
     }
   }

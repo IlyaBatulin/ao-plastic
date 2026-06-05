@@ -37,10 +37,10 @@ export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps
   return (
     <div className="min-h-screen bg-transparent">
       {/* Hero Section */}
-      <section className="pt-32 pb-16">
+      <section className="pt-28 pb-4 sm:pt-32 sm:pb-6">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="mb-10 text-center">
-            <h1 className="text-h1 mb-6 text-primary">
+          <div className="mb-4 text-center sm:mb-6">
+            <h1 className="text-h1 mb-3 text-primary sm:mb-4">
               {t("homePage.catalog.title")}
             </h1>
             <p className="text-body max-w-3xl mx-auto">
@@ -52,9 +52,9 @@ export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps
       </section>
 
       {/* Product Categories Grid */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <section className="pt-2 pb-16 sm:pt-4 sm:pb-20">
+        <div className="container mx-auto max-w-7xl px-4 lg:px-8">
+          <div className="grid grid-cols-1 items-stretch gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
             {catalogCategories.map((category: Category) => {
               const categoryName = t(`homePage.catalog.categories.${category.id}`) || category.name
               const categoryDescription =
@@ -69,7 +69,7 @@ export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps
                   className="group relative flex h-full min-h-0 flex-col bg-card rounded-3xl overflow-hidden border-2 border-border hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-2"
                 >
                   {/* Image */}
-                  <div className="relative h-56 shrink-0 overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5">
+                  <div className="relative aspect-[16/10] shrink-0 overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5">
                     <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent z-10 pointer-events-none" />
                     <Image
                       src={
@@ -95,18 +95,18 @@ export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps
                   </div>
 
                   {/* Content — flex-1 + CTA внизу, чтобы «Подробнее» был на одной линии в ряду */}
-                  <div className="flex min-h-0 flex-1 flex-col p-8">
+                  <div className="flex min-h-0 flex-1 flex-col p-6 sm:p-7 lg:p-8">
                     <div className="min-h-0 flex-1">
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
-                          <Package className="w-6 h-6 text-primary" />
+                      <div className="flex items-start gap-3 sm:gap-4">
+                        <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 transition-transform duration-300 group-hover:scale-110 sm:h-12 sm:w-12">
+                          <Package className="h-5 w-5 text-primary sm:h-6 sm:w-6" />
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="text-2xl font-bold mb-2 group-hover:text-primary transition-colors text-balance">
+                        <div className="min-w-0 flex-1">
+                          <h3 className="mb-2 text-xl font-bold leading-snug text-balance hyphens-auto break-words transition-colors group-hover:text-primary sm:text-2xl">
                             {categoryName}
                           </h3>
                           {categoryDescription ? (
-                            <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2">
+                            <p className="text-sm leading-relaxed text-muted-foreground line-clamp-2">
                               {categoryDescription}
                             </p>
                           ) : null}

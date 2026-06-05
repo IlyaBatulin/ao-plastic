@@ -81,7 +81,7 @@ export function CategoryHero({
   const videoUrl = (hasVideo && videoSrc) ? videoSrc : DEFAULT_CATEGORY_VIDEO
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden flex items-center justify-center">
+    <section className="relative min-h-[60vh] w-full overflow-hidden flex items-center justify-center">
       <div className="absolute inset-0 z-0">
         <video
           autoPlay
@@ -100,7 +100,7 @@ export function CategoryHero({
         <div className="absolute inset-0 bg-gradient-to-t from-primary/40 via-transparent to-transparent" />
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 lg:px-8 pt-32 pb-20 min-h-screen flex flex-col">
+      <div className="relative z-10 container mx-auto px-4 lg:px-8 pt-24 pb-12 sm:pt-28 sm:pb-14 lg:pt-32 lg:pb-16 min-h-[60vh] flex flex-col">
         <Link
           href={backHref}
           className="inline-flex items-center gap-2 text-white font-medium hover:text-white transition-colors mb-8 group backdrop-blur-md bg-black/50 rounded-full px-4 py-2.5 w-fit border border-white/30 shadow-lg hover:bg-black/60 hover:border-white/50"
@@ -112,18 +112,18 @@ export function CategoryHero({
           <div className="max-w-4xl">
             <h1
               ref={titleRef}
-              className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 text-white drop-shadow-2xl opacity-0 translate-y-8 transition-all duration-1000 leading-tight break-words"
+              className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 text-primary opacity-0 translate-y-8 transition-all duration-1000 leading-tight break-words"
             >
               {title}
             </h1>
             {description && (
               <p
                 ref={descRef}
-                className="text-xl lg:text-2xl text-white/90 leading-relaxed drop-shadow-lg"
+                className="text-xl lg:text-2xl text-primary/90 leading-relaxed"
               >
                 {displayedText}
                 {isTyping && (
-                  <span className="inline-block w-0.5 h-6 lg:h-8 bg-white/90 ml-1 animate-pulse" />
+                  <span className="inline-block w-0.5 h-6 lg:h-8 bg-primary/90 ml-1 animate-pulse" />
                 )}
               </p>
             )}

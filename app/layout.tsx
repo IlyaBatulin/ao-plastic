@@ -4,13 +4,13 @@ import { cookies } from "next/headers"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import "./logo-loop.css"
-import Script from "next/script"
 import { LanguageProvider } from "@/contexts/language-context"
 import { CartProvider } from "@/contexts/cart-context"
 import { ConditionalHeader } from "@/components/conditional-header"
 import { Toaster } from "@/components/ui/toaster"
 import { LoadingScreen } from "@/components/loading-screen"
 import { LenisProvider } from "@/components/lenis-provider"
+import { GsapInit } from "@/components/gsap-init"
 import { getSiteUrl } from "@/lib/site"
 import { parseLanguage } from "@/lib/language"
 import { SiteJsonLd } from "@/components/seo/site-json-ld"
@@ -84,10 +84,16 @@ export const metadata: Metadata = {
       "Производство АБС-пластиков, полистирола и пластиковых изделий. Завод в Тульской области.",
     images: ["/images/logo123.png"],
   },
-  ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+  ...((process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
+    process.env.NEXT_PUBLIC_YANDEX_SITE_VERIFICATION)
     ? {
         verification: {
-          google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+          ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+            ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+            : {}),
+          ...(process.env.NEXT_PUBLIC_YANDEX_SITE_VERIFICATION
+            ? { yandex: process.env.NEXT_PUBLIC_YANDEX_SITE_VERIFICATION }
+            : {}),
         },
       }
     : {}),
@@ -106,10 +112,9 @@ export default async function RootLayout({
       <head>
         <link rel="preload" href="/locales/ru.json" as="fetch" crossOrigin="anonymous" />
         <link rel="preload" href="/locales/en.json" as="fetch" crossOrigin="anonymous" />
-        <Script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" />
-        <Script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" />
       </head>
       <body className="min-h-screen overflow-x-clip bg-background text-foreground antialiased">
+        <GsapInit />
         <SiteJsonLd />
         <LoadingScreen />
         <LenisProvider>

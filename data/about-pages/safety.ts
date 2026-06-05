@@ -1,3 +1,131 @@
+export interface SafetyDocument {
+  title: string
+  file: string
+  fileType: string
+  size?: number
+}
+
+export interface SafetyDocumentSection {
+  title: string
+  intro?: string
+  docs: SafetyDocument[]
+}
+
+// Источник: http://oaoplastic.ru/about/ohrana-truda-promyshlennaya-bezopasno
+export const safetyDocumentSections: SafetyDocumentSection[] = [
+  {
+    title: "Политика АО «Пластик» в области промышленной безопасности и охраны труда",
+    docs: [
+      {
+        title: "Политика АО «Пластик» в области промышленной безопасности и охраны труда",
+        file: "/documents/safety/politika-ao-plastik-v-oblasti-promyshlennoy-bezopasnosti-i-ohrany-trud.pdf",
+        fileType: "PDF",
+        size: 263110,
+      },
+    ],
+  },
+  {
+    title: "Информация по результатам специальной оценки условий труда",
+    intro:
+      "В соответствии с п. 6 ст. 15 Федерального закона от 28.12.2013 N 426-ФЗ «О специальной оценке условий труда»",
+    docs: [
+      {
+        title: "Сводная ведомость результатов проведения специальной оценки условия труда 2020 год",
+        file: "/documents/safety/svodnaya-vedomost-rezultatov-provedeniya-specialnoy-ocenki-usloviya-tr.pdf",
+        fileType: "PDF",
+        size: 422691,
+      },
+      {
+        title: "Сводная ведомость результатов проведения специальной оценки условия труда 2021 год",
+        file: "/documents/safety/svodnaya-vedomost-rezultatov-provedeniya-specialnoy-ocenki-usloviya-tr-2.pdf",
+        fileType: "PDF",
+        size: 148799,
+      },
+      {
+        title: "Сводная ведомость результатов проведения специальной оценки условия труда 2022 год",
+        file: "/documents/safety/svodnaya-vedomost-rezultatov-provedeniya-specialnoy-ocenki-usloviya-tr-3.pdf",
+        fileType: "PDF",
+        size: 107415,
+      },
+      {
+        title: "Сводная ведомость результатов проведения специальной оценки условия труда 2022 (2) год",
+        file: "/documents/safety/svodnaya-vedomost-rezultatov-provedeniya-specialnoy-ocenki-usloviya-tr-4.pdf",
+        fileType: "PDF",
+        size: 112305,
+      },
+      {
+        title: "Сводная ведомость результатов проведения специальной оценки условия труда 2023 год",
+        file: "/documents/safety/svodnaya-vedomost-rezultatov-provedeniya-specialnoy-ocenki-usloviya-tr-5.pdf",
+        fileType: "PDF",
+        size: 104616,
+      },
+      {
+        title: "Сводная ведомость результатов проведения специальной оценки условия труда 2023 (2) год",
+        file: "/documents/safety/svodnaya-vedomost-rezultatov-provedeniya-specialnoy-ocenki-usloviya-tr-6.pdf",
+        fileType: "PDF",
+        size: 107051,
+      },
+      {
+        title: "Сводная ведомость результатов проведения специальной оценки условия труда 2023 (3) год",
+        file: "/documents/safety/svodnaya-vedomost-rezultatov-provedeniya-specialnoy-ocenki-usloviya-tr-7.pdf",
+        fileType: "PDF",
+        size: 114478,
+      },
+      {
+        title: "Сводная ведомость результатов проведения специальной оценки условия труда 2024 год",
+        file: "/documents/safety/svodnaya-vedomost-rezultatov-provedeniya-specialnoy-ocenki-usloviya-tr-8.pdf",
+        fileType: "PDF",
+        size: 107449,
+      },
+      {
+        title: "Сводная ведомость результатов проведения специальной оценки условия труда 2025 год",
+        file: "/documents/safety/svodnaya-vedomost-rezultatov-provedeniya-specialnoy-ocenki-usloviya-tr-9.pdf",
+        fileType: "PDF",
+        size: 383946,
+      },
+      {
+        title: "Сводная ведомость результатов проведения специальной оценки условия труда 26.09.2025 года",
+        file: "/documents/safety/svodnaya-vedomost-rezultatov-provedeniya-specialnoy-ocenki-usloviya-tr-10.pdf",
+        fileType: "PDF",
+        size: 384333,
+      },
+      {
+        title: "Сводная ведомость результатов проведения специальной оценки условия труда 26.09.2025 года (1)",
+        file: "/documents/safety/svodnaya-vedomost-rezultatov-provedeniya-specialnoy-ocenki-usloviya-tr-11.pdf",
+        fileType: "PDF",
+        size: 384327,
+      },
+    ],
+  },
+  {
+    title: "Экологическая политика и сертификаты",
+    docs: [
+      {
+        title: "Экологическая политика АО «Пластик»",
+        file: "/documents/safety/ekologicheskaya-politika-ao-plastik.jpg",
+        fileType: "JPG",
+        size: 220791,
+      },
+      {
+        title: "Сертификат системы экологического менеджмента ГОСТ Р ИСО 14001-2016 (2023)",
+        file: "/documents/safety/sertifikat-sistemy-ekologicheskogo-menedzhmenta-gost-r-iso-14001-2016-.pdf",
+        fileType: "PDF",
+        size: 870389,
+      },
+      {
+        title: "Сертификат системы менеджмента качества (действителен до 2026 г.)",
+        file: "/docs/quality/sertifikat-smk-2026.jpg",
+        fileType: "JPG",
+      },
+      {
+        title: "Сертификат соответствия ISO (2020)",
+        file: "/docs/quality/iso-2020.jpg",
+        fileType: "JPG",
+      },
+    ],
+  },
+]
+
 export const safetyPageContent = {
   ru: {
     heroTitle: "Охрана труда и экология",
@@ -40,21 +168,8 @@ export const safetyPageContent = {
       "Реализация целей настоящей политики обеспечивается персональной ответственностью руководства и каждого работника АО «Пластик».",
     documentsTitle: "Документы",
     documentsIntro:
-      "Сертификаты и документы в области охраны труда, экологии и менеджмента качества.",
-    documents: [
-      {
-        href: "/docs/sertifikat-gost-r-iso-14001-2016-2023.pdf",
-        label: "Сертификат системы экологического менеджмента ГОСТ Р ИСО 14001-2016 (2023)",
-      },
-      {
-        href: "/docs/quality/sertifikat-smk-2026.jpg",
-        label: "Сертификат системы менеджмента качества (действителен до 2026 г.)",
-      },
-      {
-        href: "/docs/quality/iso-2020.jpg",
-        label: "Сертификат соответствия ISO (2020)",
-      },
-    ],
+      "Политики, сводные ведомости специальной оценки условий труда, экологическая политика и сертификаты.",
+    download: "Скачать",
   },
   en: {
     heroTitle: "Occupational Safety and Environment",
@@ -97,20 +212,7 @@ export const safetyPageContent = {
       "Achievement of the objectives of this policy is ensured by the personal responsibility of management and every employee of JSC Plastik.",
     documentsTitle: "Documents",
     documentsIntro:
-      "Certificates and documents in the fields of occupational safety, environment and quality management.",
-    documents: [
-      {
-        href: "/docs/sertifikat-gost-r-iso-14001-2016-2023.pdf",
-        label: "Environmental Management System Certificate GOST R ISO 14001-2016 (2023)",
-      },
-      {
-        href: "/docs/quality/sertifikat-smk-2026.jpg",
-        label: "Quality Management System Certificate (valid until 2026)",
-      },
-      {
-        href: "/docs/quality/iso-2020.jpg",
-        label: "ISO Certificate of Conformity (2020)",
-      },
-    ],
+      "Policies, special assessment of working conditions reports, environmental policy and certificates.",
+    download: "Download",
   },
-} as const
+}

@@ -13,9 +13,11 @@ export function AdminDashboard() {
   const [vacancyResponsesCount, setVacancyResponsesCount] = useState(0)
   const [rfpResponsesCount, setRfpResponsesCount] = useState(0)
   const [contactMessagesCount, setContactMessagesCount] = useState(0)
+  const [stats, setStats] = useState<{ orders: number; products: number; categories: number; managers: number } | null>(null)
 
   useEffect(() => {
     fetchCounts()
+    fetchStats()
     // Обновляем счетчики каждые 30 секунд
     const interval = setInterval(fetchCounts, 30000)
     
@@ -55,6 +57,17 @@ export function AdminDashboard() {
       }
     } catch (error) {
       console.error("Ошибка загрузки счетчиков:", error)
+    }
+  }
+
+  const fetchStats = async () => {
+    try {
+      const res = await fetch("/api/admin/stats")
+      if (res.ok) {
+        setStats(await res.json())
+      }
+    } catch (error) {
+      console.error("Ошибка загрузки статистики:", error)
     }
   }
 
@@ -118,7 +131,7 @@ ADMIN_PATH=panel-ваш-код
               <h3 className="text-sm font-medium text-muted-foreground">Заказы</h3>
               <ShoppingCart className="w-5 h-5 text-primary" />
             </div>
-            <p className="text-3xl font-bold text-foreground">-</p>
+            <p className="text-3xl font-bold text-foreground">{stats ? stats.orders : "…"}</p>
             <p className="text-xs text-muted-foreground mt-2">Всего заказов</p>
           </div>
 
@@ -127,7 +140,7 @@ ADMIN_PATH=panel-ваш-код
               <h3 className="text-sm font-medium text-muted-foreground">Товары</h3>
               <Package className="w-5 h-5 text-primary" />
             </div>
-            <p className="text-3xl font-bold text-foreground">-</p>
+            <p className="text-3xl font-bold text-foreground">{stats ? stats.products : "…"}</p>
             <p className="text-xs text-muted-foreground mt-2">Всего товаров</p>
           </div>
 
@@ -136,7 +149,7 @@ ADMIN_PATH=panel-ваш-код
               <h3 className="text-sm font-medium text-muted-foreground">Категории</h3>
               <FileText className="w-5 h-5 text-primary" />
             </div>
-            <p className="text-3xl font-bold text-foreground">-</p>
+            <p className="text-3xl font-bold text-foreground">{stats ? stats.categories : "…"}</p>
             <p className="text-xs text-muted-foreground mt-2">Всего категорий</p>
           </div>
 
@@ -145,8 +158,8 @@ ADMIN_PATH=panel-ваш-код
               <h3 className="text-sm font-medium text-muted-foreground">Менеджеры</h3>
               <Users className="w-5 h-5 text-primary" />
             </div>
-            <p className="text-3xl font-bold text-foreground">-</p>
-            <p className="text-xs text-muted-foreground mt-2">Активных менеджеров</p>
+            <p className="text-3xl font-bold text-foreground">{stats ? stats.managers : "…"}</p>
+            <p className="text-xs text-muted-foreground mt-2">Всего менеджеров</p>
           </div>
         </div>
 

@@ -6,6 +6,8 @@ import { BackgroundPaths } from "@/components/ui/background-paths"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Calendar } from "lucide-react"
 import { createClient } from "@/utils/supabase/server"
+import { sanitizeHtml } from "@/lib/sanitize-html"
+import { ArticleJsonLd } from "@/components/seo/article-json-ld"
 
 interface NewsDetailPageProps {
   params: Promise<{ slugOrId: string }>
@@ -61,8 +63,22 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
       })
     : null
 
+  const newsPath = `/about/news/${item.slug || item.id}`
+  const plainExcerpt =
+    typeof item.excerpt === "string" && item.excerpt.trim()
+      ? item.excerpt.replace(/<[^>]+>/g, "").slice(0, 300)
+      : null
+
   return (
     <>
+      <ArticleJsonLd
+        title={item.title}
+        description={plainExcerpt}
+        imageUrl={item.image_url}
+        publishedAt={item.published_at}
+        updatedAt={item.updated_at}
+        urlPath={newsPath}
+      />
       <BackgroundPaths />
       <div className="min-h-screen bg-transparent">
         <section className="pt-32 pb-24">
@@ -119,7 +135,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
                 {item.content && (
                   <div
                     className="news-content prose prose-lg dark:prose-invert max-w-none [&_h1]:text-2xl [&_h1]:font-bold [&_h2]:text-xl [&_h2]:font-semibold [&_h3]:text-lg [&_h3]:font-medium [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_blockquote]:border-l-4 [&_blockquote]:border-muted-foreground [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-muted-foreground [&_pre]:bg-muted [&_pre]:p-4 [&_pre]:rounded [&_code]:bg-muted [&_code]:px-1 [&_code]:rounded [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-2"
-                    dangerouslySetInnerHTML={{ __html: item.content }}
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(item.content) }}
                   />
                 )}
               </article>

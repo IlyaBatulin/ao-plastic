@@ -94,13 +94,15 @@ export async function resolveSubcategory(
 ): Promise<Record<string, unknown> | null> {
   const candidates = getSubcategorySlugCandidates(categoryId, urlSlug)
 
-  const bySlug = await fetchFirstSubcategory(supabase, categoryId, "slug", candidates)
-  if (bySlug) return bySlug
+  const [bySlug, byId] = await Promise.all([
+    fetchFirstSubcategory(supabase, categoryId, "slug", candidates),
+    categoryId === "machine-parts"
+      ? fetchFirstSubcategory(supabase, categoryId, "id", candidates)
+      : Promise.resolve(null),
+  ])
 
-  if (categoryId === "machine-parts") {
-    const byId = await fetchFirstSubcategory(supabase, categoryId, "id", candidates)
-    if (byId) return byId
-  }
+  if (bySlug) return bySlug
+  if (byId) return byId
 
   const jsonSub = findJsonSubcategory(categoryId, urlSlug)
   if (!jsonSub) return null

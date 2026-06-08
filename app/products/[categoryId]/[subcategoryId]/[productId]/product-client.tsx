@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useMemo, useState } from "react"
 import Link from "next/link"
 import { ArrowLeft, CheckCircle2, Package, Truck, X } from "lucide-react"
 import Image from "next/image"
@@ -25,6 +25,13 @@ import { useLanguage } from "@/contexts/language-context"
 import { resolveProductDisplay } from "@/lib/product-en"
 import { isMachinePartsExtrusion } from "@/lib/catalog-slugs"
 import { resolveProductImageUrl } from "@/lib/product-image"
+import { KorsNormTable } from "@/app/products/_components/kors-norm-table"
+import { KORS_PAGE_KEYS } from "@/lib/kors-bentol-en"
+import {
+  getStyreneNormRows,
+  STYRENE_OKP_LABEL,
+  STYRENE_PAGE_KEYS,
+} from "@/lib/styrene-category-i18n"
 
 type ProductPageClientProps = {
   product: any
@@ -41,12 +48,17 @@ export function ProductPageClient({
   categoryId,
   subcategoryId,
 }: ProductPageClientProps) {
-  const imgRef = useRef<HTMLDivElement>(null)
-  const infoRef = useRef<HTMLDivElement>(null)
-  const specsRef = useRef<HTMLDivElement>(null)
   const { addItem } = useCart()
   const { toast } = useToast()
-  const { lang } = useLanguage()
+  const { t, lang } = useLanguage()
+  const formK = "contactsPage.form"
+  const styreneK = STYRENE_PAGE_KEYS
+  const normTableCols = {
+    colNo: t(KORS_PAGE_KEYS.normColNo),
+    colName: t(KORS_PAGE_KEYS.normColName),
+    colUnit: t(KORS_PAGE_KEYS.normColUnit),
+    colValue: t(KORS_PAGE_KEYS.normColValue),
+  }
 
   // Определяем тип товара
   const isHouseholdProduct = categoryId === 'hoztovary'
@@ -98,43 +110,22 @@ export function ProductPageClient({
     return Math.max(0, Number(num.toFixed(3)))
   }
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const el = entry.target as HTMLElement
-            el.style.opacity = '1'
-            el.style.transform = 'translateY(0)'
-            observer.unobserve(entry.target)
-          }
-        })
-      },
-      { threshold: 0.1, rootMargin: "50px" }
-    )
-
-    if (imgRef.current) observer.observe(imgRef.current)
-    if (infoRef.current) observer.observe(infoRef.current)
-    if (specsRef.current) observer.observe(specsRef.current)
-
-    return () => observer.disconnect()
-  }, [])
-
-  // Обрабатываем specifications
-  let specifications: any = {}
-  if (product.specifications) {
-    if (typeof product.specifications === "string") {
-      try {
-        specifications = JSON.parse(product.specifications)
-      } catch {
-        specifications = {}
+  const specifications = useMemo(() => {
+    let specs: Record<string, unknown> = {}
+    if (product.specifications) {
+      if (typeof product.specifications === "string") {
+        try {
+          specs = JSON.parse(product.specifications)
+        } catch {
+          specs = {}
+        }
+      } else {
+        specs = product.specifications
       }
-    } else {
-      specifications = product.specifications
     }
-  }
-  
-  specifications = stripHiddenSpecs(specifications)
+    return stripHiddenSpecs(specs)
+  }, [product.specifications])
+
   const detailSections = Array.isArray(product.detailSections) ? product.detailSections : []
 
   // Для экструзионных изделий скрываем блок "ключевые фичи" и оставляем только описание/характеристики
@@ -151,7 +142,7 @@ export function ProductPageClient({
             className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-6 group"
           >
             <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-            <span>Назад к подкатегории</span>
+            <span>{t("productPage.backToSubcategory")}</span>
           </Link>
         </div>
       </section>
@@ -161,35 +152,19 @@ export function ProductPageClient({
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Product Image */}
-            <div
-              ref={imgRef}
-              className="relative h-96 lg:h-full min-h-[500px] rounded-3xl overflow-hidden border border-border shadow-lg"
-              style={{
-                opacity: 0,
-                transform: 'translateY(30px)',
-                transition: 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
-              }}
-            >
+            <div className="relative h-96 lg:h-full min-h-[500px] rounded-3xl overflow-hidden border border-border shadow-lg">
               <Image
                 src={productImageUrl}
                 alt={displayName}
                 fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
                 priority
               />
             </div>
 
             {/* Product Info */}
-            <div
-              ref={infoRef}
-              className="flex flex-col justify-center"
-              style={{
-                opacity: 0,
-                transform: 'translateY(30px)',
-                transition: 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
-                transitionDelay: '200ms',
-              }}
-            >
+            <div className="flex flex-col justify-center">
               <h1 className="text-4xl lg:text-5xl font-bold mb-4">{displayName}</h1>
 
               {displayDescription && (
@@ -205,19 +180,19 @@ export function ProductPageClient({
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                       <CheckCircle2 className="w-5 h-5 text-primary" />
                     </div>
-                    <span className="text-sm">Высокое качество</span>
+                    <span className="text-sm">{t("productPage.highQuality")}</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                       <Package className="w-5 h-5 text-primary" />
                     </div>
-                    <span className="text-sm">Сертифицированная продукция</span>
+                    <span className="text-sm">{t("productPage.certifiedProduct")}</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                       <Truck className="w-5 h-5 text-primary" />
                     </div>
-                    <span className="text-sm">Доставка по всей России</span>
+                    <span className="text-sm">{t("productPage.deliveryRussia")}</span>
                   </div>
                 </div>
               )}
@@ -226,8 +201,10 @@ export function ProductPageClient({
               {isAbsProduct && (
                 <div className="mb-6 p-4 rounded-2xl border border-border bg-muted/30">
                   <p className="text-sm font-semibold mb-3 text-foreground">
-                    Цвет RAL
-                    <span className="ml-1 text-xs font-normal text-muted-foreground">(необязательно)</span>
+                    {t("productPage.ralColor")}
+                    <span className="ml-1 text-xs font-normal text-muted-foreground">
+                      {t("productPage.ralOptional")}
+                    </span>
                   </p>
                   <RalColorPicker
                     selected={selectedRalColor}
@@ -235,7 +212,8 @@ export function ProductPageClient({
                   />
                   {selectedRalColor && (
                     <p className="mt-2 text-xs text-muted-foreground">
-                      Будет указан в заказе: <span className="font-semibold text-foreground">{selectedRalColor.code}</span> — {selectedRalColor.name}
+                      {t("productPage.ralOrderNote")}{" "}
+                      <span className="font-semibold text-foreground">{selectedRalColor.code}</span> — {selectedRalColor.name}
                     </p>
                   )}
                 </div>
@@ -244,7 +222,7 @@ export function ProductPageClient({
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2 border border-border rounded-lg px-2 py-1">
                   <span className="text-sm text-muted-foreground">
-                    {isHouseholdProduct ? 'Упаковки:' : 'Тонны:'}
+                    {isHouseholdProduct ? t("productPage.packages") : t("productPage.tons")}
                   </span>
                   <input
                     type="number"
@@ -291,7 +269,7 @@ export function ProductPageClient({
                 </div>
                 {isHouseholdProduct && (
                   <span className="text-xs text-muted-foreground">
-                    ({packageQuantity} шт/уп)
+                    ({packageQuantity} {t("productPage.pcsPerPack")})
                   </span>
                 )}
                 <Button 
@@ -310,17 +288,20 @@ export function ProductPageClient({
                       packageQuantity: isHouseholdProduct ? packageQuantity : undefined,
                       colorCode: isAbsProduct && selectedRalColor ? selectedRalColor.code : undefined,
                     })
-                    const unit = isHouseholdProduct ? 'уп' : 'т'
+                    const unit = isHouseholdProduct ? t("productPage.unitPack") : t("productPage.unitTons")
                     const formatted = isHouseholdProduct ? n.toString() : n.toFixed(3)
-                    const colorInfo = isAbsProduct && selectedRalColor ? `, цвет: ${selectedRalColor.code}` : ''
+                    const colorInfo =
+                      isAbsProduct && selectedRalColor
+                        ? `, ${t("productPage.colorLabel")} ${selectedRalColor.code}`
+                        : ""
                     toast({
-                      title: "Товар добавлен в корзину",
-                      description: `${displayName}: ${formatted} ${unit}${isHouseholdProduct && packageQuantity > 1 ? ` (${n * packageQuantity} шт)` : ''}${colorInfo}`,
+                      title: t("productPage.addedToCart"),
+                      description: `${displayName}: ${formatted} ${unit}${isHouseholdProduct && packageQuantity > 1 ? ` (${n * packageQuantity} ${t("productPage.unitPcs")})` : ""}${colorInfo}`,
                       className: "border-primary/40 bg-primary text-primary-foreground",
                     })
                   }}
                 >
-                  Заказать товар
+                  {t("productPage.orderProduct")}
                 </Button>
               </div>
             </div>
@@ -387,27 +368,18 @@ export function ProductPageClient({
 
       {/* Specifications */}
       {Object.keys(specifications).length > 0 && (
-        <section
-          ref={specsRef}
-          className="py-16 bg-secondary/30"
-          style={{
-            opacity: 0,
-            transform: 'translateY(30px)',
-            transition: 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
-            transitionDelay: '400ms',
-          }}
-        >
+        <section className="py-16 bg-secondary/30">
           <div className="container mx-auto px-4 lg:px-8">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-8">Характеристики</h2>
+            <h2 className="text-3xl lg:text-4xl font-bold mb-8">{t("productPage.specificationsTitle")}</h2>
             <div className="bg-card rounded-3xl p-8 shadow-sm border border-border">
               <div className="grid md:grid-cols-2 gap-6">
                 {Object.entries(specifications).map(([key, value]) => (
                   <div key={key} className="flex flex-col border-b border-border pb-4 last:border-0">
                     <span className="text-sm font-semibold text-muted-foreground mb-1">
-                      {formatSpecKey(key, lang === "en" ? "en" : "ru")}
+                      {formatSpecKey(key, lang === "en" ? "en" : "ru", value)}
                     </span>
                     <span className="text-lg font-medium">
-                      {formatSpecValue(key, value)}
+                      {formatSpecValue(key, value, lang === "en" ? "en" : "ru")}
                     </span>
                   </div>
                 ))}
@@ -421,84 +393,18 @@ export function ProductPageClient({
       {isStyrene && (
         <section className="py-16 bg-secondary/30">
           <div className="container mx-auto px-4 lg:px-8">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-8">Норма по НТД - Высший сорт</h2>
-            <div className="bg-card rounded-3xl p-8 shadow-sm border border-border overflow-x-auto">
-              <div className="mb-4">
-                <p className="text-sm text-muted-foreground mb-2">ОКП 24 14930120</p>
-              </div>
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="bg-[#1e3a5f] text-white">
-                    <th className="py-4 px-6 text-left font-semibold border border-gray-300">№ п/п</th>
-                    <th className="py-4 px-6 text-left font-semibold border border-gray-300">Наименование показателей</th>
-                    <th className="py-4 px-6 text-left font-semibold border border-gray-300">Ед. измерения</th>
-                    <th className="py-4 px-6 text-left font-semibold border border-gray-300">Норма по НТД</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="bg-white border-b border-gray-200">
-                    <td className="py-4 px-6 border border-gray-300">1</td>
-                    <td className="py-4 px-6 border border-gray-300">Внешний вид</td>
-                    <td className="py-4 px-6 border border-gray-300 text-center">—</td>
-                    <td className="py-4 px-6 border border-gray-300">Прозрачная однородная жидкость без механических примесей и нерастворенной влаги</td>
-                  </tr>
-                  <tr className="bg-gray-50 border-b border-gray-200">
-                    <td className="py-4 px-6 border border-gray-300">2</td>
-                    <td className="py-4 px-6 border border-gray-300">Массовая доля стирола, не менее</td>
-                    <td className="py-4 px-6 border border-gray-300 text-center">%</td>
-                    <td className="py-4 px-6 border border-gray-300">99,80</td>
-                  </tr>
-                  <tr className="bg-white border-b border-gray-200">
-                    <td className="py-4 px-6 border border-gray-300">3</td>
-                    <td className="py-4 px-6 border border-gray-300">Массовая доля дивинилбензола, не более</td>
-                    <td className="py-4 px-6 border border-gray-300 text-center">%</td>
-                    <td className="py-4 px-6 border border-gray-300">0,0005</td>
-                  </tr>
-                  <tr className="bg-gray-50 border-b border-gray-200">
-                    <td className="py-4 px-6 border border-gray-300">4</td>
-                    <td className="py-4 px-6 border border-gray-300">Массовая доля карбонильных соединений в пересчете на бензальдегид, не более</td>
-                    <td className="py-4 px-6 border border-gray-300 text-center">%</td>
-                    <td className="py-4 px-6 border border-gray-300">0,01</td>
-                  </tr>
-                  <tr className="bg-white border-b border-gray-200">
-                    <td className="py-4 px-6 border border-gray-300">5</td>
-                    <td className="py-4 px-6 border border-gray-300">Массовая доля перекисных соединений в пересчете на активный кислород, не более</td>
-                    <td className="py-4 px-6 border border-gray-300 text-center">%</td>
-                    <td className="py-4 px-6 border border-gray-300">0,0005</td>
-                  </tr>
-                  <tr className="bg-gray-50 border-b border-gray-200">
-                    <td className="py-4 px-6 border border-gray-300">6</td>
-                    <td className="py-4 px-6 border border-gray-300">Массовая доля полимера, не более</td>
-                    <td className="py-4 px-6 border border-gray-300 text-center">%</td>
-                    <td className="py-4 px-6 border border-gray-300">0,001</td>
-                  </tr>
-                  <tr className="bg-white border-b border-gray-200">
-                    <td className="py-4 px-6 border border-gray-300">7</td>
-                    <td className="py-4 px-6 border border-gray-300">Массовая доля фенилацетилена, не более</td>
-                    <td className="py-4 px-6 border border-gray-300 text-center">%</td>
-                    <td className="py-4 px-6 border border-gray-300">0,01</td>
-                  </tr>
-                  <tr className="bg-gray-50 border-b border-gray-200">
-                    <td className="py-4 px-6 border border-gray-300">8</td>
-                    <td className="py-4 px-6 border border-gray-300">Массовая доля стабилизатора пара-трет-бутилпирокатехина, в пределах</td>
-                    <td className="py-4 px-6 border border-gray-300 text-center">%</td>
-                    <td className="py-4 px-6 border border-gray-300">0,0005-0,0010</td>
-                  </tr>
-                  <tr className="bg-white">
-                    <td className="py-4 px-6 border border-gray-300">9</td>
-                    <td className="py-4 px-6 border border-gray-300">Цветность по платиново-кобальтовой шкале, не более</td>
-                    <td className="py-4 px-6 border border-gray-300 text-center">ед. Хазена</td>
-                    <td className="py-4 px-6 border border-gray-300">10</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <h2 className="text-3xl lg:text-4xl font-bold mb-8">{t(styreneK.normTitle)}</h2>
+            <KorsNormTable
+              tuLabel={STYRENE_OKP_LABEL}
+              rows={getStyreneNormRows(lang === "en" ? "en" : "ru")}
+              {...normTableCols}
+            />
             <div className="mt-8 flex justify-center">
               <Button
                 onClick={() => setIsContactFormOpen(true)}
                 className="text-lg h-14 px-8 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
               >
-                Связаться с нами
+                {t(styreneK.contactUs)}
               </Button>
             </div>
           </div>
@@ -509,10 +415,8 @@ export function ProductPageClient({
       <Dialog open={isContactFormOpen} onOpenChange={setIsContactFormOpen}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
-            <DialogTitle>Связаться с нами</DialogTitle>
-            <DialogDescription>
-              Заполните форму, и мы свяжемся с вами в ближайшее время
-            </DialogDescription>
+            <DialogTitle>{t("contactUs")}</DialogTitle>
+            <DialogDescription>{t("productPage.contactDialogDescription")}</DialogDescription>
           </DialogHeader>
           <form
             onSubmit={async (e) => {
@@ -520,8 +424,8 @@ export function ProductPageClient({
               
               if (!consentAccepted) {
                 toast({
-                  title: "Требуется согласие",
-                  description: "Необходимо согласиться на обработку персональных данных",
+                  title: t(`${formK}.toastConsentRequiredTitle`),
+                  description: t(`${formK}.toastConsentRequiredDescription`),
                   variant: "destructive",
                   duration: 3000,
                 })
@@ -537,14 +441,14 @@ export function ProductPageClient({
                   body: JSON.stringify({
                     source: "contacts",
                     ...contactFormData,
-                    message: `Запрос по продукту: ${displayName}\n\n${contactFormData.message || "Интерес к продукции"}`,
+                    message: `${t("productPage.productInquiryPrefix")} ${displayName}\n\n${contactFormData.message || t("productPage.productInterestDefault")}`,
                   }),
                 })
 
                 if (response.ok) {
                   toast({
-                    title: "Сообщение отправлено",
-                    description: "Ваше сообщение отправлено и будет рассмотрено в ближайшее время. Мы свяжемся с вами по указанным контактам.",
+                    title: t(`${formK}.toastSuccessTitle`),
+                    description: t(`${formK}.toastSuccessDescription`),
                     duration: 5000,
                   })
                   setContactFormData({ name: "", email: "", phone: "", message: "" })
@@ -553,8 +457,8 @@ export function ProductPageClient({
                 } else {
                   const error = await response.json()
                   toast({
-                    title: "Ошибка отправки",
-                    description: error.error || "Произошла ошибка при отправке сообщения. Пожалуйста, попробуйте еще раз.",
+                    title: t(`${formK}.toastErrorTitle`),
+                    description: error.error || t(`${formK}.toastErrorDescription`),
                     variant: "destructive",
                     duration: 5000,
                   })
@@ -562,8 +466,8 @@ export function ProductPageClient({
               } catch (error) {
                 console.error("Ошибка:", error)
                 toast({
-                  title: "Ошибка отправки",
-                  description: "Произошла ошибка при отправке сообщения. Пожалуйста, попробуйте еще раз.",
+                  title: t(`${formK}.toastErrorTitle`),
+                  description: t(`${formK}.toastErrorDescription`),
                   variant: "destructive",
                   duration: 5000,
                 })
@@ -575,19 +479,19 @@ export function ProductPageClient({
           >
             <div>
               <label htmlFor="name" className="block text-sm font-medium mb-2">
-                Имя <span className="text-red-500">*</span>
+                {t(`${formK}.name`)} <span className="text-red-500">*</span>
               </label>
               <Input
                 id="name"
                 required
                 value={contactFormData.name}
                 onChange={(e) => setContactFormData({ ...contactFormData, name: e.target.value })}
-                placeholder="Ваше имя"
+                placeholder={t(`${formK}.namePlaceholder`)}
               />
             </div>
             <div>
               <label htmlFor="email" className="block text-sm font-medium mb-2">
-                Email <span className="text-red-500">*</span>
+                {t(`${formK}.email`)} <span className="text-red-500">*</span>
               </label>
               <Input
                 id="email"
@@ -595,31 +499,31 @@ export function ProductPageClient({
                 required
                 value={contactFormData.email}
                 onChange={(e) => setContactFormData({ ...contactFormData, email: e.target.value })}
-                placeholder="your@email.com"
+                placeholder={t(`${formK}.emailPlaceholder`)}
               />
             </div>
             <div>
               <label htmlFor="phone" className="block text-sm font-medium mb-2">
-                Телефон
+                {t(`${formK}.phone`)}
               </label>
               <Input
                 id="phone"
                 type="tel"
                 value={contactFormData.phone}
                 onChange={(e) => setContactFormData({ ...contactFormData, phone: e.target.value })}
-                placeholder="+7 (___) ___-__-__"
+                placeholder={t(`${formK}.phonePlaceholder`)}
               />
             </div>
             <div>
               <label htmlFor="message" className="block text-sm font-medium mb-2">
-                Сообщение <span className="text-red-500">*</span>
+                {t(`${formK}.message`)} <span className="text-red-500">*</span>
               </label>
               <Textarea
                 id="message"
                 required
                 value={contactFormData.message}
                 onChange={(e) => setContactFormData({ ...contactFormData, message: e.target.value })}
-                placeholder="Ваше сообщение"
+                placeholder={t(`${formK}.messagePlaceholder`)}
                 rows={4}
               />
             </div>
@@ -630,7 +534,9 @@ export function ProductPageClient({
                 onCheckedChange={(checked) => setConsentAccepted(checked === true)}
               />
               <label htmlFor="consent" className="text-sm text-muted-foreground cursor-pointer">
-                Я согласен на обработку персональных данных <span className="text-red-500">*</span>
+                {t(`${formK}.consentPrefix`)}{" "}
+                {t(`${formK}.consentPersonalData`)}{" "}
+                <span className="text-red-500">*</span>
               </label>
             </div>
             <div className="flex gap-3 pt-4">
@@ -640,14 +546,14 @@ export function ProductPageClient({
                 onClick={() => setIsContactFormOpen(false)}
                 className="flex-1"
               >
-                Отмена
+                {t("productPage.cancel")}
               </Button>
               <Button
                 type="submit"
                 disabled={isSubmitting}
                 className="flex-1"
               >
-                {isSubmitting ? "Отправка..." : "Отправить"}
+                {isSubmitting ? t(`${formK}.submitting`) : t(`${formK}.submit`)}
               </Button>
             </div>
           </form>

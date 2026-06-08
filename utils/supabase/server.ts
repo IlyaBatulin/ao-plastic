@@ -7,6 +7,44 @@ import type { SupabaseClient } from "@supabase/supabase-js"
  * @param maxRetries - максимальное количество попыток (по умолчанию 3)
  * @param retryDelay - задержка между попытками в мс (по умолчанию 1000)
  */
+const SUPABASE_QUERY_TIMEOUT_MS = 8_000
+
+function isNetworkError(error: unknown): boolean {
+	if (!error || typeof error !== "object") return false
+	const err = error as { code?: string; message?: string; cause?: { code?: string } }
+	return (
+		err.code === "ECONNRESET" ||
+		err.code === "ETIMEDOUT" ||
+		err.code === "ENOTFOUND" ||
+		err.cause?.code === "ECONNRESET" ||
+		err.cause?.code === "ETIMEDOUT" ||
+		(err.message?.includes("terminated") ?? false) ||
+		(err.message?.includes("fetch failed") ?? false) ||
+		(err.message?.includes("Timeout") ?? false)
+	)
+}
+
+export async function withTimeout<T>(
+	promise: Promise<T>,
+	ms: number,
+	label: string
+): Promise<T> {
+	let timeoutId: ReturnType<typeof setTimeout> | undefined
+	try {
+		return await Promise.race([
+			promise,
+			new Promise<T>((_, reject) => {
+				timeoutId = setTimeout(
+					() => reject(new Error(`[Supabase Timeout] ${label} after ${ms}ms`)),
+					ms
+				)
+			}),
+		])
+	} finally {
+		if (timeoutId) clearTimeout(timeoutId)
+	}
+}
+
 export async function withRetry<T>(
 	fn: () => Promise<T>,
 	maxRetries: number = 3,
@@ -17,31 +55,35 @@ export async function withRetry<T>(
 	for (let attempt = 0; attempt < maxRetries; attempt++) {
 		try {
 			return await fn()
-		} catch (error: any) {
-			lastError = error
+		} catch (error: unknown) {
+			lastError = error instanceof Error ? error : new Error(String(error))
 			
-			// Проверяем, является ли это сетевой ошибкой
-			const isNetworkError = 
-				error?.code === 'ECONNRESET' ||
-				error?.code === 'ETIMEDOUT' ||
-				error?.code === 'ENOTFOUND' ||
-				error?.message?.includes('terminated') ||
-				error?.message?.includes('fetch failed')
-			
-			// Если это последняя попытка или не сетевая ошибка, пробрасываем ошибку
-			if (attempt === maxRetries - 1 || !isNetworkError) {
+			if (attempt === maxRetries - 1 || !isNetworkError(error)) {
 				throw error
 			}
 			
-			// Логируем попытку повтора
-			console.warn(`[Supabase Retry] Attempt ${attempt + 1}/${maxRetries} failed, retrying in ${retryDelay}ms...`, error.message)
+			console.warn(
+				`[Supabase Retry] Attempt ${attempt + 1}/${maxRetries} failed, retrying in ${retryDelay}ms...`,
+				lastError.message
+			)
 			
-			// Ждем перед следующей попыткой (с экспоненциальной задержкой)
-			await new Promise(resolve => setTimeout(resolve, retryDelay * (attempt + 1)))
+			await new Promise((resolve) => setTimeout(resolve, retryDelay * (attempt + 1)))
 		}
 	}
 	
 	throw lastError
+}
+
+/** Запрос к Supabase с таймаутом и повтором при сетевых сбоях. */
+export async function supabaseQuery<T>(
+	label: string,
+	fn: () => Promise<T>
+): Promise<T> {
+	return withRetry(
+		() => withTimeout(fn(), SUPABASE_QUERY_TIMEOUT_MS, label),
+		2,
+		400
+	)
 }
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ""

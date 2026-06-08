@@ -1,13 +1,13 @@
-import { createClient } from "@/utils/supabase/server"
+import { createClient, supabaseQuery } from "@/utils/supabase/server"
 import productsData from "@/data/products.json"
 import { truncateMeta } from "@/lib/seo/text"
 import { resolveProductImageUrl } from "@/lib/product-image"
 import {
   findJsonSubcategory,
-  getSubcategorySlugCandidates,
   isMachinePartsExtrusion,
 } from "@/lib/catalog-slugs"
-import { findJsonProduct } from "@/lib/catalog-product"
+import { findJsonProduct, getProductPageData } from "@/lib/catalog-product"
+import { getSubcategoryPageData } from "@/lib/catalog-subcategory"
 
 export type SubcategorySeo = {
   subName: string
@@ -20,38 +20,18 @@ export async function getSubcategorySeo(
   categoryId: string,
   subcategorySlug: string
 ): Promise<SubcategorySeo | null> {
-  const supabase = createClient()
+  const pageData = await getSubcategoryPageData(categoryId, subcategorySlug)
+  if (!pageData) return null
 
-  const candidates = getSubcategorySlugCandidates(categoryId, subcategorySlug)
-  const { data: subRows } = await supabase
-    .from("subcategories")
-    .select("name, description, slug, id")
-    .eq("category_id", categoryId)
-    .eq("is_active", true)
-    .in("slug", candidates)
-    .limit(1)
-
-  let sub = Array.isArray(subRows) ? subRows[0] : subRows
-  let subError = sub ? null : { message: "not found" }
-
-  const fromJsonCat = productsData.categories.find((c) => c.id === categoryId)
-  const fromJsonSub = findJsonSubcategory(categoryId, subcategorySlug)
-
-  if (subError || !sub) {
-    if (!fromJsonSub) return null
-    return {
-      subName: fromJsonSub.name,
-      subDescription: fromJsonSub.description,
-      categoryName: fromJsonCat?.name || categoryId,
-    }
-  }
-
-  const { data: catRow } = await supabase.from("categories").select("name").eq("id", categoryId).single()
+  const description =
+    typeof pageData.subcategory.description === "string"
+      ? pageData.subcategory.description
+      : null
 
   return {
-    subName: sub.name,
-    subDescription: sub.description,
-    categoryName: catRow?.name || fromJsonCat?.name || categoryId,
+    subName: String(pageData.subcategory.name),
+    subDescription: description,
+    categoryName: pageData.categoryDisplayName,
   }
 }
 
@@ -63,86 +43,81 @@ export type ProductSeo = {
   subName: string
 }
 
-/** Карточка товара для meta / JSON-LD (Supabase + fallback JSON). */
+/** Карточка товара для meta / JSON-LD (общий cache с page.tsx). */
 export async function getProductSeo(
   categoryId: string,
   subcategorySlug: string,
   productId: string
 ): Promise<ProductSeo | null> {
-  const supabase = createClient()
-  let product: any = null
-  let categoryName = categoryId
-  let subName = subcategorySlug
-
   const isExtrusion =
     isMachinePartsExtrusion(categoryId, subcategorySlug) &&
     productId.startsWith("extrusion-")
 
   if (isExtrusion) {
+    const supabase = createClient()
     const numericId = Number(productId.replace("extrusion-", ""))
     if (!Number.isNaN(numericId)) {
-      const { data: extrusionProduct } = await supabase
-        .from("extrusion_products")
-        .select("name, image, size_raw, length_raw, code")
-        .eq("id", numericId)
-        .eq("is_active", true)
-        .single()
+      const { data: extrusionProduct } = await supabaseQuery(`extrusion_seo:${numericId}`, () =>
+        supabase
+          .from("extrusion_products")
+          .select("name, image, size_raw, length_raw, code")
+          .eq("id", numericId)
+          .eq("is_active", true)
+          .single()
+      )
 
       if (extrusionProduct) {
         const parts: string[] = []
         if (extrusionProduct.size_raw) parts.push(`Габариты: ${extrusionProduct.size_raw}`)
         if (extrusionProduct.length_raw) parts.push(`Длина: ${extrusionProduct.length_raw}`)
         if (extrusionProduct.code) parts.push(`Шифр: ${extrusionProduct.code}`)
-        product = {
-          name: extrusionProduct.name,
-          description: parts.join(" · "),
-          image: extrusionProduct.image,
+        const fromJsonCat = productsData.categories.find((c) => c.id === categoryId)
+        const fromJsonSub = findJsonSubcategory(categoryId, subcategorySlug)
+        return {
+          productName: extrusionProduct.name,
+          description: truncateMeta(parts.join(" · ")),
+          image: resolveProductImageUrl(productId, extrusionProduct.image),
+          categoryName: fromJsonCat?.name || categoryId,
+          subName: fromJsonSub?.name || subcategorySlug,
         }
       }
     }
-  } else {
-    const decodedProductId = decodeURIComponent(productId)
-    const { data: productById } = await supabase
-      .from("products")
-      .select("*")
-      .eq("id", decodedProductId)
-      .eq("is_active", true)
-      .maybeSingle()
-    if (productById) {
-      product = productById
-    } else {
-      const { data: productBySlug } = await supabase
-        .from("products")
-        .select("*")
-        .eq("slug", decodedProductId)
-        .eq("is_active", true)
-        .maybeSingle()
-      if (productBySlug) product = productBySlug
-    }
   }
 
-  const { data: categoryData } = await supabase.from("categories").select("name").eq("id", categoryId).single()
-  if (categoryData?.name) categoryName = categoryData.name
-
-  const { data: subcategoryData } = await supabase
-    .from("subcategories")
-    .select("name")
-    .eq("slug", subcategorySlug)
-    .eq("category_id", categoryId)
-    .maybeSingle()
-  if (subcategoryData?.name) subName = subcategoryData.name
-
-  if (!product) {
+  const pageData = await getProductPageData(categoryId, subcategorySlug, productId)
+  if (!pageData) {
     const fallbackCategory = productsData.categories.find((c) => c.id === categoryId)
     const fallbackProduct = findJsonProduct(categoryId, productId)
     if (!fallbackProduct) return null
-    product = fallbackProduct
-    categoryName = fallbackCategory?.name || categoryName
+
+    const categoryName = fallbackCategory?.name || categoryId
     const fallbackSub = fallbackCategory?.subcategories?.find(
       (s: { slug?: string }) => s.slug === subcategorySlug
     )
-    if (fallbackSub?.name) subName = fallbackSub.name
+    const rawDesc =
+      typeof fallbackProduct.description === "string"
+        ? fallbackProduct.description
+        : fallbackProduct.description != null
+          ? String(fallbackProduct.description)
+          : ""
+
+    return {
+      productName: String(fallbackProduct.name),
+      description: truncateMeta(
+        rawDesc ||
+          `${fallbackProduct.name}. ${categoryName}, ${fallbackSub?.name || subcategorySlug}. Производство АО «Пластик», Узловая.`
+      ),
+      image: resolveProductImageUrl(productId, fallbackProduct.image as string | undefined),
+      categoryName,
+      subName: fallbackSub?.name || subcategorySlug,
+    }
   }
+
+  const { product, category, subcategory } = pageData
+  const categoryName =
+    typeof category?.name === "string" ? category.name : categoryId
+  const subName =
+    typeof subcategory?.name === "string" ? subcategory.name : subcategorySlug
 
   const rawDesc =
     typeof product.description === "string"
@@ -151,14 +126,17 @@ export async function getProductSeo(
         ? String(product.description)
         : ""
 
-  const description = truncateMeta(
-    rawDesc || `${product.name}. ${categoryName}, ${subName}. Производство АО «Пластик», Узловая.`
-  )
-
   return {
-    productName: product.name,
-    description,
-    image: resolveProductImageUrl(productId, product.image),
+    productName: String(product.name),
+    description: truncateMeta(
+      rawDesc ||
+        `${product.name}. ${categoryName}, ${subName}. Производство АО «Пластик», Узловая.`
+    ),
+    image: resolveProductImageUrl(
+      productId,
+      product.image as string | undefined,
+      typeof category?.image === "string" ? category.image : null
+    ),
     categoryName,
     subName,
   }

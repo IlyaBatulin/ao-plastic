@@ -45,18 +45,108 @@ export function getCategoryName(categoryId: string, lang: "ru" | "en" = "ru"): s
   return categoryId
 }
 
-/** Slug из URL/БД → ключ в `homePage.catalog.subcategories` / `subcategoryDescriptions` (locales) */
+const SUBCATEGORY_DESCRIPTIONS: Record<string, { ru: string; en: string }> = {
+  "abs-injection": {
+    ru: "Литьевые марки АБС-пластика для термопластавтоматов",
+    en: "ABS grades for injection molding",
+  },
+  "abs-extrusion": {
+    ru: "Экструзионные марки АБС-пластика для листов и профилей",
+    en: "ABS grades for sheet and profile extrusion",
+  },
+  "abs-custom": {
+    ru: "Изготовление изделий из АБС-пластика по индивидуальным заказам",
+    en: "Manufacturing of ABS parts to individual orders",
+  },
+  "ps-psv-s": {
+    ru: "Вспенивающийся полистирол самозатухающийся",
+    en: "Self-extinguishing expandable polystyrene",
+  },
+  "ps-psv-l": {
+    ru: "Вспенивающийся полистирол литейный",
+    en: "Casting-grade expandable polystyrene",
+  },
+  "ps-pse": {
+    ru: "Полистирол эмульсионный общего назначения",
+    en: "General-purpose emulsion polystyrene",
+  },
+  "extrusion-parts": {
+    ru: "Профили, трубы, уплотнители",
+    en: "Profiles, tubes, seals",
+  },
+  "injection-parts": {
+    ru: "Облицовочные панели, вставки, защитные детали",
+    en: "Trim panels, inserts, protective parts",
+  },
+  "vedra-tazy": {
+    ru: "Прочные пластиковые вёдра и тазы различного объёма",
+    en: "Durable plastic buckets and basins in various volumes",
+  },
+  uborka: {
+    ru: "Совки, щётки и наборы для уборки",
+    en: "Dustpans, brushes and cleaning sets",
+  },
+  steklo: {
+    ru: "Сгоны для окон и зеркал",
+    en: "Squeegees for windows and mirrors",
+  },
+  sanuzel: {
+    ru: "Ёршики, мыльницы и аксессуары для санузла",
+    en: "Toilet brush sets, soap dishes and accessories",
+  },
+  kuhnya: {
+    ru: "Воронки, кружки, дуршлаги и другие кухонные принадлежности",
+    en: "Funnels, mugs, strainers and other kitchen accessories",
+  },
+  veshalki: {
+    ru: "Вешалки для одежды различных размеров",
+    en: "Clothes hangers in various sizes",
+  },
+  otdyh: {
+    ru: "Товары для пикника, барбекю и отдыха на природе",
+    en: "Picnic, barbecue and outdoor leisure products",
+  },
+  canisters: {
+    ru: "Канистры из ПНД для хранения жидкостей",
+    en: "HDPE canisters for storing liquids",
+  },
+  boxes: {
+    ru: "Пластиковые ящики для хранения и транспортировки (под заказ)",
+    en: "Plastic storage and transport crates (to order)",
+  },
+}
+
+/** Slug/id из URL/БД → ключ в словаре подкатегорий */
 export function getCatalogSubcategoryTranslationKey(slug: string): string {
   const slugToI18nKey: Record<string, string> = {
     "psv-s": "ps-psv-s",
     "psv-l": "ps-psv-l",
     "pse-1": "ps-pse",
+    "ps-pse": "ps-pse",
+    "ps-pse-1": "ps-pse",
     extrusion: "extrusion-parts",
     injection: "injection-parts",
     "parts-extrusion": "extrusion-parts",
     "parts-injection": "injection-parts",
   }
   return slugToI18nKey[slug] ?? slug
+}
+
+/** Ключ i18n по slug и id подкатегории */
+export function resolveCatalogSubcategoryI18nKey(subcategoryId: string, slug: string): string {
+  const fromSlug = getCatalogSubcategoryTranslationKey(slug)
+  if (fromSlug !== slug) return fromSlug
+  const fromId = getCatalogSubcategoryTranslationKey(subcategoryId)
+  if (fromId !== subcategoryId) return fromId
+  return fromSlug
+}
+
+export function getSubcategoryDescription(
+  i18nKey: string,
+  lang: "ru" | "en" = "ru"
+): string | null {
+  const entry = SUBCATEGORY_DESCRIPTIONS[i18nKey]
+  return entry ? entry[lang] : null
 }
 
 /**
@@ -71,6 +161,8 @@ export function getSubcategoryNameBySlug(slug: string, lang: "ru" | "en" = "ru")
     "psv-s": "ps-psv-s",
     "psv-l": "ps-psv-l",
     "pse-1": "ps-pse",
+    "ps-pse": "ps-pse",
+    "ps-pse-1": "ps-pse",
     "extrusion": "extrusion-parts",
     "injection": "injection-parts",
     "parts-extrusion": "extrusion-parts",
@@ -107,10 +199,28 @@ export function getCatalogSubcategoryLabel(
   fallbackName: string,
   lang: "ru" | "en" = "ru"
 ): string {
+  const i18nKey = resolveCatalogSubcategoryI18nKey(subcategoryId, slug)
+  const byKey = getCategoryName(i18nKey, lang)
+  if (byKey !== i18nKey) return byKey
+
   const byId = getCategoryName(subcategoryId, lang)
   if (byId !== subcategoryId) return byId
   const bySlug = getSubcategoryNameBySlug(slug, lang)
   if (bySlug !== slug && bySlug !== subcategoryId) return bySlug
   return fallbackName
+}
+
+/** Описание подкатегории: словарь → fallback только для RU */
+export function getCatalogSubcategoryDescription(
+  subcategoryId: string,
+  slug: string,
+  fallbackDescription: string | null | undefined,
+  lang: "ru" | "en" = "ru"
+): string | undefined {
+  const i18nKey = resolveCatalogSubcategoryI18nKey(subcategoryId, slug)
+  const fromDict = getSubcategoryDescription(i18nKey, lang)
+  if (fromDict) return fromDict
+  if (lang === "ru" && fallbackDescription) return fallbackDescription
+  return undefined
 }
 

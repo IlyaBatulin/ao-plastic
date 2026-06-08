@@ -1,12 +1,14 @@
 "use client"
 
-import { useState, useMemo, useEffect } from "react"
+import { useState, useMemo, useEffect, useRef } from "react"
 import { Filter, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Slider } from "@/components/ui/slider"
 import { Badge } from "@/components/ui/badge"
 import { parseSpecNumberRange } from "@/lib/product-specs"
+import { useLanguage } from "@/contexts/language-context"
+import { formatSpecKey } from "@/lib/formatters"
 
 type FilterValues = {
   densityMin?: number
@@ -65,8 +67,31 @@ export function ProductFilters({
   const [filters, setFilters] = useState<FilterValues>({})
   const [isOpen, setIsOpen] = useState(false)
   const isPolystyrene = categoryId === "polystyrene"
+  const { t, lang } = useLanguage()
+  const specLang = lang === "en" ? "en" : "ru"
+  const spec = (key: string) => formatSpecKey(key, specLang)
+  const filterTitle = t("homePage.catalog.productFilters.title") || (specLang === "en" ? "Filters" : "Фильтры")
+  const resetLabel = t("homePage.catalog.productFilters.reset") || (specLang === "en" ? "Reset" : "Сбросить")
+  const fromLabel = t("homePage.catalog.productFilters.from") || (specLang === "en" ? "From" : "От")
+  const toLabel = t("homePage.catalog.productFilters.to") || (specLang === "en" ? "To" : "До")
 
   const polystyreneFilterOptions = useMemo(() => {
+    if (!isOpen) {
+      return {
+        applications: [] as string[],
+        grades: [] as string[],
+        apparentDensityMin: 0,
+        apparentDensityMax: 50,
+        expansionMin: 0,
+        expansionMax: 80,
+        relativeViscosityMin: 0,
+        relativeViscosityMax: 5,
+        hasApparentDensity: false,
+        hasExpansion: false,
+        hasRelativeViscosity: false,
+      }
+    }
+
     const applications = new Set<string>()
     const grades = new Set<string>()
     const apparentDensities: number[] = []
@@ -117,10 +142,32 @@ export function ProductFilters({
       hasExpansion: exp.length > 0,
       hasRelativeViscosity: visc.length > 0 && visc.some((v) => v > 0),
     }
-  }, [products])
+  }, [products, isOpen])
 
   // Извлекаем уникальные значения для фильтров АБС
   const filterOptions = useMemo(() => {
+    if (!isOpen) {
+      return {
+        applications: [] as string[],
+        densityMin: 0,
+        densityMax: 100,
+        fractionMin: 0,
+        fractionMax: 3,
+        mfrMin: 0,
+        mfrMax: 30,
+        elongationMin: 0,
+        elongationMax: 50,
+        impactStrengthMin: 0,
+        impactStrengthMax: 50,
+        tensileStrengthMin: 0,
+        tensileStrengthMax: 500,
+        vicaTempMin: 0,
+        vicaTempMax: 120,
+        glossMin: 0,
+        glossMax: 100,
+      }
+    }
+
     const applications = new Set<string>()
     const densities: number[] = []
     const fractions: number[] = []
@@ -216,7 +263,7 @@ export function ProductFilters({
       glossMin: glossVals.length ? Math.min(...glossVals) : 0,
       glossMax: glossVals.length ? Math.max(...glossVals) : 100,
     }
-  }, [products])
+  }, [products, isOpen])
 
   const filteredPolystyreneProducts = useMemo(() => {
     return products.filter((product) => {
@@ -347,8 +394,12 @@ export function ProductFilters({
   }, [products, filters])
 
   const effectiveFilteredProducts = isPolystyrene ? filteredPolystyreneProducts : filteredProducts
+  const lastFilteredIdsRef = useRef<string>("")
 
   useEffect(() => {
+    const ids = effectiveFilteredProducts.map((product) => product.id).join("|")
+    if (ids === lastFilteredIdsRef.current) return
+    lastFilteredIdsRef.current = ids
     onFilterChange(effectiveFilteredProducts)
   }, [effectiveFilteredProducts, onFilterChange])
 
@@ -406,7 +457,7 @@ export function ProductFilters({
           className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border hover:border-primary/50 transition-colors bg-card"
         >
           <Filter className="w-4 h-4" />
-          <span className="font-medium">Фильтры</span>
+          <span className="font-medium">{filterTitle}</span>
           {activeFiltersCount > 0 && (
             <Badge variant="secondary" className="ml-2">
               {activeFiltersCount}
@@ -417,7 +468,7 @@ export function ProductFilters({
         {activeFiltersCount > 0 && (
           <Button variant="ghost" size="sm" onClick={resetFilters} className="text-muted-foreground">
             <X className="w-4 h-4 mr-2" />
-            Сбросить
+            {resetLabel}
           </Button>
         )}
       </div>
@@ -428,7 +479,7 @@ export function ProductFilters({
             <>
               {polystyreneFilterOptions.grades.length > 0 && (
                 <div>
-                  <label className="text-sm font-semibold mb-2 block">Марка</label>
+                  <label className="text-sm font-semibold mb-2 block">{spec("Марка")}</label>
                   <div className="flex flex-wrap gap-2">
                     {polystyreneFilterOptions.grades.map((grade) => {
                       const isSelected = filters.grade?.includes(grade)
@@ -450,7 +501,7 @@ export function ProductFilters({
 
               {polystyreneFilterOptions.applications.length > 0 && (
                 <div>
-                  <label className="text-sm font-semibold mb-2 block">Применение</label>
+                  <label className="text-sm font-semibold mb-2 block">{spec("Применение")}</label>
                   <div className="flex flex-wrap gap-2">
                     {polystyreneFilterOptions.applications.map((app) => {
                       const isSelected = filters.application?.includes(app)
@@ -473,10 +524,10 @@ export function ProductFilters({
               {polystyreneFilterOptions.hasApparentDensity &&
                 polystyreneFilterOptions.apparentDensityMin !== polystyreneFilterOptions.apparentDensityMax && (
                 <div>
-                  <label className="text-sm font-semibold mb-2 block">Кажущаяся плотность, кг/м³</label>
+                  <label className="text-sm font-semibold mb-2 block">{spec("Кажущаяся_плотность_кг_м3")}</label>
                   <div className="grid grid-cols-2 gap-4 mb-3">
                     <div>
-                      <label className="text-xs text-muted-foreground mb-1 block">От</label>
+                      <label className="text-xs text-muted-foreground mb-1 block">{fromLabel}</label>
                       <Input
                         type="number"
                         inputMode="decimal"
@@ -492,7 +543,7 @@ export function ProductFilters({
                       />
                     </div>
                     <div>
-                      <label className="text-xs text-muted-foreground mb-1 block">До</label>
+                      <label className="text-xs text-muted-foreground mb-1 block">{toLabel}</label>
                       <Input
                         type="number"
                         inputMode="decimal"
@@ -526,10 +577,10 @@ export function ProductFilters({
               {polystyreneFilterOptions.hasExpansion &&
                 polystyreneFilterOptions.expansionMin !== polystyreneFilterOptions.expansionMax && (
                 <div>
-                  <label className="text-sm font-semibold mb-2 block">Коэффициент вспенивания</label>
+                  <label className="text-sm font-semibold mb-2 block">{spec("Коэффициент вспенивания")}</label>
                   <div className="grid grid-cols-2 gap-4 mb-3">
                     <div>
-                      <label className="text-xs text-muted-foreground mb-1 block">От</label>
+                      <label className="text-xs text-muted-foreground mb-1 block">{fromLabel}</label>
                       <Input
                         type="number"
                         inputMode="decimal"
@@ -545,7 +596,7 @@ export function ProductFilters({
                       />
                     </div>
                     <div>
-                      <label className="text-xs text-muted-foreground mb-1 block">До</label>
+                      <label className="text-xs text-muted-foreground mb-1 block">{toLabel}</label>
                       <Input
                         type="number"
                         inputMode="decimal"
@@ -579,10 +630,10 @@ export function ProductFilters({
               {polystyreneFilterOptions.hasRelativeViscosity &&
                 polystyreneFilterOptions.relativeViscosityMin !== polystyreneFilterOptions.relativeViscosityMax && (
                 <div>
-                  <label className="text-sm font-semibold mb-2 block">Относительная вязкость</label>
+                  <label className="text-sm font-semibold mb-2 block">{spec("Относительная_вязкость")}</label>
                   <div className="grid grid-cols-2 gap-4 mb-3">
                     <div>
-                      <label className="text-xs text-muted-foreground mb-1 block">От</label>
+                      <label className="text-xs text-muted-foreground mb-1 block">{fromLabel}</label>
                       <Input
                         type="number"
                         inputMode="decimal"
@@ -599,7 +650,7 @@ export function ProductFilters({
                       />
                     </div>
                     <div>
-                      <label className="text-xs text-muted-foreground mb-1 block">До</label>
+                      <label className="text-xs text-muted-foreground mb-1 block">{toLabel}</label>
                       <Input
                         type="number"
                         inputMode="decimal"
@@ -639,10 +690,10 @@ export function ProductFilters({
             <>
           {/* Плотность */}
           <div>
-            <label className="text-sm font-semibold mb-2 block">Плотность, кг/м³</label>
+            <label className="text-sm font-semibold mb-2 block">{spec("Плотность_кг_м3")}</label>
             <div className="grid grid-cols-2 gap-4 mb-3">
               <div>
-                <label className="text-xs text-muted-foreground mb-1 block">От</label>
+                <label className="text-xs text-muted-foreground mb-1 block">{fromLabel}</label>
                 <Input
                   type="number"
                   inputMode="decimal"
@@ -655,7 +706,7 @@ export function ProductFilters({
                 />
               </div>
               <div>
-                <label className="text-xs text-muted-foreground mb-1 block">До</label>
+                <label className="text-xs text-muted-foreground mb-1 block">{toLabel}</label>
                 <Input
                   type="number"
                   inputMode="decimal"
@@ -684,10 +735,10 @@ export function ProductFilters({
 
           {/* Фракция */}
           <div>
-            <label className="text-sm font-semibold mb-2 block">Фракция, мм</label>
+            <label className="text-sm font-semibold mb-2 block">{spec("Фракция, мм")}</label>
             <div className="grid grid-cols-2 gap-4 mb-3">
               <div>
-                <label className="text-xs text-muted-foreground mb-1 block">От</label>
+                <label className="text-xs text-muted-foreground mb-1 block">{fromLabel}</label>
                 <Input
                   type="number"
                   inputMode="decimal"
@@ -701,7 +752,7 @@ export function ProductFilters({
                 />
               </div>
               <div>
-                <label className="text-xs text-muted-foreground mb-1 block">До</label>
+                <label className="text-xs text-muted-foreground mb-1 block">{toLabel}</label>
                 <Input
                   type="number"
                   inputMode="decimal"
@@ -731,7 +782,7 @@ export function ProductFilters({
 
           {/* Применение */}
           <div>
-            <label className="text-sm font-semibold mb-2 block">Применение</label>
+            <label className="text-sm font-semibold mb-2 block">{spec("Применение")}</label>
             <div className="flex flex-wrap gap-2">
               {filterOptions.applications.map((app) => {
                 const isSelected = filters.application?.includes(app)
@@ -753,10 +804,10 @@ export function ProductFilters({
           {/* Показатель текучести расплава (MFR) */}
           {(filterOptions.mfrMin !== filterOptions.mfrMax) && (
             <div>
-              <label className="text-sm font-semibold mb-2 block">Показатель текучести расплава (MFR), г/10 мин</label>
+              <label className="text-sm font-semibold mb-2 block">{spec("Показатель_текучести_расплава_MFR_г_10мин")}</label>
               <div className="grid grid-cols-2 gap-4 mb-3">
                 <div>
-                  <label className="text-xs text-muted-foreground mb-1 block">От</label>
+                  <label className="text-xs text-muted-foreground mb-1 block">{fromLabel}</label>
                   <Input
                     type="number"
                     inputMode="decimal"
@@ -770,7 +821,7 @@ export function ProductFilters({
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-muted-foreground mb-1 block">До</label>
+                  <label className="text-xs text-muted-foreground mb-1 block">{toLabel}</label>
                   <Input
                     type="number"
                     inputMode="decimal"
@@ -802,10 +853,10 @@ export function ProductFilters({
           {/* Относительное удлинение при разрыве */}
           {(filterOptions.elongationMin !== filterOptions.elongationMax) && (
             <div>
-              <label className="text-sm font-semibold mb-2 block">Относительное удлинение при разрыве, %</label>
+              <label className="text-sm font-semibold mb-2 block">{spec("Относительное_удлинение_при_разрыве_проц")}</label>
               <div className="grid grid-cols-2 gap-4 mb-3">
                 <div>
-                  <label className="text-xs text-muted-foreground mb-1 block">От</label>
+                  <label className="text-xs text-muted-foreground mb-1 block">{fromLabel}</label>
                   <Input
                     type="number"
                     inputMode="decimal"
@@ -819,7 +870,7 @@ export function ProductFilters({
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-muted-foreground mb-1 block">До</label>
+                  <label className="text-xs text-muted-foreground mb-1 block">{toLabel}</label>
                   <Input
                     type="number"
                     inputMode="decimal"
@@ -851,10 +902,10 @@ export function ProductFilters({
           {/* Ударная вязкость по Изоду */}
           {(filterOptions.impactStrengthMin !== filterOptions.impactStrengthMax) && (
             <div>
-              <label className="text-sm font-semibold mb-2 block">Ударная вязкость по Изоду, кДж/м²</label>
+              <label className="text-sm font-semibold mb-2 block">{spec("Ударная_вязкость_по_Изоду_кДж_м2")}</label>
               <div className="grid grid-cols-2 gap-4 mb-3">
                 <div>
-                  <label className="text-xs text-muted-foreground mb-1 block">От</label>
+                  <label className="text-xs text-muted-foreground mb-1 block">{fromLabel}</label>
                   <Input
                     type="number"
                     inputMode="decimal"
@@ -868,7 +919,7 @@ export function ProductFilters({
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-muted-foreground mb-1 block">До</label>
+                  <label className="text-xs text-muted-foreground mb-1 block">{toLabel}</label>
                   <Input
                     type="number"
                     inputMode="decimal"
@@ -900,10 +951,10 @@ export function ProductFilters({
           {/* Предел текучести при растяжении */}
           {(filterOptions.tensileStrengthMin !== filterOptions.tensileStrengthMax) && (
             <div>
-              <label className="text-sm font-semibold mb-2 block">Предел текучести при растяжении, МПа</label>
+              <label className="text-sm font-semibold mb-2 block">{spec("Предел_текучести_при_растяжении_МПа")}</label>
               <div className="grid grid-cols-2 gap-4 mb-3">
                 <div>
-                  <label className="text-xs text-muted-foreground mb-1 block">От</label>
+                  <label className="text-xs text-muted-foreground mb-1 block">{fromLabel}</label>
                   <Input
                     type="number"
                     inputMode="decimal"
@@ -917,7 +968,7 @@ export function ProductFilters({
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-muted-foreground mb-1 block">До</label>
+                  <label className="text-xs text-muted-foreground mb-1 block">{toLabel}</label>
                   <Input
                     type="number"
                     inputMode="decimal"
@@ -949,10 +1000,10 @@ export function ProductFilters({
           {/* Температура размягчения по Вика */}
           {(filterOptions.vicaTempMin !== filterOptions.vicaTempMax) && (
             <div>
-              <label className="text-sm font-semibold mb-2 block">Температура размягчения по Вика, °C</label>
+              <label className="text-sm font-semibold mb-2 block">{spec("Температура_размягчения_по_Вика_градС")}</label>
               <div className="grid grid-cols-2 gap-4 mb-3">
                 <div>
-                  <label className="text-xs text-muted-foreground mb-1 block">От</label>
+                  <label className="text-xs text-muted-foreground mb-1 block">{fromLabel}</label>
                   <Input
                     type="number"
                     inputMode="decimal"
@@ -966,7 +1017,7 @@ export function ProductFilters({
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-muted-foreground mb-1 block">До</label>
+                  <label className="text-xs text-muted-foreground mb-1 block">{toLabel}</label>
                   <Input
                     type="number"
                     inputMode="decimal"
@@ -998,10 +1049,10 @@ export function ProductFilters({
           {/* Блеск */}
           {(filterOptions.glossMin !== filterOptions.glossMax && filterOptions.glossMax > 0) && (
             <div>
-              <label className="text-sm font-semibold mb-2 block">Блеск, %</label>
+              <label className="text-sm font-semibold mb-2 block">{spec("Блеск_проц")}</label>
               <div className="grid grid-cols-2 gap-4 mb-3">
                 <div>
-                  <label className="text-xs text-muted-foreground mb-1 block">От</label>
+                  <label className="text-xs text-muted-foreground mb-1 block">{fromLabel}</label>
                   <Input
                     type="number"
                     inputMode="decimal"
@@ -1015,7 +1066,7 @@ export function ProductFilters({
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-muted-foreground mb-1 block">До</label>
+                  <label className="text-xs text-muted-foreground mb-1 block">{toLabel}</label>
                   <Input
                     type="number"
                     inputMode="decimal"
@@ -1052,69 +1103,73 @@ export function ProductFilters({
         <div className="mt-4 flex flex-wrap gap-2">
           {isPolystyrene && filters.grade && filters.grade.length > 0 ? (
             <Badge variant="secondary" className="text-xs">
-              Марка: {filters.grade.join(", ")}
+              {spec("Марка")}: {filters.grade.join(", ")}
             </Badge>
           ) : null}
           {isPolystyrene &&
           (filters.apparentDensityMin !== undefined || filters.apparentDensityMax !== undefined) ? (
             <Badge variant="secondary" className="text-xs">
-              Кажущаяся плотность: {filters.apparentDensityMin ?? "min"} - {filters.apparentDensityMax ?? "max"} кг/м³
+              {spec("Кажущаяся_плотность_кг_м3")}: {filters.apparentDensityMin ?? "min"} - {filters.apparentDensityMax ?? "max"}
+              {specLang === "en" ? " kg/m³" : " кг/м³"}
             </Badge>
           ) : null}
           {isPolystyrene && (filters.expansionMin !== undefined || filters.expansionMax !== undefined) ? (
             <Badge variant="secondary" className="text-xs">
-              Коэффициент вспенивания: {filters.expansionMin ?? "min"} - {filters.expansionMax ?? "max"}
+              {spec("Коэффициент вспенивания")}: {filters.expansionMin ?? "min"} - {filters.expansionMax ?? "max"}
             </Badge>
           ) : null}
           {isPolystyrene &&
           (filters.relativeViscosityMin !== undefined || filters.relativeViscosityMax !== undefined) ? (
             <Badge variant="secondary" className="text-xs">
-              Относительная вязкость: {filters.relativeViscosityMin ?? "min"} - {filters.relativeViscosityMax ?? "max"}
+              {spec("Относительная_вязкость")}: {filters.relativeViscosityMin ?? "min"} - {filters.relativeViscosityMax ?? "max"}
             </Badge>
           ) : null}
           {!isPolystyrene && (filters.densityMin !== undefined || filters.densityMax !== undefined) ? (
             <Badge variant="secondary" className="text-xs">
-              Плотность: {filters.densityMin ?? "min"} - {filters.densityMax ?? "max"} кг/м³
+              {spec("Плотность_кг_м3")}: {filters.densityMin ?? "min"} - {filters.densityMax ?? "max"}
+              {specLang === "en" ? " kg/m³" : " кг/м³"}
             </Badge>
           ) : null}
           {!isPolystyrene && (filters.fractionMin !== undefined || filters.fractionMax !== undefined) ? (
             <Badge variant="secondary" className="text-xs">
-              Фракция: {filters.fractionMin ?? "min"} - {filters.fractionMax ?? "max"} мм
+              {spec("Фракция, мм")}: {filters.fractionMin ?? "min"} - {filters.fractionMax ?? "max"}
+              {specLang === "en" ? " mm" : " мм"}
             </Badge>
           ) : null}
           {filters.application && filters.application.length > 0 ? (
             <Badge variant="secondary" className="text-xs">
-              Применение: {isPolystyrene ? filters.application.join(", ") : filters.application.length}
+              {spec("Применение")}: {isPolystyrene ? filters.application.join(", ") : filters.application.length}
             </Badge>
           ) : null}
           {!isPolystyrene && (filters.mfrMin !== undefined || filters.mfrMax !== undefined) ? (
             <Badge variant="secondary" className="text-xs">
-              MFR: {filters.mfrMin ?? "min"} - {filters.mfrMax ?? "max"} г/10 мин
+              MFR: {filters.mfrMin ?? "min"} - {filters.mfrMax ?? "max"}
+              {specLang === "en" ? " g/10 min" : " г/10 мин"}
             </Badge>
           ) : null}
           {!isPolystyrene && (filters.elongationMin !== undefined || filters.elongationMax !== undefined) ? (
             <Badge variant="secondary" className="text-xs">
-              Удлинение: {filters.elongationMin ?? "min"} - {filters.elongationMax ?? "max"}%
+              {spec("Относительное_удлинение_при_разрыве_проц")}: {filters.elongationMin ?? "min"} - {filters.elongationMax ?? "max"}%
             </Badge>
           ) : null}
           {!isPolystyrene && (filters.impactStrengthMin !== undefined || filters.impactStrengthMax !== undefined) ? (
             <Badge variant="secondary" className="text-xs">
-              Ударная вязкость: {filters.impactStrengthMin ?? "min"} - {filters.impactStrengthMax ?? "max"} кДж/м²
+              {spec("Ударная_вязкость_по_Изоду_кДж_м2")}: {filters.impactStrengthMin ?? "min"} - {filters.impactStrengthMax ?? "max"}
             </Badge>
           ) : null}
           {!isPolystyrene && (filters.tensileStrengthMin !== undefined || filters.tensileStrengthMax !== undefined) ? (
             <Badge variant="secondary" className="text-xs">
-              Предел текучести: {filters.tensileStrengthMin ?? "min"} - {filters.tensileStrengthMax ?? "max"} МПа
+              {spec("Предел_текучести_при_растяжении_МПа")}: {filters.tensileStrengthMin ?? "min"} - {filters.tensileStrengthMax ?? "max"}
             </Badge>
           ) : null}
           {!isPolystyrene && (filters.vicaTempMin !== undefined || filters.vicaTempMax !== undefined) ? (
             <Badge variant="secondary" className="text-xs">
-              Температура Вика: {filters.vicaTempMin ?? "min"} - {filters.vicaTempMax ?? "max"}°C
+              {spec("Температура_размягчения_по_Вика_градС")}: {filters.vicaTempMin ?? "min"} - {filters.vicaTempMax ?? "max"}
             </Badge>
           ) : null}
           {!isPolystyrene && (filters.glossMin !== undefined || filters.glossMax !== undefined) ? (
             <Badge variant="secondary" className="text-xs">
-              Блеск: {filters.glossMin ?? "min"} - {filters.glossMax ?? "max"}%
+              {spec("Блеск_проц")}: {filters.glossMin ?? "min"} - {filters.glossMax ?? "max"}%
             </Badge>
           ) : null}
         </div>

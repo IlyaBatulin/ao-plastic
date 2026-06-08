@@ -1,11 +1,10 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useMemo } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { useCart } from "@/contexts/cart-context"
 import { useToast } from "@/hooks/use-toast"
 import { formatSpecKey, formatSpecValue } from "@/lib/formatters"
@@ -16,68 +15,26 @@ import { getCardSpecEntries } from "@/lib/product-specs"
 import { ProductCardPlasticLogo } from "./product-card-plastic-logo"
 import { getProductPathSegment } from "@/lib/catalog-product"
 
-export default function ProductsGrid({ 
-  products, 
-  categoryId, 
-  subcategoryId 
-}: { 
+export default function ProductsGrid({
+  products,
+  categoryId,
+  subcategoryId,
+}: {
   products: any[]
   categoryId?: string
   subcategoryId?: string
 }) {
-  const gridRef = useRef<HTMLDivElement>(null)
   const { addItem } = useCart()
   const { toast } = useToast()
   const { lang, t } = useLanguage()
-  const router = useRouter()
 
-  // ДМС (литьевые и экструзионные) — карточки сразу видимы, без анимации при скролле
-  const isDms = categoryId === "machine-parts"
-
-  useEffect(() => {
-    if (isDms) return
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const card = entry.target as HTMLElement
-            card.style.opacity = '1'
-            card.style.transform = 'translateY(0)'
-            observer.unobserve(entry.target)
-          }
-        })
-      },
-      { threshold: 0.05, rootMargin: "80px" }
-    )
-
-    const cards = gridRef.current?.querySelectorAll(".product-card")
-    cards?.forEach((card, index) => {
-      const cardElement = card as HTMLElement
-      cardElement.style.transitionDelay = `${index * 80}ms`
-      observer.observe(card)
-    })
-
-    return () => observer.disconnect()
-  }, [products, isDms])
-
-  if (products.length === 0) {
-    return (
-      <div className="text-center py-20">
-        <p className="text-muted-foreground text-lg">
-          {t("homePage.catalog.productList.emptySubcategory") || "В этой подкатегории пока нет товаров"}
-        </p>
-      </div>
-    )
-  }
-
-  return (
-    <div ref={gridRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {products.map((product, index) => {
-        const specs = typeof product.specifications === "string"
-          ? JSON.parse(product.specifications)
-          : product.specifications || {}
-        const cardSpecEntries = getCardSpecEntries(specs, categoryId)
+  const preparedProducts = useMemo(
+    () =>
+      products.map((product) => {
+        const specs =
+          typeof product.specifications === "string"
+            ? JSON.parse(product.specifications)
+            : product.specifications || {}
 
         const { name: displayName, description: displayDescription } = resolveProductDisplay(
           {
@@ -91,11 +48,45 @@ export default function ProductsGrid({
           lang === "en" ? "en" : "ru",
           { categoryId, subcategoryId }
         )
-        const imageUrl = resolveProductImageUrl(String(product.id), product.image)
-        const productPathSegment = getProductPathSegment(product)
-        const productHref = categoryId && subcategoryId
-          ? `/products/${categoryId}/${subcategoryId}/${encodeURIComponent(productPathSegment)}`
-          : "#"
+
+        return {
+          product,
+          specs,
+          displayName,
+          displayDescription,
+          cardSpecEntries: getCardSpecEntries(specs, categoryId),
+          imageUrl: resolveProductImageUrl(String(product.id), product.image),
+          productPathSegment: getProductPathSegment(product),
+        }
+      }),
+    [products, lang, categoryId, subcategoryId]
+  )
+
+  if (products.length === 0) {
+    return (
+      <div className="text-center py-20">
+        <p className="text-muted-foreground text-lg">
+          {t("homePage.catalog.productList.emptySubcategory") || "В этой подкатегории пока нет товаров"}
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {preparedProducts.map(({
+        product,
+        specs,
+        displayName,
+        displayDescription,
+        cardSpecEntries,
+        imageUrl,
+        productPathSegment,
+      }) => {
+        const productHref =
+          categoryId && subcategoryId
+            ? `/products/${categoryId}/${subcategoryId}/${encodeURIComponent(productPathSegment)}`
+            : "#"
 
         const handleAddToCart = () => {
           const isHouseholdProduct = categoryId === "hoztovary"
@@ -130,29 +121,15 @@ export default function ProductsGrid({
           <div
             key={product.id}
             className="product-card group relative bg-card rounded-3xl overflow-hidden border border-border/50 hover:border-primary/50 flex flex-col"
-            style={isDms ? undefined : {
-              opacity: 0,
-              transform: "translateY(30px)",
-              transition: "opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
-            }}
           >
-            <Link
-              href={productHref}
-              prefetch={productHref !== "#"}
-              onMouseEnter={() => {
-                if (productHref !== "#") router.prefetch(productHref)
-              }}
-              onTouchStart={() => {
-                if (productHref !== "#") router.prefetch(productHref)
-              }}
-              className="block flex-1"
-            >
+            <Link href={productHref} prefetch={productHref !== "#"} className="block flex-1">
               <div className="relative h-64 bg-gradient-to-br from-primary/10 to-primary/5 overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent z-10" />
                 <Image
                   src={imageUrl}
                   alt={displayName}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 <ProductCardPlasticLogo imageSrc={imageUrl} />
@@ -171,10 +148,10 @@ export default function ProductsGrid({
                     {cardSpecEntries.slice(0, 3).map(([key, value]) => (
                       <div key={key} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 text-sm">
                         <span className="min-w-0 text-muted-foreground leading-snug">
-                          {formatSpecKey(key, lang === "en" ? "en" : "ru")}:
+                          {formatSpecKey(key, lang === "en" ? "en" : "ru", value)}:
                         </span>
                         <span className="max-w-[7rem] text-right font-semibold leading-snug break-words">
-                          {formatSpecValue(key, value)}
+                          {formatSpecValue(key, value, lang === "en" ? "en" : "ru")}
                         </span>
                       </div>
                     ))}
@@ -189,7 +166,7 @@ export default function ProductsGrid({
                 className="w-full group/btn bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white transition-all duration-300 hover:shadow-lg hover:shadow-primary/50"
                 onClick={handleAddToCart}
               >
-                Заказать
+                {t("order") || "Заказать"}
                 <ArrowLeft className="w-4 h-4 ml-2 transition-transform duration-300 group-hover/btn:translate-x-1" />
               </Button>
             </div>
@@ -208,4 +185,3 @@ export default function ProductsGrid({
     </div>
   )
 }
-

@@ -29,6 +29,29 @@
   "vacancies": "Vacancies",
   "extrusion": "Plastic Extrusion",
   "cart": "Cart",
+  "productPage": {
+    "backToSubcategory": "Back to subcategory",
+    "specificationsTitle": "Specifications",
+    "highQuality": "High quality",
+    "certifiedProduct": "Certified product",
+    "deliveryRussia": "Delivery across Russia",
+    "ralColor": "RAL color",
+    "ralOptional": "(optional)",
+    "ralOrderNote": "Will be noted in the order:",
+    "tons": "Tons:",
+    "packages": "Packages:",
+    "pcsPerPack": "pcs/pack",
+    "orderProduct": "Order product",
+    "addedToCart": "Added to cart",
+    "colorLabel": "color:",
+    "unitTons": "t",
+    "unitPack": "pack",
+    "unitPcs": "pcs",
+    "contactDialogDescription": "Fill out the form and we will contact you shortly",
+    "productInquiryPrefix": "Product inquiry:",
+    "productInterestDefault": "Interest in products",
+    "cancel": "Cancel"
+  },
   "common": {
     "download": "Download",
     "open": "Open",
@@ -86,6 +109,7 @@
       "title": "Procurement and Supply",
       "badge": "Supply",
       "companyName": "LLC «TEK-SNAB»",
+      "description": "Prompt procurement of raw materials and auxiliary supplies",
       "address": "119361, Moscow, Ochakovo-Matveyevskoye municipal district, 41 Lobachevskogo St., premises 6, floor 1, office 102B"
     },
     "salesByDirection": {
@@ -153,7 +177,10 @@
     "etpTenders": {
       "title": "Tenders on ETP GPB",
       "description": "Current procurements of JSC «Plastik» on Gazprombank's electronic trading platform. Participation is subject to ETP GPB rules.",
-      "openOnEtp": "Go to tenders"
+      "openOnEtp": "Go to tenders",
+      "loading": "Loading procurements…",
+      "empty": "No active procedures match the current filters. Open ETP GPB for the full list.",
+      "deadline": "Application deadline"
     },
     "rfps": {
       "title": "Active Requests for Proposals",
@@ -439,7 +466,7 @@
         "abs-injection": "ABS grades for injection molding",
         "abs-extrusion": "ABS grades for sheet and profile extrusion",
         "abs-custom": "Manufacturing of ABS parts to individual orders",
-        "ps-psv-s": "Expandable polystyrene of standard density",
+        "ps-psv-s": "Self-extinguishing expandable polystyrene",
         "ps-psv-l": "Casting-grade expandable polystyrene",
         "ps-pse": "General-purpose emulsion polystyrene",
         "extrusion-parts": "Profiles, tubes, seals",
@@ -453,6 +480,12 @@
         "otdyh": "Picnic, barbecue and outdoor leisure products",
         "canisters": "HDPE canisters for storing liquids",
         "boxes": "Plastic storage and transport crates (to order)"
+      },
+      "productFilters": {
+        "title": "Filters",
+        "reset": "Reset",
+        "from": "From",
+        "to": "To"
       },
       "productList": {
         "sectionTitle": "Products in this category",

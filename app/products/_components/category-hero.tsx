@@ -22,80 +22,63 @@ export function CategoryHero({
   backLabel,
   hasVideo,
   videoSrc,
-  imageSrc: _imageSrc,
+  imageSrc,
 }: CategoryHeroProps) {
-  const titleRef = useRef<HTMLHeadingElement>(null)
-  const descRef = useRef<HTMLParagraphElement>(null)
-  const [displayedText, setDisplayedText] = useState("")
-  const [isTyping, setIsTyping] = useState(false)
-  const typeIntervalRef = useRef<NodeJS.Timeout | null>(null)
+  const [playVideo, setPlayVideo] = useState(false)
+  const sectionRef = useRef<HTMLElement>(null)
+  const videoUrl = hasVideo && videoSrc ? videoSrc : DEFAULT_CATEGORY_VIDEO
 
   useEffect(() => {
-    // Анимация появления заголовка
-    const timer1 = setTimeout(() => {
-      titleRef.current?.classList.add("animate-in")
-    }, 100)
-    
-    // Анимация печатания описания
-    if (description) {
-      setDisplayedText("") // Сбрасываем текст при изменении описания
-      setIsTyping(false)
-      
-      // Очищаем предыдущий интервал если есть
-      if (typeIntervalRef.current) {
-        clearInterval(typeIntervalRef.current)
-      }
-      
-      const timer2 = setTimeout(() => {
-        setIsTyping(true)
-        const currentIndexRef = { current: 0 }
-        typeIntervalRef.current = setInterval(() => {
-          if (currentIndexRef.current < description.length) {
-            setDisplayedText(description.slice(0, currentIndexRef.current + 1))
-            currentIndexRef.current++
-          } else {
-            if (typeIntervalRef.current) {
-              clearInterval(typeIntervalRef.current)
-              typeIntervalRef.current = null
-            }
-            setIsTyping(false)
-          }
-        }, 50) // Скорость печатания: 50ms на символ
-      }, 800)
-      
-      return () => {
-        clearTimeout(timer1)
-        clearTimeout(timer2)
-        if (typeIntervalRef.current) {
-          clearInterval(typeIntervalRef.current)
-          typeIntervalRef.current = null
-        }
-      }
-    }
-    
-    return () => {
-      clearTimeout(timer1)
-    }
-  }, [description])
+    if (!hasVideo) return
 
-  const videoUrl = (hasVideo && videoSrc) ? videoSrc : DEFAULT_CATEGORY_VIDEO
+    const section = sectionRef.current
+    if (!section) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setPlayVideo(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: "100px" }
+    )
+
+    observer.observe(section)
+    return () => observer.disconnect()
+  }, [hasVideo])
 
   return (
-    <section className="relative min-h-[60vh] w-full overflow-hidden flex items-center justify-center">
+    <section
+      ref={sectionRef}
+      className="relative min-h-[60vh] w-full overflow-hidden flex items-center justify-center"
+    >
       <div className="absolute inset-0 z-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          controls={false}
-          disablePictureInPicture
-          disableRemotePlayback
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ pointerEvents: "none" }}
-        >
-          <source src={videoUrl} type="video/mp4" />
-        </video>
+        {imageSrc && (
+          <img
+            src={imageSrc}
+            alt=""
+            aria-hidden
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        )}
+        {playVideo && (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            controls={false}
+            disablePictureInPicture
+            disableRemotePlayback
+            preload="none"
+            poster={imageSrc}
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{ pointerEvents: "none" }}
+          >
+            <source src={videoUrl} type="video/mp4" />
+          </video>
+        )}
         <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background/95" />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/40 via-transparent to-transparent" />
       </div>
@@ -110,21 +93,12 @@ export function CategoryHero({
         </Link>
         <div className="flex-1 flex items-center">
           <div className="max-w-4xl">
-            <h1
-              ref={titleRef}
-              className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 text-primary opacity-0 translate-y-8 transition-all duration-1000 leading-tight break-words"
-            >
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 text-primary leading-tight break-words">
               {title}
             </h1>
             {description && (
-              <p
-                ref={descRef}
-                className="text-xl lg:text-2xl text-primary/90 leading-relaxed"
-              >
-                {displayedText}
-                {isTyping && (
-                  <span className="inline-block w-0.5 h-6 lg:h-8 bg-primary/90 ml-1 animate-pulse" />
-                )}
+              <p className="text-xl lg:text-2xl text-primary/90 leading-relaxed">
+                {description}
               </p>
             )}
           </div>
@@ -133,4 +107,3 @@ export function CategoryHero({
     </section>
   )
 }
-

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { HH_EMPLOYER_ID, HH_EMPLOYER_URL, HH_USER_AGENT } from "@/lib/hh-api"
+import { fetchHhVacanciesWithFallback, HH_EMPLOYER_URL } from "@/lib/hh-api"
 
 export async function GET(request: Request) {
   try {
@@ -7,18 +7,14 @@ export async function GET(request: Request) {
     const page = searchParams.get("page") || "0"
     const per_page = searchParams.get("per_page") || "20"
 
-    const text = searchParams.get("text") || ""
-    const salary = searchParams.get("salary") || ""
-    const only_with_salary = searchParams.get("only_with_salary") || ""
-    const experience = searchParams.get("experience") || ""
-    const employment = searchParams.get("employment") || ""
-    const schedule = searchParams.get("schedule") || ""
+    const params = new URLSearchParams({ per_page, page })
 
-    const params = new URLSearchParams({
-      employer_id: HH_EMPLOYER_ID,
-      per_page,
-      page,
-    })
+    const text = searchParams.get("text")
+    const salary = searchParams.get("salary")
+    const only_with_salary = searchParams.get("only_with_salary")
+    const experience = searchParams.get("experience")
+    const employment = searchParams.get("employment")
+    const schedule = searchParams.get("schedule")
 
     if (text) params.append("text", text)
     if (salary) params.append("salary", salary)
@@ -27,16 +23,9 @@ export async function GET(request: Request) {
     if (employment) params.append("employment", employment)
     if (schedule) params.append("schedule", schedule)
 
-    const response = await fetch(`https://api.hh.ru/vacancies?${params.toString()}`, {
-      headers: {
-        "User-Agent": HH_USER_AGENT,
-        Accept: "application/json",
-      },
-      cache: "no-store",
-      signal: AbortSignal.timeout(15000),
-    })
+    const { data, status } = await fetchHhVacanciesWithFallback(params)
 
-    if (!response.ok) {
+    if (!data) {
       return NextResponse.json({
         items: [],
         found: 0,
@@ -45,13 +34,11 @@ export async function GET(request: Request) {
         per_page: Number(per_page),
         fallbackUrl: HH_EMPLOYER_URL,
         warning:
-          response.status === 403
+          status === 403
             ? "Актуальные вакансии АО «Пластик» опубликованы на HeadHunter."
             : "Не удалось загрузить вакансии с HeadHunter.",
       })
     }
-
-    const data = await response.json()
 
     return NextResponse.json({
       items: data.items ?? [],

@@ -1,5 +1,9 @@
+import { cache } from "react"
 import productsData from "@/data/products.json"
-import { getPublicSubcategorySlug } from "@/lib/catalog-slugs"
+import { findJsonSubcategory, getPublicSubcategorySlug, resolveSubcategory } from "@/lib/catalog-slugs"
+import { normalizeHouseholdProduct } from "@/lib/household-product-content"
+import { isNextBuild } from "@/lib/next-build"
+import { createClient, supabaseQuery } from "@/utils/supabase/server"
 
 type JsonProduct = {
   id: string
@@ -48,12 +52,14 @@ export async function resolveProduct(
   if (isExtrusionCategory && decoded.startsWith("extrusion-")) {
     const numericId = Number(decoded.replace("extrusion-", ""))
     if (!Number.isNaN(numericId)) {
-      const { data: extrusionProduct } = await supabase
-        .from("extrusion_products")
-        .select("*")
-        .eq("id", numericId)
-        .eq("is_active", true)
-        .single()
+      const { data: extrusionProduct } = await supabaseQuery(`extrusion_product:${numericId}`, () =>
+        supabase
+          .from("extrusion_products")
+          .select("id, name, type, subtype, size_raw, length_raw, code, length_kind, image")
+          .eq("id", numericId)
+          .eq("is_active", true)
+          .single()
+      )
 
       if (extrusionProduct) {
         const parts: string[] = []
@@ -92,24 +98,17 @@ export async function resolveProduct(
       }
     }
   } else {
-    const { data: byId } = await supabase
-      .from("products")
-      .select("*")
-      .eq("id", decoded)
-      .eq("is_active", true)
-      .maybeSingle()
-
-    if (byId) {
-      product = byId
-    } else {
-      const { data: bySlug } = await supabase
+    const { data: matched } = await supabaseQuery(`product:${decoded}`, () =>
+      supabase
         .from("products")
         .select("*")
-        .eq("slug", decoded)
         .eq("is_active", true)
+        .or(`id.eq.${decoded},slug.eq.${decoded}`)
+        .limit(1)
         .maybeSingle()
-      if (bySlug) product = bySlug
-    }
+    )
+
+    if (matched) product = matched
   }
 
   if (!product) {
@@ -142,3 +141,80 @@ export async function resolveProduct(
 
   return { product, category: null, subcategory: null }
 }
+
+export type ProductPageData = {
+  product: Record<string, unknown>
+  category: Record<string, unknown> | null
+  subcategory: Record<string, unknown> | null
+}
+
+/** Один запрос на страницу товара (metadata + page делят результат через cache). */
+export const getProductPageData = cache(
+  async (
+    categoryId: string,
+    subcategoryId: string,
+    productId: string
+  ): Promise<ProductPageData | null> => {
+    const fallbackCategory =
+      productsData.categories.find((cat) => cat.id === categoryId) ?? null
+    const fallbackSubcategory = findJsonSubcategory(categoryId, subcategoryId)
+
+    if (isNextBuild()) {
+      const fallbackProduct = findJsonProduct(categoryId, productId)
+      if (!fallbackProduct) return null
+      return {
+        product: normalizeHouseholdProduct(fallbackProduct, categoryId, subcategoryId),
+        category: fallbackCategory,
+        subcategory: fallbackSubcategory,
+      }
+    }
+
+    const supabase = createClient()
+
+    try {
+      const [resolved, categoryResult, subcategoryData] = await Promise.all([
+        supabaseQuery(`resolveProduct:${productId}`, () =>
+          resolveProduct(supabase, categoryId, subcategoryId, productId)
+        ),
+        supabaseQuery(`category:${categoryId}`, () =>
+          supabase.from("categories").select("*").eq("id", categoryId).single()
+        ),
+        supabaseQuery(`resolveSubcategory:${subcategoryId}`, () =>
+          resolveSubcategory(supabase, categoryId, subcategoryId)
+        ),
+      ])
+
+      let product = resolved.product
+      let category =
+        categoryResult.data ??
+        resolved.category ??
+        fallbackCategory
+      let subcategory =
+        subcategoryData ??
+        resolved.subcategory ??
+        fallbackSubcategory
+
+      if (!product) {
+        const fallbackProduct = findJsonProduct(categoryId, productId)
+        if (!fallbackProduct) return null
+        product = fallbackProduct
+        category = category ?? fallbackCategory
+        subcategory = subcategory ?? fallbackSubcategory
+      }
+
+      return {
+        product: normalizeHouseholdProduct(product, categoryId, subcategoryId),
+        category,
+        subcategory,
+      }
+    } catch {
+      const fallbackProduct = findJsonProduct(categoryId, productId)
+      if (!fallbackProduct) return null
+      return {
+        product: normalizeHouseholdProduct(fallbackProduct, categoryId, subcategoryId),
+        category: fallbackCategory,
+        subcategory: fallbackSubcategory,
+      }
+    }
+  }
+)

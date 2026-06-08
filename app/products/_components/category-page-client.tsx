@@ -1,57 +1,34 @@
 "use client"
 
-import { useState } from "react"
-import Image from "next/image"
-import { motion } from "framer-motion"
+import dynamic from "next/dynamic"
 import { Footer } from "@/components/footer"
 import { CategoryHero } from "@/app/products/_components/category-hero"
 import { SubcategoriesGrid } from "@/app/products/_components/subcategories-grid"
-import { AbsInjectionInfo } from "@/app/products/_components/abs-injection-info"
-import { AbsExtrusionInfo } from "@/app/products/_components/abs-extrusion-info"
 import { useLanguage } from "@/contexts/language-context"
-import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Checkbox } from "@/components/ui/checkbox"
-import { useToast } from "@/hooks/use-toast"
-import { KorsNormTable } from "@/app/products/_components/kors-norm-table"
-import {
-  getBentolNormRows,
-  getBentolTuLabel,
-  getKorsNormRows,
-  getKorsTuLabel,
-  KORS_PAGE_KEYS,
-} from "@/lib/kors-bentol-en"
-import { ABS_PAGE_KEYS } from "@/lib/abs-category-i18n"
-import {
-  getStyreneNormRows,
-  STYRENE_OKP_LABEL,
-  STYRENE_PAGE_KEYS,
-} from "@/lib/styrene-category-i18n"
 
-const korsStoryParent = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.12, delayChildren: 0.05 },
-  },
-}
+const AbsCategorySection = dynamic(
+  () =>
+    import("@/app/products/_components/abs-category-section").then((m) => ({
+      default: m.AbsCategorySection,
+    })),
+  { ssr: true }
+)
 
-const korsStoryChild = {
-  hidden: { opacity: 0, y: 22 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
-  },
-}
+const StyreneCategorySection = dynamic(
+  () =>
+    import("@/app/products/_components/styrene-category-section").then((m) => ({
+      default: m.StyreneCategorySection,
+    })),
+  { ssr: true }
+)
+
+const KorsCategorySection = dynamic(
+  () =>
+    import("@/app/products/_components/kors-category-section").then((m) => ({
+      default: m.KorsCategorySection,
+    })),
+  { ssr: true }
+)
 
 interface CategoryPageClientProps {
   categoryId: string
@@ -79,37 +56,16 @@ export function CategoryPageClient({
   hasVideo,
   videoSrc,
 }: CategoryPageClientProps) {
-  const { t, lang } = useLanguage()
-  const k = KORS_PAGE_KEYS
-  const styreneK = STYRENE_PAGE_KEYS
-  const absK = ABS_PAGE_KEYS
-  const normTableCols = {
-    colNo: t(k.normColNo),
-    colName: t(k.normColName),
-    colUnit: t(k.normColUnit),
-    colValue: t(k.normColValue),
-  }
-  const { toast } = useToast()
-  const [isContactFormOpen, setIsContactFormOpen] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [contactFormData, setContactFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-  })
-  const [consentAccepted, setConsentAccepted] = useState(false)
-  
-  // Получаем переведенное название категории
+  const { t } = useLanguage()
+
   const categoryName = t(`homePage.catalog.categories.${categoryId}`) || category.name
   const backLabel = t("homePage.catalog.backToCatalog") || "Назад к каталогу"
-  const isStyrene = categoryId === 'styrene'
-  const isKors = categoryId === 'kors'
-  const isAbs = categoryId === 'abs'
+  const isStyrene = categoryId === "styrene"
+  const isKors = categoryId === "kors"
+  const isAbs = categoryId === "abs"
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
       <CategoryHero
         title={categoryName}
         description={
@@ -122,372 +78,15 @@ export function CategoryPageClient({
         imageSrc={category.image}
       />
 
-      {/* Subcategories Grid - скрываем для стирола и КОРС */}
-      {!isStyrene && !isKors && <SubcategoriesGrid categoryId={categoryId} subcategories={subcategories} />}
-
-      {/* АБС: описание литьевых и экструзионных марок — на странице категории, под подкатегориями */}
-      {isAbs && (
-        <section className="border-t border-border bg-muted/30 py-16 lg:py-20">
-          <div className="container mx-auto max-w-7xl px-4 lg:px-8">
-            <header className="mb-10 text-center">
-              <h2 className="text-2xl font-semibold tracking-tight text-foreground lg:text-3xl">
-                {t(absK.sectionTitle)}
-              </h2>
-              <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground leading-relaxed">
-                {t(absK.sectionIntro)}
-              </p>
-            </header>
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-stretch">
-              <AbsInjectionInfo />
-              <AbsExtrusionInfo />
-            </div>
-          </div>
-        </section>
+      {!isStyrene && !isKors && (
+        <SubcategoriesGrid categoryId={categoryId} subcategories={subcategories} />
       )}
 
-      {/* Стирол: описание с фото, таблица по ГОСТ */}
-      {isStyrene && (
-        <section className="py-16 lg:py-20 bg-secondary/30">
-          <div className="container mx-auto px-4 lg:px-8">
-            <motion.div
-              className="mx-auto mb-16 grid max-w-6xl grid-cols-1 items-start gap-x-10 gap-y-8 lg:grid-cols-2"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.12 }}
-              variants={korsStoryParent}
-            >
-              <motion.div variants={korsStoryChild} className="col-span-full">
-                <h2 className="text-h2">{t(styreneK.title)}</h2>
-                <p className="mt-4 max-w-2xl text-body text-primary/85 dark:text-blue-100/85">
-                  {t(styreneK.lead)}
-                </p>
-                <div className="mt-8 h-1 w-28 rounded-full bg-primary" />
-              </motion.div>
-              <motion.div
-                variants={korsStoryChild}
-                className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border bg-muted/30 shadow-md"
-              >
-                <Image
-                  src="/images/styrolmain.png"
-                  alt={t(styreneK.imageAlt)}
-                  fill
-                  className="object-cover object-center"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-              </motion.div>
-              <motion.div variants={korsStoryChild} className="space-y-5">
-                <p className="text-lg leading-relaxed text-muted-foreground">{t(styreneK.p1)}</p>
-                <p className="text-lg leading-relaxed text-muted-foreground">{t(styreneK.p2)}</p>
-                <div className="rounded-xl border border-border/80 bg-card/80 px-4 py-4 shadow-sm dark:bg-card/50">
-                  <p className="text-lg font-semibold text-foreground">{t(styreneK.gradeTitle)}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">{t(styreneK.gradeGost)}</p>
-                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{t(styreneK.gradeNote)}</p>
-                </div>
-              </motion.div>
-            </motion.div>
-
-            <motion.div
-              className="mx-auto max-w-6xl"
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.12 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <h3 className="mb-6 text-h3 sm:text-3xl">{t(styreneK.normTitle)}</h3>
-              <KorsNormTable
-                tuLabel={STYRENE_OKP_LABEL}
-                rows={getStyreneNormRows(lang === "en" ? "en" : "ru")}
-                {...normTableCols}
-              />
-            </motion.div>
-            <motion.div
-              className="mt-10 flex justify-center"
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.35 }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <Button
-                onClick={() => setIsContactFormOpen(true)}
-                className="h-14 bg-gradient-to-r from-primary to-primary/80 px-8 text-lg hover:from-primary/90 hover:to-primary/70"
-              >
-                {t(styreneK.contactUs)}
-              </Button>
-            </motion.div>
-          </div>
-        </section>
-      )}
-
-      {/* КОРС — описание, нормы по ТУ и кнопка «Связаться с нами» */}
-      {isKors && (
-        <section className="py-16 bg-secondary/30">
-          <div className="container mx-auto px-4 lg:px-8">
-            <motion.div
-              className="mx-auto mb-16 grid max-w-6xl grid-cols-1 items-start gap-x-10 gap-y-8 lg:grid-cols-2"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.12 }}
-              variants={korsStoryParent}
-            >
-              <motion.div variants={korsStoryChild} className="col-span-full">
-                <h2 className="text-h2">{t(k.corsTitle)}</h2>
-                <p className="mt-4 max-w-2xl text-body text-primary/85 dark:text-blue-100/85">
-                  {t(k.corsLead)}
-                </p>
-                <div className="mt-8 h-1 w-28 rounded-full bg-primary" />
-              </motion.div>
-              <motion.div
-                variants={korsStoryChild}
-                className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border bg-muted/30 shadow-md"
-              >
-                <Image
-                  src="/prevyu/kolby/kors-1.jpeg"
-                  alt={t(k.corsAlt)}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-              </motion.div>
-              <motion.div variants={korsStoryChild} className="space-y-5">
-                <p className="text-lg leading-relaxed text-muted-foreground">{t(k.corsP1)}</p>
-                <p className="text-lg leading-relaxed text-muted-foreground">{t(k.corsP2)}</p>
-                <p className="text-lg leading-relaxed text-muted-foreground">{t(k.corsP3)}</p>
-                <p className="text-base text-muted-foreground">{t(k.corsP4)}</p>
-              </motion.div>
-            </motion.div>
-
-            <motion.div
-              className="mb-16"
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <h2 className="mb-6 text-h3 sm:text-3xl">{t(k.corsNormTitle)}</h2>
-              <KorsNormTable
-                tuLabel={getKorsTuLabel(lang === "en" ? "en" : "ru")}
-                rows={getKorsNormRows(lang === "en" ? "en" : "ru")}
-                {...normTableCols}
-              />
-            </motion.div>
-
-            <motion.div
-              className="mx-auto mb-16 grid max-w-6xl grid-cols-1 items-start gap-x-10 gap-y-8 lg:grid-cols-2"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.12 }}
-              variants={korsStoryParent}
-            >
-              <motion.div variants={korsStoryChild} className="col-span-full">
-                <h2 className="text-h2">{t(k.bentolTitle)}</h2>
-                <p className="mt-4 max-w-2xl text-body text-primary/85 dark:text-blue-100/85">
-                  {t(k.bentolLead)}
-                </p>
-                <div className="mt-8 h-1 w-28 rounded-full bg-primary" />
-              </motion.div>
-              <motion.div
-                variants={korsStoryChild}
-                className="relative aspect-[3/4] w-full max-w-md overflow-hidden rounded-2xl border border-border bg-muted/40 shadow-md lg:max-w-none"
-              >
-                <Image
-                  src="/images/bentol.png"
-                  alt={t(k.bentolAlt)}
-                  fill
-                  className="object-contain p-4"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-              </motion.div>
-              <motion.div variants={korsStoryChild} className="space-y-5">
-                <p className="text-lg leading-relaxed text-muted-foreground">{t(k.bentolP1)}</p>
-                <p className="text-lg leading-relaxed text-muted-foreground">{t(k.bentolP2)}</p>
-                <p className="text-lg leading-relaxed text-muted-foreground">{t(k.bentolP3)}</p>
-                <p className="text-base text-muted-foreground">{t(k.bentolP4)}</p>
-              </motion.div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <h3 className="mb-6 text-h3 sm:text-3xl">{t(k.bentolNormTitle)}</h3>
-              <KorsNormTable
-                tuLabel={getBentolTuLabel(lang === "en" ? "en" : "ru")}
-                rows={getBentolNormRows(lang === "en" ? "en" : "ru")}
-                {...normTableCols}
-              />
-            </motion.div>
-
-            <motion.div
-              className="mt-8 flex justify-center"
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.35 }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <Button
-                onClick={() => setIsContactFormOpen(true)}
-                className="h-14 bg-gradient-to-r from-primary to-primary/80 px-8 text-lg hover:from-primary/90 hover:to-primary/70"
-              >
-                {t(k.contactUs)}
-              </Button>
-            </motion.div>
-          </div>
-        </section>
-      )}
-
-      {/* Contact Form Dialog */}
-      <Dialog open={isContactFormOpen} onOpenChange={setIsContactFormOpen}>
-        <DialogContent className="sm:max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle>Связаться с нами</DialogTitle>
-            <DialogDescription>
-              Заполните форму, и мы свяжемся с вами в ближайшее время
-            </DialogDescription>
-          </DialogHeader>
-          <form
-            onSubmit={async (e) => {
-              e.preventDefault()
-              
-              if (!consentAccepted) {
-                toast({
-                  title: "Требуется согласие",
-                  description: "Необходимо согласиться на обработку персональных данных",
-                  variant: "destructive",
-                  duration: 3000,
-                })
-                return
-              }
-              
-              setIsSubmitting(true)
-
-              try {
-                const response = await fetch("/api/contact-messages", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({
-                    source: "contacts",
-                    ...contactFormData,
-                    message: `Запрос по категории: ${category.name}\n\n${contactFormData.message || "Интерес к продукции"}`,
-                  }),
-                })
-
-                if (response.ok) {
-                  toast({
-                    title: "Сообщение отправлено",
-                    description: "Ваше сообщение отправлено и будет рассмотрено в ближайшее время. Мы свяжемся с вами по указанным контактам.",
-                    duration: 5000,
-                  })
-                  setContactFormData({ name: "", email: "", phone: "", message: "" })
-                  setConsentAccepted(false)
-                  setIsContactFormOpen(false)
-                } else {
-                  const error = await response.json()
-                  toast({
-                    title: "Ошибка отправки",
-                    description: error.error || "Произошла ошибка при отправке сообщения. Пожалуйста, попробуйте еще раз.",
-                    variant: "destructive",
-                    duration: 5000,
-                  })
-                }
-              } catch (error) {
-                console.error("Ошибка:", error)
-                toast({
-                  title: "Ошибка отправки",
-                  description: "Произошла ошибка при отправке сообщения. Пожалуйста, попробуйте еще раз.",
-                  variant: "destructive",
-                  duration: 5000,
-                })
-              } finally {
-                setIsSubmitting(false)
-              }
-            }}
-            className="space-y-4"
-          >
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium mb-2">
-                Имя <span className="text-red-500">*</span>
-              </label>
-              <Input
-                id="name"
-                required
-                value={contactFormData.name}
-                onChange={(e) => setContactFormData({ ...contactFormData, name: e.target.value })}
-                placeholder="Ваше имя"
-              />
-            </div>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium mb-2">
-                Email <span className="text-red-500">*</span>
-              </label>
-              <Input
-                id="email"
-                type="email"
-                required
-                value={contactFormData.email}
-                onChange={(e) => setContactFormData({ ...contactFormData, email: e.target.value })}
-                placeholder="your@email.com"
-              />
-            </div>
-            <div>
-              <label htmlFor="phone" className="block text-sm font-medium mb-2">
-                Телефон
-              </label>
-              <Input
-                id="phone"
-                type="tel"
-                value={contactFormData.phone}
-                onChange={(e) => setContactFormData({ ...contactFormData, phone: e.target.value })}
-                placeholder="+7 (___) ___-__-__"
-              />
-            </div>
-            <div>
-              <label htmlFor="message" className="block text-sm font-medium mb-2">
-                Сообщение <span className="text-red-500">*</span>
-              </label>
-              <Textarea
-                id="message"
-                required
-                value={contactFormData.message}
-                onChange={(e) => setContactFormData({ ...contactFormData, message: e.target.value })}
-                placeholder="Ваше сообщение"
-                rows={4}
-              />
-            </div>
-            <div className="flex items-start gap-2">
-              <Checkbox
-                id="consent"
-                checked={consentAccepted}
-                onCheckedChange={(checked) => setConsentAccepted(checked === true)}
-              />
-              <label htmlFor="consent" className="text-sm text-muted-foreground cursor-pointer">
-                Я согласен на обработку персональных данных <span className="text-red-500">*</span>
-              </label>
-            </div>
-            <div className="flex gap-3 pt-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setIsContactFormOpen(false)}
-                className="flex-1"
-              >
-                Отмена
-              </Button>
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="flex-1"
-              >
-                {isSubmitting ? "Отправка..." : "Отправить"}
-              </Button>
-            </div>
-          </form>
-        </DialogContent>
-      </Dialog>
+      {isAbs && <AbsCategorySection />}
+      {isStyrene && <StyreneCategorySection categoryName={categoryName} />}
+      {isKors && <KorsCategorySection categoryName={category.name} />}
 
       <Footer />
     </div>
   )
 }
-

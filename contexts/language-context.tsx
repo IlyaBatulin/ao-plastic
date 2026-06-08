@@ -31,8 +31,17 @@ export function LanguageProvider({
   const [translations, setTranslations] = useState<Record<string, any>>(
     () => translationsCache[initialLang] || {}
   )
-  
+  const [loadedLang, setLoadedLang] = useState<Language | null>(() =>
+    translationsCache[initialLang] ? initialLang : null
+  )
+
   const [isLoading, setIsLoading] = useState(true)
+
+  const applyTranslations = (nextLang: Language, data: Record<string, any>) => {
+    translationsCache[nextLang] = data
+    setTranslations(data)
+    setLoadedLang(nextLang)
+  }
 
   // Загружаем переводы сразу при монтировании
   useEffect(() => {
@@ -41,18 +50,20 @@ export function LanguageProvider({
       try {
         // Проверяем кэш
         if (translationsCache[lang]) {
-          setTranslations(translationsCache[lang]!)
+          applyTranslations(lang, translationsCache[lang]!)
           setIsLoading(false)
           return
         }
-        
+
+        // Не показываем переводы другого языка, пока грузится выбранный
+        setTranslations({})
+        setLoadedLang(null)
+
         const response = await fetch(`/locales/${lang}.json`)
         if (!response.ok) throw new Error("Failed to fetch translations")
         const data = await response.json()
-        
-        // Сохраняем в кэш
-        translationsCache[lang] = data
-        setTranslations(data)
+
+        applyTranslations(lang, data)
       } catch (error) {
         console.error("Failed to load translations:", error)
         // В случае ошибки используем пустой объект
@@ -70,8 +81,7 @@ export function LanguageProvider({
     const validSaved = saved === "en" || saved === "ru" ? saved : null
 
     if (validSaved && validSaved !== initialLang) {
-      setLangState(validSaved)
-      persistLanguage(validSaved)
+      setLang(validSaved)
       return
     }
 
@@ -82,7 +92,7 @@ export function LanguageProvider({
     const handleStorageChange = () => {
       const saved = localStorage.getItem("lang") as Language | null
       if ((saved === "ru" || saved === "en") && saved !== lang) {
-        setLangState(saved)
+        setLang(saved)
       }
     }
 
@@ -93,16 +103,28 @@ export function LanguageProvider({
   const setLang = (newLang: Language) => {
     setLangState(newLang)
     persistLanguage(newLang)
+    if (translationsCache[newLang]) {
+      applyTranslations(newLang, translationsCache[newLang]!)
+      setIsLoading(false)
+    } else {
+      setTranslations({})
+      setLoadedLang(null)
+      setIsLoading(true)
+    }
   }
 
   const t = useMemo(() => {
     return (key: string): any => {
       // Если переводы еще не загружены, возвращаем пустую строку
       // чтобы не показывать ключи типа "homepage"
+      if (loadedLang !== lang) {
+        return ""
+      }
+
       if (isLoading && Object.keys(translations).length === 0) {
         return ""
       }
-      
+
       // Поддержка вложенных ключей через точку (например, "dealersPage.badge")
       const keys = key.split(".")
       let value: any = translations
@@ -119,7 +141,7 @@ export function LanguageProvider({
       // Возвращаем значение как есть (может быть строка, массив, объект и т.д.)
       return value !== undefined ? value : ""
     }
-  }, [translations, isLoading])
+  }, [translations, isLoading, loadedLang, lang])
 
   return <LanguageContext.Provider value={{ lang, setLang, t, translations, isLoading }}>{children}</LanguageContext.Provider>
 }

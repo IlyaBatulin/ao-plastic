@@ -1,23 +1,66 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import Link from "next/link"
-import { Building2, ExternalLink, FileText, Mail, PackageSearch, Phone, ArrowRight } from "lucide-react"
+import {
+  Building2,
+  ExternalLink,
+  FileText,
+  Mail,
+  PackageSearch,
+  Phone,
+  ArrowRight,
+  Calendar,
+  Loader2,
+  AlertCircle,
+} from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 import { MOSCOW_OFFICE_YANDEX_MAP_EMBED_URL } from "@/lib/yandex-maps"
+import { TEK_SNAB_CONTACTS } from "@/lib/tek-snab-contacts"
+import { ETP_FILTER_URL, type EtpTenderItem } from "@/lib/etp-api"
 
-const ETP_TENDERS_LINK =
-  "https://new.etpgpb.ru/procedures/?procedure[customers][10280]=" +
-  encodeURIComponent('АО "ПЛАСТИК"') +
-  "&procedure[stage][0]=accepting&procedure[stage][1]=commission&procedure[regions][0]=" +
-  encodeURIComponent("Тульская область")
-
-const tekSnabContact = {
-  phones: ["+7 (910) 704-63-75"],
-  emails: ["info@tek-snab.ru"],
+type EtpTendersResponse = {
+  items: EtpTenderItem[]
+  filterUrl: string
+  warning?: string
 }
 
 export function SuppliersPageClient() {
   const { t } = useLanguage()
+  const [etpTenders, setEtpTenders] = useState<EtpTenderItem[]>([])
+  const [etpLoading, setEtpLoading] = useState(true)
+  const [etpWarning, setEtpWarning] = useState<string | null>(null)
+  const [etpFilterUrl, setEtpFilterUrl] = useState(ETP_FILTER_URL)
+
+  useEffect(() => {
+    let cancelled = false
+
+    const loadTenders = async () => {
+      setEtpLoading(true)
+      try {
+        const response = await fetch("/api/etp-tenders")
+        const data = (await response.json()) as EtpTendersResponse
+
+        if (cancelled) return
+
+        setEtpTenders(data.items ?? [])
+        setEtpWarning(data.warning ?? null)
+        if (data.filterUrl) setEtpFilterUrl(data.filterUrl)
+      } catch {
+        if (!cancelled) {
+          setEtpTenders([])
+          setEtpWarning(null)
+        }
+      } finally {
+        if (!cancelled) setEtpLoading(false)
+      }
+    }
+
+    void loadTenders()
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   // Шаги с ключами для переводов
   const steps = [
@@ -106,9 +149,11 @@ export function SuppliersPageClient() {
                     <Phone className="w-4 h-4 text-primary" />
                     {t("suppliersPage.contacts.phone")}
                   </p>
-                  {tekSnabContact.phones.map((phone) => (
-                    <p key={phone} className="text-muted-foreground">{phone}</p>
-                  ))}
+                  <p className="text-muted-foreground">
+                    <a href={TEK_SNAB_CONTACTS.phoneHref} className="hover:text-primary transition-colors">
+                      {TEK_SNAB_CONTACTS.phone}
+                    </a>
+                  </p>
                 </div>
                 
                 <div>
@@ -116,13 +161,11 @@ export function SuppliersPageClient() {
                     <Mail className="w-4 h-4 text-primary" />
                     {t("suppliersPage.contacts.email")}
                   </p>
-                  {tekSnabContact.emails.map((email) => (
-                    <p key={email}>
-                      <Link href={`mailto:${email}`} className="text-primary hover:underline">
-                        {email}
-                      </Link>
-                    </p>
-                  ))}
+                  <p>
+                    <Link href={`mailto:${TEK_SNAB_CONTACTS.email}`} className="text-primary hover:underline">
+                      {TEK_SNAB_CONTACTS.email}
+                    </Link>
+                  </p>
                 </div>
                 
                 <div>
@@ -162,7 +205,7 @@ export function SuppliersPageClient() {
               </p>
             </div>
             <a
-              href={ETP_TENDERS_LINK}
+              href={etpFilterUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 sm:self-start lg:self-auto"
@@ -170,6 +213,55 @@ export function SuppliersPageClient() {
               {t("suppliersPage.etpTenders.openOnEtp")}
               <ExternalLink className="h-4 w-4" />
             </a>
+          </div>
+
+          <div className="mt-10">
+            {etpLoading ? (
+              <div className="flex items-center justify-center gap-3 rounded-2xl border border-border bg-card px-6 py-12 text-muted-foreground">
+                <Loader2 className="h-5 w-5 animate-spin" />
+                <span>{t("suppliersPage.etpTenders.loading")}</span>
+              </div>
+            ) : etpWarning && etpTenders.length === 0 ? (
+              <div className="flex items-start gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-6 py-5 text-sm text-foreground">
+                <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
+                <p>{etpWarning}</p>
+              </div>
+            ) : etpTenders.length === 0 ? (
+              <div className="rounded-2xl border border-border bg-card px-6 py-10 text-center text-muted-foreground">
+                {t("suppliersPage.etpTenders.empty")}
+              </div>
+            ) : (
+              <ul className="grid gap-4">
+                {etpTenders.map((tender) => (
+                  <li key={tender.link}>
+                    <a
+                      href={tender.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex flex-col gap-3 rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:border-primary/40 hover:shadow-md sm:flex-row sm:items-center sm:justify-between"
+                    >
+                      <div className="min-w-0 flex-1 space-y-2">
+                        {tender.number ? (
+                          <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+                            {tender.number}
+                          </p>
+                        ) : null}
+                        <p className="text-base font-semibold text-foreground group-hover:text-primary transition-colors">
+                          {tender.title}
+                        </p>
+                        {tender.pubDate ? (
+                          <p className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <Calendar className="h-4 w-4 shrink-0" />
+                            {t("suppliersPage.etpTenders.deadline")}: {tender.pubDate}
+                          </p>
+                        ) : null}
+                      </div>
+                      <ExternalLink className="h-5 w-5 shrink-0 text-muted-foreground group-hover:text-primary transition-colors" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       </section>

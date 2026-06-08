@@ -6,10 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
-import {
-  fetchHhVacanciesFromBrowser,
-  HH_EMPLOYER_URL,
-} from "@/lib/hh-api"
+import { HH_EMPLOYER_URL } from "@/lib/hh-api"
 import { useLanguage } from "@/contexts/language-context"
 
 interface HHVacancy {
@@ -127,25 +124,11 @@ export function HHVacanciesClient() {
       const response = await fetch(`/api/hh-vacancies?${params.toString()}`)
       const data: HHVacanciesResponse = await response.json()
 
-      if ((data.items?.length ?? 0) > 0) {
-        applyList(data)
-        return
-      }
-
-      const fromBrowser = await fetchHhVacanciesFromBrowser(params)
-      if (fromBrowser && (fromBrowser.items?.length ?? 0) > 0) {
-        applyList({
-          items: fromBrowser.items as HHVacancy[],
-          found: fromBrowser.found,
-          pages: fromBrowser.pages,
-          page: fromBrowser.page,
-          per_page: fromBrowser.per_page,
-          fallbackUrl: HH_EMPLOYER_URL,
-        })
-        return
-      }
-
       applyList(data)
+
+      if ((data.items?.length ?? 0) > 0) {
+        return
+      }
       if (data.warning) {
         setWarning(data.warning)
         setHhBlocked(true)

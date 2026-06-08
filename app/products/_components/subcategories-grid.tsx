@@ -1,14 +1,18 @@
 "use client"
 
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { ArrowRight } from "lucide-react"
-import { useEffect, useMemo, useRef } from "react"
+import { useMemo, useState, useTransition } from "react"
+import { useRouter } from "next/navigation"
 import { useLanguage } from "@/contexts/language-context"
-import { getCatalogSubcategoryTranslationKey } from "@/lib/catalog-translations"
+import {
+  getCatalogSubcategoryDescription,
+  getCatalogSubcategoryLabel,
+} from "@/lib/catalog-translations"
 import { getPublicSubcategorySlug } from "@/lib/catalog-slugs"
 import { CustomOrderForm } from "@/app/products/_components/custom-order-form"
 import { AbsShimmerCard } from "@/app/products/_components/abs-shimmer-card"
+import { cn } from "@/lib/utils"
 
 // Вспомогательная функция для получения изображения подкатегории
 function getSubcategoryImage(subcategoryId: string, slug?: string): string | null {
@@ -49,40 +53,16 @@ interface SubcategoriesGridProps {
 }
 
 export function SubcategoriesGrid({ categoryId, subcategories }: SubcategoriesGridProps) {
-  const { t } = useLanguage()
-  const gridRef = useRef<HTMLDivElement>(null)
+  const { t, lang } = useLanguage()
   const router = useRouter()
-
+  const [isPending, startTransition] = useTransition()
+  const [pendingHref, setPendingHref] = useState<string | null>(null)
+  const locale = lang === "en" ? "en" : "ru"
   const categoryLabel = t(`homePage.catalog.categories.${categoryId}`) || categoryId
   const orderCommentPrefix = useMemo(() => {
     const lead = t("homePage.catalog.emptyCategoryInquiryOrderPrefix")
     return lead ? `${lead}: ${categoryLabel}` : `Заявка по каталогу: ${categoryLabel}`
   }, [t, categoryLabel])
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const card = entry.target as HTMLElement
-            card.style.opacity = '1'
-            card.style.transform = 'translateY(0)'
-            observer.unobserve(entry.target)
-          }
-        })
-      },
-      { threshold: 0.05, rootMargin: "80px" }
-    )
-
-    const cards = gridRef.current?.querySelectorAll(".subcategory-card")
-    cards?.forEach((card, index) => {
-      const cardElement = card as HTMLElement
-      cardElement.style.transitionDelay = `${index * 80}ms`
-      observer.observe(card)
-    })
-
-    return () => observer.disconnect()
-  }, [subcategories])
 
   if (subcategories.length === 0) {
     return (
@@ -108,24 +88,49 @@ export function SubcategoriesGrid({ categoryId, subcategories }: SubcategoriesGr
   return (
     <section className="py-24 -mt-20 relative z-20">
       <div className="container mx-auto px-4 lg:px-8">
-        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {subcategories.map((subcategory) => {
             const imageSrc = subcategory.image || getSubcategoryImage(subcategory.id, subcategory.slug) || "/placeholder.svg"
             const subcategoryHref = `/products/${categoryId}/${getPublicSubcategorySlug(categoryId, subcategory)}`
+            const subcategoryTitle = getCatalogSubcategoryLabel(
+              subcategory.id,
+              subcategory.slug,
+              subcategory.name,
+              locale
+            )
+            const subcategoryDescription =
+              getCatalogSubcategoryDescription(
+                subcategory.id,
+                subcategory.slug,
+                subcategory.description,
+                locale
+              ) ?? ""
             
+            const useFastNav = categoryId === "hoztovary" || categoryId === "machine-parts"
+            const isNavigating = isPending && pendingHref === subcategoryHref
+
             return (
             <Link
               key={subcategory.id}
               href={subcategoryHref}
-              prefetch
+              prefetch={useFastNav}
               onMouseEnter={() => router.prefetch(subcategoryHref)}
+              onFocus={() => router.prefetch(subcategoryHref)}
               onTouchStart={() => router.prefetch(subcategoryHref)}
-              className="subcategory-card group relative h-72 sm:h-80 rounded-3xl overflow-hidden border border-border/50 hover:border-primary/50"
-              style={{
-                opacity: 0,
-                transform: 'translateY(30px)',
-                transition: 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
-              }}
+              onClick={
+                useFastNav
+                  ? (event) => {
+                      event.preventDefault()
+                      setPendingHref(subcategoryHref)
+                      startTransition(() => router.push(subcategoryHref))
+                    }
+                  : undefined
+              }
+              aria-busy={isNavigating}
+              className={cn(
+                "subcategory-card group relative h-72 sm:h-80 rounded-3xl overflow-hidden border border-border/50 hover:border-primary/50 transition-all duration-300",
+                isNavigating && "pointer-events-none scale-[0.99] border-primary/40 opacity-95"
+              )}
             >
               {/* Background Image (Top Half) */}
               <div className="absolute inset-0">
@@ -147,12 +152,11 @@ export function SubcategoriesGrid({ categoryId, subcategories }: SubcategoriesGr
                 {/* Title and CTA - единый блок без разделения */}
                 <div className="mt-auto -mx-2 flex min-h-[11.75rem] flex-col rounded-xl border border-white/50 bg-white/95 p-4 sm:p-5 shadow-sm backdrop-blur-sm">
                   <h3 className="mb-3 text-xl font-bold transition-colors duration-300 group-hover:text-primary sm:text-2xl text-balance break-words">
-                    {t(`homePage.catalog.subcategories.${getCatalogSubcategoryTranslationKey(subcategory.slug)}`) ||
-                      subcategory.name}
+                    {subcategoryTitle}
                   </h3>
-                  {subcategory.description && subcategory.id !== "abs-custom" && (
+                  {subcategoryDescription && subcategory.id !== "abs-custom" && (
                     <p className="text-sm sm:text-base text-muted-foreground leading-relaxed line-clamp-3 mb-4">
-                      {subcategory.description}
+                      {subcategoryDescription}
                     </p>
                   )}
                   {/* CTA внутри того же блока без границы */}

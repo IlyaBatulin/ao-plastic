@@ -16,6 +16,8 @@ import { useLanguage } from "@/contexts/language-context"
 import { useToast } from "@/hooks/use-toast"
 import type { NextPageProps } from "@/lib/next-page-props"
 import { FACTORY_YANDEX_MAP_EMBED_URL } from "@/lib/yandex-maps"
+import { SALES_DIRECTION_CONTACTS } from "@/lib/sales-direction-contacts"
+import { TEK_SNAB_CONTACTS } from "@/lib/tek-snab-contacts"
 
 export default function ContactsPage({ params, searchParams }: NextPageProps) {
   use(params ?? Promise.resolve({}))
@@ -23,15 +25,7 @@ export default function ContactsPage({ params, searchParams }: NextPageProps) {
   const { t } = useLanguage()
   const { toast } = useToast()
 
-  // Направления продаж с ключами для переводов
-  const salesDirections = [
-    { key: "abs", phone: "+7 (495) 201-03-33 доб.116", email: "info@td-plastic.ru" },
-    { key: "polystyrene", phone: "+7 (495) 201-03-33 доб.108", email: "info@td-plastic.ru" },
-    { key: "machineParts", phone: "+7 (487) 412-43-06, +7 (487) 312-48-99; +7 (495) 201-03-33 доб.206", email: "info@td-plastic.ru" },
-    { key: "cors", phone: "+7 (487) 312-48-32", email: "info@td-plastic.ru" },
-    { key: "liquidation", phone: "+7 (487) 312-48-32", email: "info@td-plastic.ru" },
-    { key: "consumerGoods", phone: "+7 (495) 201-03-33 доб.119", email: "tnp@td-plastic.ru" },
-  ]
+  const salesDirections = SALES_DIRECTION_CONTACTS
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -206,8 +200,17 @@ export default function ContactsPage({ params, searchParams }: NextPageProps) {
                         <div className="mt-4 text-sm text-muted-foreground">
                           <div>
                             <p className="font-semibold text-foreground">{t("contactsPage.procurement.companyName")}</p>
-                            <p>+7 (910) 704-63-75</p>
-                            <p>info@tek-snab.ru</p>
+                            <p className="text-muted-foreground">{t("contactsPage.procurement.description")}</p>
+                            <p className="mt-2">
+                              <a href={TEK_SNAB_CONTACTS.phoneHref} className="hover:text-primary transition-colors">
+                                {TEK_SNAB_CONTACTS.phone}
+                              </a>
+                            </p>
+                            <p>
+                              <a href={`mailto:${TEK_SNAB_CONTACTS.email}`} className="hover:text-primary transition-colors">
+                                {TEK_SNAB_CONTACTS.email}
+                              </a>
+                            </p>
                             <p className="mt-2 text-xs leading-relaxed">{t("contactsPage.procurement.address")}</p>
                           </div>
                         </div>

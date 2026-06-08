@@ -3,10 +3,14 @@
 import type { ReactNode } from "react"
 import { CategoryHero } from "@/app/products/_components/category-hero"
 import { useLanguage } from "@/contexts/language-context"
-import { getCatalogSubcategoryTranslationKey } from "@/lib/catalog-translations"
+import {
+  getCatalogSubcategoryDescription,
+  getCatalogSubcategoryLabel,
+} from "@/lib/catalog-translations"
 
 type SubcategoryPageShellProps = {
   subcategorySlug: string
+  subcategoryId?: string
   fallbackTitle: string
   fallbackDescription?: string | null
   backHref: string
@@ -20,6 +24,7 @@ type SubcategoryPageShellProps = {
 
 export function SubcategoryPageShell({
   subcategorySlug,
+  subcategoryId,
   fallbackTitle,
   fallbackDescription,
   backHref,
@@ -29,12 +34,23 @@ export function SubcategoryPageShell({
   skipDescription,
   children,
 }: SubcategoryPageShellProps) {
-  const { t } = useLanguage()
-  const i18nKey = getCatalogSubcategoryTranslationKey(subcategorySlug)
-  const title = t(`homePage.catalog.subcategories.${i18nKey}`) || fallbackTitle
-  const fromLocale = t(`homePage.catalog.subcategoryDescriptions.${i18nKey}`)
-  const description =
-    skipDescription ? undefined : (fromLocale || fallbackDescription || undefined)
+  const { t, lang } = useLanguage()
+  const locale = lang === "en" ? "en" : "ru"
+  const resolvedId = subcategoryId ?? subcategorySlug
+  const title = getCatalogSubcategoryLabel(
+    resolvedId,
+    subcategorySlug,
+    fallbackTitle,
+    locale
+  )
+  const description = skipDescription
+    ? undefined
+    : getCatalogSubcategoryDescription(
+        resolvedId,
+        subcategorySlug,
+        fallbackDescription,
+        locale
+      )
   const backLabel = t("homePage.catalog.backToCategory") || "Назад к категории"
 
   return (

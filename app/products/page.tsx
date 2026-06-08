@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
 import { BackgroundPaths } from "@/components/ui/background-paths"
-import { createClient } from "@/utils/supabase/server"
+import { createClient, supabaseQuery } from "@/utils/supabase/server"
 import productsData from "@/data/products.json"
 import { ProductsCatalogClient } from "@/app/products/_components/products-catalog-client"
 
@@ -21,10 +21,12 @@ export default async function ProductsPage() {
 
   try {
     const supabase = createClient()
-    const { data, error } = await supabase
-      .from("v_categories_summary")
-      .select("id, name, description, image")
-      .order("sort", { ascending: true })
+    const { data, error } = await supabaseQuery("v_categories_summary", () =>
+      supabase
+        .from("v_categories_summary")
+        .select("id, name, description, image")
+        .order("sort", { ascending: true })
+    )
 
     if (!error && data && data.length > 0) {
       categories = data

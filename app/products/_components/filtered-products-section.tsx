@@ -1,5 +1,6 @@
 "use client"
 
+import dynamic from "next/dynamic"
 import { useState, useMemo } from "react"
 import { Search, SlidersHorizontal, Sparkles, X } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -7,8 +8,13 @@ import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
 import ProductsGrid from "./products-grid"
 import { isMachinePartsExtrusion } from "@/lib/catalog-slugs"
-import { ProductFilters } from "./product-filters"
+import { translateExtrusionPartType } from "@/lib/extrusion-i18n"
 import { Input } from "@/components/ui/input"
+
+const ProductFilters = dynamic(
+  () => import("./product-filters").then((mod) => mod.ProductFilters),
+  { loading: () => null }
+)
 
 type Product = {
   id: string
@@ -28,7 +34,8 @@ export function FilteredProductsSection({
   categoryId?: string
   subcategoryId?: string
 }) {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
+  const specLang = lang === "en" ? "en" : "ru"
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(products)
   
   // Для хозяйственных товаров скрываем фильтры и таблицу сравнения
@@ -181,7 +188,9 @@ export function FilteredProductsSection({
                             : "border-border/80 bg-card/50 text-foreground hover:border-primary/40 hover:bg-muted/50"
                         )}
                       >
-                        <span className="whitespace-normal break-words text-balance">{typeOption}</span>
+                        <span className="whitespace-normal break-words text-balance">
+                          {translateExtrusionPartType(typeOption, specLang)}
+                        </span>
                       </button>
                     )
                   })}

@@ -1,3 +1,5 @@
+import { TEK_SNAB_CONTACTS } from "@/lib/tek-snab-contacts"
+
 /** Актуальные реквизиты АО «Пластик» для сайта и юридических документов. */
 export const COMPANY_REQUISITES = {
   fullName: 'Акционерное общество «Пластик»',
@@ -12,8 +14,7 @@ export const COMPANY_REQUISITES = {
   moscowPostalCode: "115035",
   moscowAddress:
     "115035, г. Москва, 3-й Кадышевский переулок, д. 7-9, стр. 1",
-  tekSnabAddress:
-    "115035, г. Москва, муниципальный округ Якиманка, 3-й Кадышевский переулок, д. 7-9, стр. 1",
+  tekSnabAddress: TEK_SNAB_CONTACTS.addressRu,
   phone: "+7 (495) 201-03-33",
   email: "info@oaplastic.ru",
   salesEmail: "info@td-plastic.ru",

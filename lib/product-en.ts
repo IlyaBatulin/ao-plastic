@@ -1,5 +1,12 @@
 import { HOUSEHOLD_PRODUCT_EN } from "@/lib/household-product-en"
 import productsData from "@/data/products.json"
+import {
+  EXTRUSION_PART_TYPE_EN,
+  isSupplyPhrase,
+  translateExtrusionPartType,
+  translateExtrusionPlaceholder,
+  translateSupplyPhrase,
+} from "@/lib/extrusion-i18n"
 
 export type ProductEnEntry = { name: string; description: string }
 
@@ -114,18 +121,32 @@ function buildLookupAliases(): Record<string, string> {
 
 const LOOKUP_ALIASES = buildLookupAliases()
 
-const EXTRUSION_TYPE_EN: Record<string, string> = {
-  Сепаратор: "Separator",
-  Трубка: "Tube",
-  Шланг: "Hose",
-  Окантовка: "Edging",
-  Профиль: "Profile",
-  Втулка: "Bushing",
-  Прокладка: "Gasket",
-  Облицовка: "Facing",
-  Накладка: "Overlay",
-  Молдинг: "Molding",
-}
+/** Фразы в описаниях товаров RU → EN */
+const PRODUCT_DESCRIPTION_PHRASES_EN: [RegExp, string][] = [
+  [
+    /Экструзионный\s+АБС-пластик\s+марки\s+/gi,
+    "Extrusion ABS plastic grade ",
+  ],
+  [
+    /Экструзионный\s+АБС-пластик\s+для\s+производства\s+листов\s+и\s+профилей/gi,
+    "Extrusion ABS plastic for sheet and profile production",
+  ],
+  [
+    /для\s+производства\s+листов\s+и\s+профилей\s+методом\s+экструзии/gi,
+    "for sheet and profile production by extrusion",
+  ],
+  [/литьевой\s+АБС-пластик/gi, "Injection ABS plastic"],
+  [/АБС-пластик/gi, "ABS plastic"],
+  [/вспенивающийся\s+полистирол/gi, "expandable polystyrene"],
+  [/полистирол\s+экструзионный/gi, "extrusion polystyrene"],
+  [/полистирол\s+эмульсионный/gi, "emulsion polystyrene"],
+  [/полистирол/gi, "polystyrene"],
+  [/для\s+производства\s+пенопласта/gi, "for foam plastic production"],
+  [/теплоизоляционных\s+плит/gi, "insulation boards"],
+  [/упаковочных\s+материалов/gi, "packaging materials"],
+  [/общего\s+назначения/gi, "general-purpose"],
+  [/с\s+повышенным\s+коэффициентом\s+вспенивания/gi, "with a higher expansion ratio"],
+]
 
 /** Длинные фразы в названиях ДМС / каталога (сначала длинные) */
 const PRODUCT_NAME_PHRASES_EN: [RegExp, string][] = [
@@ -143,16 +164,20 @@ const PRODUCT_NAME_PHRASES_EN: [RegExp, string][] = [
   [/сточного желоба/i, "gutter"],
 ]
 
-/** Кириллица в марках → общепринятые EN-аббревиатуры */
+/**
+ * Кириллица в марках → общепринятые EN-аббревиатуры.
+ * Без \b после кириллицы: в JS \b не работает на границе кириллических букв,
+ * иначе «ПСВ-С» превращается только в «EPS-С» (частичная замена ПСВ→EPS).
+ */
 const CYRILLIC_MARK_REPLACEMENTS: [RegExp, string][] = [
-  [/ПСВ\s*[-–]?\s*С\b/gi, "EPS-S"],
-  [/ПСВ\s*[-–]?\s*Л\b/gi, "EPS-L"],
-  [/PSV\s*[-–]?\s*С\b/g, "EPS-S"],
-  [/PSV\s*[-–]?\s*Л\b/g, "EPS-L"],
-  [/EPS\s*[-–]?\s*С\b/g, "EPS-S"],
-  [/EPS\s*[-–]?\s*Л\b/g, "EPS-L"],
-  [/ПСЭ\s*[-–]?\s*1\b/gi, "PSE-1"],
-  [/ПСЭ-1\b/gi, "PSE-1"],
+  [/ПСВ\s*[-–]?\s*[СC](?![А-Яа-яA-Za-z])/gi, "EPS-S"],
+  [/ПСВ\s*[-–]?\s*[ЛL](?![А-Яа-яA-Za-z])/gi, "EPS-L"],
+  [/PSV\s*[-–]?\s*[СC](?![А-Яа-яA-Za-z])/gi, "EPS-S"],
+  [/PSV\s*[-–]?\s*[ЛL](?![А-Яа-яA-Za-z])/gi, "EPS-L"],
+  [/EPS\s*[-–]?\s*[СC](?![А-Яа-яA-Za-z])/gi, "EPS-S"],
+  [/EPS\s*[-–]?\s*[ЛL](?![А-Яа-яA-Za-z])/gi, "EPS-L"],
+  [/ПСЭ\s*[-–]?\s*1(?!\d)/gi, "PSE-1"],
+  [/ПСЭ-1(?!\d)/gi, "PSE-1"],
 ]
 
 function normalizeLookupKey(value: string): string {
@@ -193,7 +218,7 @@ export function getHouseholdProductEn(productId: string): ProductEnEntry | null 
 }
 
 function translateExtrusionType(type: string): string {
-  return EXTRUSION_TYPE_EN[type] ?? type
+  return translateExtrusionPartType(type, "en")
 }
 
 function translateBrandMark(brand: string): string {
@@ -228,12 +253,27 @@ function tryGradeNameFromBrandAndTitle(
   }
 }
 
+function translateProductDescriptionFallback(description: string): string {
+  let result = description.trim()
+  for (const [re, en] of PRODUCT_DESCRIPTION_PHRASES_EN) {
+    result = result.replace(re, en)
+  }
+  for (const [re, replacement] of CYRILLIC_MARK_REPLACEMENTS) {
+    result = result.replace(re, replacement)
+  }
+  return result
+    .replace(/АБС/g, "ABS")
+    .replace(/ПТР/g, "MFR")
+    .replace(/\s+/g, " ")
+    .trim()
+}
+
 function applyPhraseTranslations(name: string): string {
   let result = name
   for (const [re, en] of PRODUCT_NAME_PHRASES_EN) {
     result = result.replace(re, en)
   }
-  for (const [ru, en] of Object.entries(EXTRUSION_TYPE_EN)) {
+  for (const [ru, en] of Object.entries(EXTRUSION_PART_TYPE_EN)) {
     if (result.startsWith(ru)) {
       result = en + result.slice(ru.length)
       break
@@ -285,9 +325,10 @@ function toLatinOnly(text: string, fallback = "Product"): string {
 
 function translateSupply(value: unknown): string | null {
   const s = String(value ?? "").trim()
-  if (s === "в бухтах") return "in coils"
-  if (s === "фиксированная длина") return "fixed length"
-  if (!s || hasCyrillic(s)) return null
+  if (!s) return null
+  const translated = translateSupplyPhrase(s, "en")
+  if (translated !== s) return translated
+  if (hasCyrillic(s)) return null
   return s
 }
 
@@ -354,10 +395,26 @@ export function buildDmsEnglishDescription(product: {
   const code = specs["Шифр изделия"] ?? specs.code
   const supply = translateSupply(specs["Поставка"] ?? specs.length_kind)
 
-  if (size) parts.push(`Dimensions: ${latinizeUnits(String(size))}`)
-  if (length) parts.push(`Length: ${latinizeUnits(String(length))}`)
+  if (size) {
+    const sizeStr = String(size)
+    const sizeEn =
+      translateExtrusionPlaceholder(sizeStr, "en") !== sizeStr
+        ? translateExtrusionPlaceholder(sizeStr, "en")
+        : latinizeUnits(sizeStr)
+    parts.push(`Dimensions: ${sizeEn}`)
+  }
+
+  const lengthStr = length != null ? String(length).trim() : ""
+  if (lengthStr && !isSupplyPhrase(lengthStr)) {
+    parts.push(`Length: ${latinizeUnits(lengthStr)}`)
+  }
+
   if (code) parts.push(`Code: ${code}`)
-  if (supply) parts.push(`Supply: ${supply}`)
+
+  const supplyFromLength =
+    lengthStr && isSupplyPhrase(lengthStr) ? translateSupplyPhrase(lengthStr, "en") : null
+  const supplyLabel = supply ?? supplyFromLength
+  if (supplyLabel) parts.push(`Supply: ${supplyLabel}`)
 
   if (parts.length > 0) return parts.join(" · ")
 
@@ -438,9 +495,15 @@ export function resolveProductDisplay(
   }
 
   const fallbackName = translateProductNameFallback(product.name)
+  const rawDescription = product.description ?? undefined
+  const description =
+    rawDescription && hasCyrillic(rawDescription)
+      ? translateProductDescriptionFallback(rawDescription)
+      : rawDescription
+
   return {
     name: hasCyrillic(fallbackName) ? toLatinOnly(fallbackName) : fallbackName,
-    description: product.description ?? undefined,
+    description,
   }
 }
 
@@ -453,14 +516,18 @@ function translateProductNameFallback(name: string): string {
   result = applyPhraseTranslations(result)
   result = result.replace(/\bмарка\s*№?\s*/gi, "Grade ")
   result = result.replace(/\bМарка\s*№?\s*/g, "Grade ")
-  for (const [ru, en] of Object.entries(EXTRUSION_TYPE_EN)) {
+  for (const [ru, en] of Object.entries(EXTRUSION_PART_TYPE_EN)) {
     result = result.replace(new RegExp(ru.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g"), en)
   }
   return fallbackLatinProductName(result)
 }
 
 function fallbackLatinProductName(name: string): string {
-  return name
+  let result = name
+  for (const [re, replacement] of CYRILLIC_MARK_REPLACEMENTS) {
+    result = result.replace(re, replacement)
+  }
+  return result
     .replace(/АБС/g, "ABS")
     .replace(/ПСВ/g, "EPS")
     .replace(/ПСЭ/g, "PSE")

@@ -88,27 +88,43 @@ export const loadCategoriesCached = async (): Promise<Category[]> => {
 
       if (!categoriesError && categoriesData && categoriesData.length > 0) {
         const filteredCategories = categoriesData.filter((cat: any) => cat.id !== 'pvc-modifier')
-        const categoriesWithSubs = await Promise.all(
-          filteredCategories.map(async (cat: any) => {
-            const { data: subcatsData, error: subcatsError } = await supabase
-              .from("subcategories")
-              .select("id, name, slug")
-              .eq("category_id", cat.id)
-              .eq("is_active", true)
-              .order("sort", { ascending: true })
-            const fallbackSubcategories = getJsonSubcategories(cat.id)
-            const loadedSubcategories = (subcatsData || []).filter(
-              (sub: any) => !(cat.id === "abs" && (sub.id === "abs-specs" || sub.slug === "abs-specs"))
-            )
+        const { data: allSubcatsData, error: allSubcatsError } = await supabase
+          .from("subcategories")
+          .select("id, name, slug, category_id")
+          .eq("is_active", true)
+          .order("sort", { ascending: true })
 
-            return {
-              id: cat.id,
-              name: cat.name,
-              slug: cat.slug || cat.id,
-              subcategories: subcatsError || loadedSubcategories.length === 0 ? fallbackSubcategories : loadedSubcategories,
+        const subcatsByCategory = new Map<string, Array<{ id: string; name: string; slug: string }>>()
+        if (!allSubcatsError && allSubcatsData) {
+          for (const sub of allSubcatsData) {
+            const catId = String(sub.category_id)
+            if (!subcatsByCategory.has(catId)) {
+              subcatsByCategory.set(catId, [])
             }
-          })
-        )
+            subcatsByCategory.get(catId)!.push({
+              id: sub.id,
+              name: sub.name,
+              slug: sub.slug,
+            })
+          }
+        }
+
+        const categoriesWithSubs = filteredCategories.map((cat: any) => {
+          const fallbackSubcategories = getJsonSubcategories(cat.id)
+          const loadedSubcategories = (subcatsByCategory.get(cat.id) || []).filter(
+            (sub) => !(cat.id === "abs" && (sub.id === "abs-specs" || sub.slug === "abs-specs"))
+          )
+
+          return {
+            id: cat.id,
+            name: cat.name,
+            slug: cat.slug || cat.id,
+            subcategories:
+              allSubcatsError || loadedSubcategories.length === 0
+                ? fallbackSubcategories
+                : loadedSubcategories,
+          }
+        })
 
         categoriesCache = categoriesWithSubs
         return categoriesWithSubs

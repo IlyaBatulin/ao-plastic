@@ -50,7 +50,7 @@ export function Hero() {
   }
 
   return (
-    <section className="relative flex min-h-[100svh] items-center justify-center md:min-h-screen">
+    <section className="relative flex h-[100svh] min-h-[100svh] items-center justify-center overflow-hidden md:h-auto md:min-h-screen">
       {/* Navigation Overlay */}
       <HeroNavigation />
 

@@ -54,34 +54,36 @@ export function About() {
   ]
 
   return (
-    <section id="about" className="relative overflow-hidden bg-background">
+    <section id="about" className="relative overflow-hidden">
       {/* Большое фото на всю ширину + затемнение + текст (как блок объёмов на главной) */}
-      <div className="relative w-full max-w-full">
-        <div className="relative min-h-[100svh] w-full md:h-[100dvh]">
-          <Image
-            src="/images/furs0027-1.jpeg"
-            alt="Производственные мощности предприятия"
-            fill
-            className="object-cover object-center"
-            sizes="100vw"
-            priority={false}
-          />
+      <div className="relative w-full max-w-full overflow-hidden">
+        <div className="relative isolate">
+          <div className="pointer-events-none absolute inset-0 z-0 min-h-full">
+            <Image
+              src="/images/furs0027-1.jpeg"
+              alt="Производственные мощности предприятия"
+              fill
+              className="object-cover object-center"
+              sizes="100vw"
+              priority={false}
+            />
 
-          {/* Затемнение: слева плотнее под текст, общий градиент */}
-          <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/[0.88] via-black/50 to-black/32 dark:from-black/90 dark:via-black/55 dark:to-black/40"
-            aria-hidden
-          />
-          <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/78 via-transparent to-black/58 sm:to-black/48"
-            aria-hidden
-          />
-          <div
-            className="pointer-events-none absolute inset-y-0 left-0 w-full max-w-[min(100%,42rem)] bg-gradient-to-r from-black/65 to-transparent sm:max-w-[50%]"
-            aria-hidden
-          />
+            {/* Затемнение: слева плотнее под текст, общий градиент */}
+            <div
+              className="absolute inset-0 bg-gradient-to-r from-black/[0.88] via-black/50 to-black/32 dark:from-black/90 dark:via-black/55 dark:to-black/40"
+              aria-hidden
+            />
+            <div
+              className="absolute inset-0 bg-gradient-to-t from-black/78 via-transparent to-black/58 sm:to-black/48"
+              aria-hidden
+            />
+            <div
+              className="absolute inset-y-0 left-0 w-full max-w-[min(100%,42rem)] bg-gradient-to-r from-black/65 to-transparent sm:max-w-[50%]"
+              aria-hidden
+            />
+          </div>
 
-          <div className="relative z-10 flex min-h-[100svh] items-start py-16 md:absolute md:inset-0 md:min-h-[100dvh] md:py-0 md:items-center">
+          <div className="relative z-10 flex min-h-[100svh] items-start py-16 md:min-h-[100dvh] md:items-center md:py-20 lg:py-24">
             <div className="container mx-auto px-4 text-white sm:px-6 lg:px-8">
               <motion.div
                 className="max-w-3xl space-y-6 sm:max-w-4xl sm:space-y-7 lg:max-w-5xl lg:space-y-8"

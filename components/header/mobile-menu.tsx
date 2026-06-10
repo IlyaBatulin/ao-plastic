@@ -7,8 +7,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Button } from "@/components/ui/button"
 import corporateMenuData from "@/data/menu-corporate.json"
 import productsData from "@/data/products.json"
-import { createClient } from "@/utils/supabase/client"
 import { useEffect, useRef, useState } from "react"
+import { loadCategoriesCached } from "./unified-mega-menu"
 import { useTranslation } from "@/lib/i18n"
 import { getCatalogCategoryLabel } from "@/lib/catalog-translations"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
@@ -100,8 +100,7 @@ function shouldIgnoreOutsideInteraction(target: EventTarget | null, openedAt: nu
 export function MobileMenu({ isOpen, onOpenChange }: MobileMenuProps) {
   const { lang, setLang, t } = useLanguage()
   const { lang: i18nLang } = useTranslation()
-  const [categories, setCategories] = useState<Category[]>([])
-  const [loading, setLoading] = useState(true)
+  const [categories, setCategories] = useState<Category[]>(getJsonCategories)
   const openedAtRef = useRef(0)
 
   const handleClose = () => onOpenChange(false)
@@ -113,49 +112,27 @@ export function MobileMenu({ isOpen, onOpenChange }: MobileMenuProps) {
   }, [isOpen])
 
   useEffect(() => {
-    const loadCategories = async () => {
-      setLoading(true)
-      try {
-        const supabase = createClient()
-        
-        // Проверяем наличие конфигурации Supabase
-        if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-          // Используем fallback данные
-          setCategories(getJsonCategories())
-          setLoading(false)
-          return
-        }
+    let cancelled = false
 
-        const { data: categoriesData, error } = await supabase
-          .from("categories")
-          .select("id, name, slug")
-          .eq("is_active", true)
-          .order("sort", { ascending: true })
+    loadCategoriesCached()
+      .then((loadedCategories) => {
+        if (cancelled) return
+        setCategories(
+          loadedCategories.map((category) => ({
+            id: category.id,
+            name: category.name,
+            slug: category.slug || category.id,
+          }))
+        )
+      })
+      .catch(() => {
+        if (!cancelled) setCategories(getJsonCategories())
+      })
 
-        if (error) {
-          setCategories(getJsonCategories())
-        } else if (categoriesData) {
-          setCategories(
-            categoriesData.length > 0
-              ? categoriesData.map((category) => ({
-                  id: category.id,
-                  name: category.name,
-                  slug: category.slug || category.id,
-                }))
-              : getJsonCategories()
-          )
-        }
-      } catch {
-        setCategories(getJsonCategories())
-      } finally {
-        setLoading(false)
-      }
+    return () => {
+      cancelled = true
     }
-
-    if (isOpen) {
-      loadCategories()
-    }
-  }, [isOpen])
+  }, [])
 
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
@@ -219,9 +196,7 @@ export function MobileMenu({ isOpen, onOpenChange }: MobileMenuProps) {
                       </CustomAccordionTrigger>
                       <AccordionContent className="px-0 pb-2">
                         <div className="space-y-1.5 pl-4">
-                          {loading ? (
-                            <div className="py-2.5 text-base text-muted-foreground">Загрузка...</div>
-                          ) : categories.length > 0 ? (
+                          {categories.length > 0 ? (
                             categories.map((category) => (
                               <Link
                                 key={category.id}

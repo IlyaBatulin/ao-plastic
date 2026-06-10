@@ -1,5 +1,4 @@
 import { cache } from "react"
-import { unstable_cache } from "next/cache"
 import productsData from "@/data/products.json"
 import {
   findJsonSubcategory,
@@ -302,14 +301,7 @@ async function loadSubcategoryPageData(
   }
 }
 
-const getSubcategoryPageDataCached = unstable_cache(
-  async (categoryId: string, subcategoryId: string) =>
-    loadSubcategoryPageData(categoryId, subcategoryId),
-  ["subcategory-page-data"],
-  { revalidate: 300 }
-)
-
-/** Один кэшированный запрос на страницу подкатегории (metadata + page). */
+/** Один запрос на страницу подкатегории (metadata + page делят результат через cache). */
 export const getSubcategoryPageData = cache((categoryId: string, subcategoryId: string) =>
-  getSubcategoryPageDataCached(categoryId, subcategoryId)
+  loadSubcategoryPageData(categoryId, subcategoryId)
 )

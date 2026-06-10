@@ -1,5 +1,4 @@
 import { cache } from "react"
-import { unstable_cache } from "next/cache"
 import productsData from "@/data/products.json"
 import { isNextBuild } from "@/lib/next-build"
 import { createCatalogClient, supabaseCatalogQuery } from "@/utils/supabase/server"
@@ -95,13 +94,7 @@ async function loadCategoryPageData(categoryId: string): Promise<CategoryPageDat
   }
 }
 
-const getCategoryPageDataCached = unstable_cache(
-  async (categoryId: string) => loadCategoryPageData(categoryId),
-  ["category-page-data"],
-  { revalidate: 300 }
-)
-
 /** Один запрос на страницу категории (metadata + page делят результат через cache). */
 export const getCategoryPageData = cache((categoryId: string) =>
-  getCategoryPageDataCached(categoryId)
+  loadCategoryPageData(categoryId)
 )

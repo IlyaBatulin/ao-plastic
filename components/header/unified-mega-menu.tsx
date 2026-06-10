@@ -43,6 +43,22 @@ interface UnifiedMegaMenuProps {
 let categoriesCache: Category[] | null = null
 let categoriesCachePromise: Promise<Category[]> | null = null
 
+const CLIENT_CATALOG_TIMEOUT_MS = 5_000
+
+async function withClientTimeout<T>(promise: PromiseLike<T>, ms: number): Promise<T> {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined
+  try {
+    return await Promise.race([
+      Promise.resolve(promise),
+      new Promise<T>((_, reject) => {
+        timeoutId = setTimeout(() => reject(new Error("catalog timeout")), ms)
+      }),
+    ])
+  } finally {
+    if (timeoutId) clearTimeout(timeoutId)
+  }
+}
+
 const mapJsonSubcategories = (category: any) =>
   (category?.subcategories || [])
     .filter((sub: any) => !(category.id === "abs" && (sub.id === "abs-specs" || sub.slug === "abs-specs")))
@@ -80,19 +96,25 @@ export const loadCategoriesCached = async (): Promise<Category[]> => {
     try {
       const supabase = createClient()
       
-      const { data: categoriesData, error: categoriesError } = await supabase
-        .from("categories")
-        .select("id, name, slug")
-        .eq("is_active", true)
-        .order("sort", { ascending: true })
+      const { data: categoriesData, error: categoriesError } = await withClientTimeout(
+        supabase
+          .from("categories")
+          .select("id, name, slug")
+          .eq("is_active", true)
+          .order("sort", { ascending: true }),
+        CLIENT_CATALOG_TIMEOUT_MS
+      )
 
       if (!categoriesError && categoriesData && categoriesData.length > 0) {
         const filteredCategories = categoriesData.filter((cat: any) => cat.id !== 'dispersion')
-        const { data: allSubcatsData, error: allSubcatsError } = await supabase
-          .from("subcategories")
-          .select("id, name, slug, category_id")
-          .eq("is_active", true)
-          .order("sort", { ascending: true })
+        const { data: allSubcatsData, error: allSubcatsError } = await withClientTimeout(
+          supabase
+            .from("subcategories")
+            .select("id, name, slug, category_id")
+            .eq("is_active", true)
+            .order("sort", { ascending: true }),
+          CLIENT_CATALOG_TIMEOUT_MS
+        )
 
         const subcatsByCategory = new Map<string, Array<{ id: string; name: string; slug: string }>>()
         if (!allSubcatsError && allSubcatsData) {

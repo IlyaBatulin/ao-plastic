@@ -8,7 +8,8 @@ import { resolveProductImageUrl } from "@/lib/product-image"
 import { getProductPageData } from "@/lib/catalog-product"
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld"
 
-export const revalidate = 300
+// Layout читает cookies() (язык) — ISR (revalidate) даёт DYNAMIC_SERVER_USAGE в production.
+export const dynamic = "force-dynamic"
 export const dynamicParams = true
 
 export async function generateMetadata({
@@ -36,7 +37,7 @@ export async function generateMetadata({
 }
 
 // Не пререндерим карточки товаров при билде — Supabase с VPS часто даёт ETIMEDOUT.
-// Страницы создаются on-demand при первом заходе (dynamicParams + revalidate).
+// Страницы создаются on-demand при первом заходе (dynamicParams + force-dynamic).
 export async function generateStaticParams() {
   return []
 }

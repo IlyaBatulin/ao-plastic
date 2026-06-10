@@ -4,6 +4,7 @@ import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useLanguage } from "@/contexts/language-context"
 import { CATALOG_WARMUP_PATHS } from "@/lib/catalog-warmup"
+import { getCategoryImageUrl } from "@/lib/category-image"
 import { CatalogCategoryCard } from "@/app/products/_components/catalog-category-card"
 
 interface Category {
@@ -20,28 +21,6 @@ interface Category {
 
 interface ProductsCatalogClientProps {
   categories: Category[]
-}
-
-function getCategoryImage(category: Category, categoryName: string): string {
-  switch (category.id) {
-    case "abs":
-      return "/images/absiplast-main.png"
-    case "kors":
-      return "/images/kors-bentol-main.png"
-    case "styrene":
-      return "/images/styrolmain.png"
-    case "polystyrene":
-      return "/images/polist-main.png"
-    case "hoztovary":
-      return "/images/hoztov-main.png"
-    case "machine-parts":
-      return "/images/machine-main.png"
-    default:
-      return (
-        category.image ||
-        `/placeholder.svg?height=400&width=600&query=${encodeURIComponent(categoryName)}`
-      )
-  }
 }
 
 export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps) {
@@ -94,7 +73,7 @@ export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps
                   categoryId={category.id}
                   categoryName={categoryName}
                   categoryDescription={categoryDescription}
-                  imageSrc={getCategoryImage(category, categoryName)}
+                  imageSrc={getCategoryImageUrl(category.id, category.image, categoryName)}
                   sectionsLabel={t("homePage.catalog.sections")}
                   readMoreLabel={t("homePage.catalog.readMore")}
                   moreLabel={t("homePage.catalog.more")}

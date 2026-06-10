@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import corporateMenuData from "@/data/menu-corporate.json"
 import productsData from "@/data/products.json"
 import { createClient } from "@/utils/supabase/client"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useTranslation } from "@/lib/i18n"
 import { getCatalogCategoryLabel } from "@/lib/catalog-translations"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils"
 
 interface MobileMenuProps {
   isOpen: boolean
-  onClose: () => void
+  onOpenChange: (open: boolean) => void
 }
 
 interface Category {
@@ -27,7 +27,7 @@ interface Category {
 
 const getJsonCategories = (): Category[] =>
   productsData.categories
-    .filter((cat) => cat.id !== "dispersion" && cat.id !== "pvc-modifier")
+    .filter((cat) => cat.id !== "dispersion")
     .map((cat) => ({
       id: cat.id,
       name: cat.name,
@@ -44,16 +44,16 @@ function CustomAccordionTrigger({
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
         className={cn(
-          'flex flex-1 items-center justify-between gap-4 rounded-md py-3.5 text-left text-lg font-semibold transition-all outline-none hover:text-primary focus-visible:ring-2 focus-visible:ring-primary disabled:pointer-events-none',
+          'group flex flex-1 items-center justify-between gap-4 rounded-md py-3.5 text-left text-lg font-semibold transition-all outline-none hover:text-primary focus-visible:ring-2 focus-visible:ring-primary disabled:pointer-events-none',
           className,
         )}
         {...props}
       >
         {children}
-        <span className="text-2xl font-bold text-foreground transition-all duration-200 data-[state=open]:hidden">
+        <span className="text-2xl font-bold text-foreground transition-all duration-200 group-data-[state=open]:hidden">
           +
         </span>
-        <span className="text-2xl font-bold text-foreground transition-all duration-200 hidden data-[state=open]:block">
+        <span className="text-2xl font-bold text-foreground transition-all duration-200 hidden group-data-[state=open]:block">
           −
         </span>
       </AccordionPrimitive.Trigger>
@@ -71,16 +71,16 @@ function NestedAccordionTrigger({
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
         className={cn(
-          'flex flex-1 items-center justify-between gap-4 rounded-md py-2.5 text-left text-base font-medium transition-all outline-none hover:text-primary focus-visible:ring-2 focus-visible:ring-primary disabled:pointer-events-none',
+          'group flex flex-1 items-center justify-between gap-4 rounded-md py-2.5 text-left text-base font-medium transition-all outline-none hover:text-primary focus-visible:ring-2 focus-visible:ring-primary disabled:pointer-events-none',
           className,
         )}
         {...props}
       >
         {children}
-        <span className="text-xl font-bold text-muted-foreground transition-all duration-200 data-[state=open]:hidden">
+        <span className="text-xl font-bold text-muted-foreground transition-all duration-200 group-data-[state=open]:hidden">
           +
         </span>
-        <span className="text-xl font-bold text-muted-foreground transition-all duration-200 hidden data-[state=open]:block">
+        <span className="text-xl font-bold text-muted-foreground transition-all duration-200 hidden group-data-[state=open]:block">
           −
         </span>
       </AccordionPrimitive.Trigger>
@@ -88,14 +88,33 @@ function NestedAccordionTrigger({
   )
 }
 
-export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
+const OUTSIDE_CLICK_GUARD_MS = 500
+
+function shouldIgnoreOutsideInteraction(target: EventTarget | null, openedAt: number) {
+  if (target instanceof Element && target.closest("[data-mobile-menu-trigger]")) {
+    return true
+  }
+  return Date.now() - openedAt < OUTSIDE_CLICK_GUARD_MS
+}
+
+export function MobileMenu({ isOpen, onOpenChange }: MobileMenuProps) {
   const { lang, setLang, t } = useLanguage()
   const { lang: i18nLang } = useTranslation()
   const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
+  const openedAtRef = useRef(0)
+
+  const handleClose = () => onOpenChange(false)
+
+  useEffect(() => {
+    if (isOpen) {
+      openedAtRef.current = Date.now()
+    }
+  }, [isOpen])
 
   useEffect(() => {
     const loadCategories = async () => {
+      setLoading(true)
       try {
         const supabase = createClient()
         
@@ -139,16 +158,28 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   }, [isOpen])
 
   return (
-    <Sheet open={isOpen} onOpenChange={onClose}>
+    <Sheet open={isOpen} onOpenChange={onOpenChange}>
       <SheetContent 
-        side="right" 
-        className="!w-[90%] !max-w-[90%] p-0 flex flex-col !border-0 !z-[120] overflow-hidden h-full bg-[#faf9f7]"
+        side="right"
+        showCloseButton={false}
+        onOpenAutoFocus={(event) => event.preventDefault()}
+        onInteractOutside={(event) => {
+          if (shouldIgnoreOutsideInteraction(event.target, openedAtRef.current)) {
+            event.preventDefault()
+          }
+        }}
+        onPointerDownOutside={(event) => {
+          if (shouldIgnoreOutsideInteraction(event.target, openedAtRef.current)) {
+            event.preventDefault()
+          }
+        }}
+        className="!w-[90%] !max-w-[90%] p-0 flex flex-col !border-0 !z-[120] overflow-hidden h-full bg-[#faf9f7] touch-pan-y"
       >
         <SheetTitle className="sr-only">Меню</SheetTitle>
         
         {/* Header с логотипом и кнопкой закрытия */}
         <div className="flex items-center justify-between px-4 lg:px-6 py-4 border-b border-gray-200/50 bg-[#faf9f7] sticky top-0 z-[121]">
-          <Link href="/" onClick={onClose} className="flex items-center gap-3">
+          <Link href="/" onClick={handleClose} className="flex items-center gap-3">
             <div className="relative w-12 h-12 flex-shrink-0 bg-transparent">
               <Image 
                 src="/images/logo123.png" 
@@ -161,7 +192,8 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             <span className="font-bold text-lg text-foreground">АО Пластик</span>
           </Link>
           <button
-            onClick={onClose}
+            type="button"
+            onClick={handleClose}
             className="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100/50 transition-colors"
             aria-label="Закрыть меню"
           >
@@ -194,7 +226,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                               <Link
                                 key={category.id}
                                 href={`/products/${category.slug}`}
-                                onClick={onClose}
+                                onClick={handleClose}
                                 className="block rounded-lg px-4 py-2.5 text-base text-muted-foreground transition-colors hover:bg-gray-100/50 hover:text-primary"
                               >
                                 {getCatalogCategoryLabel(category.id, category.name, i18nLang === "en" ? "en" : "ru")}
@@ -242,7 +274,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                                           <Link
                                             key={uniqueKey}
                                             href={subItem.href}
-                                            onClick={onClose}
+                                            onClick={handleClose}
                                             className="block rounded-lg px-4 py-2.5 text-base text-muted-foreground transition-colors hover:bg-gray-100/50 hover:text-primary"
                                           >
                                             {subLabel}
@@ -267,7 +299,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 <Link
                   key={item.label}
                   href={item.href}
-                  onClick={onClose}
+                  onClick={handleClose}
                   className="block rounded-lg px-0 py-3.5 text-lg font-semibold text-foreground transition-colors hover:text-primary"
                 >
                   {label}
@@ -289,7 +321,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               {lang === "ru" ? "English" : "Русский"}
             </Button>
             <Button asChild variant="brand" className="w-full">
-              <Link href="/contacts" onClick={onClose}>
+              <Link href="/contacts" onClick={handleClose}>
                 {t("contactUs") || "Связаться с нами"}
               </Link>
             </Button>

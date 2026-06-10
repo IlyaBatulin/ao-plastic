@@ -458,7 +458,7 @@
         "dispersion": "Styrene-acrylic dispersion for water-based paints and coatings",
         "machine-parts": "Plastic parts for automotive and general engineering",
         "hoztovary": "Quality plastic household products for home and everyday use",
-        "pvc-modifier": "Modifier to improve properties of PVC compounds",
+        "pvc-modifier": "ABS-based PVC impact modifier — improved impact strength and heat resistance of rigid PVC profiles",
         "kors": "CORS rectification bottoms and Bentol fraction — fuels and industrial solvents",
         "custom-abs": "Custom manufacturing of ABS plastic parts to customer drawings"
       },
@@ -550,6 +550,47 @@
         "gradeGost": "GOST 10003-90 \"Styrene\", Amendment No. 1",
         "gradeNote": "This grade meets premium-grade styrene requirements for appearance, main substance content and impurities — see the table below.",
         "normTitle": "Specification limits — Premium grade"
+      },
+      "pvcModifierPage": {
+        "title": "PVC Impact Modifier",
+        "subtitle": "Acrylonitrile-butadiene-styrene impact and heat resistance modifier, grades ABS-20F/ABS-20P, ABS-28F/ABS-28P, ABS-15F/ABS-15P",
+        "imageAlt": "ABS modifier for PVC compounds — flakes and powder",
+        "profilesImageAlt": "Rigid PVC profiles — application area for impact modifier",
+        "p1": "Provides high impact strength, improves mechanical properties of rigid PVC profiles and increases their heat resistance. The finished product retains its impact resistance for a long time under any weather conditions thanks to UV stabilizer introduced during ABS synthesis. ABS modifiers are also excellent general-purpose processing aids with a wide processing window, reducing the need for multiple different processing modifiers for different applications.",
+        "p2": "The modifier opens additional opportunities in the production of building and housing products.",
+        "applicationsTitle": "Applications",
+        "applications": [
+          "window profiles",
+          "doors",
+          "siding",
+          "decking boards",
+          "PVC pipes"
+        ],
+        "normTitle": "Technical specifications",
+        "colIndicator": "Parameter",
+        "colNormGrades": "Grade specification",
+        "colGrade20": "ABS-20F/ABS-20P",
+        "colGrade28": "ABS-28F/ABS-28P",
+        "colGrade15": "ABS-15F/ABS-15P",
+        "colMethod": "Test method",
+        "brochureLabel": "Download brochure for ABS-20F/20P, ABS-28F/28P, ABS-15F/15P modifiers",
+        "statsTitle": "Test results",
+        "stat1Label": "impact strength increase (WPC)",
+        "stat2Label": "extrusion speed increase",
+        "stat3Label": "impact strength increase at −5 °C (PVC pipes)",
+        "stat4Label": "modifier grades in the range",
+        "articleTitle": "Russian alternative",
+        "articleLead": "From the article by PhD G. Barsamyan in Plastiks magazine",
+        "articleQuote": "Besides acrylic modifiers and CPE, there is another product widely used as a PVC modifier — acrylonitrile-butadiene-styrene (ABS) copolymer, considered in the USA the most cost-effective impact modifier for PVC. AO Plastik (UzlOVaya) is the largest ABS producer in Russia. ABS testing as impact and processing modifier for PVC began in July 2016.",
+        "articleResultsTitle": "PVC samples with ABS modifier were tested at NIC Wood-Polymer Composites LLC with the following results:",
+        "articleResults": [
+          "reduced brittleness and 9% increase in impact strength",
+          "increased tensile strength",
+          "improved appearance of the product (gloss)",
+          "17% increase in extrusion speed compared to the current formulation",
+          "reduced compound cost"
+        ],
+        "articleLink": "Full text: PhD G.B. Barsamyan / Modifiers for rigid PVC / Plastiks No. 3/2017"
       },
       "korsPage": {
         "corsTitle": "CORS",

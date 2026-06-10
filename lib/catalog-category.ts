@@ -2,7 +2,7 @@ import { cache } from "react"
 import { unstable_cache } from "next/cache"
 import productsData from "@/data/products.json"
 import { isNextBuild } from "@/lib/next-build"
-import { createClient, supabaseQuery } from "@/utils/supabase/server"
+import { createCatalogClient, supabaseCatalogQuery } from "@/utils/supabase/server"
 
 export type CategoryRecord = Record<string, unknown>
 export type SubcategoryRecord = Record<string, unknown>
@@ -12,7 +12,7 @@ export type CategoryPageData = {
   subcategories: SubcategoryRecord[]
 }
 
-const CATALOG_DB_BUDGET_MS = 2_500
+const CATALOG_DB_BUDGET_MS = 5_500
 
 function filterAbsSpecs(
   subcategories: SubcategoryRecord[],
@@ -43,24 +43,25 @@ async function fetchCategoryPageDataFromDb(
 ): Promise<CategoryPageData | null> {
   const fallbackCategory =
     productsData.categories.find((cat) => cat.id === categoryId) ?? null
-  const supabase = createClient()
+  const supabase = createCatalogClient()
 
   const [catResult, subResult] = await Promise.all([
-    supabaseQuery(`category:${categoryId}`, () =>
+    supabaseCatalogQuery(`category:${categoryId}`, () =>
       supabase.from("categories").select("*").eq("id", categoryId).single()
     ),
-    supabaseQuery(`subcategories:${categoryId}`, () =>
+    supabaseCatalogQuery(`subcategories:${categoryId}`, () =>
       supabase
         .from("subcategories")
         .select("*")
         .eq("category_id", categoryId)
         .eq("is_active", true)
-        .order("sort", { ascending: true })
+        .order("sort", { ascending: true }),
+      { critical: true }
     ),
   ])
 
-  let category: CategoryRecord | null = catResult.data ?? null
-  let subcategories: SubcategoryRecord[] = subResult.data ?? []
+  let category: CategoryRecord | null = catResult?.data ?? null
+  let subcategories: SubcategoryRecord[] = subResult?.data ?? []
 
   if (!category && fallbackCategory) {
     category = fallbackCategory
@@ -83,7 +84,7 @@ async function loadCategoryPageData(categoryId: string): Promise<CategoryPageDat
 
   try {
     const fromDb = await Promise.race([
-      fetchCategoryPageDataFromDb(categoryId),
+      fetchCategoryPageDataFromDb(categoryId).catch(() => null),
       new Promise<null>((resolve) =>
         setTimeout(() => resolve(null), CATALOG_DB_BUDGET_MS)
       ),

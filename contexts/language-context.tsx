@@ -115,6 +115,8 @@ export function LanguageProvider({
 
   const t = useMemo(() => {
     return (key: string): any => {
+      if (!key) return ""
+
       // Если переводы еще не загружены, возвращаем пустую строку
       // чтобы не показывать ключи типа "homepage"
       if (loadedLang !== lang) {

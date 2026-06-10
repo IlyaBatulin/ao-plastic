@@ -1,4 +1,4 @@
-import { createClient, supabaseQuery } from "@/utils/supabase/server"
+import { createCatalogClient, supabaseCatalogQuery } from "@/utils/supabase/server"
 import productsData from "@/data/products.json"
 import { truncateMeta } from "@/lib/seo/text"
 import { resolveProductImageUrl } from "@/lib/product-image"
@@ -54,10 +54,10 @@ export async function getProductSeo(
     productId.startsWith("extrusion-")
 
   if (isExtrusion) {
-    const supabase = createClient()
+    const supabase = createCatalogClient()
     const numericId = Number(productId.replace("extrusion-", ""))
     if (!Number.isNaN(numericId)) {
-      const { data: extrusionProduct } = await supabaseQuery(`extrusion_seo:${numericId}`, () =>
+      const extrusionResult = await supabaseCatalogQuery(`extrusion_seo:${numericId}`, () =>
         supabase
           .from("extrusion_products")
           .select("name, image, size_raw, length_raw, code")
@@ -65,6 +65,7 @@ export async function getProductSeo(
           .eq("is_active", true)
           .single()
       )
+      const extrusionProduct = extrusionResult?.data
 
       if (extrusionProduct) {
         const parts: string[] = []

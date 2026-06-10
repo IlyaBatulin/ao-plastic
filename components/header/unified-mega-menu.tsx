@@ -54,7 +54,7 @@ const mapJsonSubcategories = (category: any) =>
 
 const getJsonCategories = (): Category[] =>
   productsData.categories
-    .filter((cat) => cat.id !== 'dispersion' && cat.id !== 'pvc-modifier')
+    .filter((cat) => cat.id !== 'dispersion')
     .map((cat) => ({
       id: cat.id,
       name: cat.name,
@@ -87,7 +87,7 @@ export const loadCategoriesCached = async (): Promise<Category[]> => {
         .order("sort", { ascending: true })
 
       if (!categoriesError && categoriesData && categoriesData.length > 0) {
-        const filteredCategories = categoriesData.filter((cat: any) => cat.id !== 'pvc-modifier')
+        const filteredCategories = categoriesData.filter((cat: any) => cat.id !== 'dispersion')
         const { data: allSubcatsData, error: allSubcatsError } = await supabase
           .from("subcategories")
           .select("id, name, slug, category_id")
@@ -205,9 +205,9 @@ export function UnifiedMegaMenu({ isOpen, activeItem, onClose }: UnifiedMegaMenu
   let content = null
 
   if (activeMenuItem.type === "catalog") {
-    // Левый: Стирол и остальное (кроме центра и правого). Центр: только Товары. Правый: ДМС, КОРС.
+    // Левый: основные категории. Центр: только Товары. Правый: ДМС, ПВХ-модификатор, КОРС.
     // Категория custom-abs в выпадающем меню не показываем (доступна подкатегория abs/abs-custom в разделе АБС).
-    const rightColumnIds = ["machine-parts", "kors"]
+    const rightColumnIds = ["machine-parts", "pvc-modifier", "kors"]
     const centerColumnIds = ["hoztovary"]
     const excludedFromMegaMenuIds = ["custom-abs"]
     const rightColumnCategories = rightColumnIds

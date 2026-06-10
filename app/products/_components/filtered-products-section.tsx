@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
 import ProductsGrid from "./products-grid"
 import { isMachinePartsExtrusion } from "@/lib/catalog-slugs"
+import { parseSpecifications } from "@/lib/product-specs"
 import { translateExtrusionPartType } from "@/lib/extrusion-i18n"
 import { Input } from "@/components/ui/input"
 
@@ -60,9 +61,7 @@ export function FilteredProductsSection({
     if (!isExtrusionSubcategory) return []
     const set = new Set<string>()
     products.forEach((p) => {
-      const specs = typeof p.specifications === "string"
-        ? JSON.parse(p.specifications)
-        : p.specifications || {}
+      const specs = parseSpecifications(p.specifications)
       const specType =
         (specs[extrusionTypeKey] as string | undefined) ?? (specs.type as string | undefined)
       if (specType) set.add(specType)
@@ -76,9 +75,7 @@ export function FilteredProductsSection({
     const q = extrusionSearch.trim().toLowerCase()
 
     return products.filter((p) => {
-      const specs = typeof p.specifications === "string"
-        ? JSON.parse(p.specifications)
-        : p.specifications || {}
+      const specs = parseSpecifications(p.specifications)
       const t =
         (specs[extrusionTypeKey] as string | undefined) ??
         (specs.type as string | undefined) ??
@@ -243,7 +240,7 @@ export function FilteredProductsSection({
               </thead>
               <tbody>
                 {filteredProducts.map((p) => {
-                  const specs = typeof p.specifications === "string" ? JSON.parse(p.specifications) : p.specifications || {}
+                  const specs = parseSpecifications(p.specifications)
                   const brand = specs.Марка || specs.Фракция || p.name
                   const mainFraction = specs.Массовая_доля_частиц_основной_фракции_проц ?? "—"
                   const residue16 = specs.Массовая_доля_остатка_на_сите_1_6_мм_проц ?? "—"
@@ -302,7 +299,7 @@ export function FilteredProductsSection({
               </thead>
               <tbody>
                 {filteredProducts.map((p) => {
-                  const specs = typeof p.specifications === "string" ? JSON.parse(p.specifications) : p.specifications || {}
+                  const specs = parseSpecifications(p.specifications)
                   const brand = specs.Марка || p.name
                   const density = specs.Плотность || (specs.Плотность_кг_м3 ? `${specs.Плотность_кг_м3}` : "—")
                   const shrinkage = specs.Усадка || specs.Усадка_проц || "—"

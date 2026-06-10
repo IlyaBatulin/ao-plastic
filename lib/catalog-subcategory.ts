@@ -2,6 +2,7 @@ import { cache } from "react"
 import { unstable_cache } from "next/cache"
 import productsData from "@/data/products.json"
 import {
+  findJsonSubcategory,
   getPublicSubcategorySlug,
   getSubcategorySlugCandidates,
   isMachinePartsExtrusion,
@@ -11,12 +12,12 @@ import { normalizeHouseholdProducts } from "@/lib/household-product-content"
 import { isNextBuild } from "@/lib/next-build"
 import { resolveProductImageUrl } from "@/lib/product-image"
 import { stripHiddenSpecs } from "@/lib/product-specs"
-import { createClient, supabaseQuery } from "@/utils/supabase/server"
+import { createCatalogClient, supabaseCatalogQuery } from "@/utils/supabase/server"
 
 const EXTRUSION_SELECT =
   "id, name, type, subtype, size_raw, length_raw, code, length_kind, image, source_no"
 
-const CATALOG_DB_BUDGET_MS = 2_500
+const CATALOG_DB_BUDGET_MS = 5_500
 
 export type SubcategoryPageData = {
   subcategory: Record<string, unknown>
@@ -179,68 +180,101 @@ function buildJsonSubcategoryPageData(
   }
 }
 
+function getProductSubcategoryIds(categoryId: string, subcategoryId: string): string[] {
+  const jsonSub = findJsonSubcategory(categoryId, subcategoryId)
+  const ids = [
+    ...getSubcategorySlugCandidates(categoryId, subcategoryId),
+    subcategoryId,
+    jsonSub?.id,
+    jsonSub?.slug,
+  ].filter((value): value is string => typeof value === "string" && value.length > 0)
+  return [...new Set(ids)]
+}
+
 async function fetchSubcategoryPageDataFromDb(
   categoryId: string,
   subcategoryId: string
 ): Promise<SubcategoryPageData | null> {
   const fallbackCategory = productsData.categories.find((cat) => cat.id === categoryId) ?? null
+  const jsonSub = findJsonSubcategory(categoryId, subcategoryId)
   const isExtrusion = isMachinePartsExtrusion(categoryId, subcategoryId)
-  const supabase = createClient()
+  const supabase = createCatalogClient()
+  const productSubcategoryIds = getProductSubcategoryIds(categoryId, subcategoryId)
 
-  const subcategory = await supabaseQuery(`resolveSubcategory:${categoryId}/${subcategoryId}`, () =>
-    resolveSubcategory(supabase, categoryId, subcategoryId)
-  )
-  if (!subcategory) return null
-
-  const publicSubcategorySlug = getPublicSubcategorySlug(categoryId, {
-    id: String(subcategory.id),
-    slug: String(subcategory.slug),
-  })
-
-  const [categoryResult, productsResult, extrusionResult] = await Promise.all([
-    supabaseQuery(`category:${categoryId}`, () =>
+  const [subcategory, categoryResult, productsResult, extrusionResult] = await Promise.all([
+    supabaseCatalogQuery(`resolveSubcategory:${categoryId}/${subcategoryId}`, () =>
+      resolveSubcategory(supabase, categoryId, subcategoryId)
+    ),
+    supabaseCatalogQuery(`category:${categoryId}`, () =>
       supabase.from("categories").select("name, image").eq("id", categoryId).single()
     ),
     isExtrusion
-      ? Promise.resolve({ data: null, error: null })
-      : supabaseQuery(`products:${subcategory.id}`, () =>
-          supabase
-            .from("products")
-            .select(
-              "id, name, slug, description, image, specifications, subcategory_id, sort, package_quantity, brand"
-            )
-            .eq("subcategory_id", subcategory.id)
-            .eq("is_active", true)
-            .order("sort", { ascending: true })
+      ? Promise.resolve(null)
+      : supabaseCatalogQuery(
+          `products:${subcategoryId}`,
+          () =>
+            supabase
+              .from("products")
+              .select(
+                "id, name, slug, description, image, specifications, subcategory_id, sort, package_quantity, brand"
+              )
+              .in("subcategory_id", productSubcategoryIds)
+              .eq("is_active", true)
+              .order("sort", { ascending: true }),
+          { critical: true }
         ),
     isExtrusion
-      ? supabaseQuery("extrusion_products:list", () =>
-          supabase
-            .from("extrusion_products")
-            .select(EXTRUSION_SELECT)
-            .eq("is_active", true)
-            .order("source_no", { ascending: true, nullsFirst: false })
+      ? supabaseCatalogQuery(
+          "extrusion_products:list",
+          () =>
+            supabase
+              .from("extrusion_products")
+              .select(EXTRUSION_SELECT)
+              .eq("is_active", true)
+              .order("source_no", { ascending: true, nullsFirst: false }),
+          { critical: true }
         )
-      : Promise.resolve({ data: null, error: null }),
+      : Promise.resolve(null),
   ])
 
-  const categoryImage = (categoryResult.data?.image as string) ?? null
+  const subcategoryRecord =
+    subcategory ??
+    (jsonSub
+      ? {
+          id: jsonSub.id,
+          slug: getPublicSubcategorySlug(categoryId, { id: jsonSub.id, slug: jsonSub.slug }),
+          name: jsonSub.name,
+          description: jsonSub.description ?? null,
+        }
+      : null)
+
+  if (!subcategoryRecord) return null
+
+  const publicSubcategorySlug = getPublicSubcategorySlug(categoryId, {
+    id: String(subcategoryRecord.id),
+    slug: String(subcategoryRecord.slug),
+  })
+
+  const categoryImage =
+    (categoryResult?.data?.image as string) ??
+    (fallbackCategory?.image as string) ??
+    null
   const categoryDisplayName =
-    (categoryResult.data?.name as string) ?? fallbackCategory?.name ?? categoryId
+    (categoryResult?.data?.name as string) ?? fallbackCategory?.name ?? categoryId
 
   const displayProducts = isExtrusion
-    ? mapExtrusionProducts((extrusionResult.data as Record<string, unknown>[]) ?? [])
+    ? mapExtrusionProducts((extrusionResult?.data as Record<string, unknown>[]) ?? [])
     : buildDisplayProducts(
         categoryId,
         publicSubcategorySlug,
-        subcategory,
+        subcategoryRecord,
         subcategoryId,
-        (productsResult.data as Record<string, unknown>[]) ?? null,
+        (productsResult?.data as Record<string, unknown>[]) ?? null,
         categoryImage
       )
 
   return {
-    subcategory,
+    subcategory: subcategoryRecord,
     publicSubcategorySlug,
     categoryDisplayName,
     categoryImage,
@@ -257,7 +291,7 @@ async function loadSubcategoryPageData(
 
   try {
     const fromDb = await Promise.race([
-      fetchSubcategoryPageDataFromDb(categoryId, subcategoryId),
+      fetchSubcategoryPageDataFromDb(categoryId, subcategoryId).catch(() => null),
       new Promise<null>((resolve) =>
         setTimeout(() => resolve(null), CATALOG_DB_BUDGET_MS)
       ),

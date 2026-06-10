@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Slider } from "@/components/ui/slider"
 import { Badge } from "@/components/ui/badge"
-import { parseSpecNumberRange } from "@/lib/product-specs"
+import { parseSpecNumberRange, parseSpecifications } from "@/lib/product-specs"
 import { useLanguage } from "@/contexts/language-context"
 import { formatSpecKey } from "@/lib/formatters"
 
@@ -99,9 +99,7 @@ export function ProductFilters({
     const viscosities: number[] = []
 
     products.forEach((product) => {
-      const specs = typeof product.specifications === "string"
-        ? JSON.parse(product.specifications)
-        : product.specifications || {}
+      const specs = parseSpecifications(product.specifications)
 
       collectApplications(specs).forEach((app) => applications.add(app))
 
@@ -179,9 +177,7 @@ export function ProductFilters({
     const glosses: number[] = []
 
     products.forEach((product) => {
-      const specs = typeof product.specifications === "string"
-        ? JSON.parse(product.specifications)
-        : product.specifications || {}
+      const specs = parseSpecifications(product.specifications)
 
       collectApplications(specs).forEach((app) => applications.add(app))
 
@@ -267,9 +263,7 @@ export function ProductFilters({
 
   const filteredPolystyreneProducts = useMemo(() => {
     return products.filter((product) => {
-      const specs = typeof product.specifications === "string"
-        ? JSON.parse(product.specifications)
-        : product.specifications || {}
+      const specs = parseSpecifications(product.specifications)
 
       if (filters.grade && filters.grade.length > 0) {
         const grade = specs.Марка ? String(specs.Марка) : ""
@@ -310,9 +304,7 @@ export function ProductFilters({
   // Функция фильтрации АБС
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
-      const specs = typeof product.specifications === "string"
-        ? JSON.parse(product.specifications)
-        : product.specifications || {}
+      const specs = parseSpecifications(product.specifications)
 
       // Фильтр по плотности
       if (filters.densityMin !== undefined || filters.densityMax !== undefined) {

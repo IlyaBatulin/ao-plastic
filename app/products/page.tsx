@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
 import { BackgroundPaths } from "@/components/ui/background-paths"
-import { createClient, supabaseQuery } from "@/utils/supabase/server"
+import { createCatalogClient, supabaseCatalogQuery } from "@/utils/supabase/server"
 import productsData from "@/data/products.json"
 import { ProductsCatalogClient } from "@/app/products/_components/products-catalog-client"
 
@@ -20,17 +20,20 @@ export default async function ProductsPage() {
   const fallbackMap = new Map(productsData.categories.map((cat) => [cat.id, cat]))
 
   try {
-    const supabase = createClient()
-    const { data, error } = await supabaseQuery("v_categories_summary", () =>
+    const supabase = createCatalogClient()
+    const result = await supabaseCatalogQuery("v_categories_summary", () =>
       supabase
         .from("v_categories_summary")
         .select("id, name, description, image")
-        .order("sort", { ascending: true })
+        .order("sort", { ascending: true }),
+      { critical: true }
     )
+    const data = result?.data
+    const error = result?.error
 
     if (!error && data && data.length > 0) {
       categories = data
-        .filter((cat: any) => cat.id !== "dispersion" && cat.id !== "pvc-modifier")
+        .filter((cat: any) => cat.id !== "dispersion")
         .map((cat) => {
           const fallback = fallbackMap.get(cat.id)
           const image = cat.image ?? fallback?.image ?? undefined
@@ -43,10 +46,10 @@ export default async function ProductsPage() {
           }
         })
     } else {
-      categories = productsData.categories.filter((cat) => cat.id !== "dispersion" && cat.id !== "pvc-modifier")
+      categories = productsData.categories.filter((cat) => cat.id !== "dispersion")
     }
   } catch {
-    categories = productsData.categories.filter((cat) => cat.id !== "dispersion" && cat.id !== "pvc-modifier")
+    categories = productsData.categories.filter((cat) => cat.id !== "dispersion")
   }
 
   return (

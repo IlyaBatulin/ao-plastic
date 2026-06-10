@@ -1,9 +1,9 @@
 import { cache } from "react"
 import productsData from "@/data/products.json"
-import { findJsonSubcategory, getPublicSubcategorySlug, resolveSubcategory } from "@/lib/catalog-slugs"
+import { findJsonSubcategory, resolveSubcategory } from "@/lib/catalog-slugs"
 import { normalizeHouseholdProduct } from "@/lib/household-product-content"
 import { isNextBuild } from "@/lib/next-build"
-import { createClient, supabaseQuery } from "@/utils/supabase/server"
+import { createCatalogClient, supabaseCatalogQuery } from "@/utils/supabase/server"
 
 type JsonProduct = {
   id: string
@@ -36,14 +36,13 @@ export function getProductPathSegment(product: { id: string; slug?: string | nul
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type SupabaseLike = { from: (table: string) => any }
 
-export async function resolveProduct(
+async function fetchProductRecord(
   supabase: SupabaseLike,
   categoryId: string,
   subcategoryId: string,
   productIdOrSlug: string
-) {
+): Promise<Record<string, unknown> | null> {
   const decoded = decodeURIComponent(productIdOrSlug)
-  let product: Record<string, unknown> | null = null
 
   const isExtrusionCategory =
     categoryId === "machine-parts" &&
@@ -51,95 +50,61 @@ export async function resolveProduct(
 
   if (isExtrusionCategory && decoded.startsWith("extrusion-")) {
     const numericId = Number(decoded.replace("extrusion-", ""))
-    if (!Number.isNaN(numericId)) {
-      const { data: extrusionProduct } = await supabaseQuery(`extrusion_product:${numericId}`, () =>
-        supabase
-          .from("extrusion_products")
-          .select("id, name, type, subtype, size_raw, length_raw, code, length_kind, image")
-          .eq("id", numericId)
-          .eq("is_active", true)
-          .single()
-      )
+    if (Number.isNaN(numericId)) return null
 
-      if (extrusionProduct) {
-        const parts: string[] = []
-        if (extrusionProduct.size_raw) {
-          parts.push(`Габаритные размеры: ${extrusionProduct.size_raw}`)
-        }
-        if (extrusionProduct.length_raw) {
-          parts.push(`Длина изделия: ${extrusionProduct.length_raw}`)
-        }
-        if (extrusionProduct.code) {
-          parts.push(`Шифр: ${extrusionProduct.code}`)
-        }
+    const { data: extrusionProduct } = await supabase
+      .from("extrusion_products")
+      .select("id, name, type, subtype, size_raw, length_raw, code, length_kind, image")
+      .eq("id", numericId)
+      .eq("is_active", true)
+      .single()
 
-        product = {
-          id: decoded,
-          name: extrusionProduct.name,
-          description: parts.join(" · ") || null,
-          image: extrusionProduct.image || "/placeholder-logo.png",
-          specifications: {
-            "Тип изделия": extrusionProduct.type,
-            ...(extrusionProduct.subtype ? { Подтип: extrusionProduct.subtype } : {}),
-            ...(extrusionProduct.size_raw
-              ? { "Габаритные размеры": extrusionProduct.size_raw }
-              : {}),
-            ...(extrusionProduct.code ? { "Шифр изделия": extrusionProduct.code } : {}),
-            ...(extrusionProduct.length_raw
-              ? { "Длина изделия": extrusionProduct.length_raw }
-              : {}),
-            ...(extrusionProduct.length_kind === "coil"
-              ? { Поставка: "в бухтах" }
-              : extrusionProduct.length_kind === "fixed"
-                ? { Поставка: "фиксированная длина" }
-                : {}),
-          },
-        }
-      }
+    if (!extrusionProduct) return null
+
+    const parts: string[] = []
+    if (extrusionProduct.size_raw) {
+      parts.push(`Габаритные размеры: ${extrusionProduct.size_raw}`)
     }
-  } else {
-    const { data: matched } = await supabaseQuery(`product:${decoded}`, () =>
-      supabase
-        .from("products")
-        .select("*")
-        .eq("is_active", true)
-        .or(`id.eq.${decoded},slug.eq.${decoded}`)
-        .limit(1)
-        .maybeSingle()
-    )
-
-    if (matched) product = matched
-  }
-
-  if (!product) {
-    const fallbackProduct = findJsonProduct(categoryId, decoded)
-    if (fallbackProduct) {
-      const fallbackCategory = productsData.categories.find((cat) => cat.id === categoryId)
-      const fallbackSubcategory = fallbackCategory?.subcategories?.find((sub) => {
-        const publicSlug = getPublicSubcategorySlug(categoryId, {
-          id: sub.id,
-          slug: sub.slug,
-        })
-        return (
-          publicSlug === subcategoryId ||
-          sub.slug === subcategoryId ||
-          sub.id === subcategoryId ||
-          fallbackProduct.subcategory === sub.slug ||
-          fallbackProduct.subcategory === sub.id
-        )
-      })
-
-      return {
-        product: fallbackProduct,
-        category: fallbackCategory ?? null,
-        subcategory: fallbackSubcategory ?? null,
-      }
+    if (extrusionProduct.length_raw) {
+      parts.push(`Длина изделия: ${extrusionProduct.length_raw}`)
+    }
+    if (extrusionProduct.code) {
+      parts.push(`Шифр: ${extrusionProduct.code}`)
     }
 
-    return { product: null, category: null, subcategory: null }
+    return {
+      id: decoded,
+      name: extrusionProduct.name,
+      description: parts.join(" · ") || null,
+      image: extrusionProduct.image || "/placeholder-logo.png",
+      specifications: {
+        "Тип изделия": extrusionProduct.type,
+        ...(extrusionProduct.subtype ? { Подтип: extrusionProduct.subtype } : {}),
+        ...(extrusionProduct.size_raw
+          ? { "Габаритные размеры": extrusionProduct.size_raw }
+          : {}),
+        ...(extrusionProduct.code ? { "Шифр изделия": extrusionProduct.code } : {}),
+        ...(extrusionProduct.length_raw
+          ? { "Длина изделия": extrusionProduct.length_raw }
+          : {}),
+        ...(extrusionProduct.length_kind === "coil"
+          ? { Поставка: "в бухтах" }
+          : extrusionProduct.length_kind === "fixed"
+            ? { Поставка: "фиксированная длина" }
+            : {}),
+      },
+    }
   }
 
-  return { product, category: null, subcategory: null }
+  const { data: matched } = await supabase
+    .from("products")
+    .select("*")
+    .eq("is_active", true)
+    .or(`id.eq.${decoded},slug.eq.${decoded}`)
+    .limit(1)
+    .maybeSingle()
+
+  return matched ?? null
 }
 
 export type ProductPageData = {
@@ -169,52 +134,37 @@ export const getProductPageData = cache(
       }
     }
 
-    const supabase = createClient()
+    const supabase = createCatalogClient()
 
-    try {
-      const [resolved, categoryResult, subcategoryData] = await Promise.all([
-        supabaseQuery(`resolveProduct:${productId}`, () =>
-          resolveProduct(supabase, categoryId, subcategoryId, productId)
-        ),
-        supabaseQuery(`category:${categoryId}`, () =>
-          supabase.from("categories").select("*").eq("id", categoryId).single()
-        ),
-        supabaseQuery(`resolveSubcategory:${subcategoryId}`, () =>
-          resolveSubcategory(supabase, categoryId, subcategoryId)
-        ),
-      ])
+    const [product, categoryResult, subcategoryData] = await Promise.all([
+      supabaseCatalogQuery(`product:${productId}`, () =>
+        fetchProductRecord(supabase, categoryId, subcategoryId, productId),
+        { critical: true }
+      ),
+      supabaseCatalogQuery(`category:${categoryId}`, () =>
+        supabase.from("categories").select("*").eq("id", categoryId).single()
+      ),
+      supabaseCatalogQuery(`resolveSubcategory:${subcategoryId}`, () =>
+        resolveSubcategory(supabase, categoryId, subcategoryId)
+      ),
+    ])
 
-      let product = resolved.product
-      let category =
-        categoryResult.data ??
-        resolved.category ??
-        fallbackCategory
-      let subcategory =
-        subcategoryData ??
-        resolved.subcategory ??
-        fallbackSubcategory
-
-      if (!product) {
-        const fallbackProduct = findJsonProduct(categoryId, productId)
-        if (!fallbackProduct) return null
-        product = fallbackProduct
-        category = category ?? fallbackCategory
-        subcategory = subcategory ?? fallbackSubcategory
-      }
-
-      return {
-        product: normalizeHouseholdProduct(product, categoryId, subcategoryId),
-        category,
-        subcategory,
-      }
-    } catch {
+    let resolvedProduct = product
+    if (!resolvedProduct) {
       const fallbackProduct = findJsonProduct(categoryId, productId)
       if (!fallbackProduct) return null
-      return {
-        product: normalizeHouseholdProduct(fallbackProduct, categoryId, subcategoryId),
-        category: fallbackCategory,
-        subcategory: fallbackSubcategory,
-      }
+      resolvedProduct = fallbackProduct
+    }
+
+    const category =
+      categoryResult?.data ?? fallbackCategory
+    const subcategory =
+      subcategoryData ?? fallbackSubcategory
+
+    return {
+      product: normalizeHouseholdProduct(resolvedProduct, categoryId, subcategoryId),
+      category,
+      subcategory,
     }
   }
 )

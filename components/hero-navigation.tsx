@@ -28,6 +28,12 @@ export function HeroNavigation() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  useEffect(() => {
+    if (isHiddenByScroll) {
+      setIsMobileMenuOpen(false)
+    }
+  }, [isHiddenByScroll])
+
   return (
     <>
       <nav 
@@ -87,10 +93,13 @@ export function HeroNavigation() {
 
           {/* Catalog Button - прозрачная как корзина */}
           <button
-            className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl border border-white/30 bg-white/10 backdrop-blur-sm text-white transition-all duration-200 shadow-sm active:scale-95 hover:bg-white/20"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            type="button"
+            data-mobile-menu-trigger
+            className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl border border-white/30 bg-white/10 backdrop-blur-sm text-white transition-all duration-200 shadow-sm active:scale-95 hover:bg-white/20 touch-manipulation"
+            onClick={() => setIsMobileMenuOpen((open) => !open)}
             aria-label={isMobileMenuOpen ? "Закрыть каталог" : "Открыть каталог"}
             aria-pressed={isMobileMenuOpen}
+            aria-expanded={isMobileMenuOpen}
           >
             {isMobileMenuOpen ? <X className="w-6 h-6 sm:w-7 sm:h-7" /> : <Menu className="w-6 h-6 sm:w-7 sm:h-7" />}
           </button>
@@ -100,7 +109,7 @@ export function HeroNavigation() {
       </nav>
       
       {/* Mobile Menu - вне навигации для правильного z-index */}
-      <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
+      <MobileMenu isOpen={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen} />
     </>
   )
 }

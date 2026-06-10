@@ -4,7 +4,7 @@ import productsData from "@/data/products.json"
 
 export const revalidate = 3600
 
-const HIDDEN_CATEGORIES = new Set(["dispersion", "pvc-modifier"])
+const HIDDEN_CATEGORIES = new Set(["dispersion"])
 
 const STATIC_PATHS = [
   "",

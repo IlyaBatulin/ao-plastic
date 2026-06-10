@@ -40,6 +40,7 @@ export function Header() {
   useEffect(() => {
     if (!shouldRender) {
       setAnimateIn(false)
+      setIsMobileMenuOpen(false)
       return
     }
     // Даем React смонтировать DOM, затем включаем переход
@@ -113,10 +114,13 @@ export function Header() {
 
           {/* Catalog Button - прозрачная как корзина */}
           <button
-            className="relative flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-2xl border border-border/60 bg-white/10 backdrop-blur-sm text-foreground transition-all duration-200 shadow-sm active:scale-95 hover:bg-white/20"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            type="button"
+            data-mobile-menu-trigger
+            className="relative flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-2xl border border-border/60 bg-white/10 backdrop-blur-sm text-foreground transition-all duration-200 shadow-sm active:scale-95 hover:bg-white/20 touch-manipulation"
+            onClick={() => setIsMobileMenuOpen((open) => !open)}
             aria-label={isMobileMenuOpen ? "Закрыть каталог" : "Открыть каталог"}
             aria-pressed={isMobileMenuOpen}
+            aria-expanded={isMobileMenuOpen}
           >
             {isMobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
           </button>
@@ -126,7 +130,7 @@ export function Header() {
       </header>
       
       {/* Mobile Menu - вне header для правильного z-index */}
-      <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
+      <MobileMenu isOpen={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen} />
     </>
   )
 }

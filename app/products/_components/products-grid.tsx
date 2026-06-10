@@ -11,7 +11,7 @@ import { formatSpecKey, formatSpecValue } from "@/lib/formatters"
 import { useLanguage } from "@/contexts/language-context"
 import { resolveProductDisplay } from "@/lib/product-en"
 import { resolveProductImageUrl } from "@/lib/product-image"
-import { getCardSpecEntries } from "@/lib/product-specs"
+import { getCardSpecEntries, parseSpecifications } from "@/lib/product-specs"
 import { ProductCardPlasticLogo } from "./product-card-plastic-logo"
 import { getProductPathSegment } from "@/lib/catalog-product"
 
@@ -31,10 +31,7 @@ export default function ProductsGrid({
   const preparedProducts = useMemo(
     () =>
       products.map((product) => {
-        const specs =
-          typeof product.specifications === "string"
-            ? JSON.parse(product.specifications)
-            : product.specifications || {}
+        const specs = parseSpecifications(product.specifications)
 
         const { name: displayName, description: displayDescription } = resolveProductDisplay(
           {

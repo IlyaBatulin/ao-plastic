@@ -5,6 +5,7 @@ import { Footer } from "@/components/footer"
 import { CategoryHero } from "@/app/products/_components/category-hero"
 import { SubcategoriesGrid } from "@/app/products/_components/subcategories-grid"
 import { useLanguage } from "@/contexts/language-context"
+import { getCategoryImageUrl } from "@/lib/category-image"
 
 const AbsCategorySection = dynamic(
   () =>
@@ -26,6 +27,14 @@ const KorsCategorySection = dynamic(
   () =>
     import("@/app/products/_components/kors-category-section").then((m) => ({
       default: m.KorsCategorySection,
+    })),
+  { ssr: true }
+)
+
+const PvcModifierCategorySection = dynamic(
+  () =>
+    import("@/app/products/_components/pvc-modifier-category-section").then((m) => ({
+      default: m.PvcModifierCategorySection,
     })),
   { ssr: true }
 )
@@ -63,6 +72,7 @@ export function CategoryPageClient({
   const isStyrene = categoryId === "styrene"
   const isKors = categoryId === "kors"
   const isAbs = categoryId === "abs"
+  const isPvcModifier = categoryId === "pvc-modifier"
 
   return (
     <div className="min-h-screen bg-background">
@@ -75,16 +85,18 @@ export function CategoryPageClient({
         backLabel={backLabel}
         hasVideo={hasVideo}
         videoSrc={videoSrc}
-        imageSrc={category.image}
+        imageSrc={getCategoryImageUrl(categoryId, category.image, categoryName)}
+        categoryId={categoryId}
       />
 
-      {!isStyrene && !isKors && (
+      {!isStyrene && !isKors && !isPvcModifier && (
         <SubcategoriesGrid categoryId={categoryId} subcategories={subcategories} />
       )}
 
       {isAbs && <AbsCategorySection />}
       {isStyrene && <StyreneCategorySection categoryName={categoryName} />}
       {isKors && <KorsCategorySection categoryName={category.name} />}
+      {isPvcModifier && <PvcModifierCategorySection categoryName={categoryName} />}
 
       <Footer />
     </div>

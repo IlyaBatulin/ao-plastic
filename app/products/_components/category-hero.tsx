@@ -3,7 +3,8 @@
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
-import { DEFAULT_CATEGORY_VIDEO } from "@/lib/video-config"
+import { DEFAULT_CATEGORY_VIDEO, getCategoryVideoBackdrop } from "@/lib/video-config"
+import { cn } from "@/lib/utils"
 
 interface CategoryHeroProps {
   title: string
@@ -13,6 +14,8 @@ interface CategoryHeroProps {
   hasVideo: boolean
   videoSrc?: string
   imageSrc?: string
+  categoryId?: string
+  subcategoryId?: string
 }
 
 export function CategoryHero({
@@ -23,10 +26,24 @@ export function CategoryHero({
   hasVideo,
   videoSrc,
   imageSrc,
+  categoryId,
+  subcategoryId,
 }: CategoryHeroProps) {
   const [playVideo, setPlayVideo] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
   const videoUrl = hasVideo && videoSrc ? videoSrc : DEFAULT_CATEGORY_VIDEO
+  const backdrop = categoryId ? getCategoryVideoBackdrop(categoryId, subcategoryId) : undefined
+  const mediaClassName = cn(
+    "absolute inset-0 h-full w-full object-cover",
+    backdrop?.scale && "origin-top"
+  )
+  const mediaStyle = backdrop
+    ? {
+        objectPosition: backdrop.objectPosition ?? "center",
+        transform: backdrop.scale ? `scale(${backdrop.scale})` : undefined,
+        transformOrigin: backdrop.transformOrigin ?? "center center",
+      }
+    : undefined
 
   useEffect(() => {
     if (!hasVideo) return
@@ -53,13 +70,14 @@ export function CategoryHero({
       ref={sectionRef}
       className="relative min-h-[60vh] w-full overflow-hidden flex items-center justify-center"
     >
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 overflow-hidden">
         {imageSrc && (
           <img
             src={imageSrc}
             alt=""
             aria-hidden
-            className="absolute inset-0 h-full w-full object-cover"
+            className={mediaClassName}
+            style={mediaStyle}
           />
         )}
         {playVideo && (
@@ -73,8 +91,8 @@ export function CategoryHero({
             disableRemotePlayback
             preload="none"
             poster={imageSrc}
-            className="absolute inset-0 h-full w-full object-cover"
-            style={{ pointerEvents: "none" }}
+            className={mediaClassName}
+            style={{ pointerEvents: "none", ...mediaStyle }}
           >
             <source src={videoUrl} type="video/mp4" />
           </video>

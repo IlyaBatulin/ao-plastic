@@ -34,6 +34,35 @@ export const videoConfig: Record<string, string> = {
   // КОРС и Бентол — отдельный ролик
   kors: "/videos/bentolmain.mp4",
   "custom-abs": "/videos/mainlogo.mp4",
+
+  // Модификатор для композиций ПВХ
+  "pvc-modifier": "/videos/psfback.mp4",
+}
+
+/** Подгонка кадра фонового видео (обрезка водяных знаков и т.п.) */
+export type CategoryVideoBackdrop = {
+  objectPosition?: string
+  scale?: number
+  transformOrigin?: string
+}
+
+export const categoryVideoBackdrop: Record<string, CategoryVideoBackdrop> = {
+  "pvc-modifier": {
+    objectPosition: "center top",
+    scale: 1.2,
+    transformOrigin: "center top",
+  },
+}
+
+export function getCategoryVideoBackdrop(
+  categoryId: string,
+  subcategoryId?: string
+): CategoryVideoBackdrop | undefined {
+  if (subcategoryId) {
+    const specific = categoryVideoBackdrop[`${categoryId}/${subcategoryId}`]
+    if (specific) return specific
+  }
+  return categoryVideoBackdrop[categoryId]
 }
 
 // Вспомогательная функция для получения видео по категории и подкатегории

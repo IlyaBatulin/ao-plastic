@@ -34,6 +34,25 @@ function isValidSpecValue(value: unknown) {
   return value !== null && value !== undefined && value !== ""
 }
 
+/** Безопасно приводит specifications к объекту (строка JSON, объект или пусто). */
+export function parseSpecifications(specs: unknown): Record<string, unknown> {
+  if (!specs) return {}
+  if (typeof specs === "object" && !Array.isArray(specs)) {
+    return specs as Record<string, unknown>
+  }
+  if (typeof specs === "string") {
+    try {
+      const parsed = JSON.parse(specs)
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+        return parsed as Record<string, unknown>
+      }
+    } catch {
+      // ignore malformed JSON from DB
+    }
+  }
+  return {}
+}
+
 export function stripHiddenSpecs(specs: Record<string, unknown>): Record<string, unknown> {
   return Object.fromEntries(
     Object.entries(specs).filter(([key]) => !HIDDEN_SPEC_KEYS.has(key))

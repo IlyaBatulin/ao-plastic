@@ -86,6 +86,37 @@ export async function supabaseQuery<T>(
 	)
 }
 
+const CATALOG_OPTIONAL_TIMEOUT_MS = 3_000
+const CATALOG_CRITICAL_TIMEOUT_MS = 5_000
+
+/**
+ * Быстрый запрос для каталога: без retry, при сбое возвращает null.
+ * Критичные (товар, список) — до 5 с; метаданные (категория) — до 3 с.
+ */
+export async function supabaseCatalogQuery<T>(
+	label: string,
+	fn: () => Promise<T>,
+	options?: { critical?: boolean }
+): Promise<T | null> {
+	const timeoutMs = options?.critical
+		? CATALOG_CRITICAL_TIMEOUT_MS
+		: CATALOG_OPTIONAL_TIMEOUT_MS
+	try {
+		return await withTimeout(fn(), timeoutMs, label)
+	} catch (error) {
+		console.warn(
+			`[Supabase Catalog] ${label} failed:`,
+			error instanceof Error ? error.message : error
+		)
+		return null
+	}
+}
+
+/** Серверный клиент для каталога: service role (если есть), иначе anon. */
+export function createCatalogClient(): SupabaseClient {
+	return createServiceClient()
+}
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ""
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
 

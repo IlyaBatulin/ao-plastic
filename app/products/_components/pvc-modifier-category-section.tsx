@@ -26,23 +26,6 @@ const storyParent = {
   },
 }
 
-const applicationParent = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1, delayChildren: 0.12 },
-  },
-}
-
-const applicationItem = {
-  hidden: { opacity: 0, x: -18 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
-  },
-}
-
 const storyChild = {
   hidden: { opacity: 0, y: 22 },
   visible: {
@@ -76,7 +59,7 @@ export function PvcModifierCategorySection({ categoryName }: PvcModifierCategory
       <section className="bg-secondary/30 py-16 lg:py-20">
         <div className="container mx-auto px-4 lg:px-8">
           <motion.div
-            className="mx-auto mb-16 grid max-w-6xl grid-cols-1 items-start gap-x-10 gap-y-8 lg:grid-cols-2"
+            className="mx-auto mb-16 grid max-w-6xl grid-cols-1 items-stretch gap-x-10 gap-y-8 lg:grid-cols-2"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.12 }}
@@ -108,45 +91,30 @@ export function PvcModifierCategorySection({ categoryName }: PvcModifierCategory
                 />
               </div>
             </motion.div>
-            <motion.div variants={storyChild} className="space-y-5">
-              <p className="text-lg leading-relaxed text-muted-foreground sm:text-xl">{t(k.p1)}</p>
-              <p className="text-lg leading-relaxed text-muted-foreground sm:text-xl">{t(k.p2)}</p>
+            <motion.div variants={storyChild} className="flex h-full min-h-0 flex-col gap-5 lg:gap-4">
+              <div className="space-y-5 shrink-0">
+                <p className="text-lg leading-relaxed text-muted-foreground sm:text-xl">{t(k.p1)}</p>
+                <p className="text-lg leading-relaxed text-muted-foreground sm:text-xl">{t(k.p2)}</p>
+              </div>
+              <div className="flex min-h-0 flex-1 flex-col rounded-2xl border border-primary/25 bg-gradient-to-br from-primary/10 via-primary/5 to-background px-5 py-5 shadow-md sm:px-6 sm:py-6">
+                <p className="shrink-0 text-lg font-bold text-primary sm:text-xl">
+                  {t(k.applicationsTitle)}
+                </p>
+                <ul className="mt-3 flex min-h-0 flex-1 flex-col justify-center gap-2 sm:mt-4 sm:gap-2.5">
+                  {applicationItems.map((item, index) => (
+                    <li
+                      key={`application-${index}`}
+                      className="flex items-center gap-3 rounded-xl border border-primary/20 bg-background/90 px-4 py-2.5 text-sm font-medium text-foreground shadow-sm sm:gap-4 sm:px-4 sm:py-3 sm:text-base"
+                    >
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/15 text-xs font-bold text-primary sm:h-8 sm:w-8 sm:text-sm">
+                        {index + 1}
+                      </span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </motion.div>
-          </motion.div>
-
-          <motion.div
-            className="mx-auto mb-16 max-w-6xl rounded-2xl border border-primary/25 bg-gradient-to-br from-primary/10 via-primary/5 to-background px-6 py-6 shadow-md sm:px-8 sm:py-8"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.15 }}
-            variants={storyParent}
-          >
-            <motion.p
-              variants={storyChild}
-              className="text-xl font-bold text-primary sm:text-2xl"
-            >
-              {t(k.applicationsTitle)}
-            </motion.p>
-            <motion.ul
-              className="mt-5 flex flex-col gap-3"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={applicationParent}
-            >
-              {applicationItems.map((item, index) => (
-                <motion.li
-                  key={item || `application-${index}`}
-                  variants={applicationItem}
-                  className="flex items-center gap-4 rounded-xl border border-primary/20 bg-background/90 px-5 py-4 text-base font-medium text-foreground shadow-sm sm:text-lg"
-                >
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/15 text-sm font-bold text-primary">
-                    {index + 1}
-                  </span>
-                  <span>{item}</span>
-                </motion.li>
-              ))}
-            </motion.ul>
           </motion.div>
 
           <motion.div

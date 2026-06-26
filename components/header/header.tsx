@@ -11,49 +11,55 @@ import { Menu, X, ShoppingCart } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { useCart } from "@/contexts/cart-context"
 import { Badge } from "@/components/ui/badge"
+import { getLenisInstance } from "@/lib/lenis-instance"
+
+const HOME_SCROLL_THRESHOLD = 50
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
-  const [animateIn, setAnimateIn] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const pathname = usePathname()
   const { itemCount } = useCart()
 
   useEffect(() => {
     const handleScroll = () => {
-      // На главной показываем шапку после ~3 прокруток (120px), чтобы не наслаивалась на Hero
-      setIsScrolled(window.scrollY > 120)
+      setIsScrolled(window.scrollY > HOME_SCROLL_THRESHOLD)
     }
-    window.addEventListener("scroll", handleScroll)
-    handleScroll() // проверка при монтировании
-    return () => window.removeEventListener("scroll", handleScroll)
+
+    handleScroll()
+    window.addEventListener("scroll", handleScroll, { passive: true })
+
+    let lenis = getLenisInstance()
+    const attachLenis = () => {
+      if (lenis) return
+      lenis = getLenisInstance()
+      lenis?.on("scroll", handleScroll)
+    }
+    attachLenis()
+    const timer = window.setTimeout(attachLenis, 0)
+
+    return () => {
+      window.clearTimeout(timer)
+      window.removeEventListener("scroll", handleScroll)
+      lenis?.off("scroll", handleScroll)
+    }
   }, [])
 
   const isHomePage = pathname === "/"
-
-  const isTransparent = isHomePage && !isScrolled
-
-  // На главной не рендерим хедер в самом верху (чтобы не сдвигать Hero),
-  // но как только начался скролл — монтируем и плавно показываем.
-  const shouldRender = !isHomePage || isScrolled
+  const showHomeHeader = isHomePage && isScrolled
 
   useEffect(() => {
-    if (!shouldRender) {
-      setAnimateIn(false)
+    if (!showHomeHeader) {
       setIsMobileMenuOpen(false)
-      return
     }
-    // Даем React смонтировать DOM, затем включаем переход
-    const id = requestAnimationFrame(() => setAnimateIn(true))
-    return () => cancelAnimationFrame(id)
-  }, [shouldRender])
-
-  if (!shouldRender) return null
+  }, [showHomeHeader])
 
   return (
     <>
     <header
-        className={`sticky top-0 transition-all duration-300 ${
+        className={`${
+          isHomePage ? "fixed inset-x-0 top-0" : "sticky top-0"
+        } ${
           isMobileMenuOpen 
             ? "z-[110]" 
             : "z-[100]"
@@ -63,16 +69,16 @@ export function Header() {
             : "backdrop-blur-none"
         } ${
           isHomePage
-            ? (animateIn ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2")
+            ? showHomeHeader
+              ? "pointer-events-auto visible translate-y-0 opacity-100"
+              : "pointer-events-none invisible -translate-y-full opacity-0"
             : "opacity-100 translate-y-0"
         }`}
-        style={isTransparent ? { backgroundColor: 'transparent', background: 'transparent' } : {}}
     >
       <nav 
         className={`flex w-full items-center justify-between gap-2 lg:gap-4 max-w-[1440px] mx-auto px-4 lg:px-8 py-4 ${
           isScrolled || !isHomePage ? "" : "lg:py-6"
         }`}
-        style={isTransparent ? { backgroundColor: 'transparent' } : {}}
       >
         {/* Logo — прозрачный фон */}
         <Link href="/" prefetch={false} className="flex items-center gap-2 lg:gap-3 group flex-shrink-0 min-w-fit">

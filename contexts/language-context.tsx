@@ -55,10 +55,6 @@ export function LanguageProvider({
           return
         }
 
-        // Не показываем переводы другого языка, пока грузится выбранный
-        setTranslations({})
-        setLoadedLang(null)
-
         const response = await fetch(`/locales/${lang}.json`)
         if (!response.ok) throw new Error("Failed to fetch translations")
         const data = await response.json()
@@ -89,6 +85,24 @@ export function LanguageProvider({
   }, [initialLang])
 
   useEffect(() => {
+    const preloadLanguages = async () => {
+      for (const locale of ["ru", "en"] as Language[]) {
+        if (translationsCache[locale]) continue
+        try {
+          const response = await fetch(`/locales/${locale}.json`)
+          if (response.ok) {
+            translationsCache[locale] = await response.json()
+          }
+        } catch {
+          // ignore preload errors
+        }
+      }
+    }
+
+    void preloadLanguages()
+  }, [])
+
+  useEffect(() => {
     const handleStorageChange = () => {
       const saved = localStorage.getItem("lang") as Language | null
       if ((saved === "ru" || saved === "en") && saved !== lang) {
@@ -107,8 +121,6 @@ export function LanguageProvider({
       applyTranslations(newLang, translationsCache[newLang]!)
       setIsLoading(false)
     } else {
-      setTranslations({})
-      setLoadedLang(null)
       setIsLoading(true)
     }
   }
@@ -117,33 +129,29 @@ export function LanguageProvider({
     return (key: string): any => {
       if (!key) return ""
 
-      // Если переводы еще не загружены, возвращаем пустую строку
-      // чтобы не показывать ключи типа "homepage"
-      if (loadedLang !== lang) {
+      const activeTranslations =
+        translationsCache[lang] ??
+        (loadedLang === lang ? translations : null) ??
+        translations
+
+      if (!activeTranslations || Object.keys(activeTranslations).length === 0) {
         return ""
       }
 
-      if (isLoading && Object.keys(translations).length === 0) {
-        return ""
-      }
-
-      // Поддержка вложенных ключей через точку (например, "dealersPage.badge")
       const keys = key.split(".")
-      let value: any = translations
-      
+      let value: any = activeTranslations
+
       for (const k of keys) {
         if (value && typeof value === "object" && k in value) {
           value = value[k]
         } else {
-          // Если ключ не найден, возвращаем пустую строку вместо ключа
           return ""
         }
       }
-      
-      // Возвращаем значение как есть (может быть строка, массив, объект и т.д.)
+
       return value !== undefined ? value : ""
     }
-  }, [translations, isLoading, loadedLang, lang])
+  }, [translations, loadedLang, lang])
 
   return <LanguageContext.Provider value={{ lang, setLang, t, translations, isLoading }}>{children}</LanguageContext.Provider>
 }

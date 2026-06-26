@@ -57,6 +57,13 @@
     "open": "Open",
     "submitting": "Sending..."
   },
+  "cookieConsent": {
+    "title": "Cookie notice",
+    "message": "We use cookies to ensure the site works properly, save your preferences, and analyze traffic. Learn more in our",
+    "privacyLink": "privacy policy",
+    "accept": "Accept",
+    "closeAria": "Close cookie notice"
+  },
   "footer": {
     "logoAlt": "JSC «Plastik»",
     "description": "Leader in the chemical industry in ABS plastics and polystyrene production. Quality, reliability, innovation.",

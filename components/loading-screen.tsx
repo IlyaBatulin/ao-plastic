@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback } from "react"
 import { HERO_VIDEO_READY_EVENT, HERO_VIDEO_SRC } from "@/lib/hero-media"
+import { COOKIE_CONSENT_READY_EVENT } from "@/lib/cookie-consent"
 
 const MAX_SPLASH_MS = 15000
 const MIN_SPLASH_MS = 600
@@ -46,6 +47,7 @@ function revealMainContent() {
   }
   document.body.style.overflow = ""
   window.dispatchEvent(new Event("lenis:refresh"))
+  window.dispatchEvent(new Event(COOKIE_CONSENT_READY_EVENT))
 }
 
 function hideMainContentForSplash() {

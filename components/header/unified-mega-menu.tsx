@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useTranslation } from "@/lib/i18n"
 import { getCatalogCategoryLabel, getCatalogSubcategoryLabel } from "@/lib/catalog-translations"
 import { getPublicSubcategorySlug } from "@/lib/catalog-slugs"
+import { sortCatalogCategories } from "@/lib/catalog-category-order"
 import { createClient } from "@/utils/supabase/client"
 import productsData from "@/data/products.json"
 import corporateMenuData from "@/data/menu-corporate.json"
@@ -69,14 +70,16 @@ const mapJsonSubcategories = (category: any) =>
     }))
 
 const getJsonCategories = (): Category[] =>
-  productsData.categories
-    .filter((cat) => cat.id !== 'dispersion')
-    .map((cat) => ({
-      id: cat.id,
-      name: cat.name,
-      slug: cat.id,
-      subcategories: mapJsonSubcategories(cat),
-    }))
+  sortCatalogCategories(
+    productsData.categories
+      .filter((cat) => cat.id !== "dispersion")
+      .map((cat) => ({
+        id: cat.id,
+        name: cat.name,
+        slug: cat.id,
+        subcategories: mapJsonSubcategories(cat),
+      }))
+  )
 
 const getJsonSubcategories = (categoryId: string) => {
   const fallbackCategory = productsData.categories.find((cat) => cat.id === categoryId)
@@ -148,8 +151,8 @@ export const loadCategoriesCached = async (): Promise<Category[]> => {
           }
         })
 
-        categoriesCache = categoriesWithSubs
-        return categoriesWithSubs
+        categoriesCache = sortCatalogCategories(categoriesWithSubs)
+        return categoriesCache
       } else {
         const jsonCategories = getJsonCategories()
         categoriesCache = jsonCategories

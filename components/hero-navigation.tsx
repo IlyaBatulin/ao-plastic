@@ -37,8 +37,8 @@ export function HeroNavigation() {
   return (
     <>
       <nav 
-        className={`absolute top-0 left-0 right-0 w-full transition-all duration-300 ${
-          isHiddenByScroll ? "opacity-0 pointer-events-none" : ""
+        className={`absolute top-0 left-0 right-0 w-full ${
+          isHiddenByScroll ? "opacity-0 pointer-events-none" : "transition-all duration-300"
         } ${
           isMobileMenuOpen 
             ? "z-[110]" 
@@ -49,7 +49,7 @@ export function HeroNavigation() {
           isMegaMenuOpen 
             ? "bg-white shadow-sm" 
             : "bg-transparent"
-        } duration-300`}
+        }`}
         style={isMegaMenuOpen ? { backgroundColor: '#ffffff' } : { backgroundColor: 'transparent' }}
       >
       <div className="flex w-full items-center justify-between gap-2 lg:gap-4 max-w-[1440px] mx-auto px-4 lg:px-8 py-4 lg:py-6">

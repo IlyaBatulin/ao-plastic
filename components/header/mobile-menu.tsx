@@ -9,6 +9,7 @@ import corporateMenuData from "@/data/menu-corporate.json"
 import productsData from "@/data/products.json"
 import { useEffect, useRef, useState } from "react"
 import { loadCategoriesCached } from "./unified-mega-menu"
+import { sortCatalogCategories } from "@/lib/catalog-category-order"
 import { useTranslation } from "@/lib/i18n"
 import { getCatalogCategoryLabel } from "@/lib/catalog-translations"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
@@ -26,13 +27,15 @@ interface Category {
 }
 
 const getJsonCategories = (): Category[] =>
-  productsData.categories
-    .filter((cat) => cat.id !== "dispersion")
-    .map((cat) => ({
-      id: cat.id,
-      name: cat.name,
-      slug: cat.id,
-    }))
+  sortCatalogCategories(
+    productsData.categories
+      .filter((cat) => cat.id !== "dispersion")
+      .map((cat) => ({
+        id: cat.id,
+        name: cat.name,
+        slug: cat.id,
+      }))
+  )
 
 // Кастомный AccordionTrigger с + и -
 function CustomAccordionTrigger({

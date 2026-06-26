@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useMemo, useState, useEffect } from "react"
 import Link from "next/link"
 import { ArrowLeft, CheckCircle2, Package, Truck, X } from "lucide-react"
 import Image from "next/image"
@@ -32,6 +32,7 @@ import {
   STYRENE_OKP_LABEL,
   STYRENE_PAGE_KEYS,
 } from "@/lib/styrene-category-i18n"
+import { scrollPageToTop } from "@/lib/scroll-to-top"
 
 type ProductPageClientProps = {
   product: any
@@ -81,6 +82,12 @@ export function ProductPageClient({
     message: "",
   })
   const [consentAccepted, setConsentAccepted] = useState(false)
+
+  useEffect(() => {
+    scrollPageToTop()
+    const timer = window.setTimeout(() => scrollPageToTop(), 120)
+    return () => window.clearTimeout(timer)
+  }, [product.id])
 
   const { name: displayName, description: displayDescription } = resolveProductDisplay(
     {

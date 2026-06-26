@@ -5,6 +5,7 @@ import Lenis from "lenis"
 import { useEffect } from "react"
 import { usePathname } from "next/navigation"
 import { getLenisInstance, setLenisInstance } from "@/lib/lenis-instance"
+import { scrollPageToTop } from "@/lib/scroll-to-top"
 
 const LENIS_EASING = (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
 
@@ -75,16 +76,26 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   useEffect(() => {
+    scrollPageToTop()
+
     const lenis = getLenisInstance()
-    if (!lenis) return
-    const id = requestAnimationFrame(() => {
+    const rafId = requestAnimationFrame(() => {
+      scrollPageToTop()
+      if (!lenis) return
       requestAnimationFrame(() => {
         lenis.resize()
+        scrollPageToTop()
         const st = (window as Window & { ScrollTrigger?: { refresh: () => void } }).ScrollTrigger
         st?.refresh()
       })
     })
-    return () => cancelAnimationFrame(id)
+
+    const lateScrollTimer = window.setTimeout(() => scrollPageToTop(), 120)
+
+    return () => {
+      cancelAnimationFrame(rafId)
+      window.clearTimeout(lateScrollTimer)
+    }
   }, [pathname])
 
   return <>{children}</>

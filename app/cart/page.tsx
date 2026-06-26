@@ -410,7 +410,7 @@ export default function CartPage({ params, searchParams }: NextPageProps) {
                       <span className="font-semibold text-sm sm:text-base">{items.length}</span>
                     </div>
                     <div className="flex justify-between items-center mb-4 md:mb-6">
-                      <span className="text-xs sm:text-sm text-muted-foreground">Итого (т):</span>
+                      <span className="text-xs sm:text-sm text-muted-foreground">Итого:</span>
                       <span className="text-xl md:text-2xl font-bold">
                         {items.reduce((sum, item) => sum + item.quantity, 0).toFixed(3)}
                       </span>

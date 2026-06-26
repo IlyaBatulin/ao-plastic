@@ -4,6 +4,7 @@ import { BackgroundPaths } from "@/components/ui/background-paths"
 import { createCatalogClient, supabaseCatalogQuery } from "@/utils/supabase/server"
 import productsData from "@/data/products.json"
 import { ProductsCatalogClient } from "@/app/products/_components/products-catalog-client"
+import { sortCatalogCategories } from "@/lib/catalog-category-order"
 
 export const revalidate = 300
 
@@ -46,11 +47,17 @@ export default async function ProductsPage() {
           }
         })
     } else {
-      categories = productsData.categories.filter((cat) => cat.id !== "dispersion")
+      categories = sortCatalogCategories(
+        productsData.categories.filter((cat) => cat.id !== "dispersion")
+      )
     }
   } catch {
-    categories = productsData.categories.filter((cat) => cat.id !== "dispersion")
+    categories = sortCatalogCategories(
+      productsData.categories.filter((cat) => cat.id !== "dispersion")
+    )
   }
+
+  categories = sortCatalogCategories(categories)
 
   return (
     <>

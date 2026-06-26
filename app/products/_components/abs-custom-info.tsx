@@ -124,7 +124,7 @@ export function AbsCustomInfo() {
   return (
     <div className="w-full max-w-none space-y-12 lg:space-y-14">
       <ScrollReveal direction="left" className="py-2 lg:py-4">
-        <div className="max-w-5xl rounded-3xl border border-border bg-card/80 p-6 shadow-sm sm:p-8">
+        <div className="w-full rounded-3xl border border-border bg-card/80 p-6 shadow-sm sm:p-8">
           <p className="text-lg leading-relaxed text-muted-foreground sm:text-xl">
             {introText}
           </p>

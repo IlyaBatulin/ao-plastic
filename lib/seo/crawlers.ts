@@ -34,6 +34,24 @@ const SOCIAL_PREVIEW_BOTS = [
   "pinterestbot",
 ] as const
 
+/** Краулеры ИИ-систем — нужны для появления компании в ответах ChatGPT, Claude, Perplexity и т.д. */
+const AI_CRAWLERS = [
+  "gptbot",
+  "chatgpt-user",
+  "oai-searchbot",
+  "claudebot",
+  "anthropic-ai",
+  "claude-web",
+  "perplexitybot",
+  "perplexity-user",
+  "google-extended",
+  "ccbot",
+  "amazonbot",
+  "bytespider",
+  "youbot",
+  "diffbot",
+] as const
+
 export function isSearchCrawler(userAgent: string): boolean {
   const ua = userAgent.toLowerCase()
   return SEARCH_CRAWLERS.some((token) => ua.includes(token))
@@ -45,7 +63,13 @@ export function isSocialPreviewBot(userAgent: string): boolean {
   return SOCIAL_PREVIEW_BOTS.some((token) => ua.includes(token))
 }
 
-/** Поисковик или бот превью — не блокировать и не требовать SITE_PASSWORD. */
+/** Краулеры ИИ-сервисов, индексирующие контент для ответов нейросетей. */
+export function isAiCrawler(userAgent: string): boolean {
+  const ua = userAgent.toLowerCase()
+  return AI_CRAWLERS.some((token) => ua.includes(token))
+}
+
+/** Поисковик, бот превью или ИИ-краулер — не блокировать и не требовать SITE_PASSWORD. */
 export function isSeoBot(userAgent: string): boolean {
-  return isSearchCrawler(userAgent) || isSocialPreviewBot(userAgent)
+  return isSearchCrawler(userAgent) || isSocialPreviewBot(userAgent) || isAiCrawler(userAgent)
 }

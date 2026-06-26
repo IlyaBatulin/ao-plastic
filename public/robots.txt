@@ -1,3 +1,7 @@
 User-agent: *
-Disallow: /
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /login
+Disallow: /cart
 

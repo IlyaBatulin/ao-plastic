@@ -159,13 +159,13 @@ export function ProductPageClient({
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Product Image */}
-            <div className="relative h-96 lg:h-full min-h-[500px] rounded-3xl overflow-hidden border border-border shadow-lg">
+            <div className="relative aspect-[4/5] w-full lg:aspect-auto lg:h-full lg:min-h-[500px] rounded-3xl overflow-hidden border border-border shadow-lg bg-muted">
               <Image
                 src={productImageUrl}
                 alt={displayName}
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
+                className="object-contain p-4"
                 priority
               />
             </div>

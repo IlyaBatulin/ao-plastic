@@ -27,6 +27,7 @@ function getSubcategoryImage(subcategoryId: string, slug?: string): string | nul
     'abs-custom': '/images/abs-custom/abs-production-materials.png',
     // Хозтовары
     'vedra-tazy': '/images/xoztov/vedra-main.jpeg',
+    veshalki: '/images/xoztov/veshalki-card.png',
     // Детали машиностроения (литьё / экструзия — как на главной карточке категории)
     'injection-parts': '/images/litmain.jpeg',
     'parts-injection': '/images/litmain.jpeg',
@@ -90,7 +91,10 @@ export function SubcategoriesGrid({ categoryId, subcategories }: SubcategoriesGr
       <div className="container mx-auto px-4 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {subcategories.map((subcategory) => {
-            const imageSrc = subcategory.image || getSubcategoryImage(subcategory.id, subcategory.slug) || "/placeholder.svg"
+            const imageSrc =
+              getSubcategoryImage(subcategory.id, subcategory.slug) ||
+              subcategory.image ||
+              "/placeholder.svg"
             const subcategoryHref = `/products/${categoryId}/${getPublicSubcategorySlug(categoryId, subcategory)}`
             const subcategoryTitle = getCatalogSubcategoryLabel(
               subcategory.id,
@@ -128,41 +132,36 @@ export function SubcategoriesGrid({ categoryId, subcategories }: SubcategoriesGr
               }
               aria-busy={isNavigating}
               className={cn(
-                "subcategory-card group relative h-72 sm:h-80 rounded-3xl overflow-hidden border border-border/50 hover:border-primary/50 transition-all duration-300",
+                "subcategory-card group relative h-64 sm:h-72 rounded-3xl overflow-hidden border border-border/50 hover:border-primary/50 transition-all duration-300",
                 isNavigating && "pointer-events-none scale-[0.99] border-primary/40 opacity-95"
               )}
             >
-              {/* Background Image (Top Half) */}
               <div className="absolute inset-0">
                 <div className="absolute inset-0 overflow-hidden">
                   {imageSrc && (
                     <img
                       src={imageSrc}
                       alt={subcategory.name}
-                      className="absolute top-0 left-0 w-full h-[50%] object-cover transition-transform duration-700 group-hover:scale-110"
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   )}
                 </div>
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-background/95" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/15 to-transparent md:from-black/55 md:via-black/10 md:to-transparent transition-opacity duration-300 md:group-hover:from-background/95 md:group-hover:via-background/15" />
               </div>
 
-              {/* Content */}
-              <div className="relative h-full flex flex-col justify-between p-5 sm:p-7 z-10">
-                {/* Title and CTA - единый блок без разделения */}
-                <div className="mt-auto -mx-2 flex min-h-[11.75rem] flex-col rounded-xl border border-white/50 bg-white/95 p-4 sm:p-5 shadow-sm backdrop-blur-sm">
-                  <h3 className="mb-3 text-xl font-bold transition-colors duration-300 group-hover:text-primary sm:text-2xl text-balance break-words">
+              <div className="relative z-10 flex h-full flex-col justify-end p-4 sm:p-5">
+                <div className="rounded-xl border border-white/50 bg-white/92 px-3.5 py-3 shadow-sm backdrop-blur-sm transition-all duration-300 md:border-white/25 md:bg-transparent md:shadow-none md:backdrop-blur-0 md:group-hover:border-white/60 md:group-hover:bg-white/95 md:group-hover:shadow-md md:group-hover:backdrop-blur-sm sm:px-4 sm:py-3.5">
+                  <h3 className="text-base font-bold leading-snug text-foreground transition-colors duration-300 md:text-white md:drop-shadow-sm md:group-hover:text-primary sm:text-lg text-balance break-words">
                     {subcategoryTitle}
                   </h3>
                   {subcategoryDescription && subcategory.id !== "abs-custom" && (
-                    <p className="text-sm sm:text-base text-muted-foreground leading-relaxed line-clamp-3 mb-4">
+                    <p className="mt-1 text-xs leading-snug text-muted-foreground line-clamp-2 transition-colors duration-300 md:text-white/90 md:drop-shadow-sm md:group-hover:text-muted-foreground sm:text-sm">
                       {subcategoryDescription}
                     </p>
                   )}
-                  {/* CTA внутри того же блока без границы */}
-                  <div className="mt-auto flex items-center gap-2 text-primary font-semibold transition-all duration-300 group-hover:gap-3">
-                    <span className="text-sm sm:text-base">{t("homePage.catalog.readMore")}</span>
-                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  <div className="mt-2 flex items-center gap-1.5 font-semibold text-primary transition-all duration-300 group-hover:gap-2 md:text-white md:group-hover:text-primary">
+                    <span className="text-xs sm:text-sm">{t("homePage.catalog.readMore")}</span>
+                    <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1 sm:h-4 sm:w-4" />
                   </div>
                 </div>
               </div>

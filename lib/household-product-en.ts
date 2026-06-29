@@ -4,9 +4,9 @@
  */
 const HOUSEHOLD_PRODUCT_EN: Record<string, { name: string; description: string }> = {
   "vedro-base-95l": {
-    name: "BASE Bucket 9.5 L",
+    name: "Basin 10 L",
     description:
-      "Rectangular BASE 9.5 L bucket for modern flat mops with a wringer. The shape makes washing floors fast and convenient.",
+      "10 L plastic basin — practical volume, strong and load-resistant. Handy for laundry, cleaning, kitchen or garden.",
   },
   "vedro-25l": {
     name: "Bucket 2.5 L",
@@ -29,9 +29,9 @@ const HOUSEHOLD_PRODUCT_EN: Record<string, { name: string; description: string }
       "Attractive, ergonomic and extremely durable bucket. Made of high-quality plastic to GOST R 50962-96 and inspected by QC. Combines proven quality with a modern look.",
   },
   "taz-10l": {
-    name: "Basin 10 L",
+    name: "BASE Bucket 9.5 L",
     description:
-      "10 L plastic basin — practical volume, strong and load-resistant. Handy for laundry, cleaning, kitchen or garden.",
+      "Rectangular BASE 9.5 L bucket for modern flat mops with a wringer. The shape makes washing floors fast and convenient.",
   },
   "taz-15l": {
     name: "Basin 15 L",

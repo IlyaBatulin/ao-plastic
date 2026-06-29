@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server"
 import { createClient, createServiceClient } from "@/utils/supabase/server"
 import { checkRateLimit, isBodyTooLarge, rateLimitedResponse } from "@/lib/form-guard"
+import { buildOrderNotificationContent } from "@/lib/order-notification"
+import { sendNotifyEmail } from "@/lib/send-email"
 
 const MAX_ITEMS = 100
 
@@ -596,6 +598,14 @@ async function queueIntegrations({
 			}
 		}
 	}
+
+    // Email: уведомление на почту менеджера
+    try {
+        const emailContent = buildOrderNotificationContent(orderId, orderInfo, orderItemsInfo)
+        await sendNotifyEmail(emailContent)
+    } catch (error) {
+        console.error("[Email] Order notification error:", error)
+    }
 }
 
 

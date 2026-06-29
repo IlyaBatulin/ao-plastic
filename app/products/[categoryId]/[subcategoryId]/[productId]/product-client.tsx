@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useMemo, useState, useEffect } from "react"
 import Link from "next/link"
 import { ArrowLeft, CheckCircle2, Package, Truck, X } from "lucide-react"
 import Image from "next/image"
@@ -32,6 +32,7 @@ import {
   STYRENE_OKP_LABEL,
   STYRENE_PAGE_KEYS,
 } from "@/lib/styrene-category-i18n"
+import { scrollPageToTop } from "@/lib/scroll-to-top"
 
 type ProductPageClientProps = {
   product: any
@@ -81,6 +82,12 @@ export function ProductPageClient({
     message: "",
   })
   const [consentAccepted, setConsentAccepted] = useState(false)
+
+  useEffect(() => {
+    scrollPageToTop()
+    const timer = window.setTimeout(() => scrollPageToTop(), 120)
+    return () => window.clearTimeout(timer)
+  }, [product.id])
 
   const { name: displayName, description: displayDescription } = resolveProductDisplay(
     {
@@ -152,13 +159,14 @@ export function ProductPageClient({
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Product Image */}
-            <div className="relative h-96 lg:h-full min-h-[500px] rounded-3xl overflow-hidden border border-border shadow-lg">
+            <div className="flex h-[28rem] w-full items-center justify-center overflow-hidden bg-white sm:h-[32rem] lg:h-full lg:min-h-[500px]">
               <Image
                 src={productImageUrl}
                 alt={displayName}
-                fill
+                width={800}
+                height={1000}
+                className="h-full w-full object-contain"
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
                 priority
               />
             </div>

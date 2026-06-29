@@ -1,4 +1,5 @@
 import { HOUSEHOLD_PRODUCT_EN } from "@/lib/household-product-en"
+import { getHouseholdProductRu } from "@/lib/household-product-ru"
 import productsData from "@/data/products.json"
 import {
   EXTRUSION_PART_TYPE_EN,
@@ -465,6 +466,13 @@ export function resolveProductDisplay(
   options?: ResolveProductDisplayOptions
 ): { name: string; description: string | undefined } {
   if (lang !== "en") {
+    const ru = getHouseholdProductRu(String(product.id))
+    if (ru) {
+      return {
+        name: ru.name,
+        description: ru.description ?? product.description ?? undefined,
+      }
+    }
     return {
       name: product.name,
       description: product.description ?? undefined,

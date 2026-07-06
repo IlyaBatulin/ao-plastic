@@ -7,15 +7,15 @@ import { useLanguage } from "@/contexts/language-context"
 import { FeatureCard } from "@/components/feature-card"
 
 const aboutTextClass =
-  "text-body text-xl font-semibold leading-relaxed text-white sm:text-2xl sm:leading-relaxed lg:text-3xl lg:leading-snug [text-shadow:0_1px_2px_rgba(0,0,0,0.5),0_2px_10px_rgba(0,0,0,0.3)] [&_a]:font-semibold [&_a]:text-white [&_a]:underline [&_a]:decoration-white/90 [&_a]:underline-offset-2 [&_strong]:font-bold [&_strong]:text-white"
+  "text-body text-xl font-semibold leading-relaxed text-white sm:text-2xl sm:leading-relaxed lg:text-3xl lg:leading-snug [text-shadow:0_2px_8px_rgba(0,0,0,0.45)] [&_a]:font-semibold [&_a]:text-white [&_a]:underline [&_a]:decoration-white/90 [&_a]:underline-offset-2 [&_strong]:font-bold [&_strong]:text-white"
 
 const aboutTextContainerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.22,
-      delayChildren: 0.12,
+      staggerChildren: 0.12,
+      delayChildren: 0.08,
     },
   },
 }
@@ -68,17 +68,13 @@ export function About() {
               priority={false}
             />
 
-            {/* Затемнение: слева плотнее под текст, общий градиент */}
+            {/* Затемнение: слева плотнее под текст, общий градиент — один слой с двумя градиентами */}
             <div
-              className="absolute inset-0 bg-gradient-to-r from-black/[0.88] via-black/50 to-black/32 dark:from-black/90 dark:via-black/55 dark:to-black/40"
-              aria-hidden
-            />
-            <div
-              className="absolute inset-0 bg-gradient-to-t from-black/78 via-transparent to-black/58 sm:to-black/48"
-              aria-hidden
-            />
-            <div
-              className="absolute inset-y-0 left-0 w-full max-w-[min(100%,42rem)] bg-gradient-to-r from-black/65 to-transparent sm:max-w-[50%]"
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(to right, rgba(0,0,0,0.6), rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1)), linear-gradient(to top, rgba(0,0,0,0.45), transparent 50%, rgba(0,0,0,0.2))",
+              }}
               aria-hidden
             />
           </div>
@@ -92,15 +88,14 @@ export function About() {
                 viewport={{ once: true, amount: 0.12, margin: "0px 0px -8% 0px" }}
                 variants={aboutTextContainerVariants}
               >
-                <h2 className="text-h2 text-5xl text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)] sm:text-6xl lg:text-8xl">
+                <h2 className="text-display text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
                   {t("homePage.about.title")}
                 </h2>
                 {aboutParagraphs.map((html, index) => (
                   <motion.p
                     key={index}
                     variants={aboutTextItemVariants}
-                    className={`${aboutTextClass} !text-white`}
-                    style={{ color: "#fff" }}
+                    className={aboutTextClass}
                     dangerouslySetInnerHTML={{ __html: html }}
                   />
                 ))}

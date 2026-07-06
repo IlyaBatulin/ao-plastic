@@ -20,7 +20,7 @@ export function QualityPageClient() {
         <section className="pt-32 pb-16">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="max-w-4xl mx-auto mb-16 text-center">
-              <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 text-primary leading-tight break-words animate-in fade-in slide-in-from-bottom-4 duration-700">
+              <h1 className="text-h1 mb-6 text-primary break-words animate-in fade-in slide-in-from-bottom-4 duration-700">
                 {page.heroTitle}
               </h1>
               <p className="text-xl md:text-2xl text-foreground/70 leading-relaxed animate-in fade-in slide-in-from-bottom-5 duration-700 delay-200">
@@ -35,7 +35,7 @@ export function QualityPageClient() {
           <div className="container mx-auto px-4 lg:px-8">
             <div className="max-w-4xl mx-auto">
               <article className="bg-card rounded-2xl border border-border p-8 md:p-10 shadow-sm mb-16 text-lg md:text-xl">
-                <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center text-foreground">{page.qmsTitle}</h2>
+                <h2 className="text-h2 mb-6 text-center text-foreground">{page.qmsTitle}</h2>
                 {page.qmsParagraphs.map((paragraph) => (
                   <p key={paragraph.slice(0, 40)} className="text-muted-foreground leading-relaxed mb-6 last:mb-0">
                     {paragraph}
@@ -43,7 +43,7 @@ export function QualityPageClient() {
                 ))}
               </article>
 
-              <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center text-foreground">{page.principlesTitle}</h2>
+              <h2 className="text-h2 mb-8 text-center text-foreground">{page.principlesTitle}</h2>
               <div className="grid md:grid-cols-2 gap-6 mb-16">
                 {page.principles.map((item) => (
                   <div
@@ -61,7 +61,7 @@ export function QualityPageClient() {
                 ))}
               </div>
 
-              <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center text-foreground">{page.stepsTitle}</h2>
+              <h2 className="text-h2 mb-8 text-center text-foreground">{page.stepsTitle}</h2>
               <div className="grid md:grid-cols-2 gap-6 mb-16">
                 {page.qualitySteps.map((step, index) => {
                   const Icon = stepIcons[index] ?? FileCheck
@@ -85,7 +85,7 @@ export function QualityPageClient() {
         <section className="py-16 bg-secondary/30">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="max-w-5xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 flex items-center justify-center gap-3 text-center text-foreground">
+              <h2 className="text-h2 mb-4 flex items-center justify-center gap-3 text-center text-foreground">
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-blue-600 dark:to-[#60a5fa] flex items-center justify-center shadow-lg shadow-blue-500/20 flex-shrink-0">
                   <Award className="w-7 h-7 text-white" />
                 </div>

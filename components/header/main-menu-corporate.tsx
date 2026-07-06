@@ -126,13 +126,9 @@ export function MainMenuCorporate({ onMenuOpenChange, useDarkText = false }: Mai
               <Link
                 href={item.href}
                 prefetch={false}
-                className={`whitespace-nowrap text-sm font-semibold tracking-wider uppercase px-4 py-2.5 transition-all duration-300 relative ${
+                className={`whitespace-nowrap text-sm font-semibold tracking-[0.08em] uppercase px-4 py-2.5 transition-all duration-300 relative ${
                   isDropdownActive ? dropdownColorClass : textColorClass
                 }`}
-                style={{ 
-                  fontFamily: 'system-ui, -apple-system, sans-serif',
-                  letterSpacing: '0.08em'
-                }}
               >
                 <span className="relative z-10">{label}</span>
                 {isDropdownActive && (

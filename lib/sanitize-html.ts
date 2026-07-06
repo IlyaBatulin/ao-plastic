@@ -52,5 +52,9 @@ export function sanitizeHtml(input: string): string {
     ' $1="#"'
   )
 
+  // Понижаем h1 до h2: h1 на странице новости уже занят заголовком,
+  // второй h1 из контента редактора вредит SEO.
+  html = html.replace(/<(\/?)h1(\b[^>]*)>/gi, "<$1h2$2>")
+
   return html
 }

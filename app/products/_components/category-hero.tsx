@@ -111,7 +111,7 @@ export function CategoryHero({
         </Link>
         <div className="flex-1 flex items-center">
           <div className="max-w-4xl">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 text-primary leading-tight break-words">
+            <h1 className="text-h1 mb-6 text-primary break-words">
               {title}
             </h1>
             {description && (

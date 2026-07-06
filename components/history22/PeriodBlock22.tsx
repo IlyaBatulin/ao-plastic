@@ -101,7 +101,7 @@ const PeriodBlock22 = ({ period, image }: PeriodBlockProps) => {
         </div>
 
         <div className="mt-7">
-          <span className="text-primary text-sm font-medium tracking-widest uppercase">
+          <span className="text-caption text-primary">
             {period.title}
           </span>
           <h2 className="mt-2 text-2xl font-semibold leading-tight text-foreground">
@@ -165,7 +165,7 @@ const PeriodBlock22 = ({ period, image }: PeriodBlockProps) => {
             top: "calc(6% + 50vh)",
           }}
         >
-          <span className="text-primary text-sm md:text-base font-medium tracking-widest uppercase">
+          <span className="text-caption text-primary">
             {period.title}
           </span>
           <h3 className="text-xl md:text-2xl font-semibold text-foreground mt-1 max-w-[38vw]">

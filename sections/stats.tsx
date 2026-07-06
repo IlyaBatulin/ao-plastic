@@ -51,8 +51,6 @@ export function Stats() {
           subtitle={t("homePage.stats.subtitle")}
           centered
           className="mb-8 sm:mb-10"
-          titleClassName="text-2xl sm:text-3xl lg:text-4xl"
-          subtitleClassName="mt-3 text-sm sm:text-base"
         />
 
         <div className="space-y-10 lg:space-y-16">

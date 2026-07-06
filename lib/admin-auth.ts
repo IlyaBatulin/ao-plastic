@@ -1,12 +1,26 @@
 import { cookies } from "next/headers"
-import { verifySessionToken } from "@/lib/admin-session"
-import { COOKIE_NAME } from "@/lib/admin-session"
+import { verifySessionToken, COOKIE_NAME } from "@/lib/admin-session"
+import { canAccessSection, type AdminRole } from "@/lib/admin-roles"
 
-export async function isAdminAuthenticated(): Promise<boolean> {
+/** Возвращает роль текущей админ-сессии или null. */
+export async function getAdminRole(): Promise<AdminRole | null> {
   const cookieStore = await cookies()
   const session = cookieStore.get(COOKIE_NAME)
-  if (!session?.value) return false
+  if (!session?.value) return null
 
   return verifySessionToken(session.value)
 }
 
+export async function isAdminAuthenticated(): Promise<boolean> {
+  return (await getAdminRole()) !== null
+}
+
+/**
+ * Проверка доступа роли к разделу админки.
+ * Использовать в API-роутах: hasAdminSectionAccess("orders").
+ */
+export async function hasAdminSectionAccess(section: string): Promise<boolean> {
+  const role = await getAdminRole()
+  if (!role) return false
+  return canAccessSection(role, section)
+}

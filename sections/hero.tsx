@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from "react"
 import { useLanguage } from "@/contexts/language-context"
 import { HeroNavigation } from "@/components/hero-navigation"
 import { HERO_POSTER_SRC, HERO_VIDEO_READY_EVENT, HERO_VIDEO_SRC } from "@/lib/hero-media"
+import { getLenisInstance } from "@/lib/lenis-instance"
 
 export function Hero() {
   const { t } = useLanguage()
@@ -35,7 +36,6 @@ export function Hero() {
 
     video.muted = true
     video.playsInline = true
-    video.load()
     void video.play().catch((error) => {
       console.log("Video autoplay failed:", error)
     })
@@ -45,7 +45,12 @@ export function Hero() {
     e.preventDefault()
     const statsSection = document.getElementById("stats")
     if (statsSection) {
-      statsSection.scrollIntoView({ behavior: "smooth", block: "start" })
+      const lenis = getLenisInstance()
+      if (lenis) {
+        lenis.scrollTo(statsSection)
+      } else {
+        statsSection.scrollIntoView({ behavior: "smooth", block: "start" })
+      }
     }
   }
 
@@ -68,6 +73,7 @@ export function Hero() {
         <video
           ref={videoRef}
           src={HERO_VIDEO_SRC}
+          poster={HERO_POSTER_SRC}
           className={`hero-bg-video absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
             isVideoReady ? "opacity-100" : "opacity-0"
           }`}
@@ -85,16 +91,15 @@ export function Hero() {
           onError={handleVideoError}
           style={{ pointerEvents: "none" }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80" />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-transparent to-primary/20" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/25 to-black/50" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 lg:px-8 text-center">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 text-balance leading-tight animate-fade-in drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
+        <h1 className="text-display text-white mb-4 sm:mb-6 animate-fade-in drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
           {t("homePage.hero.title")}
         </h1>
-        <p className="text-lg sm:text-xl md:text-2xl text-white/95 mb-8 sm:mb-12 max-w-3xl mx-auto text-pretty leading-relaxed animate-fade-in-delay drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+        <p className="text-body-lead text-white/95 mb-8 sm:mb-12 max-w-3xl mx-auto text-pretty animate-fade-in-delay drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
           {t("homePage.hero.description")}
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-delay-2">

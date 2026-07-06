@@ -60,7 +60,7 @@ export function DisclosurePageClient() {
             <div className="mx-auto max-w-5xl">
               {/* Hero */}
               <div className="mb-12 text-center">
-                <h1 className="mb-4 text-4xl font-bold text-primary sm:text-5xl md:text-6xl">
+                <h1 className="mb-4 text-h1 text-primary">
                   {t.heroTitle}
                 </h1>
                 <p className="text-lg leading-relaxed text-foreground/70 sm:text-xl">

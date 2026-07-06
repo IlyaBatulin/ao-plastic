@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createServiceClient } from "@/utils/supabase/server"
-import { isAdminAuthenticated } from "@/lib/admin-auth"
+import { hasAdminSectionAccess } from "@/lib/admin-auth"
 
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const isAuthenticated = await isAdminAuthenticated()
-  if (!isAuthenticated) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  if (!(await hasAdminSectionAccess("categories"))) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 })
   }
 
   try {
@@ -34,9 +33,8 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const isAuthenticated = await isAdminAuthenticated()
-  if (!isAuthenticated) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  if (!(await hasAdminSectionAccess("categories"))) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 })
   }
 
   try {
@@ -72,9 +70,8 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const isAuthenticated = await isAdminAuthenticated()
-  if (!isAuthenticated) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  if (!(await hasAdminSectionAccess("categories"))) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 })
   }
 
   try {

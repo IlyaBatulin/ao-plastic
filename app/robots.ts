@@ -2,12 +2,13 @@ import type { MetadataRoute } from "next"
 import { getSiteUrl } from "@/lib/site"
 
 function getDisallowPaths(): string[] {
+  // ВАЖНО: /_next/ не блокируем — Google и Яндекс должны загружать JS/CSS,
+  // иначе они не смогут отрендерить страницы.
   const paths = [
     "/admin",
     "/api/",
     "/login",
     "/cart",
-    "/_next/",
   ]
 
   // Секретный путь админки (если задан ADMIN_PATH)

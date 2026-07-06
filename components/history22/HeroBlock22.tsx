@@ -119,7 +119,7 @@ const HeroBlock22 = ({ title, subtitle, textSlides, scrollHint = "Прокрут
           className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
           style={{ opacity: indicatorOpacity }}
         >
-          <span className="text-sm text-muted-foreground tracking-widest uppercase">
+          <span className="text-caption text-muted-foreground">
             {scrollHint}
           </span>
           <ChevronDown className="scroll-indicator w-6 h-6" />

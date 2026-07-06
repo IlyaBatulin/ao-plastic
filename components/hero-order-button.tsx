@@ -12,7 +12,7 @@ interface HeroOrderButtonProps {
 }
 
 export function HeroOrderButton({ isMenuOpen = false }: HeroOrderButtonProps) {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const { itemCount } = useCart()
 
   return (
@@ -23,7 +23,7 @@ export function HeroOrderButton({ isMenuOpen = false }: HeroOrderButtonProps) {
     >
       <Link href="/cart" className="flex items-center gap-2 px-4 py-2">
         <ShoppingCart className="w-5 h-5 xl:w-6 xl:h-6 flex-shrink-0" />
-        <span className="text-sm xl:text-base">{t("cart") || "Корзина"}</span>
+        <span className="text-sm xl:text-base">{t("cart") || (lang === "en" ? "Cart" : "Корзина")}</span>
         {itemCount > 0 && (
           <Badge className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 min-w-[1.5rem] h-[1.5rem] flex items-center justify-center text-xs">
             {itemCount}

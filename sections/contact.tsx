@@ -32,8 +32,8 @@ export function Contact() {
     
     if (!consentAccepted) {
       toast({
-        title: "Требуется согласие",
-        description: "Необходимо согласиться на обработку персональных данных",
+        title: t("homePage.contact.form.consentRequired"),
+        description: t("homePage.contact.form.consentRequiredDesc"),
         variant: "destructive",
         duration: 3000,
       })
@@ -54,16 +54,16 @@ export function Contact() {
 
       if (response.ok) {
         toast({
-          title: "Сообщение отправлено",
-          description: "Ваше сообщение отправлено и будет рассмотрено в ближайшее время. Мы свяжемся с вами по указанным контактам.",
+          title: t("homePage.contact.form.successTitle"),
+          description: t("homePage.contact.form.successDesc"),
           duration: 5000,
         })
         setFormData({ name: "", email: "", phone: "", message: "" })
       } else {
         const error = await response.json()
         toast({
-          title: "Ошибка отправки",
-          description: error.error || "Произошла ошибка при отправке сообщения. Пожалуйста, попробуйте еще раз.",
+          title: t("homePage.contact.form.errorTitle"),
+          description: error.error || t("homePage.contact.form.errorDesc"),
           variant: "destructive",
           duration: 5000,
         })
@@ -71,8 +71,8 @@ export function Contact() {
     } catch (error) {
       console.error("Ошибка:", error)
       toast({
-        title: "Ошибка отправки",
-        description: "Произошла ошибка при отправке сообщения. Пожалуйста, попробуйте еще раз.",
+        title: t("homePage.contact.form.errorTitle"),
+        description: t("homePage.contact.form.errorDesc"),
         variant: "destructive",
         duration: 5000,
       })
@@ -166,23 +166,23 @@ export function Contact() {
                   className="mt-1"
                 />
                 <label htmlFor="consent" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
-                  Я согласен(а) с{" "}
+                  {t("homePage.contact.form.consentText")}{" "}
                   <Link
                     href={LEGAL_DOCUMENTS.personalDataConsentPage}
                     className="text-primary hover:underline"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    согласием на обработку персональных данных
+                    {t("homePage.contact.form.consentPersonalData")}
                   </Link>{" "}
-                  и{" "}
+                  {t("homePage.contact.form.consentAnd")}{" "}
                   <Link
                     href={LEGAL_DOCUMENTS.privacyPolicyPage}
                     className="text-primary hover:underline"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    политикой конфиденциальности
+                    {t("homePage.contact.form.consentPrivacyPolicy")}
                   </Link>
                 </label>
               </div>
@@ -203,9 +203,7 @@ export function Contact() {
                 <div>
                   <h3 className="font-semibold text-foreground mb-2">{t("homePage.contact.address.title")}</h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    301600, Тульская область,
-                    <br />
-                    г. Узловая, ул. Тульская, д. 1
+                    {t("homePage.contact.addressDetail")}
                   </p>
                 </div>
               </div>

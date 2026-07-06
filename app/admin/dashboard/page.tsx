@@ -1,15 +1,14 @@
 import { redirect } from "next/navigation"
-import { isAdminAuthenticated } from "@/lib/admin-auth"
+import { getAdminRole } from "@/lib/admin-auth"
 import { getAdminPath } from "@/lib/admin-config"
 import { AdminDashboard } from "./admin-dashboard-client"
 
 export default async function AdminDashboardPage() {
-  const isAuthenticated = await isAdminAuthenticated()
+  const role = await getAdminRole()
 
-  if (!isAuthenticated) {
+  if (!role) {
     redirect(getAdminPath())
   }
 
-  return <AdminDashboard />
+  return <AdminDashboard role={role} />
 }
-

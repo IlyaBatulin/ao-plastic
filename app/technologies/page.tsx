@@ -1,12 +1,19 @@
 import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
 import { Beaker, Cog, Leaf, Shield } from "lucide-react"
+import { pageOpenGraph } from "@/lib/seo/page-metadata"
 
 export const metadata: Metadata = {
   title: "Технологии производства",
   description:
     "Технологии АО «Пластик»: полимеризация, экструзия, контроль качества по ГОСТ и ISO, экологичные решения. Оборудование и этапы выпуска АБС, полистирола и изделий.",
   alternates: { canonical: "/technologies" },
+  openGraph: pageOpenGraph({
+    title: "Технологии производства",
+    description:
+      "Технологии АО «Пластик»: полимеризация, экструзия, контроль качества по ГОСТ и ISO, экологичные решения. Оборудование и этапы выпуска АБС, полистирола и изделий.",
+    path: "/technologies",
+  }),
 }
 
 const technologies = [

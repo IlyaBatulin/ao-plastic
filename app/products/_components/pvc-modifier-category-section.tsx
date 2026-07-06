@@ -124,7 +124,7 @@ export function PvcModifierCategorySection({ categoryName }: PvcModifierCategory
             viewport={{ once: true, amount: 0.12 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <h3 className="mb-6 text-h3 sm:text-3xl">{t(k.normTitle)}</h3>
+            <h3 className="mb-6 text-h3">{t(k.normTitle)}</h3>
             <PvcModifierSpecTable
               rows={getPvcModifierSpecRows(lang === "en" ? "en" : "ru")}
               colIndicator={t(k.colIndicator)}
@@ -158,7 +158,7 @@ export function PvcModifierCategorySection({ categoryName }: PvcModifierCategory
             variants={storyParent}
           >
             <motion.div variants={storyChild} className="mb-8 text-center lg:text-left">
-              <h3 className="text-h3 sm:text-3xl">{t(k.statsTitle)}</h3>
+              <h3 className="text-h3">{t(k.statsTitle)}</h3>
             </motion.div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {stats.map((stat, index) => (

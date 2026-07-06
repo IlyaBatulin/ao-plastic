@@ -145,7 +145,7 @@ export function AbsCustomInfo() {
         </ScrollReveal>
         <div className="space-y-6 lg:space-y-8">
           <ScrollReveal direction="right">
-            <h3 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            <h3 className="text-h3">
               Преимущества АБС-пластика
             </h3>
           </ScrollReveal>
@@ -170,7 +170,7 @@ export function AbsCustomInfo() {
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_28rem] lg:items-center">
         <div className="space-y-6 lg:space-y-8">
           <ScrollReveal direction="left">
-            <h3 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            <h3 className="text-h3">
               Что изготавливают из АБС-пластика
             </h3>
           </ScrollReveal>
@@ -228,7 +228,7 @@ export function AbsCustomInfo() {
         </ScrollReveal>
         <ScrollReveal direction="right" delayMs={100}>
           <div className="space-y-4">
-            <h3 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            <h3 className="text-h3">
               Материалы и примеры применения
             </h3>
             <p className="max-w-3xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
@@ -256,7 +256,7 @@ export function AbsCustomInfo() {
             />
           </div>
 
-          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 relative z-10 tracking-tight">
+          <h3 className="text-h2 mb-8 relative z-10">
             Оставить заявку на изготовление
           </h3>
           <div className="relative z-10">

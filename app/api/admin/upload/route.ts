@@ -2,12 +2,11 @@ import { NextRequest, NextResponse } from "next/server"
 import { writeFile, mkdir } from "fs/promises"
 import { join } from "path"
 import { existsSync } from "fs"
-import { isAdminAuthenticated } from "@/lib/admin-auth"
+import { hasAdminSectionAccess } from "@/lib/admin-auth"
 
 export async function POST(req: NextRequest) {
-  const isAuthenticated = await isAdminAuthenticated()
-  if (!isAuthenticated) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  if (!(await hasAdminSectionAccess("upload"))) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 })
   }
 
   try {

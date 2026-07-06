@@ -33,7 +33,7 @@ export function MissionPageClient() {
         <div className="container relative z-10 mx-auto px-4 lg:px-8">
           <div className="mx-auto max-w-4xl">
             <div className="text-center border-2 border-border rounded-xl bg-card/95 backdrop-blur-sm shadow-xl p-8 md:p-12 lg:p-16">
-              <h1 className="mb-8 text-balance text-3xl font-semibold text-primary sm:text-4xl md:text-[2.5rem]">{page.title}</h1>
+              <h1 className="mb-8 text-h1 text-primary">{page.title}</h1>
               <div className="text-xl md:text-2xl text-foreground/90 leading-relaxed text-pretty space-y-5 text-left md:text-center md:space-y-6 antialiased font-normal">
                 <p>{page.intro}</p>
                 <p>{page.productionIntro}</p>
@@ -50,7 +50,7 @@ export function MissionPageClient() {
                 </ul>
                 <p>{page.pricingParagraph}</p>
                 <p>
-                  <span className="font-mission-motto text-primary">{page.motto}</span> {page.mottoSuffix}
+                  <span className="font-medium italic text-primary">{page.motto}</span> {page.mottoSuffix}
                 </p>
                 <p>{page.employeesParagraph}</p>
                 <p>{page.safetyParagraph}</p>

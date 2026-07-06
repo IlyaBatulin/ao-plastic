@@ -187,7 +187,10 @@ export function UnifiedMegaMenu({ isOpen, activeItem, onClose }: UnifiedMegaMenu
     if (!isOpen) return
     
     const updatePosition = () => {
-      const nav = document.querySelector('nav[class*="absolute"], header nav') as HTMLElement
+      // Меряем именно тот nav, внутри которого смонтировано это меню:
+      // на главной есть второй (скрытый) header, и глобальный querySelector
+      // находил его первым, из-за чего меню ложилось на top:0 поверх навигации.
+      const nav = menuRef.current?.closest("nav") as HTMLElement | null
       if (nav) {
         const rect = nav.getBoundingClientRect()
         setTopOffset(rect.bottom)
@@ -258,7 +261,7 @@ export function UnifiedMegaMenu({ isOpen, activeItem, onClose }: UnifiedMegaMenu
     if (loading && categories.length === 0) {
       content = (
         <div className="text-center py-12">
-          <div className="text-sm text-muted-foreground font-light tracking-wide" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+          <div className="text-sm text-muted-foreground font-light tracking-wide">
             Загрузка...
           </div>
         </div>
@@ -279,7 +282,6 @@ export function UnifiedMegaMenu({ isOpen, activeItem, onClose }: UnifiedMegaMenu
                     href={`/products/${category.slug}`}
                     prefetch={false}
                     className="text-lg font-semibold text-gray-900 hover:text-primary transition-all duration-300 tracking-tight group-hover:translate-x-1 inline-block"
-                    style={{ fontFamily: 'system-ui, -apple-system, sans-serif', fontWeight: 600 }}
                     onClick={onClose}
                   >
                     {getCatalogCategoryLabel(category.id, category.name, lang === "en" ? "en" : "ru")}
@@ -294,7 +296,6 @@ export function UnifiedMegaMenu({ isOpen, activeItem, onClose }: UnifiedMegaMenu
                             href={`/products/${category.slug}/${getPublicSubcategorySlug(category.id, subcategory)}`}
                             prefetch={false}
                             className="text-sm text-gray-700 hover:text-gray-900 transition-all duration-300 leading-relaxed hover:translate-x-2 inline-block"
-                            style={{ fontFamily: 'system-ui, -apple-system, sans-serif', fontWeight: 400 }}
                             onClick={onClose}
                           >
                             {getCatalogSubcategoryLabel(
@@ -336,9 +337,8 @@ export function UnifiedMegaMenu({ isOpen, activeItem, onClose }: UnifiedMegaMenu
           <div key={colIndex} className={`flex flex-col gap-10 ${isPartnership ? "items-center" : ""}`}>
             {column.map((section, sectionIndex) => (
               <div key={sectionIndex} className={`flex flex-col gap-4 group ${isPartnership ? "w-fit" : ""}`}>
-                <h3 
-                  className={`text-base font-semibold text-gray-900 tracking-tight mb-1 ${isPartnership ? "text-center" : ""}`}
-                  style={{ fontFamily: 'system-ui, -apple-system, sans-serif', letterSpacing: '-0.01em', fontWeight: 600 }}
+                <h3
+                  className={`text-base font-semibold text-gray-900 tracking-[-0.01em] mb-1 ${isPartnership ? "text-center" : ""}`}
                 >
                   {lang === "en" && section.titleEn ? section.titleEn : section.title}
                 </h3>
@@ -361,7 +361,6 @@ export function UnifiedMegaMenu({ isOpen, activeItem, onClose }: UnifiedMegaMenu
                         target={isExternal ? "_blank" : undefined}
                         rel={isExternal ? "noopener noreferrer" : undefined}
                         className="text-sm text-gray-700 hover:text-gray-900 transition-all duration-300 leading-relaxed hover:translate-x-2 inline-block"
-                        style={{ fontFamily: 'system-ui, -apple-system, sans-serif', fontWeight: 400 }}
                         onClick={onClose}
                       >
                         {label}

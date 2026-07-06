@@ -59,7 +59,7 @@ export function KorsCategorySection({ categoryName }: KorsCategorySectionProps) 
             variants={storyParent}
           >
             <motion.div variants={storyChild} className="col-span-full">
-              <h2 className="text-h2">{t(k.corsTitle)}</h2>
+              <h2 className="text-h2 text-primary">{t(k.corsTitle)}</h2>
               <p className="mt-4 max-w-2xl text-body text-primary/85 dark:text-blue-100/85">
                 {t(k.corsLead)}
               </p>
@@ -92,7 +92,7 @@ export function KorsCategorySection({ categoryName }: KorsCategorySectionProps) 
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <h2 className="mb-6 text-h3 sm:text-3xl">{t(k.corsNormTitle)}</h2>
+            <h2 className="mb-6 text-h3">{t(k.corsNormTitle)}</h2>
             <KorsNormTable
               tuLabel={getKorsTuLabel(lang === "en" ? "en" : "ru")}
               rows={getKorsNormRows(lang === "en" ? "en" : "ru")}
@@ -108,7 +108,7 @@ export function KorsCategorySection({ categoryName }: KorsCategorySectionProps) 
             variants={storyParent}
           >
             <motion.div variants={storyChild} className="col-span-full">
-              <h2 className="text-h2">{t(k.bentolTitle)}</h2>
+              <h2 className="text-h2 text-primary">{t(k.bentolTitle)}</h2>
               <p className="mt-4 max-w-2xl text-body text-primary/85 dark:text-blue-100/85">
                 {t(k.bentolLead)}
               </p>
@@ -140,7 +140,7 @@ export function KorsCategorySection({ categoryName }: KorsCategorySectionProps) 
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <h3 className="mb-6 text-h3 sm:text-3xl">{t(k.bentolNormTitle)}</h3>
+            <h3 className="mb-6 text-h3">{t(k.bentolNormTitle)}</h3>
             <KorsNormTable
               tuLabel={getBentolTuLabel(lang === "en" ? "en" : "ru")}
               rows={getBentolNormRows(lang === "en" ? "en" : "ru")}

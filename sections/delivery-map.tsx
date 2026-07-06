@@ -11,9 +11,18 @@ import {
 } from "@/data/about-pages/delivery-map-content"
 import type { Language } from "@/lib/language"
 
+function DeliveryMapLoading() {
+  const { t } = useLanguage()
+  return (
+    <div className="h-[600px] w-full rounded-xl bg-white/5 animate-pulse flex items-center justify-center text-white/50">
+      {t("homePage.deliveryMap.loading")}
+    </div>
+  )
+}
+
 const DeliveryMapLeaflet = dynamic(
   () => import("@/components/delivery-map-leaflet").then((m) => m.DeliveryMapLeaflet),
-  { ssr: false, loading: () => <div className="h-[600px] w-full rounded-xl bg-white/5 animate-pulse flex items-center justify-center text-white/50">Загрузка карты…</div> }
+  { ssr: false, loading: () => <DeliveryMapLoading /> }
 )
 
 /** Завод АО «Пластик» — Узловая, Тульская область */
@@ -396,11 +405,11 @@ export function DeliveryMap() {
     <section className="relative overflow-hidden bg-secondary py-16 lg:py-20">
       <div className="container mx-auto px-4 lg:px-8 mb-10">
         <div className="text-center">
-          <span className="mb-3 inline-block text-xs font-semibold uppercase tracking-widest text-primary/70">
+          <span className="mb-3 inline-block text-caption text-primary/70">
             {copy.badge}
           </span>
-          <h2 className="text-h2 mb-4 tracking-tight">{copy.title}</h2>
-          <p className="mx-auto max-w-3xl text-sm text-muted-foreground lg:whitespace-nowrap lg:text-base">
+          <h2 className="text-h2 text-primary mb-4">{copy.title}</h2>
+          <p className="mx-auto max-w-3xl text-base text-muted-foreground lg:whitespace-nowrap">
             {copy.descriptionPrefix}&nbsp;
             <span className="font-semibold text-foreground">80+</span>
             &nbsp;{copy.descriptionSuffix}

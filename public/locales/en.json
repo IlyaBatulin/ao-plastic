@@ -29,6 +29,11 @@
   "vacancies": "Vacancies",
   "extrusion": "Plastic Extrusion",
   "cart": "Cart",
+  "nav": {
+    "menu": "Menu",
+    "closeMenu": "Close menu",
+    "categoriesLoading": "Loading categories..."
+  },
   "productPage": {
     "backToSubcategory": "Back to subcategory",
     "specificationsTitle": "Specifications",
@@ -364,11 +369,15 @@
       "title": "Production Film",
       "description": "We invite you to learn about the history and capabilities of our enterprise"
     },
+    "deliveryMap": {
+      "loading": "Loading map…"
+    },
     "news": {
       "title": "Latest News",
       "description": "Follow company news and industry events",
       "readMore": "Read More",
-      "allNews": "All News"
+      "allNews": "All News",
+      "empty": "No news yet"
     },
     "contact": {
       "title": "Contact Us",
@@ -382,11 +391,22 @@
         "emailPlaceholder": "your@email.com",
         "phonePlaceholder": "+7 (___) ___-__-__",
         "messagePlaceholder": "Tell us about your project...",
-        "submit": "Send Message"
+        "submit": "Send Message",
+        "consentText": "I agree to the",
+        "consentPersonalData": "consent to personal data processing",
+        "consentAnd": "and",
+        "consentPrivacyPolicy": "privacy policy",
+        "consentRequired": "Consent required",
+        "consentRequiredDesc": "You must agree to personal data processing",
+        "successTitle": "Message sent",
+        "successDesc": "Your message has been sent and will be reviewed shortly. We will contact you using the details provided.",
+        "errorTitle": "Send error",
+        "errorDesc": "An error occurred while sending your message. Please try again."
       },
       "address": {
         "title": "Factory Address"
       },
+      "addressDetail": "1 Tulskaya St., Uzlovaya, Tula Region, 301600, Russia",
       "phone": {
         "title": "Phone"
       },

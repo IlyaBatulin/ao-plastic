@@ -61,7 +61,7 @@ export function SafetyPageClient() {
           <div className="container mx-auto px-4 lg:px-8">
             <div className="mx-auto max-w-5xl">
               <div className="mb-16 text-center">
-                <h1 className="mb-6 animate-in text-4xl font-bold leading-tight text-primary fade-in slide-in-from-bottom-4 duration-700 break-words sm:text-5xl md:text-7xl">
+                <h1 className="mb-6 animate-in text-h1 text-primary fade-in slide-in-from-bottom-4 duration-700 break-words">
                   {page.heroTitle}
                 </h1>
                 <p className="animate-in text-xl leading-relaxed text-foreground/70 fade-in slide-in-from-bottom-5 duration-700 delay-200 md:text-2xl">

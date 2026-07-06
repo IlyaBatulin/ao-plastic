@@ -381,10 +381,10 @@ export function PasfPageClient() {
           <div className="container mx-auto px-4 lg:px-8">
             <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
               <div>
-                <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground">
+                <p className="mb-4 text-caption text-muted-foreground">
                   {page.resourcesBadge}
                 </p>
-                <h2 className="text-h2 mb-6">{page.resourcesTitle}</h2>
+                <h2 className="text-h2 text-primary mb-6">{page.resourcesTitle}</h2>
                 <p className="mb-6 text-lg leading-relaxed text-muted-foreground">{page.resourcesText}</p>
                 <img
                   src="/images/pasf/fire-truck.png"
@@ -425,10 +425,10 @@ export function PasfPageClient() {
           <div className="container mx-auto px-4 lg:px-8">
             <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
               <div>
-                <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground">
+                <p className="mb-4 text-caption text-muted-foreground">
                   {page.docsBadge}
                 </p>
-                <h2 className="text-h2 mb-6">{page.docsTitle}</h2>
+                <h2 className="text-h2 text-primary mb-6">{page.docsTitle}</h2>
                 <p className="mb-8 text-lg leading-relaxed text-muted-foreground">{page.docsText}</p>
                 <div className="border border-border bg-card p-6">
                   <p className="font-semibold text-foreground">{page.docsNote}</p>
@@ -461,10 +461,10 @@ export function PasfPageClient() {
           <div className="container mx-auto px-4 lg:px-8">
             <div className="mb-10 grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
               <div>
-                <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground">
+                <p className="mb-4 text-caption text-muted-foreground">
                   {page.cooperationBadge}
                 </p>
-                <h2 className="text-h2">{page.cooperationTitle}</h2>
+                <h2 className="text-h2 text-primary">{page.cooperationTitle}</h2>
               </div>
               <p className="text-lg leading-relaxed text-muted-foreground">{page.cooperationText}</p>
             </div>

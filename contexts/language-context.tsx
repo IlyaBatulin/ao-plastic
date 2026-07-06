@@ -22,10 +22,19 @@ let translationsCache: Record<Language, Record<string, any> | null> = {
 export function LanguageProvider({
   children,
   initialLang = "ru",
+  initialTranslations,
 }: {
   children: ReactNode
   initialLang?: Language
+  /** Переводы активного языка с сервера — чтобы текст был в HTML при SSR (важно для SEO и LCP). */
+  initialTranslations?: Record<string, any>
 }) {
+  // Сидируем кэш серверными переводами до первого рендера,
+  // тогда t() работает уже при SSR и краулеры видят текст.
+  if (initialTranslations && !translationsCache[initialLang]) {
+    translationsCache[initialLang] = initialTranslations
+  }
+
   const [lang, setLangState] = useState<Language>(initialLang)
 
   const [translations, setTranslations] = useState<Record<string, any>>(
@@ -35,7 +44,7 @@ export function LanguageProvider({
     translationsCache[initialLang] ? initialLang : null
   )
 
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(() => !translationsCache[initialLang])
 
   const applyTranslations = (nextLang: Language, data: Record<string, any>) => {
     translationsCache[nextLang] = data
@@ -43,10 +52,9 @@ export function LanguageProvider({
     setLoadedLang(nextLang)
   }
 
-  // Загружаем переводы сразу при монтировании
+  // Загружаем переводы при смене языка (активный язык уже в кэше с сервера)
   useEffect(() => {
     const loadTranslations = async () => {
-      setIsLoading(true)
       try {
         // Проверяем кэш
         if (translationsCache[lang]) {
@@ -54,6 +62,7 @@ export function LanguageProvider({
           setIsLoading(false)
           return
         }
+        setIsLoading(true)
 
         const response = await fetch(`/locales/${lang}.json`)
         if (!response.ok) throw new Error("Failed to fetch translations")
@@ -83,24 +92,6 @@ export function LanguageProvider({
 
     persistLanguage(validSaved ?? initialLang)
   }, [initialLang])
-
-  useEffect(() => {
-    const preloadLanguages = async () => {
-      for (const locale of ["ru", "en"] as Language[]) {
-        if (translationsCache[locale]) continue
-        try {
-          const response = await fetch(`/locales/${locale}.json`)
-          if (response.ok) {
-            translationsCache[locale] = await response.json()
-          }
-        } catch {
-          // ignore preload errors
-        }
-      }
-    }
-
-    void preloadLanguages()
-  }, [])
 
   useEffect(() => {
     const handleStorageChange = () => {

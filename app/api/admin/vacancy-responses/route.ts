@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server"
 import { createServiceClient } from "@/utils/supabase/server"
-import { isAdminAuthenticated } from "@/lib/admin-auth"
+import { hasAdminSectionAccess } from "@/lib/admin-auth"
 
 export async function GET() {
-  const isAuthenticated = await isAdminAuthenticated()
-  if (!isAuthenticated) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  if (!(await hasAdminSectionAccess("vacancy-responses"))) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 })
   }
 
   try {

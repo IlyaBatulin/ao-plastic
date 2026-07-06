@@ -19,9 +19,9 @@ export function SectionHeading({
 }: SectionHeadingProps) {
   return (
     <div className={cn(centered ? "text-center" : "text-left", className)}>
-      <h2 className={cn("text-h2", titleClassName)}>{title}</h2>
+      <h2 className={cn("text-h2 text-primary", titleClassName)}>{title}</h2>
       {subtitle ? (
-        <p className={cn("mx-auto mt-4 max-w-2xl text-body", centered ? "mx-auto" : "mx-0", subtitleClassName)}>
+        <p className={cn("mx-auto mt-4 max-w-2xl text-body text-muted-foreground", centered ? "mx-auto" : "mx-0", subtitleClassName)}>
           {subtitle}
         </p>
       ) : null}

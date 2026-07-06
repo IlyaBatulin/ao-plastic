@@ -45,7 +45,7 @@ export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps
             <h1 className="text-h1 mb-3 text-primary sm:mb-4">
               {t("homePage.catalog.title")}
             </h1>
-            <p className="text-body max-w-3xl mx-auto">
+            <p className="text-body text-muted-foreground max-w-3xl mx-auto">
               {t("homePage.catalog.description")}
             </p>
             <div className="mt-6 h-0.5 w-24 mx-auto bg-primary" />

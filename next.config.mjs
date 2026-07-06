@@ -4,7 +4,15 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: true,
+    // Оптимизация включена: AVIF/WebP + ресайз под устройство.
+    // Требует пакет sharp в production (добавлен в dependencies).
+    formats: ["image/avif", "image/webp"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "*.supabase.co",
+      },
+    ],
   },
   async redirects() {
     return [
@@ -48,10 +56,25 @@ const nextConfig = {
         value: "max-age=63072000; includeSubDomains; preload",
       })
     }
+    // Долгий кэш для неизменяемой статики — телефон не перекачивает
+    // видео и картинки при каждом визите.
+    const immutableCache = [
+      { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+    ]
+
     return [
       {
         source: "/:path*",
         headers: security,
+      },
+      { source: "/videos/:path*", headers: immutableCache },
+      { source: "/images/:path*", headers: immutableCache },
+      { source: "/prevyu/:path*", headers: immutableCache },
+      {
+        source: "/locales/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400" },
+        ],
       },
     ]
   },

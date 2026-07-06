@@ -1,10 +1,10 @@
 "use client"
 
 import { useEffect, useState, useRef, useCallback } from "react"
-import { HERO_VIDEO_READY_EVENT, HERO_VIDEO_SRC } from "@/lib/hero-media"
+import { HERO_VIDEO_READY_EVENT } from "@/lib/hero-media"
 import { COOKIE_CONSENT_READY_EVENT } from "@/lib/cookie-consent"
 
-const MAX_SPLASH_MS = 15000
+const MAX_SPLASH_MS = 4000
 const MIN_SPLASH_MS = 600
 const FORCE_SPLASH_IN_DEV = process.env.NODE_ENV === "development"
 
@@ -18,6 +18,14 @@ function shouldSkipSplash(): boolean {
   if (typeof window === "undefined") return true
   if (!isHomePage()) return true
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return true
+
+  // На медленных соединениях не задерживаем показ контента
+  const connection = (navigator as Navigator & {
+    connection?: { saveData?: boolean; effectiveType?: string }
+  }).connection
+  if (connection?.saveData) return true
+  if (connection?.effectiveType && /(^|-)2g|3g/.test(connection.effectiveType)) return true
+
   return false
 }
 
@@ -57,32 +65,6 @@ function hideMainContentForSplash() {
     mainContent.classList.remove("opacity-100")
   }
   document.body.style.overflow = "hidden"
-}
-
-function preloadHeroVideo(onReady: () => void): () => void {
-  const video = document.createElement("video")
-  video.preload = "auto"
-  video.muted = true
-  video.playsInline = true
-  video.src = HERO_VIDEO_SRC
-
-  const handleReady = () => {
-    onReady()
-    window.dispatchEvent(new Event(HERO_VIDEO_READY_EVENT))
-  }
-
-  video.addEventListener("canplaythrough", handleReady, { once: true })
-  video.addEventListener("playing", handleReady, { once: true })
-  video.addEventListener("error", handleReady, { once: true })
-  video.load()
-
-  return () => {
-    video.removeEventListener("canplaythrough", handleReady)
-    video.removeEventListener("playing", handleReady)
-    video.removeEventListener("error", handleReady)
-    video.removeAttribute("src")
-    video.load()
-  }
 }
 
 export function LoadingScreen() {
@@ -154,15 +136,12 @@ export function LoadingScreen() {
     }
     window.addEventListener(HERO_VIDEO_READY_EVENT, handleHeroVideoReady)
 
-    const cleanupPreload = shouldWaitForHeroVideo ? preloadHeroVideo(() => setHeroVideoReady(true)) : undefined
-
     const maxTimer = window.setTimeout(() => dismissSplash(true), MAX_SPLASH_MS)
 
     return () => {
       window.removeEventListener("load", handleLoad)
       window.removeEventListener(HERO_VIDEO_READY_EVENT, handleHeroVideoReady)
       window.clearTimeout(maxTimer)
-      cleanupPreload?.()
       document.body.style.overflow = ""
     }
   }, [isVisible, dismissSplash])

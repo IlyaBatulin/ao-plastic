@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { createServiceClient } from "@/utils/supabase/server"
-import { isAdminAuthenticated } from "@/lib/admin-auth"
+import { hasAdminSectionAccess } from "@/lib/admin-auth"
 
 async function countOf(
   supabase: ReturnType<typeof createServiceClient>,
@@ -45,9 +45,8 @@ function buildTrendTemplate(days: number) {
 }
 
 export async function GET() {
-  const isAuthenticated = await isAdminAuthenticated()
-  if (!isAuthenticated) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  if (!(await hasAdminSectionAccess("stats"))) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 })
   }
 
   try {

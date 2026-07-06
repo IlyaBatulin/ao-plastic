@@ -70,7 +70,7 @@ export function RfpRequestsClient() {
         return (
           <div key={request.id} className="rounded-3xl border border-border bg-card/80 p-6 shadow-sm space-y-5">
             <div className="flex items-center justify-between flex-wrap gap-3 pb-2 border-b border-border/60">
-              <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-primary">
+              <div className="inline-flex items-center gap-2 text-caption text-primary">
                 <ClipboardList className="w-4 h-4" />
                 {request.request_number}
               </div>

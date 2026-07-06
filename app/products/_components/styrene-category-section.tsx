@@ -59,7 +59,7 @@ export function StyreneCategorySection({ categoryName }: StyreneCategorySectionP
             variants={storyParent}
           >
             <motion.div variants={storyChild} className="col-span-full">
-              <h2 className="text-h2">{t(styreneK.title)}</h2>
+              <h2 className="text-h2 text-primary">{t(styreneK.title)}</h2>
               <p className="mt-4 max-w-2xl text-body text-primary/85 dark:text-blue-100/85">
                 {t(styreneK.lead)}
               </p>
@@ -95,7 +95,7 @@ export function StyreneCategorySection({ categoryName }: StyreneCategorySectionP
             viewport={{ once: true, amount: 0.12 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <h3 className="mb-6 text-h3 sm:text-3xl">{t(styreneK.normTitle)}</h3>
+            <h3 className="mb-6 text-h3">{t(styreneK.normTitle)}</h3>
             <KorsNormTable
               tuLabel={STYRENE_OKP_LABEL}
               rows={getStyreneNormRows(lang === "en" ? "en" : "ru")}

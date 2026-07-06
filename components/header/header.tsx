@@ -11,7 +11,6 @@ import { Menu, X, ShoppingCart } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { useCart } from "@/contexts/cart-context"
 import { Badge } from "@/components/ui/badge"
-import { getLenisInstance } from "@/lib/lenis-instance"
 
 const HOME_SCROLL_THRESHOLD = 50
 
@@ -29,19 +28,8 @@ export function Header() {
     handleScroll()
     window.addEventListener("scroll", handleScroll, { passive: true })
 
-    let lenis = getLenisInstance()
-    const attachLenis = () => {
-      if (lenis) return
-      lenis = getLenisInstance()
-      lenis?.on("scroll", handleScroll)
-    }
-    attachLenis()
-    const timer = window.setTimeout(attachLenis, 0)
-
     return () => {
-      window.clearTimeout(timer)
       window.removeEventListener("scroll", handleScroll)
-      lenis?.off("scroll", handleScroll)
     }
   }, [])
 

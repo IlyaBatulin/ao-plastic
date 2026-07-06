@@ -13,7 +13,7 @@ export function AbsCategorySection() {
     <section className="border-t border-border bg-muted/30 py-16 lg:py-20">
       <div className="container mx-auto max-w-7xl px-4 lg:px-8">
         <header className="mb-10 text-center">
-          <h2 className="text-2xl font-semibold tracking-tight text-foreground lg:text-3xl">
+          <h2 className="text-h2 text-foreground">
             {t(absK.sectionTitle)}
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground leading-relaxed">

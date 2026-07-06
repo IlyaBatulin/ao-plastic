@@ -11,7 +11,7 @@ export function AbsExtrusionInfo() {
 
   return (
     <AbsShimmerCard>
-      <h2 className="text-2xl font-semibold tracking-tight text-foreground">{t(k.extrusionTitle)}</h2>
+      <h2 className="text-h3 text-foreground">{t(k.extrusionTitle)}</h2>
       <p className="mt-4 text-muted-foreground leading-relaxed">{t(k.extrusionIntro)}</p>
 
       <h3 className="mt-10 text-base font-semibold text-foreground">{t(k.extrusionApplicationsHeading)}</h3>

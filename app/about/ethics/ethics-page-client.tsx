@@ -53,7 +53,7 @@ export function EthicsPageClient() {
         <section className="pt-32 pb-16">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-5xl md:text-6xl font-bold mb-6 text-primary dark:text-[#60a5fa]">
+              <h1 className="text-h1 mb-6 text-primary dark:text-[#60a5fa]">
                 {page.heroTitle}
               </h1>
               <p className="text-xl text-foreground/80">{page.heroCompany}</p>

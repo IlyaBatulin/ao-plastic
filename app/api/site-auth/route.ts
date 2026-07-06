@@ -6,9 +6,10 @@ import {
   isRateLimited,
   recordFailedAttempt,
 } from "@/lib/admin-rate-limit"
+import { safeEqual } from "@/lib/admin-session"
+import { createSiteSessionToken, SITE_AUTH_COOKIE } from "@/lib/site-session"
 
 const SITE_PASSWORD = process.env.SITE_PASSWORD || ""
-const SITE_AUTH_COOKIE = "site_auth"
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 30 // 30 дней
 const RATE_LIMIT_SCOPE = "site-auth"
 
@@ -38,12 +39,12 @@ export async function POST(request: NextRequest) {
 
     const { password } = await request.json()
 
-    if (password === SITE_PASSWORD) {
+    if (typeof password === "string" && password && safeEqual(password, SITE_PASSWORD)) {
       clearAttempts(request, RATE_LIMIT_SCOPE)
       const response = NextResponse.json({ success: true })
 
-      // Устанавливаем cookie с аутентификацией
-      response.cookies.set(SITE_AUTH_COOKIE, "authenticated", {
+      // Подписанный HMAC-токен вместо статичного значения
+      response.cookies.set(SITE_AUTH_COOKIE, createSiteSessionToken(), {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",

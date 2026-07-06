@@ -1,23 +1,23 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
 import { cookies } from "next/headers"
-import { Inter } from "next/font/google"
+import { Manrope } from "next/font/google"
 import "./globals.css"
-import "./logo-loop.css"
 import { AppProviders } from "@/components/app-providers"
 import { ConditionalHeader } from "@/components/conditional-header"
 import { Toaster } from "@/components/ui/toaster"
 import { LoadingScreen } from "@/components/loading-screen"
 import { LenisProvider } from "@/components/lenis-provider"
-import { GsapInit } from "@/components/gsap-init"
 import { getSiteUrl } from "@/lib/site"
 import { parseLanguage } from "@/lib/language"
 import { SiteJsonLd } from "@/components/seo/site-json-ld"
-import { HERO_VIDEO_SRC } from "@/lib/hero-media"
 
-const inter = Inter({
+// Единый фирменный шрифт сайта. Самохостится через next/font —
+// без render-blocking запросов к Google Fonts.
+const manrope = Manrope({
   subsets: ["latin", "cyrillic"],
   display: "swap",
+  variable: "--font-manrope",
 })
 
 const siteUrl = getSiteUrl()
@@ -46,8 +46,11 @@ export const metadata: Metadata = {
     "полимеры",
   ],
   icons: {
-    icon: [{ url: "/images/logo123.png", type: "image/svg+xml" }],
-    apple: [{ url: "/images/logo123.png", type: "image/svg+xml" }],
+    icon: [
+      { url: "/images/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/images/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: [{ url: "/images/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   robots: {
     index: true,
@@ -70,10 +73,10 @@ export const metadata: Metadata = {
       "Производитель полимеров и пластиковых изделий с 1959 года: АБС, полистирол, стирол, автокомпоненты, товары для дома.",
     images: [
       {
-        url: "/images/logo123.png",
-        width: 512,
-        height: 512,
-        alt: "Логотип АО «Пластик»",
+        url: "/images/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Завод АО «Пластик» в Узловой",
       },
     ],
   },
@@ -82,7 +85,7 @@ export const metadata: Metadata = {
     title: "АО «Пластик»",
     description:
       "Производство АБС-пластиков, полистирола и пластиковых изделий. Завод в Тульской области.",
-    images: ["/images/logo123.png"],
+    images: ["/images/og-image.jpg"],
   },
   ...((process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
     process.env.NEXT_PUBLIC_YANDEX_SITE_VERIFICATION)
@@ -106,18 +109,22 @@ export default async function RootLayout({
 }) {
   const cookieStore = await cookies()
   const initialLang = parseLanguage(cookieStore.get("lang")?.value)
+  // Переводы активного языка отдаём с сервера — текст попадает в HTML
+  // при SSR (SEO + LCP). Второй язык догружается на клиенте при переключении.
+  const initialTranslations = (
+    initialLang === "en"
+      ? (await import("@/public/locales/en.json")).default
+      : (await import("@/public/locales/ru.json")).default
+  ) as Record<string, unknown>
 
   return (
     <html
       lang={initialLang}
-      className={`${inter.className} bg-background text-foreground`}
+      className={`${manrope.variable} ${manrope.className} bg-background text-foreground`}
       suppressHydrationWarning
     >
       <head>
-        <link rel="preload" href="/locales/ru.json" as="fetch" crossOrigin="anonymous" />
-        <link rel="preload" href="/locales/en.json" as="fetch" crossOrigin="anonymous" />
         <link rel="preload" href="/images/logo123.jpg" as="image" />
-        <link rel="preload" href={HERO_VIDEO_SRC} as="fetch" type="video/mp4" crossOrigin="anonymous" />
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{
@@ -145,8 +152,7 @@ export default async function RootLayout({
             draggable={false}
           />
         </div>
-        <AppProviders initialLang={initialLang}>
-          <GsapInit />
+        <AppProviders initialLang={initialLang} initialTranslations={initialTranslations}>
           <SiteJsonLd />
           <LoadingScreen />
           <LenisProvider>

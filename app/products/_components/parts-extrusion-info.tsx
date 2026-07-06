@@ -132,7 +132,7 @@ export function PartsExtrusionInfo({ products }: Props) {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-3xl font-bold">Товары в этой категории</h2>
+            <h2 className="text-h2">Товары в этой категории</h2>
             <p className="mt-2 text-sm text-muted-foreground max-w-2xl">
               Экструзионные изделия ДМС: сепараторы, трубки, шланги, окантовки, профили и другие
               специализированные детали для автомобильной промышленности.

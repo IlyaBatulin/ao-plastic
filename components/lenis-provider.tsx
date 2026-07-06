@@ -27,12 +27,8 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
     const lenis = new Lenis({
       duration: 1.2,
       easing: LENIS_EASING,
-      orientation: "vertical",
-      gestureOrientation: "vertical",
       smoothWheel: true,
       wheelMultiplier: 1,
-      touchMultiplier: 2,
-      infinite: false,
     })
 
     setLenisInstance(lenis)
@@ -44,17 +40,9 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
     }
     rafId = requestAnimationFrame(raf)
 
-    const onLenisScroll = () => {
-      const st = (window as Window & { ScrollTrigger?: { update: () => void } }).ScrollTrigger
-      st?.update()
-    }
-    lenis.on("scroll", onLenisScroll)
-
     const refresh = () => {
       requestAnimationFrame(() => {
         lenis.resize()
-        const st = (window as Window & { ScrollTrigger?: { refresh: () => void } }).ScrollTrigger
-        st?.refresh()
       })
     }
 
@@ -68,7 +56,6 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
       window.clearTimeout(loadTimer)
       window.removeEventListener("lenis:refresh", refresh)
       window.removeEventListener("load", refresh)
-      lenis.off("scroll", onLenisScroll)
       cancelAnimationFrame(rafId)
       lenis.destroy()
       setLenisInstance(null)
@@ -85,8 +72,6 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
       requestAnimationFrame(() => {
         lenis.resize()
         scrollPageToTop()
-        const st = (window as Window & { ScrollTrigger?: { refresh: () => void } }).ScrollTrigger
-        st?.refresh()
       })
     })
 

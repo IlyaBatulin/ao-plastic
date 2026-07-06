@@ -44,6 +44,7 @@ export async function generateMetadata({ params }: NewsDetailPageProps): Promise
     openGraph: {
       title: item.title,
       description: desc,
+      url: `/about/news/${item.slug || item.id}`,
       images: item.image_url ? [{ url: item.image_url }] : undefined,
     },
   }

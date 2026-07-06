@@ -106,7 +106,7 @@ export function News({ items = [] }: NewsProps) {
             ))
           ) : (
             <div className="col-span-full text-center py-12 text-muted-foreground">
-              {t("homePage.news.noNews") || "Пока нет новостей"}
+              {t("homePage.news.empty")}
             </div>
           )}
         </div>

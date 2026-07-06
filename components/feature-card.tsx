@@ -15,7 +15,7 @@ export function FeatureCard({ icon: Icon, title, description, className }: Featu
         <Icon className="h-7 w-7 text-primary" />
       </div>
       <h3 className="text-h3 mb-3">{title}</h3>
-      <p className="text-body text-base sm:text-base">{description}</p>
+      <p className="text-body text-base sm:text-base text-muted-foreground">{description}</p>
     </div>
   )
 }

@@ -12,7 +12,7 @@ export function AbsInjectionInfo() {
 
   return (
     <AbsShimmerCard>
-      <h2 className="text-2xl font-semibold tracking-tight text-foreground">{t(k.injectionTitle)}</h2>
+      <h2 className="text-h3 text-foreground">{t(k.injectionTitle)}</h2>
       <p className="mt-4 text-muted-foreground leading-relaxed">{t(k.injectionIntro)}</p>
 
       <h3 className="mt-10 text-base font-semibold text-foreground">{t(k.injectionPropertiesHeading)}</h3>

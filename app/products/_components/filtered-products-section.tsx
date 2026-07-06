@@ -104,7 +104,7 @@ export function FilteredProductsSection({
   return (
     <>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-3xl font-bold">
+        <h2 className="text-h2">
           {t("homePage.catalog.productList.sectionTitle") || "Товары в этой категории"}
         </h2>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -215,7 +215,7 @@ export function FilteredProductsSection({
       {/* Таблица характеристик и применения (только для промышленных товаров) */}
       {showComparisonTable && (
         <div className="mt-12">
-        <h3 className="text-2xl font-bold mb-6">Сравнительная таблица характеристик</h3>
+        <h3 className="text-h3 mb-6">Сравнительная таблица характеристик</h3>
         <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
           {subcategoryId === 'ps-psv-s' || subcategoryId === 'psv-s' ? (
             // Специальная таблица для ПСВ-С

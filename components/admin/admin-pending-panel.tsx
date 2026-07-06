@@ -5,11 +5,13 @@ import type { LucideIcon } from "lucide-react"
 import { Bell, ClipboardList, MessageSquare, UserCheck } from "lucide-react"
 import { AdminLink } from "@/components/admin-link"
 import { cn } from "@/lib/utils"
+import { canAccessSection, type AdminRole } from "@/lib/admin-roles"
 
 type PendingItem = {
   label: string
   count: number
   href: string
+  section: string
   icon: LucideIcon
   accent: string
 }
@@ -17,6 +19,7 @@ type PendingItem = {
 export function AdminPendingPanel({
   pending,
   loading,
+  role = "director",
 }: {
   pending: {
     vacancyResponses: number
@@ -24,12 +27,14 @@ export function AdminPendingPanel({
     contactMessages: number
   } | null
   loading?: boolean
+  role?: AdminRole
 }) {
   const items: PendingItem[] = [
     {
       label: "Отклики на вакансии",
       count: pending?.vacancyResponses ?? 0,
       href: "/admin/vacancy-responses",
+      section: "vacancy-responses",
       icon: UserCheck,
       accent: "bg-rose-500/10 text-rose-600",
     },
@@ -37,6 +42,7 @@ export function AdminPendingPanel({
       label: "Ответы поставщиков",
       count: pending?.rfpResponses ?? 0,
       href: "/admin/rfp-responses",
+      section: "rfp-responses",
       icon: ClipboardList,
       accent: "bg-orange-500/10 text-orange-600",
     },
@@ -44,10 +50,11 @@ export function AdminPendingPanel({
       label: "Сообщения с сайта",
       count: pending?.contactMessages ?? 0,
       href: "/admin/contact-messages",
+      section: "contact-messages",
       icon: MessageSquare,
       accent: "bg-sky-500/10 text-sky-600",
     },
-  ]
+  ].filter((item) => canAccessSection(role, item.section))
 
   const totalPending = items.reduce((sum, item) => sum + item.count, 0)
 

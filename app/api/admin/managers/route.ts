@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createServiceClient } from "@/utils/supabase/server"
-import { isAdminAuthenticated } from "@/lib/admin-auth"
+import { hasAdminSectionAccess } from "@/lib/admin-auth"
 
 type ManagerRow = {
   id: number
@@ -50,9 +50,8 @@ async function loadOrderCounts(supabase: ReturnType<typeof createServiceClient>)
 }
 
 export async function GET() {
-  const isAuthenticated = await isAdminAuthenticated()
-  if (!isAuthenticated) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  if (!(await hasAdminSectionAccess("managers"))) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 })
   }
 
   try {
@@ -90,9 +89,8 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const isAuthenticated = await isAdminAuthenticated()
-  if (!isAuthenticated) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  if (!(await hasAdminSectionAccess("managers"))) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 })
   }
 
   try {

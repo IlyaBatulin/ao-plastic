@@ -108,7 +108,7 @@ export default function ContactsPage({ params, searchParams }: NextPageProps) {
         {/* Градиентный overlay для мягкости */}
         <div className="absolute inset-0 bg-gradient-to-b from-blue-50/8 via-transparent to-background" />
         <div className="container mx-auto px-4 lg:px-8 relative z-10">
-          <h1 className="text-5xl lg:text-6xl font-bold text-primary mb-6">{t("contactsPage.title")}</h1>
+          <h1 className="text-h1 text-primary mb-6">{t("contactsPage.title")}</h1>
           <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed">
             {t("contactsPage.description")}
           </p>
@@ -137,10 +137,10 @@ export default function ContactsPage({ params, searchParams }: NextPageProps) {
                             {t("contactsPage.production.badge")}
                           </span>
                         </div>
-                        <p className="text-muted-foreground text-sm leading-relaxed mt-2">
+                        <p className="text-muted-foreground text-base leading-relaxed mt-2">
                           {t("contactsPage.production.address")}
                         </p>
-                        <div className="mt-4 grid sm:grid-cols-2 gap-4 text-sm text-muted-foreground">
+                        <div className="mt-4 grid sm:grid-cols-2 gap-4 text-base text-muted-foreground">
                           <div>
                             <p className="font-semibold text-foreground">{t("contactsPage.production.reception")}</p>
                             <p>+7 (487) 312-47-31</p>
@@ -167,10 +167,10 @@ export default function ContactsPage({ params, searchParams }: NextPageProps) {
                             {t("contactsPage.sales.badge")}
                           </span>
                         </div>
-                        <p className="text-muted-foreground text-sm leading-relaxed mt-2">
+                        <p className="text-muted-foreground text-base leading-relaxed mt-2">
                           {t("contactsPage.sales.address")}
                         </p>
-                        <div className="mt-4 grid sm:grid-cols-2 gap-4 text-sm text-muted-foreground">
+                        <div className="mt-4 grid sm:grid-cols-2 gap-4 text-base text-muted-foreground">
                           <div>
                             <p className="font-semibold text-foreground">{t("contactsPage.sales.mainContacts")}</p>
                             <p>+7 (495) 201-03-33</p>
@@ -197,7 +197,7 @@ export default function ContactsPage({ params, searchParams }: NextPageProps) {
                             {t("contactsPage.procurement.badge")}
                           </span>
                         </div>
-                        <div className="mt-4 text-sm text-muted-foreground">
+                        <div className="mt-4 text-base text-muted-foreground">
                           <div>
                             <p className="font-semibold text-foreground">{t("contactsPage.procurement.companyName")}</p>
                             <p className="text-muted-foreground">{t("contactsPage.procurement.description")}</p>
@@ -211,7 +211,7 @@ export default function ContactsPage({ params, searchParams }: NextPageProps) {
                                 {TEK_SNAB_CONTACTS.email}
                               </a>
                             </p>
-                            <p className="mt-2 text-xs leading-relaxed">{t("contactsPage.procurement.address")}</p>
+                            <p className="mt-2 text-base leading-relaxed">{t("contactsPage.procurement.address")}</p>
                           </div>
                         </div>
                       </div>
@@ -230,7 +230,7 @@ export default function ContactsPage({ params, searchParams }: NextPageProps) {
                             {t("contactsPage.salesByDirection.badge")}
                           </span>
                         </div>
-                        <div className="mt-4 grid sm:grid-cols-2 gap-4 text-sm text-muted-foreground">
+                        <div className="mt-4 grid sm:grid-cols-2 gap-4 text-base text-muted-foreground">
                           {salesDirections.map((item) => (
                             <div key={item.key} className="border border-border/60 rounded-2xl p-4">
                               <p className="font-semibold text-foreground mb-2">{t(`contactsPage.salesByDirection.directions.${item.key}`)}</p>
@@ -360,7 +360,7 @@ export default function ContactsPage({ params, searchParams }: NextPageProps) {
                     <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
                     {t("contactsPage.workingHours.title")}
                   </h3>
-                  <div className="grid gap-4 text-sm text-muted-foreground">
+                  <div className="grid gap-4 text-base text-muted-foreground">
                     <div>
                       <p className="font-semibold text-foreground mb-1">{t("contactsPage.workingHours.production")}</p>
                       <p>{t("contactsPage.workingHours.productionHours")}</p>
@@ -372,7 +372,7 @@ export default function ContactsPage({ params, searchParams }: NextPageProps) {
                       <p>{t("contactsPage.workingHours.weekend")}</p>
                     </div>
                   </div>
-                  <div className="rounded-xl border border-dashed border-primary/40 bg-primary/5 p-4 text-sm text-primary">
+                  <div className="rounded-xl border border-dashed border-primary/40 bg-primary/5 p-4 text-base text-primary">
                     {t("contactsPage.workingHours.unifiedPhone")} <br />
                     <span className="font-semibold text-foreground">+7 (495) 201-03-33</span>
                   </div>

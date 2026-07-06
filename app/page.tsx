@@ -7,6 +7,7 @@ import { News } from "@/sections/news"
 import { Contact } from "@/sections/contact"
 import { Footer } from "@/components/footer"
 import { createClient, withRetry } from "@/utils/supabase/server"
+import { pageOpenGraph } from "@/lib/seo/page-metadata"
 
 export const revalidate = 300
 
@@ -20,6 +21,13 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  openGraph: pageOpenGraph({
+    title:
+      "АО «Пластик» — производство АБС-пластиков, полистирола и полимеров | Узловая",
+    description:
+      "Официальный сайт производителя: АБС-пластики (литьё и экструзия), вспенивающийся и экструзионный полистирол, стирол, детали машиностроения, товары народного потребления. Каталог, новости, контакты завода в Узловой.",
+    path: "/",
+  }),
 }
 
 export default async function Home() {

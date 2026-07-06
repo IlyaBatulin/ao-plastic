@@ -234,7 +234,7 @@ export function FinndispPageClient() {
                 <Building2 className="h-4 w-4" />
                 {page.heroBadge}
               </span>
-              <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em]" style={{ color: `${FINNDISP_BLUE}CC` }}>
+              <p className="mb-2 text-caption" style={{ color: `${FINNDISP_BLUE}CC` }}>
                 {page.heroSubtitle}
               </p>
               <h1

@@ -5,14 +5,18 @@
 
 const SEARCH_CRAWLERS = [
   "googlebot",
+  "googlebot-image",
   "google-inspectiontool",
   "storebot-google",
+  "adsbot-google",
+  "mediapartners-google",
   "bingbot",
   "msnbot",
   "slurp",
   "duckduckbot",
   "yandexbot",
   "yandeximages",
+  "yandexdirect",
   "yandexmetrika",
   "yandexwebmaster",
   "applebot",

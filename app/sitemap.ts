@@ -51,14 +51,12 @@ function staticEntries(base: string): MetadataRoute.Sitemap {
 
 function productEntriesFromJson(base: string): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = []
-  const now = new Date()
 
   for (const cat of productsData.categories) {
     if (HIDDEN_CATEGORIES.has(cat.id)) continue
 
     entries.push({
       url: `${base}/products/${cat.id}`,
-      lastModified: now,
       changeFrequency: "weekly",
       priority: 0.85,
     })
@@ -68,7 +66,6 @@ function productEntriesFromJson(base: string): MetadataRoute.Sitemap {
       if (!slug) continue
       entries.push({
         url: `${base}/products/${cat.id}/${slug}`,
-        lastModified: now,
         changeFrequency: "weekly",
         priority: 0.75,
       })
@@ -83,7 +80,6 @@ function productEntriesFromJson(base: string): MetadataRoute.Sitemap {
       if (!subSlug) continue
       entries.push({
         url: `${base}/products/${cat.id}/${subSlug}/${p.id}`,
-        lastModified: now,
         changeFrequency: "monthly",
         priority: 0.65,
       })
@@ -99,15 +95,22 @@ async function fetchSupabaseProductUrls(base: string): Promise<MetadataRoute.Sit
   if (!supabaseUrl || !supabaseKey) return null
 
   try {
-    const [productsRes, subcatsRes] = await Promise.all([
-      fetch(`${supabaseUrl}/rest/v1/products?is_active=eq.true&select=id,category_id,subcategory_id`, {
+    const [productsRes, subcatsRes, categoriesRes] = await Promise.all([
+      fetch(`${supabaseUrl}/rest/v1/products?is_active=eq.true&select=id,category_id,subcategory_id,updated_at`, {
         headers: {
           apikey: supabaseKey,
           Authorization: `Bearer ${supabaseKey}`,
         },
         next: { revalidate: 3600 },
       }),
-      fetch(`${supabaseUrl}/rest/v1/subcategories?select=id,slug,category_id`, {
+      fetch(`${supabaseUrl}/rest/v1/subcategories?select=id,slug,category_id,updated_at`, {
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+        },
+        next: { revalidate: 3600 },
+      }),
+      fetch(`${supabaseUrl}/rest/v1/categories?is_active=eq.true&select=id,updated_at`, {
         headers: {
           apikey: supabaseKey,
           Authorization: `Bearer ${supabaseKey}`,
@@ -116,42 +119,45 @@ async function fetchSupabaseProductUrls(base: string): Promise<MetadataRoute.Sit
       }),
     ])
 
-    if (!productsRes.ok || !subcatsRes.ok) return null
+    if (!productsRes.ok || !subcatsRes.ok || !categoriesRes.ok) return null
 
     const products = (await productsRes.json()) as Array<{
       id: string
       category_id: string
       subcategory_id: string | null
+      updated_at: string | null
     }>
     const subcategories = (await subcatsRes.json()) as Array<{
       id: string
       slug: string
       category_id: string
+      updated_at: string | null
+    }>
+    const categories = (await categoriesRes.json()) as Array<{
+      id: string
+      updated_at: string | null
     }>
 
     const subcatMap = new Map(subcategories.map((s) => [s.id, s.slug]))
-    const now = new Date()
     const entries: MetadataRoute.Sitemap = []
 
-    const categoryIds = new Set<string>()
     for (const p of products) {
       if (HIDDEN_CATEGORIES.has(p.category_id)) continue
-      categoryIds.add(p.category_id)
-      const subSlug =
-        (p.subcategory_id && subcatMap.get(p.subcategory_id)) || p.subcategory_id || ""
+      const subSlug = p.subcategory_id ? subcatMap.get(p.subcategory_id) : undefined
       if (!subSlug) continue
       entries.push({
         url: `${base}/products/${p.category_id}/${subSlug}/${p.id}`,
-        lastModified: now,
+        ...(p.updated_at ? { lastModified: new Date(p.updated_at) } : {}),
         changeFrequency: "monthly",
         priority: 0.65,
       })
     }
 
-    for (const cid of categoryIds) {
+    for (const c of categories) {
+      if (HIDDEN_CATEGORIES.has(c.id)) continue
       entries.push({
-        url: `${base}/products/${cid}`,
-        lastModified: now,
+        url: `${base}/products/${c.id}`,
+        ...(c.updated_at ? { lastModified: new Date(c.updated_at) } : {}),
         changeFrequency: "weekly",
         priority: 0.85,
       })
@@ -161,7 +167,7 @@ async function fetchSupabaseProductUrls(base: string): Promise<MetadataRoute.Sit
       if (HIDDEN_CATEGORIES.has(s.category_id)) continue
       entries.push({
         url: `${base}/products/${s.category_id}/${s.slug}`,
-        lastModified: now,
+        ...(s.updated_at ? { lastModified: new Date(s.updated_at) } : {}),
         changeFrequency: "weekly",
         priority: 0.75,
       })

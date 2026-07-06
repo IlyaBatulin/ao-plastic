@@ -16,6 +16,7 @@ export function StatsCounter({ end, duration = 2000, suffix = "", prefix = "", c
   const [count, setCount] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
+  const valueRef = useRef<HTMLSpanElement>(null)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -44,10 +45,16 @@ export function StatsCounter({ end, duration = 2000, suffix = "", prefix = "", c
       if (!startTime) startTime = currentTime
       const progress = Math.min((currentTime - startTime) / duration, 1)
 
-      setCount(Math.floor(progress * end))
+      // Обновляем текст напрямую, без setState на каждый кадр
+      if (valueRef.current) {
+        valueRef.current.textContent = String(Math.floor(progress * end))
+      }
 
       if (progress < 1) {
         animationFrame = requestAnimationFrame(animate)
+      } else {
+        // Единственный setState — финальное значение
+        setCount(end)
       }
     }
 
@@ -65,7 +72,7 @@ export function StatsCounter({ end, duration = 2000, suffix = "", prefix = "", c
       )}
     >
       {prefix}
-      {count}
+      <span ref={valueRef}>{count}</span>
       {suffix}
     </div>
   )

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 import { isSearchCrawler, isSeoBot } from "@/lib/seo/crawlers"
+import { canAccessSection, isAdminRole, type AdminRole } from "@/lib/admin-roles"
 
 const SITE_AUTH_COOKIE = "site_auth"
 const ADMIN_SESSION_COOKIE = "admin_session"
@@ -100,6 +101,10 @@ function getAdminSessionSecret(): string {
   return process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD || ""
 }
 
+function getSiteSessionSecret(): string {
+  return process.env.SITE_SESSION_SECRET || process.env.SITE_PASSWORD || ""
+}
+
 function decodeBase64Url(value: string): string {
   const normalized = value.replace(/-/g, "+").replace(/_/g, "/")
   const padded = normalized.padEnd(normalized.length + ((4 - (normalized.length % 4)) % 4), "=")
@@ -122,13 +127,16 @@ function secureCompare(left: string, right: string): boolean {
   return mismatch === 0
 }
 
-async function verifyAdminSessionToken(token: string): Promise<boolean> {
+/**
+ * Проверяет HMAC-подписанный токен вида base64url(payload).hex(signature).
+ * Возвращает payload или null. Payload начинается с exp (unix ms).
+ */
+async function verifySignedToken(token: string, secret: string): Promise<string | null> {
   try {
-    const secret = getAdminSessionSecret()
-    if (!secret) return false
+    if (!secret) return null
 
     const [payloadB64, signature] = token.split(".")
-    if (!payloadB64 || !signature) return false
+    if (!payloadB64 || !signature) return null
 
     const payload = decodeBase64Url(payloadB64)
     const key = await crypto.subtle.importKey(
@@ -141,14 +149,28 @@ async function verifyAdminSessionToken(token: string): Promise<boolean> {
     const expectedSignature = toHex(
       await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(payload))
     )
-    if (!secureCompare(signature, expectedSignature)) return false
+    if (!secureCompare(signature, expectedSignature)) return null
 
     const [expStr] = payload.split(".")
     const exp = Number.parseInt(expStr, 10)
-    return Number.isFinite(exp) && Date.now() < exp
+    if (!Number.isFinite(exp) || Date.now() >= exp) return null
+
+    return payload
   } catch {
-    return false
+    return null
   }
+}
+
+/** Возвращает роль админ-сессии или null. Формат payload: exp.random.role */
+async function verifyAdminSessionToken(token: string): Promise<AdminRole | null> {
+  const payload = await verifySignedToken(token, getAdminSessionSecret())
+  if (!payload) return null
+  const role = payload.split(".")[2]
+  return isAdminRole(role) ? role : null
+}
+
+async function verifySiteSessionToken(token: string): Promise<boolean> {
+  return (await verifySignedToken(token, getSiteSessionSecret())) !== null
 }
 
 export async function middleware(request: NextRequest) {
@@ -189,7 +211,9 @@ export async function middleware(request: NextRequest) {
     !isSearchBot
   ) {
     const siteAuth = request.cookies.get(SITE_AUTH_COOKIE)
-    const hasSiteAuth = siteAuth?.value === "authenticated"
+    const hasSiteAuth = siteAuth?.value
+      ? await verifySiteSessionToken(siteAuth.value)
+      : false
 
     if (!hasSiteAuth) {
       const loginUrl = new URL("/login", request.url)
@@ -239,15 +263,22 @@ export async function middleware(request: NextRequest) {
   const isAdminRoute = pathname.startsWith("/admin") || (adminPath && pathname.startsWith(adminBase))
   const isLoginPage = pathname === "/admin" || pathname === adminBase
 
-  // Защита админ-роутов: проверка сессии (кроме страницы входа)
+  // Защита админ-роутов: проверка сессии и доступа роли к разделу
   if (isAdminRoute && !isLoginPage) {
     const adminSession = request.cookies.get(ADMIN_SESSION_COOKIE)
-    const hasValidSession = adminSession?.value
+    const role = adminSession?.value
       ? await verifyAdminSessionToken(adminSession.value)
-      : false
+      : null
 
-    if (!hasValidSession) {
+    if (!role) {
       return NextResponse.redirect(new URL(adminBase, request.url))
+    }
+
+    // Гейт по разделам: /admin/<section>/... или <adminBase>/<section>/...
+    const basePath = pathname.startsWith(adminBase) ? adminBase : "/admin"
+    const section = pathname.slice(basePath.length).split("/").filter(Boolean)[0]
+    if (section && !canAccessSection(role, section)) {
+      return NextResponse.redirect(new URL(`${adminBase}/dashboard`, request.url))
     }
   }
 

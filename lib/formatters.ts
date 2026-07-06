@@ -63,8 +63,6 @@ const SPEC_KEY_MAP: Record<string, string> = {
     "Массовая доля частиц, прошедших через сито 0,4 мм, %",
   "Разрушающее_напряжение_при_статическом_изгибе_кг_см2":
     "Разрушающее напряжение при статическом изгибе, кг/см²",
-  "Разрушающее_напряжение_при_статическом_изгибе_МПа":
-    "Разрушающее напряжение при статическом изгибе, МПа",
   "ПТР": "ПТР",
   "Высота": "Высота",
   "Ширина": "Ширина",
@@ -112,7 +110,6 @@ const SPEC_KEY_EN: Record<string, string> = {
   "Разрушающее напряжение, МПа": "Breaking stress, MPa",
   "Разрушающее напряжение при статическом изгибе, МПа": "Breaking stress in static flexure, MPa",
   "Относительная вязкость": "Relative viscosity",
-  "Насыпная плотность": "Bulk density",
   "Порообразователь, %": "Blowing agent, %",
   "Показатель текучести расплава (MFR), г/10 мин": "Melt flow rate (MFR), g/10 min",
   "Относительное удлинение при разрыве, %": "Elongation at break, %",
@@ -146,8 +143,6 @@ const SPEC_KEY_EN: Record<string, string> = {
     "Particles passing through 0.4 mm sieve, %",
   "Разрушающее напряжение при статическом изгибе, кг/см²":
     "Breaking stress in static flexure, kg/cm²",
-  "Разрушающее напряжение при статическом изгибе, МПа":
-    "Breaking stress in static flexure, MPa",
   "ПТР": "MFR",
   "Высота": "Height",
   "Ширина": "Width",

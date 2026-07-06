@@ -23,7 +23,7 @@ export function HeroNavigation() {
     const handleScroll = () => {
       setIsHiddenByScroll(window.scrollY > SCROLL_HIDE_THRESHOLD)
     }
-    window.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll, { passive: true })
     handleScroll()
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
@@ -37,8 +37,8 @@ export function HeroNavigation() {
   return (
     <>
       <nav 
-        className={`absolute top-0 left-0 right-0 w-full ${
-          isHiddenByScroll ? "opacity-0 pointer-events-none" : "transition-all duration-300"
+        className={`absolute top-0 left-0 right-0 w-full transition-opacity duration-300 ${
+          isHiddenByScroll ? "opacity-0 pointer-events-none" : ""
         } ${
           isMobileMenuOpen 
             ? "z-[110]" 

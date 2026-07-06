@@ -5,6 +5,7 @@ import { createCatalogClient, supabaseCatalogQuery } from "@/utils/supabase/serv
 import productsData from "@/data/products.json"
 import { ProductsCatalogClient } from "@/app/products/_components/products-catalog-client"
 import { sortCatalogCategories } from "@/lib/catalog-category-order"
+import { pageOpenGraph } from "@/lib/seo/page-metadata"
 
 export const revalidate = 300
 
@@ -13,6 +14,12 @@ export const metadata: Metadata = {
   description:
     "Каталог АО «Пластик»: АБС-пластики, полистирол, стирол, детали машиностроения, канистры и бытовые изделия. Подкатегории, характеристики и заказ продукции.",
   alternates: { canonical: "/products" },
+  openGraph: pageOpenGraph({
+    title: "Каталог продукции",
+    description:
+      "Каталог АО «Пластик»: АБС-пластики, полистирол, стирол, детали машиностроения, канистры и бытовые изделия. Подкатегории, характеристики и заказ продукции.",
+    path: "/products",
+  }),
 }
 
 export default async function ProductsPage() {

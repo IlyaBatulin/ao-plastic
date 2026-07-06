@@ -2,12 +2,19 @@ import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
 import { Award, Download, Shield, CheckCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { pageOpenGraph } from "@/lib/seo/page-metadata"
 
 export const metadata: Metadata = {
   title: "Сертификаты и стандарты",
   description:
     "Сертификаты качества АО «Пластик»: ISO 9001, ISO 14001, ГОСТ Р, ТР ТС. Подтверждение соответствия продукции и систем менеджмента.",
   alternates: { canonical: "/certificates" },
+  openGraph: pageOpenGraph({
+    title: "Сертификаты и стандарты",
+    description:
+      "Сертификаты качества АО «Пластик»: ISO 9001, ISO 14001, ГОСТ Р, ТР ТС. Подтверждение соответствия продукции и систем менеджмента.",
+    path: "/certificates",
+  }),
 }
 
 const certificates = [

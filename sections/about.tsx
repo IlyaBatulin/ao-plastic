@@ -7,7 +7,7 @@ import { useLanguage } from "@/contexts/language-context"
 import { FeatureCard } from "@/components/feature-card"
 
 const aboutTextClass =
-  "text-body text-xl font-semibold leading-relaxed text-white sm:text-2xl sm:leading-relaxed lg:text-3xl lg:leading-snug [text-shadow:0_2px_8px_rgba(0,0,0,0.45)] [&_a]:font-semibold [&_a]:text-white [&_a]:underline [&_a]:decoration-white/90 [&_a]:underline-offset-2 [&_strong]:font-bold [&_strong]:text-white"
+  "text-lg font-medium leading-relaxed text-white sm:text-xl sm:leading-relaxed lg:text-2xl lg:leading-snug [text-shadow:0_2px_8px_rgba(0,0,0,0.45)] [&_a]:font-semibold [&_a]:text-white [&_a]:underline [&_a]:decoration-white/90 [&_a]:underline-offset-2 [&_strong]:font-semibold [&_strong]:text-white"
 
 const aboutTextContainerVariants = {
   hidden: { opacity: 0 },
@@ -88,7 +88,7 @@ export function About() {
                 viewport={{ once: true, amount: 0.12, margin: "0px 0px -8% 0px" }}
                 variants={aboutTextContainerVariants}
               >
-                <h2 className="text-display text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
+                <h2 className="text-h1 text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
                   {t("homePage.about.title")}
                 </h2>
                 {aboutParagraphs.map((html, index) => (

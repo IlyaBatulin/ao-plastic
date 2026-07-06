@@ -533,9 +533,18 @@
           "applicationsHeading": "Applications",
           "footer": "To purchase granulated ABS plastic at a competitive price, contact our company — granulated plastic that meets all quality standards.",
           "advantages": [
-            { "title": "High MFR", "desc": "Selected grades — flame retardancy, antistatic properties" },
-            { "title": "Heat resistance", "desc": "Automotive parts, compounding with polycarbonate" },
-            { "title": "Rigidity and flow", "desc": "Small instrument and equipment parts" }
+            {
+              "title": "High MFR",
+              "desc": "Selected grades — flame retardancy, antistatic properties"
+            },
+            {
+              "title": "Heat resistance",
+              "desc": "Automotive parts, compounding with polycarbonate"
+            },
+            {
+              "title": "Rigidity and flow",
+              "desc": "Small instrument and equipment parts"
+            }
           ],
           "applications": [
             "Radiator grilles",
@@ -642,6 +651,34 @@
         "normColUnit": "Unit",
         "normColValue": "Specification limit"
       }
+    },
+    "heroSlides": {
+      "factory": {
+        "label": "Plant",
+        "title": "Plastics Technology of the Future",
+        "description": "Leader in the chemical industry in the production of ABS plastics and polystyrenes since 1959"
+      },
+      "abs": {
+        "label": "ABS Plastics",
+        "title": "ABS Plastics",
+        "description": "Injection and extrusion grades for automotive, electronics and industry",
+        "cta": "Explore products"
+      },
+      "polystyrene": {
+        "label": "Polystyrene",
+        "title": "Polystyrene",
+        "description": "Expandable polystyrene PSV-S, PSV-L and extrusion grade PSE-1",
+        "cta": "Explore products"
+      },
+      "hoztovary": {
+        "label": "Household Goods",
+        "title": "Household Goods",
+        "description": "Quality plastic housewares — from buckets to kitchen accessories",
+        "cta": "Explore products"
+      },
+      "pause": "Pause slider",
+      "play": "Play slider",
+      "goToSlide": "Go to slide"
     }
   }
 }

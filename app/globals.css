@@ -759,3 +759,25 @@ nextjs-portal {
     animation: none !important;
   }
 }
+/* Прогресс активного слайда hero-слайдера (механика LG Chem) */
+@keyframes hero-slide-progress {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.hero-slide-progress {
+  animation-name: hero-slide-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide-progress {
+    animation: none !important;
+    transform: translateX(0);
+  }
+}

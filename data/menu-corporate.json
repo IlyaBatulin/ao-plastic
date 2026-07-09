@@ -9,34 +9,69 @@
         "title": "О компании",
         "titleEn": "About Us",
         "items": [
-          { "label": "Миссия", "labelEn": "Mission", "href": "/about/mission" },
-          { "label": "История компании", "labelEn": "History", "href": "/about/history" },
-          { "label": "Новости", "labelEn": "News", "href": "/about/news" }
+          {
+            "label": "Миссия",
+            "labelEn": "Mission",
+            "href": "/about/mission"
+          },
+          {
+            "label": "История компании",
+            "labelEn": "History",
+            "href": "/about/history"
+          },
+          {
+            "label": "Новости",
+            "labelEn": "News",
+            "href": "/about/news"
+          }
         ]
       },
       {
         "title": "Качество и стандарты",
         "titleEn": "Quality & Standards",
         "items": [
-          { "label": "Менеджмент качества", "labelEn": "Quality Management", "href": "/about/quality" },
-          { "label": "Охрана труда и экология", "labelEn": "Safety & Ecology", "href": "/about/safety" },
-          { "label": "Кодекс этики", "labelEn": "Code of Ethics", "href": "/about/ethics" }
+          {
+            "label": "Менеджмент качества",
+            "labelEn": "Quality Management",
+            "href": "/about/quality"
+          },
+          {
+            "label": "Охрана труда и экология",
+            "labelEn": "Safety & Ecology",
+            "href": "/about/safety"
+          },
+          {
+            "label": "Кодекс этики",
+            "labelEn": "Code of Ethics",
+            "href": "/about/ethics"
+          }
         ]
       },
       {
         "title": "Информация",
         "titleEn": "Information",
         "items": [
-          { "label": "Публикации", "labelEn": "Publications", "href": "/about/publications" },
-          { "label": "Раскрытие информации", "labelEn": "Disclosure", "href": "/about/disclosure" },
-          { "label": "Экструзия пластика", "labelEn": "Plastic Extrusion", "href": "/about/extrusion" }
+          {
+            "label": "Публикации",
+            "labelEn": "Publications",
+            "href": "/about/publications"
+          },
+          {
+            "label": "Раскрытие информации",
+            "labelEn": "Disclosure",
+            "href": "/about/disclosure"
+          }
         ]
       },
       {
         "title": "Карьера",
         "titleEn": "Career",
         "items": [
-          { "label": "Вакансии", "labelEn": "Vacancies", "href": "/about/vacancies" }
+          {
+            "label": "Вакансии",
+            "labelEn": "Vacancies",
+            "href": "/about/vacancies"
+          }
         ]
       }
     ]
@@ -57,22 +92,49 @@
         "title": "Для поставщиков",
         "titleEn": "For Suppliers",
         "items": [
-          { "label": "Поставщикам", "labelEn": "Suppliers", "href": "/suppliers" }
+          {
+            "label": "Поставщикам",
+            "labelEn": "Suppliers",
+            "href": "/suppliers"
+          }
+        ]
+      },
+      {
+        "title": "Индустриальный парк",
+        "titleEn": "Industrial Park",
+        "items": [
+          {
+            "label": "Индустриальный парк «Пластик»",
+            "labelEn": "Plastik Industrial Park",
+            "href": "/technopark"
+          }
         ]
       },
       {
         "title": "Компании группы",
         "titleEn": "Group Companies",
         "items": [
-          { "label": "Финндисп", "labelEn": "Finndisp", "href": "/finndisp" },
-          { "label": "ПАСФ", "labelEn": "PASF", "href": "/pasf" }
+          {
+            "label": "Финндисп",
+            "labelEn": "Finndisp",
+            "href": "/finndisp"
+          },
+          {
+            "label": "ПАСФ",
+            "labelEn": "PASF",
+            "href": "/pasf"
+          }
         ]
       },
       {
         "title": "Дополнительно",
         "titleEn": "Additional",
         "items": [
-          { "label": "Наши дилеры", "labelEn": "Our Dealers", "href": "/dealers" }
+          {
+            "label": "Наши дилеры",
+            "labelEn": "Our Dealers",
+            "href": "/dealers"
+          }
         ]
       }
     ]
@@ -84,4 +146,3 @@
     "type": "simple"
   }
 ]
-

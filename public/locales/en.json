@@ -304,20 +304,19 @@
   },
   "homePage": {
     "hero": {
-      "title": "Plastics Technology of the Future",
-      "description": "Leader in the chemical industry in the production of ABS plastics and polystyrenes since 1959",
+      "title": "Plastik — Technologies of the Future",
+      "description": "A leader in the chemical industry producing ABS plastics and expandable polystyrene since 1959. We continuously improve our product range",
       "catalogButton": "Product Catalog",
       "aboutButton": "Learn More About Us"
     },
     "stats": {
       "title": "Production Volumes",
       "subtitle": "Our Enterprise Capacity",
-      "sadStyreneAcrylicDispersions": "Styrene-acrylic dispersions (SAD) per year (stage 1 from 2027; up to 60 kt — stage 2)",
+      "sadStyreneAcrylicDispersions": "Styrene-acrylic dispersions (SAD) per year, including the Ramenskoye site; up to 60,000 t at stage 2",
       "absPlastics": "ABS plastics per year",
       "expandablePolystyrene": "Expandable polystyrene (EPS) per year",
       "styrene": "Styrene per year",
       "machineBuildingPartsDms": "Machine-building components per year",
-      "dispersionsInRamenskoye": "Dispersions at the Ramenskoye production site per year",
       "totalProductVolume": "Total product output per year",
       "suffix": " thousand tons",
       "suffixPlus": "+ thousand tons"
@@ -655,8 +654,8 @@
     "heroSlides": {
       "factory": {
         "label": "Plant",
-        "title": "Plastics Technology of the Future",
-        "description": "Leader in the chemical industry in the production of ABS plastics and polystyrenes since 1959"
+        "title": "Plastik — Technologies of the Future",
+        "description": "A leader in the chemical industry producing ABS plastics and expandable polystyrene since 1959. We continuously improve our product range"
       },
       "abs": {
         "label": "ABS Plastics",
@@ -679,6 +678,12 @@
       "pause": "Pause slider",
       "play": "Play slider",
       "goToSlide": "Go to slide"
+    },
+    "geography": {
+      "title": "Delivery Geography",
+      "subtitle": "We deliver across all of Russia — from Kaliningrad to Vladivostok",
+      "factory": "Uzlovaya — production site",
+      "office": "Moscow — sales office"
     }
   }
 }

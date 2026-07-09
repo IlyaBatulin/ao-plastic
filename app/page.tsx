@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Hero } from "@/sections/hero"
 import { Stats } from "@/sections/stats"
+import { Geography } from "@/sections/geography"
 import { About } from "@/sections/about"
 import { Partners } from "@/sections/partners"
 import { News } from "@/sections/news"
@@ -63,6 +64,7 @@ export default async function Home() {
       <Hero />
       <About />
       <Stats />
+      <Geography />
       <Partners />
       <News items={newsItems} />
       <Contact />

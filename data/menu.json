@@ -1,26 +1,90 @@
 [
-  { "label": "Главная", "labelEn": "Home", "href": "/" },
+  {
+    "label": "Главная",
+    "labelEn": "Home",
+    "href": "/"
+  },
   {
     "label": "О компании",
     "labelEn": "About",
     "href": "/about",
     "submenu": [
-      { "label": "Миссия", "labelEn": "Mission", "href": "/about/mission" },
-      { "label": "История компании", "labelEn": "History", "href": "/about/history" },
-      { "label": "Новости", "labelEn": "News", "href": "/about/news" },
-      { "label": "Менеджмент качества", "labelEn": "Quality Management", "href": "/about/quality" },
-      { "label": "Публикации", "labelEn": "Publications", "href": "/about/publications" },
-      { "label": "Охрана труда и экология", "labelEn": "Safety & Ecology", "href": "/about/safety" },
-      { "label": "Кодекс этики", "labelEn": "Code of Ethics", "href": "/about/ethics" },
-      { "label": "Раскрытие информации", "labelEn": "Disclosure", "href": "/about/disclosure" },
-      { "label": "Вакансии", "labelEn": "Vacancies", "href": "/about/vacancies" },
-      { "label": "Экструзия пластика", "labelEn": "Plastic Extrusion", "href": "/about/extrusion" }
+      {
+        "label": "Миссия",
+        "labelEn": "Mission",
+        "href": "/about/mission"
+      },
+      {
+        "label": "История компании",
+        "labelEn": "History",
+        "href": "/about/history"
+      },
+      {
+        "label": "Новости",
+        "labelEn": "News",
+        "href": "/about/news"
+      },
+      {
+        "label": "Менеджмент качества",
+        "labelEn": "Quality Management",
+        "href": "/about/quality"
+      },
+      {
+        "label": "Публикации",
+        "labelEn": "Publications",
+        "href": "/about/publications"
+      },
+      {
+        "label": "Охрана труда и экология",
+        "labelEn": "Safety & Ecology",
+        "href": "/about/safety"
+      },
+      {
+        "label": "Кодекс этики",
+        "labelEn": "Code of Ethics",
+        "href": "/about/ethics"
+      },
+      {
+        "label": "Раскрытие информации",
+        "labelEn": "Disclosure",
+        "href": "/about/disclosure"
+      },
+      {
+        "label": "Вакансии",
+        "labelEn": "Vacancies",
+        "href": "/about/vacancies"
+      }
     ]
   },
-  { "label": "Продукция", "labelEn": "Products", "href": "/products", "type": "catalog" },
-  { "label": "Финндисп", "labelEn": "Finndisp", "href": "/finndisp" },
-  { "label": "ПАСФ", "labelEn": "PASF", "href": "/pasf" },
-  { "label": "Поставщикам", "labelEn": "Suppliers", "href": "/suppliers" },
-  { "label": "Контакты", "labelEn": "Contacts", "href": "/contacts" },
-  { "label": "Дилеры", "labelEn": "Dealers", "href": "/dealers" }
+  {
+    "label": "Продукция",
+    "labelEn": "Products",
+    "href": "/products",
+    "type": "catalog"
+  },
+  {
+    "label": "Финндисп",
+    "labelEn": "Finndisp",
+    "href": "/finndisp"
+  },
+  {
+    "label": "ПАСФ",
+    "labelEn": "PASF",
+    "href": "/pasf"
+  },
+  {
+    "label": "Поставщикам",
+    "labelEn": "Suppliers",
+    "href": "/suppliers"
+  },
+  {
+    "label": "Контакты",
+    "labelEn": "Contacts",
+    "href": "/contacts"
+  },
+  {
+    "label": "Дилеры",
+    "labelEn": "Dealers",
+    "href": "/dealers"
+  }
 ]

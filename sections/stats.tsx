@@ -18,13 +18,13 @@ export function Stats() {
     /** Если не задан — используется homePage.stats.suffix */
     suffixKey?: string
   }[] = [
-    { icon: TrendingUp, value: 150, label: "totalProductVolume", suffixKey: "homePage.stats.suffixPlus" },
-    { icon: FlaskConical, value: 15, label: "sadStyreneAcrylicDispersions" },
+    // Итог = 60 стирол + 23 АБС + 30 ПСВ + 40 дисперсии + 3 ДМС
+    { icon: TrendingUp, value: 156, label: "totalProductVolume", suffixKey: "homePage.stats.suffixPlus" },
+    { icon: FlaskConical, value: 40, label: "sadStyreneAcrylicDispersions" },
     { icon: Factory, value: 23, label: "absPlastics" },
-    { icon: Package, value: 31, label: "expandablePolystyrene" },
+    { icon: Package, value: 30, label: "expandablePolystyrene" },
     { icon: Beaker, value: 60, label: "styrene" },
     { icon: Cog, value: 3, label: "machineBuildingPartsDms" },
-    { icon: Droplets, value: 20, label: "dispersionsInRamenskoye" },
   ]
   const statGroups = [
     {

@@ -10,7 +10,7 @@ export function MissionPageClient() {
   const missionVideoSrc = getCategoryVideo("polystyrene") ?? "/videos/polystyrene-category.mp4"
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <section className="relative overflow-hidden pt-32 pb-24 min-h-[500px]">
         <div className="absolute inset-0 z-0">
           <video

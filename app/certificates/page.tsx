@@ -51,7 +51,7 @@ const standards = [
 
 export default function CertificatesPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       {/* Hero Section */}
       <section className="pt-32 pb-16 bg-gradient-to-b from-secondary to-background">
         <div className="container mx-auto px-4 lg:px-8">

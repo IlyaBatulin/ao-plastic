@@ -3,7 +3,6 @@
 import { Footer } from "@/components/footer"
 import { Award, CheckCircle, FileCheck, FlaskConical, Shield, Download, FileText } from "lucide-react"
 import Link from "next/link"
-import { BackgroundPaths } from "@/components/ui/background-paths"
 import { CertificatesCarousel } from "./certificates-carousel"
 import { useLocalizedContent } from "@/lib/use-localized-content"
 import { qualityPageContent } from "@/data/about-pages/quality"
@@ -14,9 +13,7 @@ export function QualityPageClient() {
   const page = useLocalizedContent(qualityPageContent)
 
   return (
-    <>
-      <BackgroundPaths />
-      <div className="min-h-screen bg-transparent">
+    <>      <div className="min-h-screen bg-transparent">
         <section className="pt-32 pb-16">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="max-w-4xl mx-auto mb-16 text-center">

@@ -61,15 +61,15 @@ function FloatingPaths({ position, count }: FloatingPathsProps) {
   )
 }
 
-function BackgroundPathsLayer() {
+function BackgroundPathsLayer({ count }: { count: number }) {
   return (
     <div
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 z-0 w-full max-w-full overflow-hidden"
     >
       <div className="absolute inset-0">
-        <FloatingPaths position={1} count={12} />
-        <FloatingPaths position={-1} count={12} />
+        <FloatingPaths position={1} count={count} />
+        <FloatingPaths position={-1} count={count} />
       </div>
 
       <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/20 to-background/40" />
@@ -78,17 +78,18 @@ function BackgroundPathsLayer() {
 }
 
 export function BackgroundPaths() {
-  const [enabled, setEnabled] = useState(false)
+  const [mode, setMode] = useState<"off" | "mobile" | "desktop">("off")
 
   useEffect(() => {
-    // На телефонах и при prefers-reduced-motion фон не анимируем —
-    // экономим батарею и main thread при скролле каталога.
-    const isMobile = window.matchMedia("(max-width: 768px)").matches
+    // При prefers-reduced-motion фон не анимируем;
+    // на телефонах — облегчённый вариант (меньше путей).
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    setEnabled(!isMobile && !reducedMotion)
+    if (reducedMotion) return
+    const isMobile = window.matchMedia("(max-width: 768px)").matches
+    setMode(isMobile ? "mobile" : "desktop")
   }, [])
 
-  if (!enabled) return null
+  if (mode === "off") return null
 
-  return createPortal(<BackgroundPathsLayer />, document.body)
+  return createPortal(<BackgroundPathsLayer count={mode === "mobile" ? 7 : 12} />, document.body)
 }

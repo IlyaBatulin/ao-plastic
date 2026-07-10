@@ -1,7 +1,6 @@
 "use client"
 
 import { Footer } from "@/components/footer"
-import { BackgroundPaths } from "@/components/ui/background-paths"
 import { Download } from "lucide-react"
 import Link from "next/link"
 import { useLocalizedContent } from "@/lib/use-localized-content"
@@ -48,7 +47,6 @@ export function EthicsPageClient() {
 
   return (
     <>
-      <BackgroundPaths />
       <div className="min-h-screen bg-transparent">
         <section className="pt-32 pb-16">
           <div className="container mx-auto px-4 lg:px-8">

@@ -90,7 +90,7 @@ export default function ContactsPage({ params, searchParams }: NextPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-32 pb-16 bg-gradient-to-b from-secondary to-background min-h-[40vh] flex items-center">
         {/* Анимированное голубоватое переливание - один большой элемент */}

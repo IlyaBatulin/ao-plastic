@@ -12,7 +12,7 @@ export function AboutPageClient() {
   const page = useLocalizedContent(aboutPageContent)
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <AboutLenisSync />
 
       <section className="relative min-h-[min(62vh,720px)] overflow-hidden flex flex-col justify-end pt-32 pb-16 md:pb-20 lg:pb-24">

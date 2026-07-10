@@ -82,7 +82,7 @@ const timeline = [
 
 export default function TechnologiesPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative pt-32 pb-24 overflow-hidden">
         <div className="absolute inset-0 z-0">

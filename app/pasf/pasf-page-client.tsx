@@ -11,7 +11,6 @@ import {
   Wind,
 } from "lucide-react"
 import { Footer } from "@/components/footer"
-import { BackgroundPaths } from "@/components/ui/background-paths"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
 
@@ -215,9 +214,7 @@ export function PasfPageClient() {
   const page = content[lang as keyof typeof content]
 
   return (
-    <>
-      <BackgroundPaths />
-      <div className="min-h-screen bg-transparent">
+    <>      <div className="min-h-screen bg-transparent">
         <section className="relative overflow-hidden pt-32 pb-16">
           <div className="pointer-events-none absolute inset-0 overflow-hidden">
             <div

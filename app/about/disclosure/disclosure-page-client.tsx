@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { Footer } from "@/components/footer"
-import { BackgroundPaths } from "@/components/ui/background-paths"
 import { FileText, Download, ChevronDown, FolderOpen } from "lucide-react"
 import { useLocalizedContent } from "@/lib/use-localized-content"
 import {
@@ -52,9 +51,7 @@ export function DisclosurePageClient() {
   const toggle = (key: string) => setOpenKey((cur) => (cur === key ? null : key))
 
   return (
-    <>
-      <BackgroundPaths />
-      <div className="min-h-screen bg-transparent">
+    <>      <div className="min-h-screen bg-transparent">
         <section className="pt-32 pb-24">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="mx-auto max-w-5xl">

@@ -26,7 +26,7 @@ export default function DealersPage({ params, searchParams }: NextPageProps) {
   const { t } = useLanguage()
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <section className="relative overflow-hidden bg-gradient-to-br from-primary/15 via-background to-background min-h-[60vh] flex items-center">
         {/* Анимированное голубоватое переливание - один большой элемент */}
         <div className="absolute inset-0 overflow-hidden">

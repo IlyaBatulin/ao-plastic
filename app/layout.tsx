@@ -11,6 +11,7 @@ import { LenisProvider } from "@/components/lenis-provider"
 import { getSiteUrl } from "@/lib/site"
 import { parseLanguage } from "@/lib/language"
 import { SiteJsonLd } from "@/components/seo/site-json-ld"
+import { BackgroundPaths } from "@/components/ui/background-paths"
 
 // Единый фирменный шрифт сайта. Самохостится через next/font —
 // без render-blocking запросов к Google Fonts.
@@ -153,6 +154,8 @@ export default async function RootLayout({
           />
         </div>
         <AppProviders initialLang={initialLang} initialTranslations={initialTranslations}>
+          {/* Синие линии — фирменный фон на всех страницах (portal в body, z-0) */}
+          <BackgroundPaths />
           <SiteJsonLd />
           <LoadingScreen />
           <LenisProvider>

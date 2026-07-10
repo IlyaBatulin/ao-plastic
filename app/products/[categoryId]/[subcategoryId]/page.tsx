@@ -59,7 +59,7 @@ export default async function SubcategoryPage({
   } = pageData
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <BreadcrumbJsonLd
         items={[
           { name: "Главная", path: "/" },

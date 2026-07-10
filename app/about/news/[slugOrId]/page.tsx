@@ -2,7 +2,6 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { Footer } from "@/components/footer"
-import { BackgroundPaths } from "@/components/ui/background-paths"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Calendar } from "lucide-react"
 import { createClient } from "@/utils/supabase/server"
@@ -79,9 +78,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
         publishedAt={item.published_at}
         updatedAt={item.updated_at}
         urlPath={newsPath}
-      />
-      <BackgroundPaths />
-      <div className="min-h-screen bg-transparent">
+      />      <div className="min-h-screen bg-transparent">
         <section className="pt-32 pb-24">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="max-w-3xl mx-auto">

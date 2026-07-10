@@ -44,7 +44,7 @@ export function Stats() {
   ]
 
   return (
-    <section id="stats" className="relative overflow-hidden bg-background">
+    <section id="stats" className="relative overflow-hidden">
       <div className="container mx-auto max-w-7xl px-3 py-12 sm:px-5 sm:py-14 lg:px-8 lg:py-20">
         <SectionHeading
           title={t("homePage.stats.title")}

@@ -140,7 +140,7 @@ export function ProductPageClient({
     isMachinePartsExtrusion(categoryId, subcategoryId)
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       {/* Breadcrumbs */}
       <section className="pt-32 pb-8 bg-gradient-to-b from-primary/10 via-background to-background">
         <div className="container mx-auto px-4 lg:px-8">

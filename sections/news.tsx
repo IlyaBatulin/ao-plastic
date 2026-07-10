@@ -45,7 +45,7 @@ export function News({ items = [] }: NewsProps) {
   }, [])
 
   return (
-    <section ref={sectionRef} className="py-12 lg:py-16 pt-8 bg-background">
+    <section ref={sectionRef} className="py-12 lg:py-16 pt-8">
       <div className="container mx-auto px-4 lg:px-8">
         <SectionHeading
           title={t("homePage.news.title")}

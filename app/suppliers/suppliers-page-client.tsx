@@ -78,7 +78,7 @@ export function SuppliersPageClient() {
     },
   ]
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary/15 via-background to-background min-h-[50vh] flex items-center">
         {/* Анимированное голубоватое переливание - один большой элемент */}

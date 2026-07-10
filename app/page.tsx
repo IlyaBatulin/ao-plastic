@@ -60,7 +60,7 @@ export default async function Home() {
   }
 
   return (
-    <main className="min-h-screen w-full max-w-full overflow-x-clip bg-background">
+    <main className="min-h-screen w-full max-w-full overflow-x-clip">
       <Hero />
       <About />
       <Stats />

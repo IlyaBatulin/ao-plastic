@@ -18,7 +18,7 @@ export function Geography() {
   const { t, lang } = useLanguage()
 
   return (
-    <section id="geography" className="relative overflow-hidden bg-background py-16 lg:py-24">
+    <section id="geography" className="relative overflow-hidden py-16 lg:py-24">
       <div className="container mx-auto px-4 lg:px-8">
         <SectionHeading
           title={t("homePage.geography.title")}

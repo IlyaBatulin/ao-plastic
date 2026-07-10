@@ -168,7 +168,7 @@ export function TechnoparkPageClient() {
   ]
 
   return (
-    <main className="min-h-screen w-full max-w-full overflow-x-clip bg-background">
+    <main className="min-h-screen w-full max-w-full overflow-x-clip">
       {/* Hero */}
       <section className="relative flex min-h-[70svh] items-center overflow-hidden">
         <div className="absolute inset-0">

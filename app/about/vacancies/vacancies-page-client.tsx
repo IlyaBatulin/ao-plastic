@@ -2,7 +2,6 @@
 
 import { Footer } from "@/components/footer"
 import { VacanciesSwitcher } from "./vacancies-switcher"
-import { BackgroundPaths } from "@/components/ui/background-paths"
 import { useLocalizedContent } from "@/lib/use-localized-content"
 import { vacanciesHeroContent } from "@/data/about-pages/vacancies-hero"
 
@@ -10,9 +9,7 @@ export function VacanciesPageClient() {
   const page = useLocalizedContent(vacanciesHeroContent)
 
   return (
-    <>
-      <BackgroundPaths />
-      <div className="min-h-screen bg-transparent">
+    <>      <div className="min-h-screen bg-transparent">
         <section className="pt-32 pb-24">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="max-w-4xl mx-auto">

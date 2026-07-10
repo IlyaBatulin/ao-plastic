@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
-import { BackgroundPaths } from "@/components/ui/background-paths"
 import { createCatalogClient, supabaseCatalogQuery } from "@/utils/supabase/server"
 import productsData from "@/data/products.json"
 import { ProductsCatalogClient } from "@/app/products/_components/products-catalog-client"
@@ -68,7 +67,6 @@ export default async function ProductsPage() {
 
   return (
     <>
-      <BackgroundPaths />
       <ProductsCatalogClient categories={categories} />
       <Footer />
     </>

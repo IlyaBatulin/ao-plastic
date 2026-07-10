@@ -75,7 +75,7 @@ export function CategoryPageClient({
   const isPvcModifier = categoryId === "pvc-modifier"
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <CategoryHero
         title={categoryName}
         description={

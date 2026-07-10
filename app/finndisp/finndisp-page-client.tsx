@@ -14,7 +14,6 @@ import {
 } from "lucide-react"
 import { motion } from "framer-motion"
 import { Footer } from "@/components/footer"
-import { BackgroundPaths } from "@/components/ui/background-paths"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
 import { FinndispHistoryTimeline } from "./finndisp-history-timeline"
@@ -219,9 +218,7 @@ export function FinndispPageClient() {
   const page = content[lang === "en" ? "en" : "ru"]
 
   return (
-    <>
-      <BackgroundPaths />
-      <div className="min-h-screen bg-transparent">
+    <>      <div className="min-h-screen bg-transparent">
         <section className="relative overflow-hidden pt-32 pb-16">
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#0046A0]/8 via-transparent to-transparent" />
 

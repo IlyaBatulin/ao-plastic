@@ -781,3 +781,61 @@ nextjs-portal {
     transform: translateX(0);
   }
 }
+
+/* Карта России («География поставок») — анимации меток и появления */
+.rm-fade-in {
+  animation: rmFade 800ms ease-out both;
+}
+.rm-web-in {
+  animation: rmFade 900ms ease-out 1800ms both;
+}
+.rm-city-in {
+  animation: rmFade 500ms ease-out both;
+}
+.rm-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: rmPulse 2400ms ease-out infinite;
+}
+.rm-dot {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 200ms ease;
+  cursor: pointer;
+}
+.rm-dot:hover {
+  transform: scale(1.45);
+}
+@keyframes rmFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes rmPulse {
+  0% {
+    transform: scale(0.4);
+    opacity: 0.9;
+  }
+  70% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rm-fade-in,
+  .rm-web-in,
+  .rm-city-in {
+    animation: none;
+  }
+  .rm-pulse {
+    animation: none;
+    opacity: 0.25;
+  }
+}

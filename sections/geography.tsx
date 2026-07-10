@@ -43,11 +43,14 @@ export function Geography() {
               {lang === "en" ? "Delivery cities" : "Города поставок"}
             </span>
             <span className="inline-flex items-center gap-2 text-xs text-muted-foreground">
-              <svg width="26" height="10" viewBox="0 0 26 10" className="text-[#0046FF]" aria-hidden>
-                <path d="M1 9C8 2 18 2 25 9" fill="none" stroke="currentColor" strokeWidth="1.2" strokeOpacity="0.45" strokeLinecap="round" />
-                <circle cx="13" cy="3.7" r="1.8" fill="currentColor" />
+              <svg width="26" height="12" viewBox="0 0 26 12" className="text-[#2c53c7]" aria-hidden>
+                <path d="M2 10L10 2L18 9L24 3" fill="none" stroke="currentColor" strokeWidth="0.9" strokeOpacity="0.5" strokeLinecap="round" />
+                <circle cx="2" cy="10" r="1.6" fill="currentColor" />
+                <circle cx="10" cy="2" r="1.6" fill="currentColor" />
+                <circle cx="18" cy="9" r="1.6" fill="currentColor" />
+                <circle cx="24" cy="3" r="1.6" fill="currentColor" />
               </svg>
-              {lang === "en" ? "Delivery routes" : "Маршруты поставок"}
+              {lang === "en" ? "Supply network" : "Сеть поставок"}
             </span>
           </div>
         </div>

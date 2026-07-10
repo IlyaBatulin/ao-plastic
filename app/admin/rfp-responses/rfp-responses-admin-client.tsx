@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, Mail, Phone, Building2, Calendar, CheckCircle2, XCircle, Clock, ClipboardList } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { ArrowLeft, Mail, Phone, Building2, Calendar, CheckCircle2, XCircle, Clock, ClipboardList, Search } from "lucide-react"
 import { AdminLink } from "@/components/admin-link"
 
 interface RfpResponse {
@@ -26,23 +27,32 @@ export function RfpResponsesAdmin() {
   const router = useRouter()
   const [responses, setResponses] = useState<RfpResponse[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [groupedResponses, setGroupedResponses] = useState<Record<number, RfpResponse[]>>({})
+  const [searchQuery, setSearchQuery] = useState("")
 
   useEffect(() => {
     fetchResponses()
   }, [])
 
-  useEffect(() => {
-    // Группируем ответы по запросам
-    const grouped: Record<number, RfpResponse[]> = {}
-    responses.forEach((response) => {
-      if (!grouped[response.rfp_request_id]) {
-        grouped[response.rfp_request_id] = []
-      }
-      grouped[response.rfp_request_id].push(response)
-    })
-    setGroupedResponses(grouped)
-  }, [responses])
+  const normalizedQuery = searchQuery.trim().toLowerCase()
+  const filteredResponses = normalizedQuery
+    ? responses.filter((response) =>
+        [
+          response.company_name,
+          response.email,
+          response.phone,
+          response.rfp_request?.request_number,
+        ].some((value) => value?.toLowerCase().includes(normalizedQuery))
+      )
+    : responses
+
+  // Группируем ответы по запросам
+  const groupedResponses: Record<number, RfpResponse[]> = {}
+  filteredResponses.forEach((response) => {
+    if (!groupedResponses[response.rfp_request_id]) {
+      groupedResponses[response.rfp_request_id] = []
+    }
+    groupedResponses[response.rfp_request_id].push(response)
+  })
 
   const fetchResponses = async () => {
     try {
@@ -122,7 +132,7 @@ export function RfpResponsesAdmin() {
                   <ArrowLeft className="w-4 h-4" />
                 </Button>
               </AdminLink>
-              <h1 className="text-2xl font-bold text-foreground">Ответы на запросы предложений</h1>
+              <h1 className="text-h3 text-foreground">Ответы на запросы предложений</h1>
             </div>
           </div>
         </div>
@@ -130,9 +140,23 @@ export function RfpResponsesAdmin() {
 
       {/* Content */}
       <main className="container mx-auto px-4 lg:px-8 py-8">
+        <div className="relative mb-6 w-full sm:w-72">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            type="search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Поиск: компания, email, № запроса"
+            className="pl-9"
+            aria-label="Поиск по предложениям"
+          />
+        </div>
+
         {Object.keys(groupedResponses).length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-muted-foreground">Ответов пока нет</p>
+            <p className="text-muted-foreground">
+              {responses.length === 0 ? "Ответов пока нет" : "По вашему запросу ничего не найдено"}
+            </p>
           </div>
         ) : (
           <div className="space-y-8">

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient, createServiceClient } from "@/utils/supabase/server"
-import { checkRateLimit, isBodyTooLarge, rateLimitedResponse } from "@/lib/form-guard"
+import { checkRateLimit, isBodyTooLarge, rateLimitedResponse, readJsonBody } from "@/lib/form-guard"
 import { buildOrderNotificationContent } from "@/lib/order-notification"
 import { sendNotifyEmail } from "@/lib/send-email"
 
@@ -44,7 +44,10 @@ export async function POST(req: Request) {
 		return NextResponse.json({ ok: false, error: "Слишком много запросов. Попробуйте позже." }, { status: 429, headers: res.headers })
 	}
 
-	const body = (await req.json()) as OrderInput
+	const body = (await readJsonBody(req)) as OrderInput | null
+	if (!body) {
+		return NextResponse.json({ ok: false, error: "Некорректный формат запроса" }, { status: 400 })
+	}
 
 	const supabase = createClient()
 
@@ -54,9 +57,13 @@ export async function POST(req: Request) {
 			return NextResponse.json({ ok: false, error: "Database not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local" }, { status: 500 })
 		}
 
-		// Нормализуем: корзина или один товар
-		const items: OrderItem[] = body.items?.length
-			? body.items
+		// Нормализуем: корзина или один товар.
+		// Принимаем только массив объектов — строки/числа в items отбрасываем.
+		const rawItems: OrderItem[] = Array.isArray(body.items)
+			? body.items.filter((item): item is OrderItem => Boolean(item) && typeof item === "object" && !Array.isArray(item))
+			: []
+		const items: OrderItem[] = rawItems.length
+			? rawItems
 			: body.productId || body.categoryId
 				? [{ productId: body.productId, categoryId: body.categoryId, subcategoryId: body.subcategoryId, quantity: body.quantity }]
 				: []
@@ -69,20 +76,21 @@ export async function POST(req: Request) {
 			return NextResponse.json({ ok: false, error: "Слишком много позиций в заказе" }, { status: 400 })
 		}
 
-		// Создаём заказ
-		const orderData = {
-			customer_name: body.customerName?.trim() || null,
-			customer_phone: body.customerPhone?.trim() || null,
-			customer_email: body.customerEmail?.trim() || null,
-			comment: body.comment?.trim() || null,
-			payload: { ...body.payload, itemCount: items.length },
+		// Создаём заказ. Нестроковые значения полей отбрасываем (пустые строки → null).
+		const asTrimmedOrNull = (value: unknown): string | null => {
+			if (typeof value !== "string") return null
+			const trimmed = value.trim()
+			return trimmed || null
 		}
-		
-		// Преобразуем пустые строки в null для соответствия constraints
-		if (orderData.customer_name === '') orderData.customer_name = null
-		if (orderData.customer_phone === '') orderData.customer_phone = null
-		if (orderData.customer_email === '') orderData.customer_email = null
-		if (orderData.comment === '') orderData.comment = null
+		const safePayload =
+			body.payload && typeof body.payload === "object" && !Array.isArray(body.payload) ? body.payload : {}
+		const orderData = {
+			customer_name: asTrimmedOrNull(body.customerName),
+			customer_phone: asTrimmedOrNull(body.customerPhone),
+			customer_email: asTrimmedOrNull(body.customerEmail),
+			comment: asTrimmedOrNull(body.comment),
+			payload: { ...safePayload, itemCount: items.length },
+		}
 
 		const { data: order, error: orderError } = await supabase
 			.from("orders")

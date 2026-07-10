@@ -18,11 +18,27 @@ export type CartItem = {
 interface CartContextType {
   items: CartItem[]
   addItem: (item: CartItem) => void
-  removeItem: (productId: string) => void
-  updateQuantity: (productId: string, quantity: number) => void
+  removeItem: (productId: string, colorCode?: string) => void
+  updateQuantity: (productId: string, quantity: number, colorCode?: string) => void
   updateColorCode: (productId: string, colorCode: string) => void
   clearCart: () => void
   itemCount: number
+}
+
+/** Один товар с разными цветами — разные позиции корзины. */
+function isSameCartLine(item: CartItem, productId: string, colorCode?: string): boolean {
+  return item.productId === productId && (item.colorCode ?? "") === (colorCode ?? "")
+}
+
+/** Отбрасывает повреждённые записи из localStorage (не объект, нет productId, некорректное количество). */
+function sanitizeStoredItems(parsed: unknown): CartItem[] {
+  if (!Array.isArray(parsed)) return []
+  return parsed.filter((item): item is CartItem => {
+    if (!item || typeof item !== "object") return false
+    const candidate = item as Partial<CartItem>
+    if (typeof candidate.productId !== "string" || !candidate.productId) return false
+    return typeof candidate.quantity === "number" && Number.isFinite(candidate.quantity) && candidate.quantity > 0
+  })
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
@@ -35,8 +51,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     try {
       const saved = localStorage.getItem("cart")
       if (saved) {
-        const parsed = JSON.parse(saved)
-        setItems(Array.isArray(parsed) ? parsed : [])
+        setItems(sanitizeStoredItems(JSON.parse(saved)))
       }
     } catch (error) {
       console.error("Failed to load cart from localStorage:", error)
@@ -89,19 +104,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
     )
   }
 
-  const removeItem = (productId: string) => {
-    setItems((prev) => prev.filter((item) => item.productId !== productId))
+  const removeItem = (productId: string, colorCode?: string) => {
+    setItems((prev) => prev.filter((item) => !isSameCartLine(item, productId, colorCode)))
   }
 
-  const updateQuantity = (productId: string, quantity: number) => {
-    if (quantity <= 0) {
-      removeItem(productId)
+  const updateQuantity = (productId: string, quantity: number, colorCode?: string) => {
+    if (!Number.isFinite(quantity) || quantity <= 0) {
+      removeItem(productId, colorCode)
       return
     }
-    
+
     setItems((prev) =>
       prev.map((item) =>
-        item.productId === productId ? { ...item, quantity } : item
+        isSameCartLine(item, productId, colorCode) ? { ...item, quantity } : item
       )
     )
   }

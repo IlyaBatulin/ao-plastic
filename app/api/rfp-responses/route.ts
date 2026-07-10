@@ -7,6 +7,7 @@ import {
   isBodyTooLarge,
   isValidEmail,
   rateLimitedResponse,
+  readJsonBody,
 } from "@/lib/form-guard"
 
 export async function POST(req: NextRequest) {
@@ -18,7 +19,10 @@ export async function POST(req: NextRequest) {
     const limit = checkRateLimit(req, "rfp", 5)
     if (!limit.ok) return rateLimitedResponse(limit.retryAfter)
 
-    const body = await req.json()
+    const body = await readJsonBody(req)
+    if (!body) {
+      return NextResponse.json({ error: "Некорректный формат запроса" }, { status: 400 })
+    }
 
     const companyName = asString(body.company_name, 200)
     const email = asString(body.email, 254)
@@ -26,7 +30,12 @@ export async function POST(req: NextRequest) {
     const message = asOptionalString(body.message, 5000)
     const proposalUrl = asOptionalString(body.proposal_url, 1000)
 
-    if (!body.rfp_request_id || !companyName || !email) {
+    const rfpRequestId =
+      typeof body.rfp_request_id === "string" || typeof body.rfp_request_id === "number"
+        ? body.rfp_request_id
+        : null
+
+    if (!rfpRequestId || !companyName || !email) {
       return NextResponse.json({ error: "rfp_request_id, company_name и email обязательны" }, { status: 400 })
     }
     if (!isValidEmail(email)) {
@@ -40,7 +49,7 @@ export async function POST(req: NextRequest) {
     const { data, error } = await supabase
       .from("rfp_responses")
       .insert({
-        rfp_request_id: body.rfp_request_id,
+        rfp_request_id: rfpRequestId,
         company_name: companyName,
         email,
         phone,

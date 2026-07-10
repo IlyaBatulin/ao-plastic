@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, Mail, Phone, User, Clock, CheckCircle2, XCircle, Archive, MessageSquare } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { ArrowLeft, Mail, Phone, User, Clock, CheckCircle2, XCircle, Archive, MessageSquare, Search } from "lucide-react"
 import { AdminLink } from "@/components/admin-link"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -31,6 +32,7 @@ export function ContactMessagesAdmin() {
   const [isLoading, setIsLoading] = useState(true)
   const [filterStatus, setFilterStatus] = useState<string>("all")
   const [filterSource, setFilterSource] = useState<string>("all")
+  const [searchQuery, setSearchQuery] = useState("")
 
   useEffect(() => {
     fetchMessages()
@@ -105,9 +107,14 @@ export function ContactMessagesAdmin() {
     }
   }
 
+  const normalizedQuery = searchQuery.trim().toLowerCase()
   const filteredMessages = messages.filter((message) => {
     if (filterStatus !== "all" && message.status !== filterStatus) return false
     if (filterSource !== "all" && message.source !== filterSource) return false
+    if (normalizedQuery) {
+      const haystack = [message.name, message.email, message.phone]
+      if (!haystack.some((value) => value?.toLowerCase().includes(normalizedQuery))) return false
+    }
     return true
   })
 
@@ -134,7 +141,7 @@ export function ContactMessagesAdmin() {
                 </Button>
               </AdminLink>
               <div className="flex items-center gap-3">
-                <h1 className="text-2xl font-bold text-foreground">Сообщения с сайта</h1>
+                <h1 className="text-h3 text-foreground">Сообщения с сайта</h1>
                 {newMessagesCount > 0 && (
                   <Badge variant="destructive" className="min-w-[24px] h-6 flex items-center justify-center px-1.5 text-xs font-bold rounded-full shadow-lg">
                     {newMessagesCount > 99 ? "99+" : newMessagesCount}
@@ -150,6 +157,17 @@ export function ContactMessagesAdmin() {
       <main className="container mx-auto px-4 lg:px-8 py-8">
         {/* Filters */}
         <div className="flex flex-wrap items-center gap-4 mb-6">
+          <div className="relative w-full sm:w-72">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              type="search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Поиск: имя, email, телефон"
+              className="pl-9"
+              aria-label="Поиск по сообщениям"
+            />
+          </div>
           <div className="flex items-center gap-2">
             <label className="text-sm font-medium text-foreground">Статус:</label>
             <Select value={filterStatus} onValueChange={setFilterStatus}>

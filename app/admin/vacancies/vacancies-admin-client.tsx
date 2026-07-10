@@ -183,7 +183,7 @@ export function VacanciesAdmin() {
                   <ArrowLeft className="w-4 h-4" />
                 </Button>
               </AdminLink>
-              <h1 className="text-2xl font-bold text-foreground">Управление вакансиями</h1>
+              <h1 className="text-h3 text-foreground">Управление вакансиями</h1>
             </div>
             <Button onClick={handleCreate}>
               <Plus className="w-4 h-4 mr-2" />

@@ -134,7 +134,7 @@ export function ProductsAdminClient() {
             </Button>
           </AdminLink>
           <div>
-            <h1 className="text-3xl font-bold">Управление товарами</h1>
+            <h1 className="text-h3">Управление товарами</h1>
             <p className="text-muted-foreground">
               Всего товаров: {products.length}
             </p>

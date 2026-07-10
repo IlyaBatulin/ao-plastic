@@ -167,7 +167,7 @@ export function SubcategoryEditClient({
             <ArrowLeft className="h-4 w-4" />
           </Button>
         </AdminLink>
-        <h1 className="text-3xl font-bold">
+        <h1 className="text-h3">
           {isNew ? "Новая подкатегория" : "Редактирование подкатегории"}
         </h1>
       </div>

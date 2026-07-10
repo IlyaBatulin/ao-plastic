@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, ShoppingCart, Phone, Mail, User, Clock, Package, Calendar } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { ArrowLeft, ShoppingCart, Phone, Mail, User, Clock, Package, Calendar, Search } from "lucide-react"
 import { AdminLink } from "@/components/admin-link"
 import { Badge } from "@/components/ui/badge"
 
@@ -36,6 +37,7 @@ export function OrdersAdmin() {
   const [orders, setOrders] = useState<Order[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
+  const [searchQuery, setSearchQuery] = useState("")
 
   useEffect(() => {
     fetchOrders()
@@ -86,6 +88,20 @@ export function OrdersAdmin() {
     return `${quantity} шт.`
   }
 
+  const normalizedQuery = searchQuery.trim().toLowerCase()
+  const filteredOrders = normalizedQuery
+    ? orders.filter((order) => {
+        const haystack = [
+          order.customer_name,
+          order.customer_phone,
+          order.customer_email,
+          `#${order.id}`,
+          String(order.id),
+        ]
+        return haystack.some((value) => value?.toLowerCase().includes(normalizedQuery))
+      })
+    : orders
+
   if (isLoading) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -105,22 +121,35 @@ export function OrdersAdmin() {
             Назад в админку
           </Button>
         </AdminLink>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-foreground mb-2">Заказы с сайта</h1>
+            <h1 className="text-h3 text-foreground mb-2">Заказы с сайта</h1>
             <p className="text-muted-foreground">Всего заказов: {orders.length}</p>
+          </div>
+          <div className="relative w-full sm:w-80">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              type="search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Поиск: имя, телефон, email, № заказа"
+              className="pl-9"
+              aria-label="Поиск по заказам"
+            />
           </div>
         </div>
       </div>
 
-      {orders.length === 0 ? (
+      {filteredOrders.length === 0 ? (
         <div className="bg-card rounded-xl border border-border p-12 text-center">
           <ShoppingCart className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-          <p className="text-lg text-muted-foreground">Заказов пока нет</p>
+          <p className="text-lg text-muted-foreground">
+            {orders.length === 0 ? "Заказов пока нет" : "По вашему запросу ничего не найдено"}
+          </p>
         </div>
       ) : (
         <div className="space-y-4">
-          {orders.map((order) => (
+          {filteredOrders.map((order) => (
             <div
               key={order.id}
               className="bg-card rounded-xl border border-border p-6 hover:border-primary/50 transition-all cursor-pointer"

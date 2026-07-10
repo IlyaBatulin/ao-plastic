@@ -7,6 +7,7 @@ import {
   isBodyTooLarge,
   isValidEmail,
   rateLimitedResponse,
+  readJsonBody,
 } from "@/lib/form-guard"
 
 export async function POST(req: NextRequest) {
@@ -18,7 +19,10 @@ export async function POST(req: NextRequest) {
     const limit = checkRateLimit(req, "contact", 5)
     if (!limit.ok) return rateLimitedResponse(limit.retryAfter)
 
-    const body = await req.json()
+    const body = await readJsonBody(req)
+    if (!body) {
+      return NextResponse.json({ error: "Некорректный формат запроса" }, { status: 400 })
+    }
 
     // Валидация
     const source = typeof body.source === "string" ? body.source : ""

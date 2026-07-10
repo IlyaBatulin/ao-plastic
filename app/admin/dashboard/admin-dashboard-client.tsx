@@ -152,7 +152,7 @@ export function AdminDashboard({ role }: { role: AdminRole }) {
               </div>
               <div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <h1 className="text-xl font-bold text-foreground sm:text-2xl">Админ-панель</h1>
+                  <h1 className="text-h3 text-foreground">Админ-панель</h1>
                   <Badge variant="secondary" className="font-medium">
                     {ADMIN_ROLE_LABELS[role]}
                   </Badge>
@@ -160,7 +160,8 @@ export function AdminDashboard({ role }: { role: AdminRole }) {
                 <p className="text-xs text-muted-foreground sm:text-sm">Управление сайтом АО «Пластик»</p>
               </div>
             </div>
-            <Button variant="outline" onClick={handleLogout}>
+            {/* На lg+ кнопка «Выйти» есть в общей навигации (AdminNav) */}
+            <Button variant="outline" onClick={handleLogout} className="lg:hidden">
               <LogOut className="mr-2 h-4 w-4" />
               <span className="hidden sm:inline">Выйти</span>
             </Button>

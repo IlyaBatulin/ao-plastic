@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Dockerfile копирует .next/standalone — без этой опции сборка образа падает
+  output: "standalone",
   typescript: {
     ignoreBuildErrors: true,
   },

@@ -180,7 +180,7 @@ export function RfpRequestsAdmin() {
                   <ArrowLeft className="w-4 h-4" />
                 </Button>
               </AdminLink>
-              <h1 className="text-2xl font-bold text-foreground">Управление запросами предложений</h1>
+              <h1 className="text-h3 text-foreground">Управление запросами предложений</h1>
             </div>
             <Button onClick={handleCreate}>
               <Plus className="w-4 h-4 mr-2" />

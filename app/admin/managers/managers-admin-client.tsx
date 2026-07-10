@@ -181,7 +181,7 @@ export function ManagersAdmin() {
                 </Button>
               </AdminLink>
               <div>
-                <h1 className="text-2xl font-bold text-foreground">Менеджеры</h1>
+                <h1 className="text-h3 text-foreground">Менеджеры</h1>
                 <p className="text-sm text-muted-foreground">Ответственные за заказы и уведомления</p>
               </div>
             </div>

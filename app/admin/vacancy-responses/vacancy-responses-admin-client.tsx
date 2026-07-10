@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, Mail, Phone, Building2, Calendar, CheckCircle2, XCircle, Clock } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { ArrowLeft, Mail, Phone, Building2, Calendar, CheckCircle2, XCircle, Clock, Search } from "lucide-react"
 import { AdminLink } from "@/components/admin-link"
 
 interface VacancyResponse {
@@ -25,23 +26,29 @@ export function VacancyResponsesAdmin() {
   const router = useRouter()
   const [responses, setResponses] = useState<VacancyResponse[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [groupedResponses, setGroupedResponses] = useState<Record<number, VacancyResponse[]>>({})
+  const [searchQuery, setSearchQuery] = useState("")
 
   useEffect(() => {
     fetchResponses()
   }, [])
 
-  useEffect(() => {
-    // Группируем ответы по вакансиям
-    const grouped: Record<number, VacancyResponse[]> = {}
-    responses.forEach((response) => {
-      if (!grouped[response.vacancy_id]) {
-        grouped[response.vacancy_id] = []
-      }
-      grouped[response.vacancy_id].push(response)
-    })
-    setGroupedResponses(grouped)
-  }, [responses])
+  const normalizedQuery = searchQuery.trim().toLowerCase()
+  const filteredResponses = normalizedQuery
+    ? responses.filter((response) =>
+        [response.company_name, response.email, response.phone].some((value) =>
+          value?.toLowerCase().includes(normalizedQuery)
+        )
+      )
+    : responses
+
+  // Группируем ответы по вакансиям
+  const groupedResponses: Record<number, VacancyResponse[]> = {}
+  filteredResponses.forEach((response) => {
+    if (!groupedResponses[response.vacancy_id]) {
+      groupedResponses[response.vacancy_id] = []
+    }
+    groupedResponses[response.vacancy_id].push(response)
+  })
 
   const fetchResponses = async () => {
     try {
@@ -121,7 +128,7 @@ export function VacancyResponsesAdmin() {
                   <ArrowLeft className="w-4 h-4" />
                 </Button>
               </AdminLink>
-              <h1 className="text-2xl font-bold text-foreground">Ответы на вакансии</h1>
+              <h1 className="text-h3 text-foreground">Ответы на вакансии</h1>
             </div>
           </div>
         </div>
@@ -129,9 +136,23 @@ export function VacancyResponsesAdmin() {
 
       {/* Content */}
       <main className="container mx-auto px-4 lg:px-8 py-8">
+        <div className="relative mb-6 w-full sm:w-72">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            type="search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Поиск: имя, email, телефон"
+            className="pl-9"
+            aria-label="Поиск по откликам"
+          />
+        </div>
+
         {Object.keys(groupedResponses).length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-muted-foreground">Ответов пока нет</p>
+            <p className="text-muted-foreground">
+              {responses.length === 0 ? "Ответов пока нет" : "По вашему запросу ничего не найдено"}
+            </p>
           </div>
         ) : (
           <div className="space-y-8">

@@ -95,3 +95,19 @@ export function asOptionalString(value: unknown, maxLen: number): string | null 
 export function isValidEmail(value: string): boolean {
   return value.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
 }
+
+/**
+ * Безопасно читает JSON-тело запроса.
+ * @returns объект тела или null, если тело отсутствует, не JSON или не объект.
+ */
+export async function readJsonBody<T extends Record<string, unknown> = Record<string, unknown>>(
+  req: Request
+): Promise<T | null> {
+  try {
+    const parsed = await req.json()
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return null
+    return parsed as T
+  } catch {
+    return null
+  }
+}

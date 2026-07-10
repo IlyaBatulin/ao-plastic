@@ -256,7 +256,7 @@ export function ProductEditClient({
             <ArrowLeft className="h-4 w-4" />
           </Button>
         </AdminLink>
-        <h1 className="text-3xl font-bold">
+        <h1 className="text-h3">
           {isNew ? "Новый товар" : "Редактирование товара"}
         </h1>
       </div>

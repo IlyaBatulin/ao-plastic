@@ -113,7 +113,7 @@ export function SubcategoriesAdminClient() {
             </Button>
           </AdminLink>
           <div>
-            <h1 className="text-3xl font-bold">Управление подкатегориями</h1>
+            <h1 className="text-h3">Управление подкатегориями</h1>
             <p className="text-muted-foreground">
               Всего подкатегорий: {subcategories.length}
             </p>

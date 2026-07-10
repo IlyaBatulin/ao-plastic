@@ -188,7 +188,9 @@ export function Contact() {
               </div>
               
               <Button type="submit" size="lg" className="w-full" disabled={isSubmitting || !consentAccepted}>
-                {isSubmitting ? "Отправка..." : t("homePage.contact.form.submit")}
+                {isSubmitting
+                  ? t("homePage.contact.form.submitting") || "Отправка..."
+                  : t("homePage.contact.form.submit")}
               </Button>
             </form>
           </div>

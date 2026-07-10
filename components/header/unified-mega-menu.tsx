@@ -262,7 +262,7 @@ export function UnifiedMegaMenu({ isOpen, activeItem, onClose }: UnifiedMegaMenu
       content = (
         <div className="text-center py-12">
           <div className="text-sm text-muted-foreground font-light tracking-wide">
-            Загрузка...
+            {lang === "en" ? "Loading..." : "Загрузка..."}
           </div>
         </div>
       )

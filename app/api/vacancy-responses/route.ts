@@ -7,6 +7,7 @@ import {
   isBodyTooLarge,
   isValidEmail,
   rateLimitedResponse,
+  readJsonBody,
 } from "@/lib/form-guard"
 
 export async function POST(req: NextRequest) {
@@ -18,7 +19,10 @@ export async function POST(req: NextRequest) {
     const limit = checkRateLimit(req, "vacancy", 5)
     if (!limit.ok) return rateLimitedResponse(limit.retryAfter)
 
-    const body = await req.json()
+    const body = await readJsonBody(req)
+    if (!body) {
+      return NextResponse.json({ error: "Некорректный формат запроса" }, { status: 400 })
+    }
 
     const email = asString(body.email, 254)
     const companyName = asOptionalString(body.company_name, 200)
@@ -26,7 +30,10 @@ export async function POST(req: NextRequest) {
     const message = asOptionalString(body.message, 5000)
     const resumeUrl = asOptionalString(body.resume_url, 1000)
 
-    if (!body.vacancy_id || !email) {
+    const vacancyId =
+      typeof body.vacancy_id === "string" || typeof body.vacancy_id === "number" ? body.vacancy_id : null
+
+    if (!vacancyId || !email) {
       return NextResponse.json({ error: "vacancy_id и email обязательны" }, { status: 400 })
     }
     if (!isValidEmail(email)) {
@@ -40,7 +47,7 @@ export async function POST(req: NextRequest) {
     const { data, error } = await supabase
       .from("vacancy_responses")
       .insert({
-        vacancy_id: body.vacancy_id,
+        vacancy_id: vacancyId,
         company_name: companyName,
         email,
         phone,

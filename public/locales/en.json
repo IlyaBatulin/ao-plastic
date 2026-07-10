@@ -184,7 +184,9 @@
       "mapTitle": "LLC «TEK-SNAB» — Moscow, Lobachevskogo St., 41",
       "tekSnabTitle": "LLC «TEK-SNAB»",
       "tekSnabDescription": "Prompt procurement of raw materials and auxiliary supplies",
-      "tekSnabAddress": "119361, Moscow, Ochakovo-Matveyevskoye municipal district, 41 Lobachevskogo St., premises 6, floor 1, office 102B"
+      "tekSnabAddress": "119361, Moscow, Ochakovo-Matveyevskoye municipal district, 41 Lobachevskogo St., premises 6, floor 1, office 102B",
+      "mapEmbedNote": "Map: OpenStreetMap (more reliable than the embedded widget during network issues).",
+      "mapOpenYandex": "Open in Yandex Maps"
     },
     "etpTenders": {
       "title": "Tenders on ETP GPB",
@@ -359,7 +361,7 @@
       "catalogSearch": "Catalog search:",
       "productsInDatabase": "products in database",
       "noResults": "No results found for",
-      "nothingFound": "",
+      "nothingFound": "nothing found",
       "clearSearch": "Clear search",
       "viewAll": "View Full Catalog",
       "readMore": "Read More"
@@ -391,6 +393,7 @@
         "phonePlaceholder": "+7 (___) ___-__-__",
         "messagePlaceholder": "Tell us about your project...",
         "submit": "Send Message",
+        "submitting": "Sending...",
         "consentText": "I agree to the",
         "consentPersonalData": "consent to personal data processing",
         "consentAnd": "and",

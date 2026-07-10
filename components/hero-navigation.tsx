@@ -60,6 +60,7 @@ export function HeroNavigation() {
               src="/images/logo123.png"
               alt="АО Пластик"
               fill
+              sizes="96px"
               className={`object-contain transition-all duration-300 ${isMegaMenuOpen ? "" : "brightness-0 invert"}`}
               priority
             />

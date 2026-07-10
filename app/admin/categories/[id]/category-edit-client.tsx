@@ -182,7 +182,7 @@ export function CategoryEditClient({
             <ArrowLeft className="h-4 w-4" />
           </Button>
         </AdminLink>
-        <h1 className="text-3xl font-bold">
+        <h1 className="text-h3">
           {isNew ? "Новая категория" : "Редактирование категории"}
         </h1>
       </div>

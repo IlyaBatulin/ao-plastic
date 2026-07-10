@@ -32,12 +32,15 @@ export default function CartPage({ params, searchParams }: NextPageProps) {
   const [orderPlaced, setOrderPlaced] = useState(false)
   const [inputs, setInputs] = useState<Record<string, string>>({})
 
-  const getInputValue = (productId: string, quantity: number) => {
-    return inputs[productId] ?? quantity.toString()
+  // Один товар с разными цветами — разные позиции, поэтому ключ включает цвет
+  const lineKey = (productId: string, colorCode?: string) => `${productId}::${colorCode ?? ""}`
+
+  const getInputValue = (productId: string, quantity: number, colorCode?: string) => {
+    return inputs[lineKey(productId, colorCode)] ?? quantity.toString()
   }
 
-  const setInputValue = (productId: string, value: string) => {
-    setInputs((prev) => ({ ...prev, [productId]: value }))
+  const setInputValue = (productId: string, value: string, colorCode?: string) => {
+    setInputs((prev) => ({ ...prev, [lineKey(productId, colorCode)]: value }))
   }
 
   const sanitizeQuantity = (value: string, isPackages: boolean = false): number => {
@@ -229,6 +232,7 @@ export default function CartPage({ params, searchParams }: NextPageProps) {
                       src={item.productImage || "/placeholder.svg"}
                       alt={item.productName}
                       fill
+                      sizes="(max-width: 640px) 100vw, 128px"
                       className="object-cover"
                     />
                   </div>
@@ -253,12 +257,12 @@ export default function CartPage({ params, searchParams }: NextPageProps) {
                           type="text"
                           inputMode={(item.isPackages || item.categoryId === 'hoztovary') ? "numeric" : "decimal"}
                           className="w-full sm:w-20 md:w-24 bg-transparent outline-none text-center font-semibold text-sm md:text-base"
-                          value={getInputValue(item.productId, item.quantity)}
+                          value={getInputValue(item.productId, item.quantity, item.colorCode)}
                           onFocus={(e) => {
                             if (e.currentTarget.value === "0") e.currentTarget.select()
                           }}
                           onChange={(e) => {
-                            const prev = getInputValue(item.productId, item.quantity)
+                            const prev = getInputValue(item.productId, item.quantity, item.colorCode)
                             let v = e.target.value
                             
                             const isHousehold = item.isPackages || item.categoryId === 'hoztovary'
@@ -279,15 +283,15 @@ export default function CartPage({ params, searchParams }: NextPageProps) {
                                 v = String(parseInt(v, 10))
                               }
                             }
-                            setInputValue(item.productId, v)
+                            setInputValue(item.productId, v, item.colorCode)
                           }}
                           onBlur={() => {
-                            const raw = getInputValue(item.productId, item.quantity)
+                            const raw = getInputValue(item.productId, item.quantity, item.colorCode)
                             const isHousehold = item.isPackages || item.categoryId === 'hoztovary'
                             const n = sanitizeQuantity(raw, isHousehold)
                             const clamped = n <= 0 ? (isHousehold ? 1 : 0.001) : n
-                            setInputValue(item.productId, clamped.toString())
-                            updateQuantity(item.productId, clamped)
+                            setInputValue(item.productId, clamped.toString(), item.colorCode)
+                            updateQuantity(item.productId, clamped, item.colorCode)
                           }}
                         />
                       </div>
@@ -307,7 +311,7 @@ export default function CartPage({ params, searchParams }: NextPageProps) {
                         size="sm"
                         className="text-destructive hover:text-destructive hover:bg-destructive/10 w-full sm:w-auto"
                         onClick={() => {
-                          removeItem(item.productId)
+                          removeItem(item.productId, item.colorCode)
                           toast({
                             title: "Товар удален",
                             description: `${item.productName}`,

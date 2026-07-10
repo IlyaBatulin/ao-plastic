@@ -75,6 +75,7 @@ export function Header() {
               src="/images/logo123.png"
               alt="АО Пластик"
               fill
+              sizes="80px"
               className={`object-contain ${isScrolled || !isHomePage ? "" : "brightness-0 invert"}`}
               priority
             />

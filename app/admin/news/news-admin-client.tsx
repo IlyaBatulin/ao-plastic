@@ -219,7 +219,7 @@ export function NewsAdmin() {
                 <Button type="button" variant="ghost" size="icon" onClick={() => setIsDialogOpen(false)}>
                   <ArrowLeft className="w-4 h-4" />
                 </Button>
-                <h1 className="text-2xl font-bold text-foreground">
+                <h1 className="text-h3 text-foreground">
                   {selectedNews ? "Редактировать новость" : "Новая новость"}
                 </h1>
               </div>
@@ -393,7 +393,7 @@ export function NewsAdmin() {
                   <ArrowLeft className="w-4 h-4" />
                 </Button>
               </AdminLink>
-              <h1 className="text-2xl font-bold text-foreground">Управление новостями</h1>
+              <h1 className="text-h3 text-foreground">Управление новостями</h1>
             </div>
             <Button onClick={handleCreate}>
               <Plus className="w-4 h-4 mr-2" />

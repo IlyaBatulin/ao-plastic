@@ -161,12 +161,13 @@ export function MobileMenu({ isOpen, onOpenChange }: MobileMenuProps) {
         <div className="flex items-center justify-between px-4 lg:px-6 py-4 border-b border-gray-200/50 bg-[#faf9f7] sticky top-0 z-[121]">
           <Link href="/" onClick={handleClose} className="flex items-center gap-3">
             <div className="relative w-12 h-12 flex-shrink-0 bg-transparent">
-              <Image 
-                src="/images/logo123.png" 
-                alt="АО Пластик" 
-                fill 
-                className="object-contain" 
-                priority 
+              <Image
+                src="/images/logo123.png"
+                alt="АО Пластик"
+                fill
+                sizes="48px"
+                className="object-contain"
+                priority
               />
             </div>
             <span className="font-bold text-lg text-foreground">АО Пластик</span>

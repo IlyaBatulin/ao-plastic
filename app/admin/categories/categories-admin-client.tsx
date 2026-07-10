@@ -81,7 +81,7 @@ export function CategoriesAdminClient() {
             </Button>
           </AdminLink>
           <div>
-            <h1 className="text-3xl font-bold">Управление категориями</h1>
+            <h1 className="text-h3">Управление категориями</h1>
             <p className="text-muted-foreground">
               Всего категорий: {categories.length}
             </p>

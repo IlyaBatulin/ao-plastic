@@ -1,60 +1,76 @@
 "use client"
 
 import { useEffect, useMemo, useRef, useState, useCallback } from "react"
+import Link from "next/link"
 import { geoConicEqualArea, geoPath, type GeoPermissibleObjects } from "d3-geo"
 import am5geodata_russiaLow from "@amcharts/amcharts5-geodata/russiaLow"
-import { Plus, Minus, Home } from "lucide-react"
+import { Plus, Minus, Home, X, ArrowRight } from "lucide-react"
+
+type ProductKey = "abs" | "ps" | "styrene" | "dispersion" | "household"
 
 type City = {
   name: string
   nameEn: string
+  region: string
+  regionEn: string
   lat: number
   lon: number
-  /** Крупные города подписаны всегда; остальные — на десктопе */
-  major?: boolean
-  /** Положение подписи: top | bottom (по умолчанию bottom) */
-  labelPos?: "top" | "bottom"
-  labelDx?: number
+  /** Группы продукции из таблицы поставок */
+  products: ProductKey[]
 }
 
-/** Города поставок — только Россия. */
+const PRODUCT_LABELS: Record<ProductKey, { ru: string; en: string }> = {
+  abs: { ru: "АБС-пластики", en: "ABS plastics" },
+  ps: { ru: "Полистирол", en: "Polystyrene" },
+  styrene: { ru: "Стирол", en: "Styrene" },
+  dispersion: { ru: "Дисперсии", en: "Dispersions" },
+  household: { ru: "Товары для дома", en: "Household goods" },
+}
+
+/** Города поставок — только Россия; продукция из фактической таблицы поставок. */
 const CITIES: City[] = [
-  { name: "Санкт-Петербург", nameEn: "St. Petersburg", lat: 59.93, lon: 30.34, major: true, labelPos: "top" },
-  { name: "Калининград", nameEn: "Kaliningrad", lat: 54.71, lon: 20.51, major: true },
-  { name: "Мурманск", nameEn: "Murmansk", lat: 68.96, lon: 33.08 },
-  { name: "Москва", nameEn: "Moscow", lat: 55.75, lon: 37.62, major: true, labelPos: "top", labelDx: 10 },
-  { name: "Воронеж", nameEn: "Voronezh", lat: 51.67, lon: 39.18, labelDx: -12 },
-  { name: "Ростов-на-Дону", nameEn: "Rostov-on-Don", lat: 47.23, lon: 39.72, major: true },
-  { name: "Краснодар", nameEn: "Krasnodar", lat: 45.04, lon: 38.98, labelDx: -16 },
-  { name: "Волгоград", nameEn: "Volgograd", lat: 48.71, lon: 44.51, labelDx: 14 },
-  { name: "Нижний Новгород", nameEn: "N. Novgorod", lat: 56.33, lon: 44.01, labelPos: "top", labelDx: 16 },
-  { name: "Казань", nameEn: "Kazan", lat: 55.83, lon: 49.07, major: true, labelDx: -8 },
-  { name: "Самара", nameEn: "Samara", lat: 53.2, lon: 50.1, labelDx: 8 },
-  { name: "Уфа", nameEn: "Ufa", lat: 54.74, lon: 55.97 },
-  { name: "Пермь", nameEn: "Perm", lat: 58.01, lon: 56.25, labelPos: "top", labelDx: -8 },
-  { name: "Екатеринбург", nameEn: "Yekaterinburg", lat: 56.84, lon: 60.61, major: true, labelPos: "top", labelDx: 16 },
-  { name: "Челябинск", nameEn: "Chelyabinsk", lat: 55.16, lon: 61.44, labelDx: 16 },
-  { name: "Тюмень", nameEn: "Tyumen", lat: 57.15, lon: 65.53 },
-  { name: "Омск", nameEn: "Omsk", lat: 54.99, lon: 73.32 },
-  { name: "Новосибирск", nameEn: "Novosibirsk", lat: 55.01, lon: 82.94, major: true },
-  { name: "Томск", nameEn: "Tomsk", lat: 56.5, lon: 84.97, labelPos: "top" },
-  { name: "Красноярск", nameEn: "Krasnoyarsk", lat: 56.02, lon: 92.89, major: true, labelPos: "top" },
-  { name: "Иркутск", nameEn: "Irkutsk", lat: 52.3, lon: 104.3 },
-  { name: "Якутск", nameEn: "Yakutsk", lat: 62.04, lon: 129.68 },
-  { name: "Магадан", nameEn: "Magadan", lat: 59.56, lon: 150.83, labelPos: "top" },
-  { name: "Владивосток", nameEn: "Vladivostok", lat: 43.12, lon: 131.89, major: true },
+  { name: "Санкт-Петербург", nameEn: "St. Petersburg", region: "Санкт-Петербург", regionEn: "St. Petersburg", lat: 59.93, lon: 30.34, products: ["abs", "ps", "styrene"] },
+  { name: "Калининград", nameEn: "Kaliningrad", region: "Калининградская область", regionEn: "Kaliningrad Region", lat: 54.71, lon: 20.51, products: ["abs", "ps"] },
+  { name: "Мурманск", nameEn: "Murmansk", region: "Мурманская область", regionEn: "Murmansk Region", lat: 68.96, lon: 33.08, products: ["ps"] },
+  { name: "Москва", nameEn: "Moscow", region: "Москва и Московская область", regionEn: "Moscow & Moscow Region", lat: 55.75, lon: 37.62, products: ["abs", "ps", "styrene"] },
+  { name: "Воронеж", nameEn: "Voronezh", region: "Воронежская область", regionEn: "Voronezh Region", lat: 51.67, lon: 39.18, products: ["abs", "ps"] },
+  { name: "Ростов-на-Дону", nameEn: "Rostov-on-Don", region: "Ростовская область", regionEn: "Rostov Region", lat: 47.23, lon: 39.72, products: ["abs", "ps"] },
+  { name: "Краснодар", nameEn: "Krasnodar", region: "Краснодарский край", regionEn: "Krasnodar Krai", lat: 45.04, lon: 38.98, products: ["abs", "ps", "styrene"] },
+  { name: "Волгоград", nameEn: "Volgograd", region: "Волгоградская область", regionEn: "Volgograd Region", lat: 48.71, lon: 44.51, products: ["abs", "ps"] },
+  { name: "Нижний Новгород", nameEn: "Nizhny Novgorod", region: "Нижегородская область", regionEn: "Nizhny Novgorod Region", lat: 56.33, lon: 44.01, products: ["abs", "ps", "styrene"] },
+  { name: "Казань", nameEn: "Kazan", region: "Республика Татарстан", regionEn: "Republic of Tatarstan", lat: 55.83, lon: 49.07, products: ["abs", "ps"] },
+  { name: "Самара", nameEn: "Samara", region: "Самарская область", regionEn: "Samara Region", lat: 53.2, lon: 50.1, products: ["abs", "ps"] },
+  { name: "Уфа", nameEn: "Ufa", region: "Республика Башкортостан", regionEn: "Republic of Bashkortostan", lat: 54.74, lon: 55.97, products: ["abs", "ps"] },
+  { name: "Пермь", nameEn: "Perm", region: "Пермский край", regionEn: "Perm Krai", lat: 58.01, lon: 56.25, products: ["abs", "ps"] },
+  { name: "Екатеринбург", nameEn: "Yekaterinburg", region: "Свердловская область", regionEn: "Sverdlovsk Region", lat: 56.84, lon: 60.61, products: ["abs", "ps"] },
+  { name: "Челябинск", nameEn: "Chelyabinsk", region: "Челябинская область", regionEn: "Chelyabinsk Region", lat: 55.16, lon: 61.44, products: ["abs", "ps"] },
+  { name: "Тюмень", nameEn: "Tyumen", region: "Тюменская область", regionEn: "Tyumen Region", lat: 57.15, lon: 65.53, products: ["abs", "ps"] },
+  { name: "Омск", nameEn: "Omsk", region: "Омская область", regionEn: "Omsk Region", lat: 54.99, lon: 73.32, products: ["abs", "ps"] },
+  { name: "Новосибирск", nameEn: "Novosibirsk", region: "Новосибирская область", regionEn: "Novosibirsk Region", lat: 55.01, lon: 82.94, products: ["abs", "ps"] },
+  { name: "Томск", nameEn: "Tomsk", region: "Томская область", regionEn: "Tomsk Region", lat: 56.5, lon: 84.97, products: ["abs", "ps"] },
+  { name: "Красноярск", nameEn: "Krasnoyarsk", region: "Красноярский край", regionEn: "Krasnoyarsk Krai", lat: 56.02, lon: 92.89, products: ["abs", "ps"] },
+  { name: "Иркутск", nameEn: "Irkutsk", region: "Иркутская область", regionEn: "Irkutsk Region", lat: 52.3, lon: 104.3, products: ["abs"] },
+  { name: "Якутск", nameEn: "Yakutsk", region: "Республика Саха (Якутия)", regionEn: "Republic of Sakha (Yakutia)", lat: 62.04, lon: 129.68, products: ["ps"] },
+  { name: "Магадан", nameEn: "Magadan", region: "Магаданская область", regionEn: "Magadan Region", lat: 59.56, lon: 150.83, products: ["ps"] },
+  { name: "Владивосток", nameEn: "Vladivostok", region: "Приморский край", regionEn: "Primorsky Krai", lat: 43.12, lon: 131.89, products: ["abs"] },
 ]
 
-const FACTORY = { name: "Узловая", nameEn: "Uzlovaya", lat: 54.01, lon: 38.08 }
+const FACTORY = {
+  name: "Узловая",
+  nameEn: "Uzlovaya",
+  region: "Тульская область",
+  regionEn: "Tula Region",
+  lat: 54.01,
+  lon: 38.08,
+  products: ["abs", "ps", "styrene", "dispersion", "household"] as ProductKey[],
+}
 
-/**
- * «Паутина» поставок: каждый город соединён с двумя ближайшими,
- * завод — с крупными хабами. Пары считаются один раз.
- */
-const WEB_EDGES: Array<[City | typeof FACTORY, City | typeof FACTORY]> = (() => {
-  const nodes: Array<City | typeof FACTORY> = [FACTORY, ...CITIES]
+/** «Паутина»: каждый город соединён с двумя ближайшими, завод — с хабами. */
+const WEB_EDGES: Array<[{ lon: number; lat: number; name: string }, { lon: number; lat: number; name: string }]> = (() => {
+  const hubs = new Set(["Москва", "Санкт-Петербург", "Казань", "Екатеринбург", "Новосибирск", "Красноярск", "Ростов-на-Дону", "Владивосток", "Калининград"])
+  const nodes: Array<{ lon: number; lat: number; name: string }> = [FACTORY, ...CITIES]
   const seen = new Set<string>()
-  const edges: Array<[City | typeof FACTORY, City | typeof FACTORY]> = []
+  const edges: Array<[(typeof nodes)[number], (typeof nodes)[number]]> = []
 
   const push = (a: (typeof nodes)[number], b: (typeof nodes)[number]) => {
     const key = [a.name, b.name].sort().join("|")
@@ -62,30 +78,31 @@ const WEB_EDGES: Array<[City | typeof FACTORY, City | typeof FACTORY]> = (() => 
     seen.add(key)
     edges.push([a, b])
   }
-
   const dist = (a: (typeof nodes)[number], b: (typeof nodes)[number]) => {
     const kx = Math.cos(((a.lat + b.lat) / 2) * (Math.PI / 180))
     return Math.hypot((a.lon - b.lon) * kx, a.lat - b.lat)
   }
-
   for (const node of nodes) {
     nodes
-      .filter((other) => other !== node)
+      .filter((o) => o !== node)
       .sort((a, b) => dist(node, a) - dist(node, b))
       .slice(0, 2)
-      .forEach((other) => push(node, other))
+      .forEach((o) => push(node, o))
   }
-  CITIES.filter((c) => c.major).forEach((hub) => push(FACTORY, hub))
-
+  CITIES.filter((c) => hubs.has(c.name)).forEach((hub) => push(FACTORY, hub))
   return edges
 })()
 
 const VIEW_W = 1200
 const VIEW_H = 640
-const PAD = 28
+const PAD = 30
 const MAX_ZOOM = 8
+/** Шаг подсветки точек, мс */
+const LIGHT_STAGGER = 110
 
 const geodata = am5geodata_russiaLow as unknown as GeoJSON.FeatureCollection
+
+type Selected = (City | typeof FACTORY) & { isFactory?: boolean }
 
 export function RussiaMap({
   lang,
@@ -98,21 +115,32 @@ export function RussiaMap({
   const [transform, setTransform] = useState({ k: 1, x: 0, y: 0 })
   const [hoverRegion, setHoverRegion] = useState<string | null>(null)
   const [tooltip, setTooltip] = useState<{ x: number; y: number; text: string } | null>(null)
-  const [isNarrow, setIsNarrow] = useState(false)
-  const [mounted, setMounted] = useState(false)
+  const [selected, setSelected] = useState<Selected | null>(null)
+  const [lit, setLit] = useState(false)
   const dragRef = useRef<{ startX: number; startY: number; baseX: number; baseY: number; moved: boolean } | null>(null)
   const pinchRef = useRef<{ dist: number; k: number } | null>(null)
 
+  // Подсветка точек по очереди — когда секция долистана до карты
   useEffect(() => {
-    setMounted(true)
-    const check = () => setIsNarrow((containerRef.current?.clientWidth ?? 1200) < 700)
-    check()
-    window.addEventListener("resize", check)
-    return () => window.removeEventListener("resize", check)
+    const el = containerRef.current
+    if (!el) return
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setLit(true)
+      return
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setLit(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.35 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
   }, [])
 
-  // Коническая равновеликая проекция — «атласный» вид России,
-  // вписанный в viewBox по реальным проекционным границам (fitExtent).
   const { regionPaths, project } = useMemo(() => {
     const projection = geoConicEqualArea()
       .rotate([-100, 0])
@@ -120,7 +148,7 @@ export function RussiaMap({
       .fitExtent(
         [
           [PAD, PAD],
-          [VIEW_W - PAD, VIEW_H - PAD - 14],
+          [VIEW_W - PAD, VIEW_H - PAD - 10],
         ],
         geodata as GeoPermissibleObjects
       )
@@ -136,14 +164,14 @@ export function RussiaMap({
     }
   }, [])
 
-  const cityPoints = useMemo(
-    () =>
-      CITIES.map((c) => {
-        const [x, y] = project(c.lon, c.lat)
-        return { ...c, x, y }
-      }),
-    [project]
-  )
+  // Порядок подсветки: с запада на восток
+  const cityPoints = useMemo(() => {
+    const sorted = [...CITIES].sort((a, b) => a.lon - b.lon)
+    return sorted.map((c, order) => {
+      const [x, y] = project(c.lon, c.lat)
+      return { ...c, x, y, order }
+    })
+  }, [project])
   const factoryPoint = useMemo(() => {
     const [x, y] = project(FACTORY.lon, FACTORY.lat)
     return { ...FACTORY, x, y }
@@ -160,20 +188,14 @@ export function RussiaMap({
 
   const clampTransform = useCallback((t: { k: number; x: number; y: number }) => {
     const k = Math.min(MAX_ZOOM, Math.max(1, t.k))
-    // не даём укатить карту дальше 60% ширины за край
     const limX = VIEW_W * (k - 1) * 0.5 + VIEW_W * 0.1
     const limY = VIEW_H * (k - 1) * 0.5 + VIEW_H * 0.1
-    return {
-      k,
-      x: Math.min(limX, Math.max(-limX, t.x)),
-      y: Math.min(limY, Math.max(-limY, t.y)),
-    }
+    return { k, x: Math.min(limX, Math.max(-limX, t.x)), y: Math.min(limY, Math.max(-limY, t.y)) }
   }, [])
 
   const zoomBy = useCallback(
     (factor: number) => {
       setTransform((t) => {
-        // зум к центру вьюпорта
         const k = Math.min(MAX_ZOOM, Math.max(1, t.k * factor))
         const ratio = k / t.k
         return clampTransform({ k, x: t.x * ratio, y: t.y * ratio })
@@ -181,10 +203,8 @@ export function RussiaMap({
     },
     [clampTransform]
   )
-
   const resetView = useCallback(() => setTransform({ k: 1, x: 0, y: 0 }), [])
 
-  // Пан мышью/пальцем + пинч-зум
   const onPointerDown = (e: React.PointerEvent) => {
     ;(e.target as Element).setPointerCapture?.(e.pointerId)
     dragRef.current = { startX: e.clientX, startY: e.clientY, baseX: transform.x, baseY: transform.y, moved: false }
@@ -200,8 +220,11 @@ export function RussiaMap({
     setTransform((t) => clampTransform({ k: t.k, x: drag.baseX + dx, y: drag.baseY + dy }))
   }
   const onPointerUp = () => {
+    const wasDrag = dragRef.current?.moved
     dragRef.current = null
     pinchRef.current = null
+    // клик по пустому месту карты (не перетаскивание) закрывает карточку
+    if (!wasDrag) setSelected(null)
   }
   const onTouchMove = (e: React.TouchEvent) => {
     if (e.touches.length === 2) {
@@ -222,16 +245,17 @@ export function RussiaMap({
     setTooltip({ x: e.clientX - rect.left, y: e.clientY - rect.top, text })
   }
 
-  // Обратный масштаб: точки/подписи/линии не распухают при зуме
+  const selectPoint = (point: Selected, isFactory = false) => {
+    setSelected({ ...point, isFactory })
+    setTooltip(null)
+  }
+
   const inv = 1 / transform.k
-  const cityName = (c: { name: string; nameEn: string }) => (lang === "en" ? c.nameEn : c.name)
+  const en = lang === "en"
+  const cityName = (c: { name: string; nameEn: string }) => (en ? c.nameEn : c.name)
 
   return (
-    <div
-      ref={containerRef}
-      className="group relative h-full w-full touch-pan-y overflow-hidden"
-      onPointerLeave={() => setTooltip(null)}
-    >
+    <div ref={containerRef} className="group relative h-full w-full touch-pan-y overflow-hidden" onPointerLeave={() => setTooltip(null)}>
       <svg
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
         className="h-full w-full cursor-grab select-none active:cursor-grabbing"
@@ -241,7 +265,7 @@ export function RussiaMap({
         onPointerCancel={onPointerUp}
         onTouchMove={onTouchMove}
         role="img"
-        aria-label={lang === "en" ? "Delivery map of Russia" : "Карта поставок по России"}
+        aria-label={en ? "Delivery map of Russia" : "Карта поставок по России"}
       >
         <defs>
           <linearGradient id="rm-land" x1="0" y1="0" x2="0" y2="1">
@@ -252,139 +276,102 @@ export function RussiaMap({
             <feDropShadow dx="0" dy="6" stdDeviation="10" floodColor="#0f1e42" floodOpacity="0.10" />
           </filter>
           <radialGradient id="rm-glow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#0046FF" stopOpacity="0.28" />
+            <stop offset="0%" stopColor="#0046FF" stopOpacity="0.35" />
             <stop offset="100%" stopColor="#0046FF" stopOpacity="0" />
           </radialGradient>
         </defs>
 
-        <g
-          transform={`translate(${VIEW_W / 2 + transform.x} ${VIEW_H / 2 + transform.y}) scale(${transform.k}) translate(${-VIEW_W / 2} ${-VIEW_H / 2})`}
-        >
+        <g transform={`translate(${VIEW_W / 2 + transform.x} ${VIEW_H / 2 + transform.y}) scale(${transform.k}) translate(${-VIEW_W / 2} ${-VIEW_H / 2})`}>
           {/* Страна */}
-          <g filter="url(#rm-shadow)" className={mounted ? "rm-fade-in" : "opacity-0"}>
+          <g filter="url(#rm-shadow)" className="rm-fade-in">
             {regionPaths.map((r) => (
               <path
                 key={r.id}
                 d={r.d}
-                fill={hoverRegion === r.id ? "#d3e0f6" : "url(#rm-land)"}
+                fill={hoverRegion === r.id ? "#d9e4f7" : "url(#rm-land)"}
                 stroke="#ffffff"
                 strokeWidth={0.9 * inv}
                 style={{ transition: "fill 250ms ease" }}
-                onMouseEnter={(e) => {
-                  setHoverRegion(r.id)
-                  if (r.name) showTooltip(e, r.name)
-                }}
-                onMouseMove={(e) => r.name && showTooltip(e, r.name)}
-                onMouseLeave={() => {
-                  setHoverRegion(null)
-                  setTooltip(null)
-                }}
+                onMouseEnter={() => setHoverRegion(r.id)}
+                onMouseLeave={() => setHoverRegion(null)}
               />
             ))}
           </g>
 
-          {/* Паутина поставок */}
-          <g className={mounted ? "rm-web-in" : "opacity-0"}>
+          {/* Паутина поставок — проявляется после подсветки точек */}
+          <g className={lit ? "rm-web-in" : "opacity-0"} style={{ animationDelay: `${CITIES.length * LIGHT_STAGGER + 400}ms` }}>
             {webLines.map((l) => (
-              <line
-                key={l.key}
-                x1={l.x1}
-                y1={l.y1}
-                x2={l.x2}
-                y2={l.y2}
-                stroke="#2c53c7"
-                strokeWidth={0.8 * inv}
-                strokeOpacity="0.18"
-                strokeLinecap="round"
-              />
+              <line key={l.key} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} stroke="#2c53c7" strokeWidth={0.8 * inv} strokeOpacity="0.15" strokeLinecap="round" />
             ))}
           </g>
 
-          {/* Города */}
-          {cityPoints.map((c, i) => {
-            const onTop = c.labelPos === "top"
-            const showLabel = c.major || !isNarrow
+          {/* Города — точки без подписей, загораются по очереди */}
+          {cityPoints.map((c) => {
+            const isSelected = selected && !selected.isFactory && selected.name === c.name
             return (
               <g
                 key={c.name}
                 transform={`translate(${c.x} ${c.y}) scale(${inv})`}
-                className={mounted ? "rm-city-in" : "opacity-0"}
-                style={{ animationDelay: `${600 + ((c.lon - 20) / 131) * 1100}ms` }}
+                className={lit ? "rm-light-up" : "opacity-0"}
+                style={{ animationDelay: `${300 + c.order * LIGHT_STAGGER}ms` }}
               >
-                <circle r="10" fill="none" stroke="#1e3a8a" strokeOpacity="0.35" strokeWidth="1" className="rm-pulse" style={{ animationDelay: `${(i % 6) * 400}ms` }} />
+                <circle r="9" fill="none" stroke="#1e3a8a" strokeOpacity="0.3" strokeWidth="1" className="rm-pulse" style={{ animationDelay: `${300 + c.order * LIGHT_STAGGER + 600}ms` }} />
+                {isSelected && <circle r="8.5" fill="none" stroke="#0046FF" strokeWidth="1.6" strokeOpacity="0.85" />}
                 <circle
-                  r={isNarrow ? 3.2 : 3.8}
-                  fill="#1e3a8a"
+                  r={isSelected ? 5 : 4}
+                  fill={isSelected ? "#0046FF" : "#1e3a8a"}
                   stroke="#ffffff"
-                  strokeWidth="1.5"
+                  strokeWidth="1.6"
                   className="rm-dot"
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    selectPoint(c)
+                  }}
                   onMouseEnter={(e) => showTooltip(e, cityName(c))}
                   onMouseMove={(e) => showTooltip(e, cityName(c))}
                   onMouseLeave={() => setTooltip(null)}
                 />
-                {showLabel && (
-                  <text
-                    x={c.labelDx ?? 0}
-                    y={onTop ? -8 : 14}
-                    textAnchor="middle"
-                    fontSize={isNarrow ? 10 : 11.5}
-                    fontWeight={500}
-                    fill="#33415c"
-                    stroke="#ffffff"
-                    strokeWidth="3"
-                    paintOrder="stroke"
-                    style={{ pointerEvents: "none" }}
-                  >
-                    {cityName(c)}
-                  </text>
-                )}
               </g>
             )
           })}
 
-          {/* Завод — Узловая */}
-          <g
-            transform={`translate(${factoryPoint.x} ${factoryPoint.y}) scale(${inv})`}
-            className={mounted ? "rm-city-in" : "opacity-0"}
-            style={{ animationDelay: "400ms" }}
-          >
-            <circle r="26" fill="url(#rm-glow)" />
-            <circle r="14" fill="none" stroke="#0046FF" strokeOpacity="0.5" strokeWidth="1.2" className="rm-pulse" />
-            <circle r="14" fill="none" stroke="#0046FF" strokeOpacity="0.5" strokeWidth="1.2" className="rm-pulse" style={{ animationDelay: "1100ms" }} />
-            <circle
-              r={isNarrow ? 5.5 : 6.5}
-              fill="#0046FF"
-              stroke="#ffffff"
-              strokeWidth="2"
-              className="rm-dot"
-              onMouseEnter={(e) => showTooltip(e, factoryLabel)}
-              onMouseMove={(e) => showTooltip(e, factoryLabel)}
-              onMouseLeave={() => setTooltip(null)}
-            />
-            <text
-              x={isNarrow ? 10 : 0}
-              y={isNarrow ? 4 : 20}
-              textAnchor={isNarrow ? "start" : "middle"}
-              fontSize={isNarrow ? 10.5 : 12.5}
-              fontWeight={700}
-              fill="#0f1e42"
-              stroke="#ffffff"
-              strokeWidth="3.5"
-              paintOrder="stroke"
-              style={{ pointerEvents: "none" }}
-            >
-              {factoryLabel}
-            </text>
-          </g>
+          {/* Завод — Узловая: самая яркая точка, загорается первой */}
+          {(() => {
+            const isSelected = selected?.isFactory
+            return (
+              <g transform={`translate(${factoryPoint.x} ${factoryPoint.y}) scale(${inv})`} className={lit ? "rm-light-up" : "opacity-0"} style={{ animationDelay: "0ms" }}>
+                <circle r="30" fill="url(#rm-glow)" />
+                <circle r="13" fill="none" stroke="#0046FF" strokeOpacity="0.55" strokeWidth="1.3" className="rm-pulse" style={{ animationDelay: "500ms" }} />
+                <circle r="13" fill="none" stroke="#0046FF" strokeOpacity="0.55" strokeWidth="1.3" className="rm-pulse" style={{ animationDelay: "1700ms" }} />
+                {isSelected && <circle r="11" fill="none" stroke="#0046FF" strokeWidth="1.8" strokeOpacity="0.9" />}
+                <circle
+                  r={isSelected ? 7.5 : 6.8}
+                  fill="#0046FF"
+                  stroke="#ffffff"
+                  strokeWidth="2.2"
+                  className="rm-dot"
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    selectPoint(FACTORY, true)
+                  }}
+                  onMouseEnter={(e) => showTooltip(e, factoryLabel)}
+                  onMouseMove={(e) => showTooltip(e, factoryLabel)}
+                  onMouseLeave={() => setTooltip(null)}
+                />
+              </g>
+            )
+          })()}
         </g>
       </svg>
 
       {/* Управление масштабом */}
       <div className="absolute bottom-4 right-4 flex flex-col gap-1.5 opacity-90">
         {[
-          { icon: Plus, action: () => zoomBy(1.5), label: lang === "en" ? "Zoom in" : "Приблизить" },
-          { icon: Minus, action: () => zoomBy(1 / 1.5), label: lang === "en" ? "Zoom out" : "Отдалить" },
-          { icon: Home, action: resetView, label: lang === "en" ? "Reset view" : "Сбросить вид" },
+          { icon: Plus, action: () => zoomBy(1.5), label: en ? "Zoom in" : "Приблизить" },
+          { icon: Minus, action: () => zoomBy(1 / 1.5), label: en ? "Zoom out" : "Отдалить" },
+          { icon: Home, action: resetView, label: en ? "Reset view" : "Сбросить вид" },
         ].map(({ icon: Icon, action, label }) => (
           <button
             key={label}
@@ -398,8 +385,8 @@ export function RussiaMap({
         ))}
       </div>
 
-      {/* Тултип */}
-      {tooltip && (
+      {/* Тултип при наведении */}
+      {tooltip && !selected && (
         <div
           className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-[130%] whitespace-nowrap rounded-lg bg-[#0f1e42]/95 px-3 py-1.5 text-xs font-medium text-white shadow-lg"
           style={{ left: tooltip.x, top: tooltip.y }}
@@ -408,6 +395,58 @@ export function RussiaMap({
         </div>
       )}
 
+      {/* Карточка города/завода по клику */}
+      {selected && (
+        <div className="absolute inset-x-3 bottom-3 z-20 sm:inset-x-auto sm:left-4 sm:bottom-4 sm:w-[330px]">
+          <div className="rm-card-in relative overflow-hidden rounded-2xl border border-border/60 bg-white/95 p-5 shadow-xl backdrop-blur-md">
+            <button
+              type="button"
+              onClick={() => setSelected(null)}
+              aria-label={en ? "Close" : "Закрыть"}
+              className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-muted text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+
+            {selected.isFactory ? (
+              <>
+                <p className="text-caption mb-1 text-[#0046FF]">{en ? "Production site" : "Производственная площадка"}</p>
+                <h3 className="text-lg font-semibold text-foreground">
+                  {en ? "Uzlovaya — Plastik JSC" : "Узловая — АО «Пластик»"}
+                </h3>
+                <p className="mt-1 text-xs text-muted-foreground">{en ? selected.regionEn : selected.region}</p>
+              </>
+            ) : (
+              <>
+                <p className="text-caption mb-1 text-primary">{en ? "Delivery city" : "Город поставок"}</p>
+                <h3 className="text-lg font-semibold text-foreground">{cityName(selected)}</h3>
+                <p className="mt-1 text-xs text-muted-foreground">{en ? selected.regionEn : selected.region}</p>
+              </>
+            )}
+
+            <p className="mt-3 text-xs font-medium uppercase tracking-[0.1em] text-muted-foreground">
+              {selected.isFactory ? (en ? "We produce" : "Производим") : en ? "We deliver" : "Поставляем"}
+            </p>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {selected.products.map((p) => (
+                <span key={p} className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                  {en ? PRODUCT_LABELS[p].en : PRODUCT_LABELS[p].ru}
+                </span>
+              ))}
+            </div>
+
+            {selected.isFactory && (
+              <Link
+                href="/products"
+                className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#0046FF] transition-colors hover:text-primary"
+              >
+                {en ? "Product catalog" : "Каталог продукции"}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

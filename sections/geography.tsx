@@ -52,6 +52,9 @@ export function Geography() {
               </svg>
               {lang === "en" ? "Supply network" : "Сеть поставок"}
             </span>
+            <span className="inline-flex items-center gap-1.5 text-xs italic text-muted-foreground/80">
+              {lang === "en" ? "Click a dot to see the city and products" : "Нажмите на точку — город и продукция"}
+            </span>
           </div>
         </div>
       </div>

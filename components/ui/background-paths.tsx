@@ -2,16 +2,14 @@
 
 import { useEffect, useState } from "react"
 import { createPortal } from "react-dom"
-import { motion } from "framer-motion"
+import { motion, MotionConfig } from "framer-motion"
 
 interface FloatingPathsProps {
   position: number
   count: number
-  /** false — статичные линии без анимации (reduced motion / экономия ресурсов) */
-  animate: boolean
 }
 
-function FloatingPaths({ position, count, animate }: FloatingPathsProps) {
+function FloatingPaths({ position, count }: FloatingPathsProps) {
   // Пути прорежены относительно исходных 36 — визуально почти неотличимо,
   // но нагрузка на main thread значительно меньше.
   const step = Math.max(1, Math.floor(36 / count))
@@ -39,75 +37,61 @@ function FloatingPaths({ position, count, animate }: FloatingPathsProps) {
         preserveAspectRatio="xMidYMid slice"
       >
         <title>Background Paths</title>
-        {paths.map((path) =>
-          animate ? (
-            <motion.path
-              key={path.id}
-              d={path.d}
-              stroke="rgb(59, 130, 246)"
-              strokeWidth={path.width}
-              strokeOpacity={0.18 + path.id * 0.02}
-              initial={{ pathLength: 0.3, opacity: 0.45 }}
-              animate={{
-                pathLength: 1,
-                opacity: [0.3, 0.6, 0.3],
-                pathOffset: [0, 1, 0],
-              }}
-              transition={{
-                duration: 20 + Math.random() * 10,
-                repeat: Number.POSITIVE_INFINITY,
-                ease: "linear",
-              }}
-            />
-          ) : (
-            <path
-              key={path.id}
-              d={path.d}
-              stroke="rgb(59, 130, 246)"
-              strokeWidth={path.width}
-              strokeOpacity={0.18 + path.id * 0.02}
-              opacity={0.5}
-            />
-          )
-        )}
+        {paths.map((path) => (
+          <motion.path
+            key={path.id}
+            d={path.d}
+            stroke="rgb(59, 130, 246)"
+            strokeWidth={path.width}
+            strokeOpacity={0.18 + path.id * 0.02}
+            initial={{ pathLength: 0.3, opacity: 0.45 }}
+            animate={{
+              pathLength: 1,
+              opacity: [0.3, 0.6, 0.3],
+              pathOffset: [0, 1, 0],
+            }}
+            transition={{
+              duration: 20 + Math.random() * 10,
+              repeat: Number.POSITIVE_INFINITY,
+              ease: "linear",
+            }}
+          />
+        ))}
       </svg>
     </div>
   )
 }
 
-function BackgroundPathsLayer({ count, animate }: { count: number; animate: boolean }) {
+function BackgroundPathsLayer({ count }: { count: number }) {
   return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-0 w-full max-w-full overflow-hidden"
-    >
-      <div className="absolute inset-0">
-        <FloatingPaths position={1} count={count} animate={animate} />
-        <FloatingPaths position={-1} count={count} animate={animate} />
-      </div>
+    // reducedMotion="never": фоновые линии — фирменный декоративный элемент,
+    // движение должно идти даже при системных «упрощённых анимациях»
+    // (глобальный MotionConfig в app-providers иначе глушит framer-анимации).
+    <MotionConfig reducedMotion="never">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 z-0 w-full max-w-full overflow-hidden"
+      >
+        <div className="absolute inset-0">
+          <FloatingPaths position={1} count={count} />
+          <FloatingPaths position={-1} count={count} />
+        </div>
 
-      <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/10 to-background/30" />
-    </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/10 to-background/30" />
+      </div>
+    </MotionConfig>
   )
 }
 
 export function BackgroundPaths() {
-  const [mode, setMode] = useState<"pending" | "static" | "mobile" | "desktop">("pending")
+  const [mode, setMode] = useState<"pending" | "mobile" | "desktop">("pending")
 
   useEffect(() => {
-    // При prefers-reduced-motion линии остаются, но без анимации;
-    // на телефонах — облегчённый анимированный вариант.
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    if (reducedMotion) {
-      setMode("static")
-      return
-    }
     const isMobile = window.matchMedia("(max-width: 768px)").matches
     setMode(isMobile ? "mobile" : "desktop")
   }, [])
 
   if (mode === "pending") return null
 
-  const count = mode === "mobile" ? 8 : mode === "static" ? 18 : 14
-  return createPortal(<BackgroundPathsLayer count={count} animate={mode !== "static"} />, document.body)
+  return createPortal(<BackgroundPathsLayer count={mode === "mobile" ? 8 : 14} />, document.body)
 }

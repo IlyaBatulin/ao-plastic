@@ -368,8 +368,8 @@
     },
     "about": {
       "title": "About Us",
-      "paragraph1": "<strong>JSC «Plastik»</strong> is a leader in the Russian chemical industry in the ABS plastics segment. Founded in 1959, our enterprise continuously develops, exploring new directions and constantly modernizing.",
-      "paragraph2": "We produce polymer raw materials that meet modern quality standards. Our products include <strong>six grades of expandable polystyrene</strong>, extrusion and injection grades of ABS plastics, as well as various plastic products used in industry and everyday life.",
+      "paragraph1": "<strong>JSC «Plastik»</strong> is a leader in the Russian chemical industry in the ABS plastics segment. 98% of the polystyrene we produce are modern target grades. Founded in 1959, our enterprise continuously develops, exploring new directions and constantly modernizing.",
+      "paragraph2": "We produce polymer raw materials that meet modern quality standards. Our products include expandable polystyrene, styrene-acrylic dispersions, extrusion and injection grades of ABS plastics, as well as various plastic products used in industry and everyday life.",
       "paragraph3": "Our plant operates a <strong>quality management system certified for compliance with ISO 9001-2008 and GOST ISO 9001:2011</strong>. We do not inflate prices, so cooperation with JSC «Plastik» is profitable.",
       "feature1": {
         "title": "ABS Market Leader",
@@ -381,7 +381,7 @@
       },
       "feature3": {
         "title": "Wide Range",
-        "description": "6 grades of expandable polystyrene, extrusion and injection grades of ABS"
+        "description": "ABS plastics, polystyrene and styrene-acrylic dispersions — over 12 grades in a range that keeps expanding"
       },
       "feature4": {
         "title": "Technical Support",

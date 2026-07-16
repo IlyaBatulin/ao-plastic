@@ -4,7 +4,7 @@ export const missionPageContent = {
     intro:
       "Мы достигаем максимальной эффективности бизнеса на основе удовлетворения потребностей и ожиданий Потребителей, долгосрочного обоснованного планирования, организации результативной работы каждого сотрудника, повышения уровня комфорта и жизни общества.",
     productionIntro:
-      "Мы производим продукцию высокого уровня переработки нефти и газохимии для широкого круга промышленных Потребителей в России и СНГ, развивая международные поставки в сотрудничестве со странами дальнего зарубежья:",
+      "Мы производим продукты переработки нефти для широкого круга промышленных Потребителей в России и СНГ, развивая международные поставки в сотрудничестве со странами дальнего зарубежья:",
     products: [
       "стирол, полистирол;",
       "АБС пластики и листовые пластики;",
@@ -35,7 +35,7 @@ export const missionPageContent = {
     intro:
       "We achieve maximum business efficiency by meeting the needs and expectations of our customers, through long-term sound planning, organizing effective work for every employee, and improving the comfort and quality of life in society.",
     productionIntro:
-      "We manufacture high-value-added oil and petrochemical products for a wide range of industrial customers in Russia and the CIS, while developing international deliveries in cooperation with countries beyond the near abroad:",
+      "We manufacture oil refining products for a wide range of industrial customers in Russia and the CIS, while developing international deliveries in cooperation with countries beyond the near abroad:",
     products: [
       "styrene and polystyrene;",
       "ABS plastics and sheet plastics;",

@@ -1,7 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Dockerfile копирует .next/standalone — без этой опции сборка образа падает
-  output: "standalone",
+  // standalone нужен только для Dockerfile (COPY .next/standalone).
+  // Реальный прод-деплой — PM2 + `next start`, который с output:"standalone"
+  // не работает ("next start does not work with output: standalone").
+  // Включаем standalone только когда собираем именно докер-образ.
+  ...(process.env.DOCKER_BUILD === "1" ? { output: "standalone" } : {}),
   typescript: {
     ignoreBuildErrors: true,
   },

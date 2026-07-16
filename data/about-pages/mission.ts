@@ -9,7 +9,7 @@ export const missionPageContent = {
       "стирол, полистирол;",
       "АБС пластики и листовые пластики;",
       "комплектующие для автомобилестроения, машиностроения, строительной и других отраслей промышленности;",
-      "защитные каски, товары народного потребления и другие изделия промышленного назначения.",
+      "товары народного потребления и другие изделия промышленного назначения.",
     ],
     competitivenessIntro:
       "Наши цели и намерения направлены на повышение конкурентоспособности продукции и услуг предприятия за счёт:",
@@ -40,7 +40,7 @@ export const missionPageContent = {
       "styrene and polystyrene;",
       "ABS plastics and sheet plastics;",
       "components for automotive, machine building, construction, and other industries;",
-      "protective helmets, consumer goods, and other industrial products.",
+      "consumer goods and other industrial products.",
     ],
     competitivenessIntro:
       "Our goals and intentions are aimed at increasing the competitiveness of the company's products and services through:",

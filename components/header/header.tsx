@@ -7,7 +7,7 @@ import { MainMenuCorporate } from "./main-menu-corporate"
 import { LanguageSwitcher } from "./language-switcher"
 import { OrderButton } from "./order-button"
 import { MobileMenu } from "./mobile-menu"
-import { Menu, X, ShoppingCart } from "lucide-react"
+import { Menu, X, ShoppingCart, UserRound } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { useCart } from "@/contexts/cart-context"
 import { Badge } from "@/components/ui/badge"
@@ -88,11 +88,17 @@ export function Header() {
         {/* Right Controls */}
         <div className="hidden lg:flex items-center gap-1.5 xl:gap-3 flex-shrink-0 min-w-fit">
           <LanguageSwitcher />
+          <Link href="/account" aria-label="Личный кабинет" title="Личный кабинет" className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/70 bg-white text-foreground transition hover:border-primary/40 hover:text-primary">
+            <UserRound className="h-4.5 w-4.5" />
+          </Link>
           <OrderButton />
         </div>
 
         {/* Mobile Controls */}
         <div className="flex lg:hidden items-center gap-2 sm:gap-3 flex-shrink-0 ml-auto">
+          <Link href="/account" className="flex h-11 w-11 items-center justify-center rounded-2xl border border-border/60 bg-white text-foreground shadow-sm" aria-label="Личный кабинет">
+            <UserRound className="h-5 w-5" />
+          </Link>
           {/* Mobile Cart Button */}
           <Link
             href="/cart"

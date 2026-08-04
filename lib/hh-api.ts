@@ -3,7 +3,7 @@ import { fetchHhVacanciesFromSearchHtml } from "@/lib/hh-search-html"
 export const HH_EMPLOYER_ID = "541232"
 export const HH_EMPLOYER_URL = `https://hh.ru/employer/${HH_EMPLOYER_ID}?tab=VACANCIES`
 /** Формат HH API: AppName/Version (contact@email) */
-export const HH_USER_AGENT = "AO-Plastic/1.0 (info@oaplastic.ru)"
+export const HH_USER_AGENT = "AO-Plastic/1.0 (info@td-plastic.ru)"
 
 export type HHVacanciesListResponse = {
   items: unknown[]

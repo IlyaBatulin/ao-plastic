@@ -12,6 +12,6 @@ export const LEGAL_DOCUMENTS = {
 export const LEGAL_SITE = {
   url: "https://www.aoplastic.com",
   host: "www.aoplastic.com",
-  email: "info@oaplastic.ru",
+  email: "info@td-plastic.ru",
   phone: "+7 (495) 201-03-33",
 } as const

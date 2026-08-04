@@ -6,6 +6,8 @@ import { getCategoryVideo } from "@/lib/video-config"
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld"
 import { isNextBuild } from "@/lib/next-build"
 import { getCategoryPageData } from "@/lib/catalog-category"
+import { getSubcategoryPageData } from "@/lib/catalog-subcategory"
+import type { AbsShowcaseGroup, AbsShowcaseProduct } from "@/app/products/_components/abs-catalog-showcase"
 
 export const revalidate = 300
 
@@ -111,6 +113,37 @@ export default async function CategoryPage({
   const { category, subcategories } = pageData
   const categoryTitle =
     typeof category?.name === "string" ? category.name : categoryId
+  const absGroups: AbsShowcaseGroup[] | undefined =
+    categoryId === "abs"
+      ? await Promise.all(
+          subcategories.map(async (sub) => {
+            const subcategorySlug = String(sub.slug ?? sub.id ?? "")
+            const subcategoryData = await getSubcategoryPageData(categoryId, subcategorySlug)
+            const products = (subcategoryData?.displayProducts ?? []).map(
+              (product): AbsShowcaseProduct => ({
+                id: String(product.id ?? ""),
+                slug: typeof product.slug === "string" ? product.slug : null,
+                name: String(product.name ?? ""),
+                description: typeof product.description === "string" ? product.description : null,
+                brand: typeof product.brand === "string" ? product.brand : null,
+                specifications:
+                  typeof product.specifications === "string" ||
+                  (product.specifications !== null && typeof product.specifications === "object")
+                    ? (product.specifications as Record<string, unknown> | string)
+                    : null,
+              })
+            )
+
+            return {
+              id: String(sub.id ?? subcategorySlug),
+              slug: String(subcategoryData?.publicSubcategorySlug ?? subcategorySlug),
+              name: String(sub.name ?? ""),
+              description: typeof sub.description === "string" ? sub.description : undefined,
+              products,
+            }
+          })
+        )
+      : undefined
 
   return (
     <>
@@ -140,6 +173,7 @@ export default async function CategoryPage({
         }))}
         hasVideo={!!getCategoryVideo(categoryId)}
         videoSrc={getCategoryVideo(categoryId)}
+        absGroups={absGroups}
       />
     </>
   )

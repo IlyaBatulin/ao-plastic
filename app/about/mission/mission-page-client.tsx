@@ -1,65 +1,121 @@
 "use client"
 
 import { Footer } from "@/components/footer"
-import { getCategoryVideo } from "@/lib/video-config"
+import PeriodBlock22 from "@/components/history22/PeriodBlock22"
+import { HistoryClosing } from "@/components/history22/HistoryClosing"
+import { ChevronDown } from "lucide-react"
+import { motion, type Variants } from "framer-motion"
 import { useLocalizedContent } from "@/lib/use-localized-content"
 import { missionPageContent } from "@/data/about-pages/mission"
+import { historyPageContent } from "@/data/about-pages/history"
+
+const periodImages: Record<string, string> = {
+  "period-1": "/images/history/period-1959-1992.jpeg",
+  "period-2": "/images/history/period-1974-1992.png",
+  "period-3": "/images/history/period-2010-2014.jpeg",
+  "period-4": "/images/history/period-2019-present.jpeg",
+  "period-5": "/images/history/period-2024-2026.png",
+}
+
+const missionSequence: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      delayChildren: 0.18,
+      staggerChildren: 0.14,
+    },
+  },
+}
+
+const missionReveal: Variants = {
+  hidden: { opacity: 0, y: 34, filter: "blur(10px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.85, ease: [0.22, 1, 0.36, 1] },
+  },
+}
 
 export function MissionPageClient() {
   const page = useLocalizedContent(missionPageContent)
-  const missionVideoSrc = getCategoryVideo("polystyrene") ?? "/videos/polystyrene-category.mp4"
+  const history = useLocalizedContent(historyPageContent)
 
   return (
-    <div className="min-h-screen">
-      <section className="relative overflow-hidden pt-32 pb-24 min-h-[500px]">
+    <div className="min-h-screen bg-background">
+      <section className="relative flex min-h-[100svh] items-center overflow-hidden px-4 pb-16 pt-28 md:px-8 md:pt-32">
         <div className="absolute inset-0 z-0">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            controls={false}
-            disablePictureInPicture
-            disableRemotePlayback
-            className="absolute inset-0 h-full w-full object-cover"
-            style={{ pointerEvents: "none" }}
-          >
-            <source src={missionVideoSrc} type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/75 to-background/95" />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/40 via-transparent to-transparent" />
+          <img
+            src="/images/history/history-hero.jpeg"
+            alt=""
+            className="h-full w-full object-cover"
+            aria-hidden
+          />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(4,17,44,0.92)_0%,rgba(8,33,78,0.76)_54%,rgba(8,30,67,0.45)_100%)]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#06152f]/95 via-transparent to-[#06152f]/40" />
         </div>
 
-        <div className="container relative z-10 mx-auto px-4 lg:px-8">
-          <div className="mx-auto max-w-4xl">
-            <div className="text-center border-2 border-border rounded-xl bg-card/95 backdrop-blur-sm shadow-xl p-8 md:p-12 lg:p-16">
-              <h1 className="mb-8 text-h1 text-primary">{page.title}</h1>
-              <div className="text-xl md:text-2xl text-foreground/90 leading-relaxed text-pretty space-y-5 text-left md:text-center md:space-y-6 antialiased font-normal">
-                <p>{page.intro}</p>
-                <p>{page.productionIntro}</p>
-                <ul className="list-disc pl-6 md:pl-10 space-y-1.5 text-left inline-block">
-                  {page.products.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-                <p>{page.competitivenessIntro}</p>
-                <ul className="list-disc pl-6 md:pl-10 space-y-1.5 text-left inline-block">
-                  {page.competitivenessItems.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-                <p>{page.pricingParagraph}</p>
-                <p>
-                  <span className="font-medium italic text-primary">{page.motto}</span> {page.mottoSuffix}
-                </p>
-                <p>{page.employeesParagraph}</p>
-                <p>{page.safetyParagraph}</p>
-                <p>{page.closingParagraph}</p>
-              </div>
-            </div>
-          </div>
+        <div className="container relative z-10 mx-auto max-w-[90rem]">
+          <motion.div
+            className="max-w-[78rem] text-white"
+            variants={missionSequence}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.p variants={missionReveal} className="mb-6 text-caption text-white/70 md:mb-8">
+              {page.eyebrow}
+            </motion.p>
+            <motion.h1
+              variants={missionReveal}
+              className="max-w-6xl text-[clamp(3.25rem,6.3vw,7rem)] font-semibold leading-[0.94] tracking-[-0.045em] text-white"
+            >
+              {page.title}
+            </motion.h1>
+            <motion.p
+              variants={missionReveal}
+              className="mt-9 max-w-[68rem] text-[clamp(1.2rem,1.65vw,1.75rem)] leading-[1.48] text-white/92 md:mt-12"
+            >
+              {page.intro}
+            </motion.p>
+            <motion.div variants={missionReveal} className="my-10 h-px w-full max-w-[68rem] bg-gradient-to-r from-white/55 via-white/20 to-transparent md:my-12" />
+            <motion.div
+              variants={missionReveal}
+              className="grid max-w-[68rem] gap-5 md:grid-cols-[minmax(18rem,0.85fr)_minmax(0,1.4fr)] md:items-start md:gap-12"
+            >
+              <p className="text-[clamp(1.35rem,2vw,2rem)] font-medium italic leading-snug text-white">
+                {page.motto}
+              </p>
+              <p className="text-base leading-relaxed text-white/76 md:text-lg">
+                {page.mottoSuffix}
+              </p>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        <a
+          href="#history"
+          className="absolute bottom-7 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 text-sm text-white/70 transition-colors hover:text-white"
+        >
+          <span>{page.scrollToHistory}</span>
+          <ChevronDown className="h-5 w-5 animate-bounce" aria-hidden />
+        </a>
+      </section>
+
+      <section id="history" className="scroll-mt-20 border-b border-border/60 bg-background px-4 py-20 text-center md:px-8 md:py-28">
+        <div className="mx-auto max-w-4xl">
+          <p className="mb-4 text-caption text-primary">{page.historyEyebrow}</p>
+          <h2 className="text-h1 text-foreground">{history.hero.heroTitle}</h2>
+          <p className="mx-auto mt-6 max-w-2xl text-body-lead text-muted-foreground">
+            {page.historyLead}
+          </p>
         </div>
       </section>
+
+      {history.periods.map((period) => (
+        <PeriodBlock22 key={period.id} period={period} image={periodImages[period.id]} />
+      ))}
+
+      <HistoryClosing phrase={history.closingPhrase} logoAlt={history.heroImageAlt} />
 
       <Footer />
     </div>

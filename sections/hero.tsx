@@ -58,6 +58,15 @@ export function Hero() {
     notifySplashReady()
   }
 
+  const startFirstVideo = (video: HTMLVideoElement) => {
+    video.muted = true
+    video.playsInline = true
+    handleFirstVideoReady()
+    void video.play().catch(() => {
+      // Автовоспроизведение повторно запускается общим эффектом после готовности медиа.
+    })
+  }
+
   const handleFirstVideoError = () => {
     console.error("Hero video failed to load:", HERO_VIDEO_SRC)
     notifySplashReady()
@@ -143,9 +152,11 @@ export function Hero() {
               key={slide.key}
               ref={(el) => {
                 videoRefs.current[idx] = el
+                if (idx === 0 && el && el.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+                  startFirstVideo(el)
+                }
               }}
               src={slide.video}
-              poster={idx === 0 ? HERO_POSTER_SRC : undefined}
               className={`hero-bg-video absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
                 idx === activeIndex && (idx !== 0 || isFirstVideoReady) ? "opacity-100" : "opacity-0"
               }`}
@@ -158,7 +169,8 @@ export function Hero() {
               controlsList="nodownload noplaybackrate noremoteplayback"
               disablePictureInPicture
               disableRemotePlayback
-              onCanPlayThrough={idx === 0 ? handleFirstVideoReady : undefined}
+              onLoadedData={idx === 0 ? (event) => startFirstVideo(event.currentTarget) : undefined}
+              onCanPlay={idx === 0 ? (event) => startFirstVideo(event.currentTarget) : undefined}
               onPlaying={idx === 0 ? handleFirstVideoReady : undefined}
               onError={idx === 0 ? handleFirstVideoError : undefined}
               style={{ pointerEvents: "none" }}

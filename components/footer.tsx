@@ -9,7 +9,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="bg-foreground text-background py-12 pb-[calc(3rem+env(safe-area-inset-bottom,0px))]">
+    <footer className="bg-[#07090d] text-white py-12 pb-[calc(3rem+env(safe-area-inset-bottom,0px))]">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           <div className="md:col-span-2">
@@ -24,24 +24,24 @@ export function Footer() {
                 />
               </div>
             </div>
-            <p className="text-background/70 leading-relaxed max-w-md">{t("footer.description")}</p>
+            <p className="text-white/70 leading-relaxed max-w-md">{t("footer.description")}</p>
           </div>
 
           <div>
             <h3 className="font-semibold mb-4">{t("footer.navigation")}</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/about" className="text-background/70 hover:text-background transition-colors">
+                <Link href="/about" className="text-white/70 hover:text-white transition-colors">
                   {t("footer.aboutLink")}
                 </Link>
               </li>
               <li>
-                <Link href="/products" className="text-background/70 hover:text-background transition-colors">
+                <Link href="/products" className="text-white/70 hover:text-white transition-colors">
                   {t("footer.productsLink")}
                 </Link>
               </li>
               <li>
-                <Link href="/contacts" className="text-background/70 hover:text-background transition-colors">
+                <Link href="/contacts" className="text-white/70 hover:text-white transition-colors">
                   {t("footer.contactsLink")}
                 </Link>
               </li>
@@ -50,9 +50,9 @@ export function Footer() {
 
           <div>
             <h3 className="font-semibold mb-4">{t("footer.contactsHeading")}</h3>
-            <ul className="space-y-2 text-background/70">
+            <ul className="space-y-2 text-white/70">
               <li>+7 (495) 201-03-33</li>
-              <li>info@oaplastic.ru</li>
+              <li>info@td-plastic.ru</li>
               <li className="text-sm">
                 {t("footer.addressLine1")}
                 <br />
@@ -62,28 +62,28 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-background/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-background/70 text-sm">
+        <div className="border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-white/70 text-sm">
             © {currentYear} {t("footer.logoAlt")}. {t("footer.copyright")}
           </p>
-          <div className="flex flex-wrap justify-center gap-6 text-sm text-background/70">
-            <Link href="/legal/privacy-policy" className="hover:text-background transition-colors">
+          <div className="flex flex-wrap justify-center gap-6 text-sm text-white/70">
+            <Link href="/legal/privacy-policy" className="hover:text-white transition-colors">
               {t("footer.privacyPolicy")}
             </Link>
-            <Link href="/legal/terms" className="hover:text-background transition-colors">
+            <Link href="/legal/terms" className="hover:text-white transition-colors">
               {t("footer.terms")}
             </Link>
-            <Link href="/legal/company-details" className="hover:text-background transition-colors">
+            <Link href="/legal/company-details" className="hover:text-white transition-colors">
               {t("footer.companyDetails")}
             </Link>
-            <Link href="/about/ethics" className="hover:text-background transition-colors">
+            <Link href="/about/ethics" className="hover:text-white transition-colors">
               {t("footer.ethicsCode")}
             </Link>
             <a
               href="https://oaoplastic.ru/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-background transition-colors"
+              className="hover:text-white transition-colors"
             >
               {t("footer.legacySite")}
             </a>

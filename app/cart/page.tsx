@@ -26,6 +26,8 @@ export default function CartPage({ params, searchParams }: NextPageProps) {
   const [customerPhone, setCustomerPhone] = useState("")
   const [customerEmail, setCustomerEmail] = useState("")
   const [comment, setComment] = useState("")
+  const [requestedDeliveryDate, setRequestedDeliveryDate] = useState("")
+  const [deliveryAddress, setDeliveryAddress] = useState("")
   const [consentAccepted, setConsentAccepted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [orderPlaced, setOrderPlaced] = useState(false)
@@ -126,6 +128,8 @@ export default function CartPage({ params, searchParams }: NextPageProps) {
           customerPhone,
           customerEmail,
           comment,
+          requestedDeliveryDate,
+          deliveryAddress,
         }),
       })
 
@@ -356,6 +360,16 @@ export default function CartPage({ params, searchParams }: NextPageProps) {
                       placeholder={t("cartPage.emailPlaceholder")}
                       className="h-10 md:h-11"
                     />
+                  </div>
+
+                  <div>
+                    <label className="text-xs sm:text-sm font-semibold mb-1.5 md:mb-2 block">Желаемая дата поставки</label>
+                    <Input type="date" min={new Date().toISOString().slice(0, 10)} value={requestedDeliveryDate} onChange={(e) => setRequestedDeliveryDate(e.target.value)} className="h-10 md:h-11" />
+                  </div>
+
+                  <div>
+                    <label className="text-xs sm:text-sm font-semibold mb-1.5 md:mb-2 block">Адрес поставки</label>
+                    <Input value={deliveryAddress} onChange={(e) => setDeliveryAddress(e.target.value)} placeholder="Город, улица, склад" className="h-10 md:h-11" />
                   </div>
 
                   <div>

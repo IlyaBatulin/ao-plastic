@@ -101,7 +101,7 @@ const PeriodBlock22 = ({ period, image }: PeriodBlockProps) => {
         </div>
 
         <div className="mt-7">
-          <span className="text-caption text-primary">
+          <span className="text-lg font-bold tracking-[0.08em] text-white tabular-nums">
             {period.title}
           </span>
           <h2 className="mt-2 text-2xl font-semibold leading-tight text-foreground">
@@ -150,7 +150,7 @@ const PeriodBlock22 = ({ period, image }: PeriodBlockProps) => {
             className="absolute inset-0 flex flex-col items-center justify-center px-6"
             style={{ opacity: titleOpacity }}
           >
-            <span className="text-primary text-lg md:text-xl font-medium tracking-widest uppercase mb-4">
+            <span className="mb-4 text-xl font-bold uppercase tracking-[0.12em] text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.75)] tabular-nums md:text-2xl">
               {period.title}
             </span>
             <h2 className="text-period-title text-center mb-4">{period.subtitle}</h2>
@@ -165,7 +165,7 @@ const PeriodBlock22 = ({ period, image }: PeriodBlockProps) => {
             top: "calc(6% + 50vh)",
           }}
         >
-          <span className="text-caption text-primary">
+          <span className="text-base font-bold tracking-[0.08em] text-white drop-shadow-[0_1px_6px_rgba(0,0,0,0.65)] tabular-nums md:text-lg">
             {period.title}
           </span>
           <h3 className="text-xl md:text-2xl font-semibold text-foreground mt-1 max-w-[38vw]">

@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { Footer } from "@/components/footer"
-import { DeliveryMap } from "@/sections/delivery-map"
+import { Geography } from "@/sections/geography"
 import { StatsCounter } from "@/components/stats-counter"
 import { useLocalizedContent } from "@/lib/use-localized-content"
 import { aboutPageContent, valueIcons } from "@/data/about-pages/about"
@@ -97,7 +97,7 @@ export function AboutPageClient() {
 
             <div className="relative h-96 lg:h-[500px] rounded-2xl overflow-hidden">
               <Image
-                src="/images/furs0074-distillation.png"
+                src="/images/about-hero-production-winter.png"
                 alt={page.historyImageAlt}
                 fill
                 className="object-cover object-center"
@@ -146,7 +146,7 @@ export function AboutPageClient() {
         </div>
       </section>
 
-      <DeliveryMap />
+      <Geography />
 
       <Footer />
     </div>

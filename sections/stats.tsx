@@ -4,7 +4,7 @@ import Image from "next/image"
 import { motion } from "framer-motion"
 import { StatsCounter } from "@/components/stats-counter"
 import type { LucideIcon } from "lucide-react"
-import { Beaker, Package, Cog, Droplets, FlaskConical, Factory, TrendingUp } from "lucide-react"
+import { Beaker, Package, Cog, FlaskConical, Factory, TrendingUp } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 import { SectionHeading } from "@/components/section-heading"
 
@@ -18,25 +18,24 @@ export function Stats() {
     /** Если не задан — используется homePage.stats.suffix */
     suffixKey?: string
   }[] = [
-    // Итог = 60 стирол + 23 АБС + 30 ПСВ + 40 дисперсии + 3 ДМС
-    { icon: TrendingUp, value: 156, label: "totalProductVolume", suffixKey: "homePage.stats.suffixPlus" },
-    { icon: FlaskConical, value: 40, label: "sadStyreneAcrylicDispersions" },
+    { icon: TrendingUp, value: 156, label: "totalProductVolume" },
     { icon: Factory, value: 23, label: "absPlastics" },
     { icon: Package, value: 30, label: "expandablePolystyrene" },
+    { icon: FlaskConical, value: 40, label: "sadStyreneAcrylicDispersions" },
     { icon: Beaker, value: 60, label: "styrene" },
     { icon: Cog, value: 3, label: "machineBuildingPartsDms" },
   ]
   const statGroups = [
     {
       key: "main-production",
-      items: stats.slice(0, 4),
+      items: stats.slice(0, 3),
       image: "/images/furs0085.jpeg",
       imageAlt: "Производственные мощности предприятия",
       imageSide: "left",
     },
     {
       key: "additional-production",
-      items: stats.slice(4),
+      items: stats.slice(3),
       image: "/prevyu/fasad/furs0072.jpeg",
       imageAlt: "Фасад производственного корпуса АО Пластик",
       imageSide: "right",

@@ -5,16 +5,17 @@ export const CUSTOMER_PREVIEW_COOKIE = "customer_preview"
 
 function credentials() {
   return {
-    login: process.env.CUSTOMER_PREVIEW_LOGIN || (process.env.NODE_ENV !== "production" ? "adminplast" : ""),
-    password: process.env.CUSTOMER_PREVIEW_PASSWORD || (process.env.NODE_ENV !== "production" ? "admin" : ""),
-    secret: process.env.CUSTOMER_PREVIEW_SECRET || process.env.ADMIN_SESSION_SECRET || "",
+    // Temporary demo access requested for the management presentation.
+    // Remove these values and restore environment-only credentials after the demo.
+    login: "adminplast",
+    password: "admin123",
+    secret: "temporary-aoplastic-management-demo-session-2026",
   }
 }
 
 function signature(payload: string) {
   const { secret } = credentials()
-  if (!secret && process.env.NODE_ENV === "production") return ""
-  return createHmac("sha256", secret || "local-customer-preview").update(payload).digest("hex")
+  return createHmac("sha256", secret).update(payload).digest("hex")
 }
 
 export function validatePreviewCredentials(login: string, password: string) {

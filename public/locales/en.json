@@ -370,7 +370,7 @@
       "title": "About Us",
       "paragraph1": "<strong>JSC «Plastik»</strong> is a leader in the Russian chemical industry in the ABS plastics segment. 98% of the polystyrene we produce are modern target grades. Founded in 1959, our enterprise continuously develops, exploring new directions and constantly modernizing.",
       "paragraph2": "We produce polymer raw materials that meet modern quality standards. Our products include expandable polystyrene, styrene-acrylic dispersions, extrusion and injection grades of ABS plastics, as well as various plastic products used in industry and everyday life.",
-      "paragraph3": "Our plant operates a <strong>quality management system certified for compliance with ISO 9001-2008 and GOST ISO 9001:2011</strong>. We do not inflate prices, so cooperation with JSC «Plastik» is profitable.",
+      "paragraph3": "Our plant operates a <strong>quality management system certified for compliance with ISO 9001-2008 and GOST ISO 9001:2011</strong>. Premium product quality and competitive pricing make cooperation with JSC «Plastik» both reliable and commercially advantageous.",
       "feature1": {
         "title": "ABS Market Leader",
         "description": "Leading positions in the Russian chemical market in the ABS plastics segment"
@@ -701,24 +701,24 @@
       "factory": {
         "label": "Plant",
         "title": "Plastik — Technologies of the Future",
-        "description": "A leader in the chemical industry producing ABS plastics and expandable polystyrene since 1959. We continuously improve our product range"
+        "description": "A Russian manufacturer of polymer materials since 1959. The Uzlovaya production site combines decades of expertise, modern technologies and systematic quality control"
       },
       "abs": {
         "label": "ABS Plastics",
-        "title": "We produce ABS plastics",
-        "description": "23,000 tonnes of injection and extrusion grades a year — for automotive, electronics and home appliances. Consistent quality in every batch",
+        "title": "A Leading ABS Plastics Manufacturer",
+        "description": "Injection and extrusion grades for the automotive, electronics and home appliance industries. The production capacity of this business line is 23,000 tonnes per year",
         "cta": "Explore products"
       },
       "polystyrene": {
         "label": "Polystyrene",
-        "title": "We make polystyrene",
-        "description": "Expandable PSV-S, PSV-L and extrusion grade PSE-1 — 31,000 tonnes a year for construction, packaging and insulation",
+        "title": "Advanced Polystyrene Grades",
+        "description": "Expandable PSV-S and PSV-L, as well as extrusion-grade PSE-1, for thermal insulation, construction and packaging solutions",
         "cta": "Explore products"
       },
       "hoztovary": {
         "label": "Household Goods",
-        "title": "We craft household goods",
-        "description": "Buckets, basins, canisters and kitchen accessories made from our own raw materials — practical things that last for years",
+        "title": "Products for Home and Household",
+        "description": "Serial production of household items, canisters and kitchen accessories made from polymer materials with controlled quality characteristics",
         "cta": "Explore products"
       },
       "pause": "Pause slider",

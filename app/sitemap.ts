@@ -9,7 +9,6 @@ const HIDDEN_CATEGORIES = new Set(["dispersion"])
 const STATIC_PATHS = [
   "",
   "/about",
-  "/about/history",
   "/about/mission",
   "/about/ethics",
   "/about/safety",

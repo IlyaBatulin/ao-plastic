@@ -226,7 +226,7 @@ export function Contact() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-foreground mb-2">{t("homePage.contact.email.title")}</h3>
-                  <p className="text-muted-foreground">info@oaplastic.ru</p>
+                  <p className="text-muted-foreground">info@td-plastic.ru</p>
                 </div>
               </div>
             </div>

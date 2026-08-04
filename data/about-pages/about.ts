@@ -17,7 +17,7 @@ export const aboutPageContent = {
     heroImageAlt: "Производственные колонны АО «Пластик», зима",
     heroBadge: "АО «Пластик» · с 1959 года",
     heroTitle: "О компании",
-    heroSubtitle: "Создаём будущее пластиковой индустрии — от Узловой в Россию и на экспорт",
+    heroSubtitle: "Создаём будущее пластиковой индустрии — от Узловой для всей России",
     stats: {
       founded: "Год основания",
       employees: "Сотрудников",
@@ -26,13 +26,13 @@ export const aboutPageContent = {
       productionSuffix: "+ тыс. тонн",
     },
     historyTitle: "Наша история",
-    historyImageAlt: "История компании",
+    historyImageAlt: "Производственная площадка АО «Пластик» зимой",
     historyLeadCompany: "АО «Пластик»",
     historyLeadText:
       " было основано в 1959 году в г. Узловая Тульской области. За более чем 65 лет работы мы прошли путь от небольшого завода до лидера химической индустрии России в сегменте АБС-пластиков.",
     historyParagraphs: [
       "Наше предприятие непрерывно развивается, осваивая новые направления и постоянно модернизируясь. Сегодня мы производим вспенивающийся полистирол шести марок, экструзионные и литьевые марки АБС-пластиков, а также различные изделия из пластмасс.",
-      "Наша продукция поставляется по всей России и экспортируется в страны ближнего и дальнего зарубежья, используется в автомобилестроении, электронике, строительстве и других отраслях промышленности. Производство и оптовый склад находятся в 200 км от Москвы, вблизи трассы М4, с собственными подъездными путями к ж/д узлу Узловая2.",
+      "Наша продукция поставляется по всей России и используется в автомобилестроении, электронике, строительстве и других отраслях промышленности. Производство и оптовый склад находятся в 200 км от Москвы, вблизи трассы М4, с собственными подъездными путями к железнодорожному узлу Узловая-2.",
     ],
     valuesTitle: "Наши ценности",
     values: [
@@ -54,7 +54,7 @@ export const aboutPageContent = {
     heroImageAlt: "Production columns at JSC «Plastik», winter",
     heroBadge: "JSC «Plastik» · since 1959",
     heroTitle: "About Us",
-    heroSubtitle: "Building the future of the plastics industry — from Uzlovaya across Russia and for export",
+    heroSubtitle: "Building the future of the plastics industry — from Uzlovaya for all of Russia",
     stats: {
       founded: "Year founded",
       employees: "Employees",
@@ -63,13 +63,13 @@ export const aboutPageContent = {
       productionSuffix: "+ thousand tons",
     },
     historyTitle: "Our History",
-    historyImageAlt: "Company history",
+    historyImageAlt: "JSC Plastik production site in winter",
     historyLeadCompany: "JSC «Plastik»",
     historyLeadText:
       " was founded in 1959 in Uzlovaya, Tula Region. Over more than 65 years, we have grown from a small plant into a leader of the Russian chemical industry in the ABS plastics segment.",
     historyParagraphs: [
       "Our enterprise continues to develop, exploring new directions and constantly upgrading. Today we produce six grades of expandable polystyrene, extrusion and injection grades of ABS plastics, and a wide range of plastic products.",
-      "Our products are supplied across Russia and exported to countries near and far abroad, used in automotive, electronics, construction, and other industries. Production and wholesale warehouse are located 200 km from Moscow, near the M4 highway, with dedicated access to the Uzlovaya-2 railway junction.",
+      "Our products are supplied across Russia and used in the automotive, electronics, construction, and other industries. The production site and wholesale warehouse are located 200 km from Moscow, near the M4 highway, with dedicated access to the Uzlovaya-2 railway junction.",
     ],
     valuesTitle: "Our Values",
     values: [

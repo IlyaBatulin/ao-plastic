@@ -16,7 +16,7 @@ export const COMPANY_REQUISITES = {
     "115035, г. Москва, 3-й Кадышевский переулок, д. 7-9, стр. 1",
   tekSnabAddress: TEK_SNAB_CONTACTS.addressRu,
   phone: "+7 (495) 201-03-33",
-  email: "info@oaplastic.ru",
+  email: "info@td-plastic.ru",
   salesEmail: "info@td-plastic.ru",
   website: "https://www.aoplastic.com",
 } as const

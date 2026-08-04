@@ -1,5 +1,5 @@
-import { HistoryPageClient } from "./history-page-client"
+import { permanentRedirect } from "next/navigation"
 
 export default function HistoryPage() {
-  return <HistoryPageClient />
+  permanentRedirect("/about/mission#history")
 }

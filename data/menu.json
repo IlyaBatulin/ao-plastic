@@ -10,14 +10,9 @@
     "href": "/about",
     "submenu": [
       {
-        "label": "Миссия",
-        "labelEn": "Mission",
+        "label": "Миссия и история",
+        "labelEn": "Mission & History",
         "href": "/about/mission"
-      },
-      {
-        "label": "История компании",
-        "labelEn": "History",
-        "href": "/about/history"
       },
       {
         "label": "Новости",

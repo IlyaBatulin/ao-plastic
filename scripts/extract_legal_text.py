@@ -18,7 +18,7 @@ W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 
 SITE_URL = "https://www.aoplastic.com"
 SITE_HOST = "www.aoplastic.com"
-CONTACT_EMAIL = "info@oaplastic.ru"
+CONTACT_EMAIL = "info@td-plastic.ru"
 CONTACT_PHONE = "+7 (495) 201-03-33"
 
 REPLACEMENTS = [

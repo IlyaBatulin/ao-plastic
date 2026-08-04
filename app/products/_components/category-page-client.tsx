@@ -6,6 +6,7 @@ import { CategoryHero } from "@/app/products/_components/category-hero"
 import { SubcategoriesGrid } from "@/app/products/_components/subcategories-grid"
 import { useLanguage } from "@/contexts/language-context"
 import { getCategoryImageUrl } from "@/lib/category-image"
+import { AbsCatalogShowcase, type AbsShowcaseGroup } from "@/app/products/_components/abs-catalog-showcase"
 
 const AbsCategorySection = dynamic(
   () =>
@@ -56,6 +57,7 @@ interface CategoryPageClientProps {
   }>
   hasVideo: boolean
   videoSrc?: string
+  absGroups?: AbsShowcaseGroup[]
 }
 
 export function CategoryPageClient({
@@ -64,6 +66,7 @@ export function CategoryPageClient({
   subcategories,
   hasVideo,
   videoSrc,
+  absGroups = [],
 }: CategoryPageClientProps) {
   const { t } = useLanguage()
 
@@ -76,20 +79,29 @@ export function CategoryPageClient({
 
   return (
     <div className="min-h-screen">
-      <CategoryHero
-        title={categoryName}
-        description={
-          t(`homePage.catalog.categoryDescriptions.${categoryId}`) || category.description
-        }
-        backHref="/products"
-        backLabel={backLabel}
-        hasVideo={hasVideo}
-        videoSrc={videoSrc}
-        imageSrc={getCategoryImageUrl(categoryId, category.image, categoryName)}
-        categoryId={categoryId}
-      />
+      {isAbs ? (
+        <AbsCatalogShowcase
+          title={categoryName}
+          description={t(`homePage.catalog.categoryDescriptions.${categoryId}`) || category.description}
+          videoSrc={videoSrc}
+          imageSrc={getCategoryImageUrl(categoryId, category.image, categoryName)}
+          groups={absGroups}
+          backLabel={backLabel}
+        />
+      ) : (
+        <CategoryHero
+          title={categoryName}
+          description={t(`homePage.catalog.categoryDescriptions.${categoryId}`) || category.description}
+          backHref="/products"
+          backLabel={backLabel}
+          hasVideo={hasVideo}
+          videoSrc={videoSrc}
+          imageSrc={getCategoryImageUrl(categoryId, category.image, categoryName)}
+          categoryId={categoryId}
+        />
+      )}
 
-      {!isStyrene && !isKors && !isPvcModifier && (
+      {!isAbs && !isStyrene && !isKors && !isPvcModifier && (
         <SubcategoriesGrid categoryId={categoryId} subcategories={subcategories} />
       )}
 

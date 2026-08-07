@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { Button } from "@/components/ui/button"
-import { ArrowRight, ChevronDown, Pause, Play } from "lucide-react"
+import { ArrowRight, ChevronDown } from "lucide-react"
 import Link from "next/link"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useLanguage } from "@/contexts/language-context"
@@ -42,7 +42,6 @@ export function Hero() {
   const { t } = useLanguage()
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
   const [activeIndex, setActiveIndex] = useState(0)
-  const [isPaused, setIsPaused] = useState(false)
   const [isFirstVideoReady, setIsFirstVideoReady] = useState(false)
   // Видео монтируем лениво: активное и следующее (чтобы не качать всё сразу)
   const [loadedSet, setLoadedSet] = useState<Set<number>>(() => new Set([0, 1]))
@@ -87,18 +86,17 @@ export function Hero() {
 
   // Автосмена слайдов
   useEffect(() => {
-    if (isPaused) return
     const timer = window.setTimeout(() => {
       goToSlide(activeIndex + 1)
     }, SLIDE_DURATION_MS)
     return () => window.clearTimeout(timer)
-  }, [activeIndex, isPaused, goToSlide, progressKey])
+  }, [activeIndex, goToSlide, progressKey])
 
   // Управление воспроизведением: активное видео играет, остальные на паузе
   useEffect(() => {
     videoRefs.current.forEach((video, idx) => {
       if (!video) return
-      if (idx === activeIndex && !isPaused) {
+      if (idx === activeIndex) {
         video.muted = true
         video.playsInline = true
         void video.play().catch(() => {})
@@ -111,11 +109,7 @@ export function Hero() {
         }
       }
     })
-  }, [activeIndex, isPaused, loadedSet])
-
-  const togglePaused = () => {
-    setIsPaused((p) => !p)
-  }
+  }, [activeIndex, loadedSet])
 
   const handleScrollToStats = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -282,7 +276,6 @@ export function Hero() {
                         className="hero-slide-progress absolute inset-y-0 left-0 block w-full rounded-full bg-white"
                         style={{
                           animationDuration: `${SLIDE_DURATION_MS}ms`,
-                          animationPlayState: isPaused ? "paused" : "running",
                         }}
                       />
                     )}
@@ -292,14 +285,6 @@ export function Hero() {
             })}
           </div>
 
-          <button
-            type="button"
-            onClick={togglePaused}
-            aria-label={isPaused ? t("homePage.heroSlides.play") : t("homePage.heroSlides.pause")}
-            className="mb-0.5 flex h-8 w-8 items-center justify-center rounded-full border border-white/40 bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/25 sm:h-9 sm:w-9"
-          >
-            {isPaused ? <Play className="h-3.5 w-3.5" /> : <Pause className="h-3.5 w-3.5" />}
-          </button>
         </div>
       </div>
 

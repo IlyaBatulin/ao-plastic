@@ -13,7 +13,7 @@ const RussiaMap = dynamic(() => import("@/components/russia-map"), {
   ),
 })
 
-/** География поставок: карта России с городами на главной странице. */
+/** География поставок: карта России и стран СНГ на главной странице. */
 export function Geography() {
   const { t, lang } = useLanguage()
 
@@ -40,7 +40,7 @@ export function Geography() {
             </span>
             <span className="inline-flex items-center gap-2 text-xs text-muted-foreground">
               <span className="h-2 w-2 rounded-full bg-[#1e3a8a] ring-2 ring-white" aria-hidden />
-              {lang === "en" ? "Delivery cities" : "Города поставок"}
+              {lang === "en" ? "Delivery cities and countries" : "Города и страны поставок"}
             </span>
             <span className="inline-flex items-center gap-2 text-xs text-muted-foreground">
               <svg width="26" height="12" viewBox="0 0 26 12" className="text-[#2c53c7]" aria-hidden>
@@ -53,7 +53,7 @@ export function Geography() {
               {lang === "en" ? "Supply network" : "Сеть поставок"}
             </span>
             <span className="inline-flex items-center gap-1.5 text-xs italic text-muted-foreground/80">
-              {lang === "en" ? "Click a dot to see the city and products" : "Нажмите на точку — город и продукция"}
+              {lang === "en" ? "Hover a country or click a point for details" : "Наведите на страну или нажмите на точку"}
             </span>
           </div>
         </div>

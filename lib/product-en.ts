@@ -27,18 +27,18 @@ const CATALOG_PRODUCT_EN: Record<string, ProductEnEntry> = {
     name: "ABS E-110",
     description: "Extrusion ABS for sheet, profile and pipe production.",
   },
-  "psv-s": {
-    name: "Expandable Polystyrene EPS-S",
-    description:
-      "Expandable polystyrene for foam plastics, insulation boards and packaging materials.",
-  },
-  "psv-l": {
-    name: "Expandable Polystyrene EPS-L",
-    description: "Casting-grade expandable polystyrene with a higher expansion ratio.",
-  },
-  "pse-1": {
-    name: "Polystyrene PSE-1",
-    description: "General-purpose emulsion polystyrene for sheets and molded items.",
+  ...Object.fromEntries(
+    ["1", "2", "3", "4", "6"].map((grade) => [
+      `psv-s-${grade}`,
+      {
+        name: `UPEKS Expandable Polystyrene, Grade ${grade}`,
+        description: `Self-extinguishing UPEKS expandable polystyrene, grade ${grade}.`,
+      },
+    ])
+  ),
+  "psv-s-5m": {
+    name: "UPEKS Expandable Polystyrene, Grade 5",
+    description: "Self-extinguishing UPEKS expandable polystyrene, grade 5.",
   },
   "dispersion-paint": {
     name: "Paint-grade Dispersion",

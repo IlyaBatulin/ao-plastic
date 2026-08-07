@@ -150,6 +150,27 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
       },
       {
         id: "period-5",
+        title: "2019–2024",
+        subtitle: "Обновление производства и развитие экспортных поставок",
+        image: "/images/history/period-2019-present.jpeg",
+        timeline: [
+          {
+            year: "2020",
+            description: "Продолжилось обновление продуктовой линейки и развитие современных полимерных решений для российских и зарубежных заказчиков.",
+          },
+          {
+            year: "2022",
+            description: "Внедрены системы прослеживаемости партий и цифрового учёта для крупных контрактов и экспортных поставок.",
+          },
+          {
+            year: "2024",
+            description: "АО «Пластик» отметило 65-летие и подтвердило статус одного из крупнейших российских производителей АБС-пластиков и суспензионного полистирола.",
+          },
+        ],
+        infographic: [],
+      },
+      {
+        id: "period-6",
         title: "2024–2026",
         subtitle: "Развитие группы и новые производственные проекты",
         image: "/images/history/period-2024-2026.png",
@@ -248,6 +269,18 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
       },
       {
         id: "period-5",
+        title: "2019–2024",
+        subtitle: "Production renewal and development of export deliveries",
+        image: "/images/history/period-2019-present.jpeg",
+        timeline: [
+          { year: "2020", description: "The product portfolio continued to evolve, with modern polymer solutions developed for Russian and international customers." },
+          { year: "2022", description: "Batch traceability and digital accounting systems were introduced for major contracts and export deliveries." },
+          { year: "2024", description: "JSC Plastik celebrated its 65th anniversary and reaffirmed its status as one of Russia's largest manufacturers of ABS plastics and suspension polystyrene." },
+        ],
+        infographic: [],
+      },
+      {
+        id: "period-6",
         title: "2024–2026",
         subtitle: "Group development and new production projects",
         image: "/images/history/period-2024-2026.png",

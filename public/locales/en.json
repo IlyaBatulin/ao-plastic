@@ -172,7 +172,7 @@
       "badge": "Sales",
       "directions": {
         "abs": "ABS Plastics",
-        "polystyrene": "Polystyrene",
+        "polystyrene": "UPEKS Expandable Polystyrene",
         "machineParts": "Machine Parts",
         "cors": "CORS (Cubic Residue of Styrene Rectification)",
         "liquidation": "Liquidation",
@@ -508,7 +508,7 @@
         "abs-injection": "Injection Grades",
         "abs-extrusion": "Extrusion Grades",
         "abs-custom": "Custom ABS Plastic Products Manufacturing",
-        "ps-psv-s": "Expandable Polystyrene EPS-S",
+        "ps-psv-s": "UPEKS Expandable Polystyrene",
         "ps-psv-l": "Expandable Polystyrene EPS-L",
         "ps-pse": "Polystyrene PSE-1",
         "extrusion-parts": "Extrusion Products",
@@ -526,7 +526,7 @@
       "categoryDescriptions": {
         "styrene": "Styrene is a colorless liquid with a characteristic slightly sweet odor and high chemical reactivity",
         "abs": "Wide range of ABS plastics for automotive, appliances, medical and other applications",
-        "polystyrene": "Expandable and general-purpose polystyrene grades for insulation and packaging",
+        "polystyrene": "Self-extinguishing UPEKS expandable polystyrene grades 1-6 for insulation, soundproofing, packaging and molded products",
         "dispersion": "Styrene-acrylic dispersion for water-based paints and coatings",
         "machine-parts": "Plastic parts for automotive and general engineering",
         "hoztovary": "Quality plastic household products for home and everyday use",
@@ -727,7 +727,7 @@
     },
     "geography": {
       "title": "Delivery Geography",
-      "subtitle": "We deliver across all of Russia — from Kaliningrad to Vladivostok",
+      "subtitle": "We deliver across Russia, as well as to Belarus, Kazakhstan and Uzbekistan",
       "factory": "Uzlovaya — production site",
       "office": "Moscow — sales office"
     }

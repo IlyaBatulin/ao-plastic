@@ -132,7 +132,7 @@ export default function ProductsGrid({
                 <ProductCardPlasticLogo imageSrc={imageUrl} />
               </div>
 
-              <div className="p-6 pb-4">
+              <div className="p-4 pb-3 sm:p-6 sm:pb-4">
                 <h3 className="text-xl font-bold mb-2 transition-colors duration-300 group-hover:text-primary">
                   {displayName}
                 </h3>
@@ -157,10 +157,10 @@ export default function ProductsGrid({
               </div>
             </Link>
 
-            <div className="px-6 pb-6 pt-0">
+            <div className="px-4 pb-4 pt-0 sm:px-6 sm:pb-6">
               <Button
                 type="button"
-                className="w-full group/btn bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white transition-all duration-300 hover:shadow-lg hover:shadow-primary/50"
+                className="group/btn w-full min-w-0 whitespace-normal bg-gradient-to-r from-primary to-primary/80 px-3 text-sm text-white transition-all duration-300 hover:from-primary/90 hover:to-primary/70 hover:shadow-lg hover:shadow-primary/50 sm:px-4 sm:text-base"
                 onClick={handleAddToCart}
               >
                 {t("order") || "Заказать"}

@@ -63,11 +63,10 @@ export function ProductPageClient({
 
   // Определяем тип товара
   const isHouseholdProduct = categoryId === 'hoztovary'
-  const isStyrene = categoryId === 'styrene' || 
-                    category?.id === 'styrene' || 
-                    category?.name?.toLowerCase().includes('стирол') ||
-                    product.name?.toLowerCase().includes('стирол') ||
-                    product.category_id === 'styrene'
+  const isStyrene =
+    categoryId === "styrene" ||
+    category?.id === "styrene" ||
+    product.category_id === "styrene"
   const packageQuantity = product.package_quantity || product.quantity_in_pack || 1
   
   const isAbsProduct = categoryId === "abs"
@@ -227,8 +226,8 @@ export function ProductPageClient({
                 </div>
               )}
 
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2 border border-border rounded-lg px-2 py-1">
+              <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center">
+                <div className="flex min-w-0 w-full items-center justify-between gap-2 rounded-lg border border-border px-3 py-2 sm:w-auto sm:justify-start sm:px-2 sm:py-1">
                   <span className="text-sm text-muted-foreground">
                     {isHouseholdProduct ? t("productPage.packages") : t("productPage.tons")}
                   </span>
@@ -237,7 +236,7 @@ export function ProductPageClient({
                     inputMode={isHouseholdProduct ? "numeric" : "decimal"}
                     step={isHouseholdProduct ? "1" : "0.001"}
                     min={isHouseholdProduct ? "1" : "0.001"}
-                    className="w-24 bg-transparent outline-none text-center font-semibold"
+                    className="min-w-0 w-20 bg-transparent text-center font-semibold outline-none sm:w-24"
                     value={quantityInput}
                     onFocus={(e) => {
                       if (e.currentTarget.value === "0") {
@@ -276,12 +275,12 @@ export function ProductPageClient({
                   />
                 </div>
                 {isHouseholdProduct && (
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-xs text-muted-foreground sm:shrink-0">
                     ({packageQuantity} {t("productPage.pcsPerPack")})
                   </span>
                 )}
                 <Button 
-                  className="flex-1 text-lg h-14 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+                  className="h-14 w-full min-w-0 bg-gradient-to-r from-primary to-primary/80 px-4 text-base hover:from-primary/90 hover:to-primary/70 sm:flex-1 sm:text-lg"
                   onClick={() => {
                     const n = sanitizeQuantity(quantityInput, isHouseholdProduct)
                     if (!n || n <= 0) return

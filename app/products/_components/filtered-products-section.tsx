@@ -218,64 +218,33 @@ export function FilteredProductsSection({
         <h3 className="text-h3 mb-6">Сравнительная таблица характеристик</h3>
         <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
           {subcategoryId === 'ps-psv-s' || subcategoryId === 'psv-s' ? (
-            // Специальная таблица для ПСВ-С
+            // Таблица качества «УПЕКС» строго по ТУ 20.16.20-067-05762341-2026
             <table className="w-full text-sm border-collapse">
               <thead>
                 <tr className="bg-muted/50 border-b border-border">
                   <th className="py-4 px-4 text-left font-semibold sticky left-0 bg-muted/50 z-10">Марка</th>
-                  <th className="py-4 px-4 text-left font-semibold">Массовая доля частиц основной фракции, %</th>
-                  <th className="py-4 px-4 text-left font-semibold">Массовая доля остатка на сите 1,6 мм, %</th>
-                  <th className="py-4 px-4 text-left font-semibold">Массовая доля остатка на сите 1,4 мм, %</th>
-                  <th className="py-4 px-4 text-left font-semibold">Массовая доля остатка на сите 3,2 мм, %</th>
-                  <th className="py-4 px-4 text-left font-semibold">Массовая доля остатка на сите 0,9 мм, %</th>
-                  <th className="py-4 px-4 text-left font-semibold">Массовая доля частиц, прошедших через сито 0,4 мм, %</th>
-                  <th className="py-4 px-4 text-left font-semibold">Массовая доля свободного стирола, %</th>
-                  <th className="py-4 px-4 text-left font-semibold">Массовая доля остаточного стирола, %</th>
-                  <th className="py-4 px-4 text-left font-semibold">Потеря массы при сушке, %</th>
-                  <th className="py-4 px-4 text-left font-semibold">Относительная вязкость</th>
-                  <th className="py-4 px-4 text-left font-semibold">Кажущаяся плотность, кг/м³</th>
-                  <th className="py-4 px-4 text-left font-semibold">Разрушающее напряжение при статическом изгибе, кг/см² (МПа)</th>
-                  <th className="py-4 px-4 text-left font-semibold">Горючесть - время самовоспламенения, сек</th>
+                  <th className="py-4 px-4 text-left font-semibold">Размер частиц основной фракции</th>
+                  <th className="py-4 px-4 text-left font-semibold">Массовая доля основной фракции, %, не менее</th>
+                  <th className="py-4 px-4 text-left font-semibold">Массовая доля пентанов, %, в пределах</th>
+                  <th className="py-4 px-4 text-left font-semibold">Потеря массы при сушке, %, не более</th>
+                  <th className="py-4 px-4 text-left font-semibold">Остаточный мономер (стирол), %, не более</th>
+                  <th className="py-4 px-4 text-left font-semibold">Относительная вязкость, не менее</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredProducts.map((p) => {
                   const specs = parseSpecifications(p.specifications)
-                  const brand = specs.Марка || specs.Фракция || p.name
-                  const mainFraction = specs.Массовая_доля_частиц_основной_фракции_проц ?? "—"
-                  const residue16 = specs.Массовая_доля_остатка_на_сите_1_6_мм_проц ?? "—"
-                  const residue14 = specs.Массовая_доля_остатка_на_сите_1_4_мм_проц ?? "—"
-                  const residue32 = specs.Массовая_доля_остатка_на_сите_3_2_мм_проц ?? "—"
-                  const residue09 = specs.Массовая_доля_остатка_на_сите_0_9_мм_проц ?? "—"
-                  const passed04 = specs.Массовая_доля_частиц_прошедших_через_сито_0_4_мм_проц ?? "—"
-                  const freeStyrene = specs.Массовая_доля_свободного_стирола_проц ?? "—"
-                  const residualStyrene = specs.Массовая_доля_остаточного_стирола_проц ?? "—"
-                  const massLoss = specs.Потеря_массы_при_сушке_проц ?? "—"
-                  const relativeViscosity = specs.Относительная_вязкость ?? "—"
-                  const apparentDensity = specs.Кажущаяся_плотность_кг_м3 ?? "—"
-                  const breakingStressKg = specs.Разрушающее_напряжение_при_статическом_изгибе_кг_см2
-                  const breakingStressMpa = specs.Разрушающее_напряжение_при_статическом_изгибе_МПа
-                  const breakingStress = breakingStressKg && breakingStressMpa 
-                    ? `${breakingStressKg} (${breakingStressMpa})`
-                    : (breakingStressKg || breakingStressMpa || "—")
-                  const flammability = specs.Горючесть_время_самовоспламенения_сек ?? "—"
+                  const value = (key: string) => String(specs[key] ?? "—")
                   
                   return (
                     <tr key={p.id} className="border-b border-border/60 hover:bg-muted/30 transition-colors">
-                      <td className="py-4 px-4 font-semibold sticky left-0 bg-card z-10 border-r border-border/60">{brand}</td>
-                      <td className="py-4 px-4">{mainFraction}</td>
-                      <td className="py-4 px-4">{residue16}</td>
-                      <td className="py-4 px-4">{residue14}</td>
-                      <td className="py-4 px-4">{residue32}</td>
-                      <td className="py-4 px-4">{residue09}</td>
-                      <td className="py-4 px-4">{passed04}</td>
-                      <td className="py-4 px-4">{freeStyrene}</td>
-                      <td className="py-4 px-4">{residualStyrene}</td>
-                      <td className="py-4 px-4">{massLoss}</td>
-                      <td className="py-4 px-4">{relativeViscosity}</td>
-                      <td className="py-4 px-4">{apparentDensity}</td>
-                      <td className="py-4 px-4">{breakingStress}</td>
-                      <td className="py-4 px-4">{flammability}</td>
+                      <td className="py-4 px-4 font-semibold sticky left-0 bg-card z-10 border-r border-border/60">{p.name}</td>
+                      <td className="py-4 px-4">{value("Размер частиц основной фракции")}</td>
+                      <td className="py-4 px-4">{value("Массовая доля частиц основной фракции, %, не менее")}</td>
+                      <td className="py-4 px-4">{value("Массовая доля пентанов, %, в пределах")}</td>
+                      <td className="py-4 px-4">{value("Потеря массы при сушке, %, не более")}</td>
+                      <td className="py-4 px-4">{value("Массовая доля остаточного мономера (стирола), %, не более")}</td>
+                      <td className="py-4 px-4">{value("Относительная вязкость, не менее")}</td>
                     </tr>
                   )
                 })}
@@ -288,27 +257,27 @@ export function FilteredProductsSection({
                 <tr className="bg-muted/50 border-b border-border">
                   <th className="py-4 px-4 text-left font-semibold sticky left-0 bg-muted/50 z-10">Марка</th>
                   <th className="py-4 px-4 text-left font-semibold">Плотность, кг/м³</th>
-                  <th className="py-4 px-4 text-left font-semibold">Усадка, %</th>
+                  <th className="py-4 px-4 text-left font-semibold">Усадка, %, в пределах</th>
                   <th className="py-4 px-4 text-left font-semibold">ПТР (MFR), г/10 мин</th>
-                  <th className="py-4 px-4 text-left font-semibold">Удлинение при разрыве, %</th>
-                  <th className="py-4 px-4 text-left font-semibold">Ударная вязкость по Изоду, кДж/м²</th>
-                  <th className="py-4 px-4 text-left font-semibold">Предел текучести при растяжении, МПа</th>
-                  <th className="py-4 px-4 text-left font-semibold">Температура размягчения по Вика, °C</th>
+                  <th className="py-4 px-4 text-left font-semibold">Удлинение при разрыве, %, не менее</th>
+                  <th className="py-4 px-4 text-left font-semibold">Ударная вязкость по Изоду, кДж/м², не менее</th>
+                  <th className="py-4 px-4 text-left font-semibold">Предел текучести при растяжении, кгс/см², не менее</th>
+                  <th className="py-4 px-4 text-left font-semibold">Температура размягчения по Вика, °C, не менее</th>
                   <th className="py-4 px-4 text-left font-semibold">Блеск, %</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredProducts.map((p) => {
                   const specs = parseSpecifications(p.specifications)
-                  const brand = specs.Марка || p.name
-                  const density = specs.Плотность || (specs.Плотность_кг_м3 ? `${specs.Плотность_кг_м3}` : "—")
-                  const shrinkage = specs.Усадка || specs.Усадка_проц || "—"
-                  const mfr = specs["Показатель текучести расплава (MFR)"] || (specs.Показатель_текучести_расплава_MFR_г_10мин ? `${specs.Показатель_текучести_расплава_MFR_г_10мин}` : "—")
-                  const elongation = specs["Относительное удлинение при разрыве"] || (specs.Относительное_удлинение_при_разрыве_проц ? `${specs.Относительное_удлинение_при_разрыве_проц}` : "—")
-                  const impactStrength = specs["Ударная вязкость по Изоду"] || (specs.Ударная_вязкость_по_Изоду_кДж_м2 ? `${specs.Ударная_вязкость_по_Изоду_кДж_м2}` : "—")
-                  const tensileStrength = specs["Предел текучести при растяжении"] || (specs.Предел_текучести_при_растяжении_МПа ? `${specs.Предел_текучести_при_растяжении_МПа}` : "—")
-                  const vicaTemp = specs["Температура размягчения по Вика"] || (specs.Температура_размягчения_по_Вика_градС ? `${specs.Температура_размягчения_по_Вика_градС}` : "—")
-                  const gloss = specs.Блеск || (specs.Блеск_проц ? `${specs.Блеск_проц}` : "—")
+                  const brand = p.name
+                  const density = specs["Плотность, кг/м³"] ?? "—"
+                  const shrinkage = specs["Усадка при литье под давлением, %, в пределах"] ?? "—"
+                  const mfr = specs["Показатель текучести расплава, г/10 мин"] ?? "—"
+                  const elongation = specs["Относительное удлинение при разрыве, %, не менее"] ?? "—"
+                  const impactStrength = specs["Ударная вязкость по Изоду, кДж/м², не менее"] ?? "—"
+                  const tensileStrength = specs["Предел текучести при растяжении, кгс/см², не менее"] ?? "—"
+                  const vicaTemp = specs["Температура размягчения по Вика, °C, не менее"] ?? "—"
+                  const gloss = specs["Блеск, %"] ?? "—"
                   
                   return (
                     <tr key={p.id} className="border-b border-border/60 hover:bg-muted/30 transition-colors">

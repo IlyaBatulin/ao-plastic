@@ -31,20 +31,22 @@ export function LanguageProvider({
 }) {
   // Сидируем кэш серверными переводами до первого рендера,
   // тогда t() работает уже при SSR и краулеры видят текст.
-  if (initialTranslations && !translationsCache[initialLang]) {
+  if (initialTranslations) {
     translationsCache[initialLang] = initialTranslations
   }
 
   const [lang, setLangState] = useState<Language>(initialLang)
 
   const [translations, setTranslations] = useState<Record<string, any>>(
-    () => translationsCache[initialLang] || {}
+    () => initialTranslations || translationsCache[initialLang] || {}
   )
   const [loadedLang, setLoadedLang] = useState<Language | null>(() =>
-    translationsCache[initialLang] ? initialLang : null
+    initialTranslations || translationsCache[initialLang] ? initialLang : null
   )
 
-  const [isLoading, setIsLoading] = useState(() => !translationsCache[initialLang])
+  const [isLoading, setIsLoading] = useState(
+    () => !(initialTranslations || translationsCache[initialLang])
+  )
 
   const applyTranslations = (nextLang: Language, data: Record<string, any>) => {
     translationsCache[nextLang] = data
@@ -120,10 +122,7 @@ export function LanguageProvider({
     return (key: string): any => {
       if (!key) return ""
 
-      const activeTranslations =
-        translationsCache[lang] ??
-        (loadedLang === lang ? translations : null) ??
-        translations
+      const activeTranslations = loadedLang === lang ? translations : translationsCache[lang]
 
       if (!activeTranslations || Object.keys(activeTranslations).length === 0) {
         return ""

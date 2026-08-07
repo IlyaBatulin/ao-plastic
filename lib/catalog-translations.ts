@@ -21,7 +21,7 @@ export function getCategoryName(categoryId: string, lang: "ru" | "en" = "ru"): s
     "abs-injection": { ru: "Литьевые марки", en: "Injection Grades" },
     "abs-extrusion": { ru: "Экструзионные марки", en: "Extrusion Grades" },
     "abs-custom": { ru: "Изготовление изделий из АБС пластика на заказ", en: "Custom ABS Plastic Products Manufacturing" },
-    "ps-psv-s": { ru: "Полистирол вспенивающийся ПСВ-С", en: "Expandable Polystyrene EPS-S" },
+    "ps-psv-s": { ru: "Полистирол вспенивающийся «УПЕКС»", en: "UPEKS Expandable Polystyrene" },
     "ps-psv-l": { ru: "Полистирол вспенивающийся ПСВ-Л", en: "Expandable Polystyrene EPS-L" },
     "ps-pse": { ru: "Полистирол ПСЭ-1", en: "Polystyrene PSE-1" },
     "extrusion-parts": { ru: "Экструзионные изделия", en: "Extrusion Products" },

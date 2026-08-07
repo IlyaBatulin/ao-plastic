@@ -7,7 +7,7 @@ import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld"
 import { isNextBuild } from "@/lib/next-build"
 import { getCategoryPageData } from "@/lib/catalog-category"
 import { getSubcategoryPageData } from "@/lib/catalog-subcategory"
-import type { AbsShowcaseGroup, AbsShowcaseProduct } from "@/app/products/_components/abs-catalog-showcase"
+import type { CatalogShowcaseGroup, CatalogShowcaseProduct } from "@/app/products/_components/abs-catalog-showcase"
 
 export const revalidate = 300
 
@@ -113,14 +113,15 @@ export default async function CategoryPage({
   const { category, subcategories } = pageData
   const categoryTitle =
     typeof category?.name === "string" ? category.name : categoryId
-  const absGroups: AbsShowcaseGroup[] | undefined =
-    categoryId === "abs"
+  const showcaseCategoryIds = new Set(["abs", "polystyrene", "hoztovary", "machine-parts"])
+  const showcaseGroups: CatalogShowcaseGroup[] | undefined =
+    showcaseCategoryIds.has(categoryId)
       ? await Promise.all(
           subcategories.map(async (sub) => {
             const subcategorySlug = String(sub.slug ?? sub.id ?? "")
             const subcategoryData = await getSubcategoryPageData(categoryId, subcategorySlug)
             const products = (subcategoryData?.displayProducts ?? []).map(
-              (product): AbsShowcaseProduct => ({
+              (product): CatalogShowcaseProduct => ({
                 id: String(product.id ?? ""),
                 slug: typeof product.slug === "string" ? product.slug : null,
                 name: String(product.name ?? ""),
@@ -173,7 +174,7 @@ export default async function CategoryPage({
         }))}
         hasVideo={!!getCategoryVideo(categoryId)}
         videoSrc={getCategoryVideo(categoryId)}
-        absGroups={absGroups}
+        showcaseGroups={showcaseGroups}
       />
     </>
   )

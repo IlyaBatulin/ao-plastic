@@ -5,11 +5,9 @@ export const CUSTOMER_PREVIEW_COOKIE = "customer_preview"
 
 function credentials() {
   return {
-    // Temporary demo access requested for the management presentation.
-    // Remove these values and restore environment-only credentials after the demo.
-    login: "adminplast",
-    password: "admin123",
-    secret: "temporary-aoplastic-management-demo-session-2026",
+    login: process.env.CUSTOMER_PREVIEW_LOGIN || "",
+    password: process.env.CUSTOMER_PREVIEW_PASSWORD || "",
+    secret: process.env.CUSTOMER_PREVIEW_SECRET || "",
   }
 }
 

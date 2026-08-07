@@ -10,7 +10,7 @@ import { getProductPathSegment } from "@/lib/catalog-product"
 import { resolveProductDisplay } from "@/lib/product-en"
 import { cn } from "@/lib/utils"
 
-export type AbsShowcaseProduct = {
+export type CatalogShowcaseProduct = {
   id: string
   slug?: string | null
   name: string
@@ -19,20 +19,21 @@ export type AbsShowcaseProduct = {
   specifications?: Record<string, unknown> | string | null
 }
 
-export type AbsShowcaseGroup = {
+export type CatalogShowcaseGroup = {
   id: string
   slug: string
   name: string
   description?: string
-  products: AbsShowcaseProduct[]
+  products: CatalogShowcaseProduct[]
 }
 
-type AbsCatalogShowcaseProps = {
+type CatalogShowcaseProps = {
+  categoryId: string
   title: string
   description?: string
   videoSrc?: string
   imageSrc?: string
-  groups: AbsShowcaseGroup[]
+  groups: CatalogShowcaseGroup[]
   backLabel: string
 }
 
@@ -53,18 +54,32 @@ const copy = {
   },
 } as const
 
-export function AbsCatalogShowcase({
+export function CatalogShowcase({
+  categoryId,
   title,
   description,
   videoSrc,
   imageSrc,
   groups,
   backLabel,
-}: AbsCatalogShowcaseProps) {
+}: CatalogShowcaseProps) {
   const { lang } = useLanguage()
   const locale = lang === "en" ? "en" : "ru"
   const labels = copy[locale]
   const [openGroup, setOpenGroup] = useState(groups[0]?.id ?? "")
+  const isAbs = categoryId === "abs"
+  const eyebrow = isAbs ? labels.eyebrow : locale === "en" ? `${title} catalog` : `Каталог · ${title}`
+  const directionCount = String(groups.length).padStart(2, "0")
+  const directionsLabel = isAbs
+    ? labels.directions
+    : locale === "en"
+      ? `${groups.length} product ${groups.length === 1 ? "line" : "lines"}`
+      : `${groups.length} ${groups.length === 1 ? "направление" : groups.length < 5 ? "направления" : "направлений"}`
+  const directionsLead = isAbs
+    ? labels.directionsLead
+    : locale === "en"
+      ? "Choose a product line to explore available products and solutions."
+      : "Выберите направление, чтобы посмотреть доступную продукцию и решения."
 
   return (
     <section className="relative bg-[#f4f6f9] lg:grid lg:min-h-[100svh] lg:grid-cols-2">
@@ -101,7 +116,7 @@ export function AbsCatalogShowcase({
 
           <div className="max-w-2xl">
             <p className="mb-5 text-xs font-semibold uppercase tracking-[0.18em] text-white/65">
-              {labels.eyebrow}
+              {eyebrow}
             </p>
             <h1 className="text-[clamp(3.1rem,6vw,6.8rem)] font-semibold leading-[0.92] tracking-[-0.045em] text-white">
               {title}
@@ -129,14 +144,14 @@ export function AbsCatalogShowcase({
             <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(4,17,45,0.96)_0%,rgba(8,35,82,0.80)_52%,rgba(8,31,69,0.38)_100%)]" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#06142f]/80 via-transparent to-white/5" />
             <div className="absolute right-6 top-5 text-[clamp(4rem,8vw,7rem)] font-semibold leading-none tracking-[-0.06em] text-white/[0.08] tabular-nums md:right-8 md:top-6">
-              03
+              {directionCount}
             </div>
 
             <div className="relative z-10 flex min-h-[240px] flex-col justify-end p-6 text-white md:min-h-[290px] md:p-9">
               <div className="mb-5 h-px w-16 bg-white/55" />
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/68">{labels.directions}</p>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/68">{directionsLabel}</p>
               <p className="mt-4 max-w-xl text-lg font-medium leading-relaxed text-white/92 md:text-2xl md:leading-snug">
-                {labels.directionsLead}
+                {directionsLead}
               </p>
             </div>
           </div>
@@ -154,7 +169,7 @@ export function AbsCatalogShowcase({
                 return (
                   <Link
                     key={group.id}
-                    href={`/products/abs/${group.slug}`}
+                    href={`/products/${categoryId}/${group.slug}`}
                     className="group grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-5 text-left transition-all duration-300 hover:border-primary/35 hover:shadow-[0_20px_55px_rgba(15,42,89,0.10)] sm:px-7 sm:py-6"
                   >
                     <span className="text-sm font-bold tabular-nums text-primary/55">0{index + 1}</span>
@@ -233,9 +248,9 @@ export function AbsCatalogShowcase({
                                   specifications: product.specifications,
                                 },
                                 locale,
-                                { categoryId: "abs", subcategoryId: group.slug }
+                                { categoryId, subcategoryId: group.slug }
                               )
-                              const href = `/products/abs/${group.slug}/${encodeURIComponent(getProductPathSegment(product))}`
+                              const href = `/products/${categoryId}/${group.slug}/${encodeURIComponent(getProductPathSegment(product))}`
 
                               return (
                                 <div key={product.id} className="grid gap-4 py-5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">

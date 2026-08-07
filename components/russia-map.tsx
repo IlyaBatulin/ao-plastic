@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState, useCallback } from "react"
 import Link from "next/link"
 import { geoConicEqualArea, geoPath, type GeoPermissibleObjects } from "d3-geo"
 import am5geodata_russiaLow from "@amcharts/amcharts5-geodata/russiaLow"
+import am5geodata_worldLow from "@amcharts/amcharts5-geodata/worldLow"
 import { Plus, Minus, Home, X, ArrowRight } from "lucide-react"
 
 type ProductKey = "abs" | "ps" | "styrene" | "dispersion" | "household"
@@ -18,6 +19,8 @@ type City = {
   /** Группы продукции из таблицы поставок */
   products: ProductKey[]
 }
+
+type DestinationCountry = City & { countryId: "BY" | "KZ" | "UZ" }
 
 const PRODUCT_LABELS: Record<ProductKey, { ru: string; en: string }> = {
   abs: { ru: "АБС-пластики", en: "ABS plastics" },
@@ -55,6 +58,39 @@ const CITIES: City[] = [
   { name: "Владивосток", nameEn: "Vladivostok", region: "Приморский край", regionEn: "Primorsky Krai", lat: 43.12, lon: 131.89, products: ["abs"] },
 ]
 
+const DESTINATION_COUNTRIES: DestinationCountry[] = [
+  {
+    countryId: "BY",
+    name: "Беларусь",
+    nameEn: "Belarus",
+    region: "Республика Беларусь",
+    regionEn: "Republic of Belarus",
+    lat: 53.7,
+    lon: 27.9,
+    products: ["abs", "ps"],
+  },
+  {
+    countryId: "KZ",
+    name: "Казахстан",
+    nameEn: "Kazakhstan",
+    region: "Республика Казахстан",
+    regionEn: "Republic of Kazakhstan",
+    lat: 48.0,
+    lon: 67.0,
+    products: ["ps"],
+  },
+  {
+    countryId: "UZ",
+    name: "Узбекистан",
+    nameEn: "Uzbekistan",
+    region: "Республика Узбекистан",
+    regionEn: "Republic of Uzbekistan",
+    lat: 41.4,
+    lon: 64.6,
+    products: ["abs", "ps"],
+  },
+]
+
 const FACTORY = {
   name: "Узловая",
   nameEn: "Uzlovaya",
@@ -68,7 +104,7 @@ const FACTORY = {
 /** «Паутина»: каждый город соединён с двумя ближайшими, завод — с хабами. */
 const WEB_EDGES: Array<[{ lon: number; lat: number; name: string }, { lon: number; lat: number; name: string }]> = (() => {
   const hubs = new Set(["Москва", "Санкт-Петербург", "Казань", "Екатеринбург", "Новосибирск", "Красноярск", "Ростов-на-Дону", "Владивосток", "Калининград"])
-  const nodes: Array<{ lon: number; lat: number; name: string }> = [FACTORY, ...CITIES]
+  const nodes: Array<{ lon: number; lat: number; name: string }> = [FACTORY, ...CITIES, ...DESTINATION_COUNTRIES]
   const seen = new Set<string>()
   const edges: Array<[(typeof nodes)[number], (typeof nodes)[number]]> = []
 
@@ -100,9 +136,20 @@ const MAX_ZOOM = 8
 /** Шаг подсветки точек, мс */
 const LIGHT_STAGGER = 110
 
-const geodata = am5geodata_russiaLow as unknown as GeoJSON.FeatureCollection
+const russiaGeodata = am5geodata_russiaLow as unknown as GeoJSON.FeatureCollection
+const worldGeodata = am5geodata_worldLow as unknown as GeoJSON.FeatureCollection
+const destinationFeatures = worldGeodata.features.filter((feature) =>
+  DESTINATION_COUNTRIES.some((country) => country.countryId === String(feature.id))
+)
+const mapExtentData = {
+  type: "FeatureCollection",
+  features: [...russiaGeodata.features, ...destinationFeatures],
+} as GeoJSON.FeatureCollection
 
-type Selected = (City | typeof FACTORY) & { isFactory?: boolean }
+type Selected = (City | DestinationCountry | typeof FACTORY) & {
+  isFactory?: boolean
+  isCountry?: boolean
+}
 
 export function RussiaMap({
   lang,
@@ -141,7 +188,7 @@ export function RussiaMap({
     return () => observer.disconnect()
   }, [])
 
-  const { regionPaths, project } = useMemo(() => {
+  const { regionPaths, countryPaths, project } = useMemo(() => {
     const projection = geoConicEqualArea()
       .rotate([-100, 0])
       .parallels([50, 70])
@@ -150,16 +197,28 @@ export function RussiaMap({
           [PAD, PAD],
           [VIEW_W - PAD, VIEW_H - PAD - 10],
         ],
-        geodata as GeoPermissibleObjects
+        mapExtentData as GeoPermissibleObjects
       )
     const path = geoPath(projection)
-    const regions = geodata.features.map((f) => ({
+    const regions = russiaGeodata.features.map((f) => ({
       d: path(f as GeoPermissibleObjects) ?? "",
       name: String((f.properties as { name?: string })?.name ?? ""),
       id: String(f.id ?? (f.properties as { id?: string })?.id ?? Math.random()),
     }))
+    const countries = destinationFeatures.flatMap((feature) => {
+      const country = DESTINATION_COUNTRIES.find(
+        (item) => item.countryId === String(feature.id)
+      )
+      if (!country) return []
+      return [{
+        ...country,
+        d: path(feature as GeoPermissibleObjects) ?? "",
+        id: country.countryId,
+      }]
+    })
     return {
       regionPaths: regions,
+      countryPaths: countries,
       project: (lon: number, lat: number) => projection([lon, lat]) ?? [0, 0],
     }
   }, [])
@@ -250,6 +309,11 @@ export function RussiaMap({
     setTooltip(null)
   }
 
+  const productCountLabel = (count: number) =>
+    en
+      ? `${count} product ${count === 1 ? "category" : "categories"}`
+      : `${count} ${count === 1 ? "вид продукции" : count < 5 ? "вида продукции" : "видов продукции"}`
+
   const inv = 1 / transform.k
   const en = lang === "en"
   const cityName = (c: { name: string; nameEn: string }) => (en ? c.nameEn : c.name)
@@ -265,7 +329,7 @@ export function RussiaMap({
         onPointerCancel={onPointerUp}
         onTouchMove={onTouchMove}
         role="img"
-        aria-label={en ? "Delivery map of Russia" : "Карта поставок по России"}
+        aria-label={en ? "Delivery map of Russia and CIS" : "Карта поставок по России и СНГ"}
       >
         <defs>
           <linearGradient id="rm-land" x1="0" y1="0" x2="0" y2="1">
@@ -282,20 +346,63 @@ export function RussiaMap({
         </defs>
 
         <g transform={`translate(${VIEW_W / 2 + transform.x} ${VIEW_H / 2 + transform.y}) scale(${transform.k}) translate(${-VIEW_W / 2} ${-VIEW_H / 2})`}>
-          {/* Страна */}
+          {/* Россия и страны экспортных поставок */}
           <g filter="url(#rm-shadow)" className="rm-fade-in">
             {regionPaths.map((r) => (
               <path
                 key={r.id}
                 d={r.d}
+                aria-label={r.name}
                 fill={hoverRegion === r.id ? "#d9e4f7" : "url(#rm-land)"}
                 stroke="#ffffff"
                 strokeWidth={0.9 * inv}
+                className="cursor-help"
                 style={{ transition: "fill 250ms ease" }}
-                onMouseEnter={() => setHoverRegion(r.id)}
-                onMouseLeave={() => setHoverRegion(null)}
+                onMouseEnter={(event) => {
+                  setHoverRegion(r.id)
+                  showTooltip(event, r.name)
+                }}
+                onMouseMove={(event) => showTooltip(event, r.name)}
+                onMouseLeave={() => {
+                  setHoverRegion(null)
+                  setTooltip(null)
+                }}
               />
             ))}
+            {countryPaths.map((country) => {
+              const isSelected = selected?.isCountry && selected.name === country.name
+              return (
+                <path
+                  key={country.id}
+                  d={country.d}
+                  data-country={country.id}
+                  aria-label={`${cityName(country)} — ${productCountLabel(country.products.length)}`}
+                  role="button"
+                  fill={isSelected || hoverRegion === country.id ? "#c8d9f5" : "#dce8fa"}
+                  stroke="#ffffff"
+                  strokeWidth={(isSelected ? 2 : 1.2) * inv}
+                  className="cursor-pointer"
+                  style={{ transition: "fill 200ms ease" }}
+                  onPointerDown={(event) => event.stopPropagation()}
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    setSelected({ ...country, isCountry: true })
+                    setTooltip(null)
+                  }}
+                  onMouseEnter={(event) => {
+                    setHoverRegion(country.id)
+                    showTooltip(event, `${cityName(country)} — ${productCountLabel(country.products.length)}`)
+                  }}
+                  onMouseMove={(event) =>
+                    showTooltip(event, `${cityName(country)} — ${productCountLabel(country.products.length)}`)
+                  }
+                  onMouseLeave={() => {
+                    setHoverRegion(null)
+                    setTooltip(null)
+                  }}
+                />
+              )
+            })}
           </g>
 
           {/* Паутина поставок — проявляется после подсветки точек */}
@@ -415,6 +522,14 @@ export function RussiaMap({
                   {en ? "Uzlovaya — Plastik JSC" : "Узловая — АО «Пластик»"}
                 </h3>
                 <p className="mt-1 text-xs text-muted-foreground">{en ? selected.regionEn : selected.region}</p>
+              </>
+            ) : selected.isCountry ? (
+              <>
+                <p className="text-caption mb-1 text-primary">{en ? "Export destination" : "Страна поставок"}</p>
+                <h3 className="text-lg font-semibold text-foreground">{cityName(selected)}</h3>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {productCountLabel(selected.products.length)}
+                </p>
               </>
             ) : (
               <>

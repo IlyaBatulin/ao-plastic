@@ -6,7 +6,7 @@ import { CategoryHero } from "@/app/products/_components/category-hero"
 import { SubcategoriesGrid } from "@/app/products/_components/subcategories-grid"
 import { useLanguage } from "@/contexts/language-context"
 import { getCategoryImageUrl } from "@/lib/category-image"
-import { AbsCatalogShowcase, type AbsShowcaseGroup } from "@/app/products/_components/abs-catalog-showcase"
+import { CatalogShowcase, type CatalogShowcaseGroup } from "@/app/products/_components/abs-catalog-showcase"
 
 const AbsCategorySection = dynamic(
   () =>
@@ -57,7 +57,7 @@ interface CategoryPageClientProps {
   }>
   hasVideo: boolean
   videoSrc?: string
-  absGroups?: AbsShowcaseGroup[]
+  showcaseGroups?: CatalogShowcaseGroup[]
 }
 
 export function CategoryPageClient({
@@ -66,7 +66,7 @@ export function CategoryPageClient({
   subcategories,
   hasVideo,
   videoSrc,
-  absGroups = [],
+  showcaseGroups = [],
 }: CategoryPageClientProps) {
   const { t } = useLanguage()
 
@@ -76,16 +76,18 @@ export function CategoryPageClient({
   const isKors = categoryId === "kors"
   const isAbs = categoryId === "abs"
   const isPvcModifier = categoryId === "pvc-modifier"
+  const usesCatalogShowcase = ["abs", "polystyrene", "hoztovary", "machine-parts"].includes(categoryId)
 
   return (
     <div className="min-h-screen">
-      {isAbs ? (
-        <AbsCatalogShowcase
+      {usesCatalogShowcase ? (
+        <CatalogShowcase
+          categoryId={categoryId}
           title={categoryName}
           description={t(`homePage.catalog.categoryDescriptions.${categoryId}`) || category.description}
           videoSrc={videoSrc}
           imageSrc={getCategoryImageUrl(categoryId, category.image, categoryName)}
-          groups={absGroups}
+          groups={showcaseGroups}
           backLabel={backLabel}
         />
       ) : (
@@ -101,7 +103,7 @@ export function CategoryPageClient({
         />
       )}
 
-      {!isAbs && !isStyrene && !isKors && !isPvcModifier && (
+      {!usesCatalogShowcase && !isStyrene && !isKors && !isPvcModifier && (
         <SubcategoriesGrid categoryId={categoryId} subcategories={subcategories} />
       )}
 

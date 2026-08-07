@@ -11,10 +11,11 @@ import { historyPageContent } from "@/data/about-pages/history"
 
 const periodImages: Record<string, string> = {
   "period-1": "/images/history/period-1959-1992.jpeg",
-  "period-2": "/images/history/period-1974-1992.png",
-  "period-3": "/images/history/period-2010-2014.jpeg",
+  "period-2": "/images/history/period-2010-2014.jpeg",
+  "period-3": "/images/history/period-1974-1992.png",
   "period-4": "/images/history/period-2019-present.jpeg",
-  "period-5": "/images/history/period-2024-2026.png",
+  "period-5": "/images/history/period-2019-present.jpeg",
+  "period-6": "/images/history/period-2024-2026.png",
 }
 
 const missionSequence: Variants = {

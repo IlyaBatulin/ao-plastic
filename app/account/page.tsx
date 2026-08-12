@@ -4,9 +4,9 @@ import { FormEvent, useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import {
-  ArrowRight, BarChart3, Building2, CalendarDays, Check, ChevronLeft, ChevronRight,
+  ArrowRight, Award, BarChart3, Building2, CalendarDays, Check, ChevronLeft, ChevronRight,
   Clock3, LogOut, Mail, PackageCheck, Phone, Plus, RefreshCw, Search, ShoppingBag,
-  Sparkles, UserRound,
+  Sparkles, Truck, UserRound,
 } from "lucide-react"
 import productsData from "@/data/products.json"
 import { createClient } from "@/utils/supabase/client"
@@ -23,6 +23,34 @@ type AccountData = {
   reservationsAvailable: boolean
 }
 type CatalogItem = { id: string; name: string; categoryId: string; subcategoryId?: string; categoryName: string; image?: string; isPackages: boolean; packageQuantity?: number }
+type BonusDirection = {
+  id: string
+  name: string
+  shortName: string
+  unit: "т" | "млн ₽"
+  confirmed: number
+  pending?: number
+  purchaseValue: number
+  pendingValue?: number
+  tiers: { name: string; threshold: number; rate: number }[]
+}
+
+const bonusDirections: BonusDirection[] = [
+  { id: "abs", name: "АБС-пластики", shortName: "АБС", unit: "т", confirmed: 620, pending: 84, purchaseValue: 68200000, pendingValue: 9240000, tiers: [{ name: "Серебряный", threshold: 200, rate: 1 }, { name: "Золотой", threshold: 500, rate: 2 }, { name: "Платиновый", threshold: 800, rate: 3 }, { name: "Стратегический", threshold: 1200, rate: 4 }] },
+  { id: "polystyrene", name: "Полистирол", shortName: "ПС", unit: "т", confirmed: 410, purchaseValue: 31600000, tiers: [{ name: "Серебряный", threshold: 200, rate: 1 }, { name: "Золотой", threshold: 500, rate: 2 }, { name: "Платиновый", threshold: 1000, rate: 3 }, { name: "Стратегический", threshold: 1600, rate: 4 }] },
+  { id: "styrene", name: "Стирол", shortName: "СТ", unit: "т", confirmed: 145, purchaseValue: 14200000, tiers: [{ name: "Серебряный", threshold: 100, rate: 0.75 }, { name: "Золотой", threshold: 250, rate: 1.5 }, { name: "Платиновый", threshold: 500, rate: 2.5 }, { name: "Стратегический", threshold: 800, rate: 3.5 }] },
+  { id: "sad", name: "Стирол-акриловые дисперсии", shortName: "САД", unit: "т", confirmed: 72, purchaseValue: 9800000, tiers: [{ name: "Серебряный", threshold: 50, rate: 1 }, { name: "Золотой", threshold: 120, rate: 2 }, { name: "Платиновый", threshold: 250, rate: 3 }, { name: "Стратегический", threshold: 400, rate: 4 }] },
+  { id: "dms", name: "Детали машиностроения", shortName: "ДМС", unit: "млн ₽", confirmed: 7.4, purchaseValue: 7400000, tiers: [{ name: "Серебряный", threshold: 5, rate: 1 }, { name: "Золотой", threshold: 12, rate: 2 }, { name: "Платиновый", threshold: 25, rate: 3 }, { name: "Стратегический", threshold: 40, rate: 4 }] },
+  { id: "household", name: "Товары для дома", shortName: "ТНП", unit: "млн ₽", confirmed: 4.8, purchaseValue: 4800000, tiers: [{ name: "Серебряный", threshold: 3, rate: 1 }, { name: "Золотой", threshold: 8, rate: 2 }, { name: "Платиновый", threshold: 15, rate: 3 }, { name: "Стратегический", threshold: 25, rate: 4 }] },
+]
+
+function getBonusTier(direction: BonusDirection) {
+  return [...direction.tiers].reverse().find(tier => direction.confirmed >= tier.threshold) || null
+}
+
+function formatBonusVolume(value: number, unit: BonusDirection["unit"]) {
+  return `${new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 1 }).format(value)} ${unit}`
+}
 
 const money = (value: number) => new Intl.NumberFormat("ru-RU", { style: "currency", currency: "RUB", maximumFractionDigits: 0 }).format(value)
 const longDate = (value: string) => new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "long", year: "numeric" }).format(new Date(value))
@@ -55,6 +83,9 @@ export default function AccountPage() {
   const [addedId, setAddedId] = useState("")
   const [calendarMonth, setCalendarMonth] = useState(() => new Date(2026, 7, 1))
   const [reservation, setReservation] = useState({ productName: "", quantity: "", unit: "т", requestedDeliveryDate: "2026-08-20", comment: "" })
+  const [bonusDemoConfirmed, setBonusDemoConfirmed] = useState(false)
+  const [bonusNotice, setBonusNotice] = useState("")
+  const [accountTab, setAccountTab] = useState<"overview" | "bonus">("overview")
 
   async function load() {
     const response = await fetch("/api/customer/account", { cache: "no-store" })
@@ -92,6 +123,18 @@ export default function AccountPage() {
   }, [query])
 
   const totalSpend = useMemo(() => data?.orders.reduce((sum, order) => sum + order.items.reduce((s, item) => s + (Number(item.price) || 0) * (Number(item.quantity) || 0), 0), 0) || 0, [data])
+  const demoDirections = useMemo(() => bonusDirections.map(direction => direction.id === "abs" && bonusDemoConfirmed ? {
+    ...direction,
+    confirmed: direction.confirmed + (direction.pending || 0),
+    purchaseValue: direction.purchaseValue + (direction.pendingValue || 0),
+    pending: 0,
+    pendingValue: 0,
+  } : direction), [bonusDemoConfirmed])
+  const bonusSummary = useMemo(() => {
+    const purchaseValue = demoDirections.reduce((sum, direction) => sum + direction.purchaseValue, 0)
+    const accrued = demoDirections.reduce((sum, direction) => sum + direction.purchaseValue * ((getBonusTier(direction)?.rate || 0) / 100), 0)
+    return { purchaseValue, accrued }
+  }, [demoDirections])
   const chart = useMemo(() => {
     const months = Array.from({ length: 6 }, (_, index) => { const d = new Date(2026, 2 + index, 1); return { key: `${d.getFullYear()}-${d.getMonth()}`, label: new Intl.DateTimeFormat("ru-RU", { month: "short" }).format(d), value: 0 } })
     for (const order of data?.orders || []) { const d = new Date(order.created_at); const point = months.find(item => item.key === `${d.getFullYear()}-${d.getMonth()}`); if (point) point.value += order.items.reduce((sum, item) => sum + (Number(item.price) || 0) * Number(item.quantity), 0) }
@@ -103,6 +146,11 @@ export default function AccountPage() {
   if (!data) return null
 
   const displayName = data.profile.company_name || data.profile.contact_name || "Покупатель"
+
+  function confirmDemoDelivery() {
+    setBonusDemoConfirmed(true)
+    setBonusNotice("Поставка № ДП-084 подтверждена. 84 т АБС-пластика зачтены в программу, прогноз бонуса пересчитан.")
+  }
 
   return <main className="min-h-screen bg-[#f2f5fa] pb-20 text-[#14213d]">
     <section className="relative overflow-hidden border-b border-slate-200 bg-[#0d2149] text-white">
@@ -116,6 +164,20 @@ export default function AccountPage() {
     </section>
 
     <div className="container mx-auto space-y-6 px-4 py-7 sm:px-6 lg:py-10">
+      <nav aria-label="Разделы личного кабинета" className="flex w-full gap-1 overflow-x-auto rounded-2xl border border-slate-200 bg-white p-1.5 shadow-[0_8px_30px_rgba(20,50,100,.05)] sm:w-fit">
+        <button type="button" onClick={() => setAccountTab("overview")} className={`inline-flex min-w-max items-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition sm:px-5 ${accountTab === "overview" ? "bg-[#102757] text-white shadow-md" : "text-slate-500 hover:bg-slate-50 hover:text-slate-800"}`}><BarChart3 className="h-4 w-4" />Обзор кабинета</button>
+        <button type="button" onClick={() => setAccountTab("bonus")} className={`inline-flex min-w-max items-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition sm:px-5 ${accountTab === "bonus" ? "bg-[#102757] text-white shadow-md" : "text-slate-500 hover:bg-slate-50 hover:text-slate-800"}`}><Award className="h-4 w-4" />Ретро-бонусы<span className="rounded-full bg-[#e9d49d] px-2 py-0.5 text-[10px] font-bold text-[#6f5115]">MVP</span></button>
+      </nav>
+
+      {accountTab === "bonus" ? <RetroBonusProgram
+        directions={demoDirections}
+        purchaseValue={bonusSummary.purchaseValue}
+        accrued={bonusSummary.accrued}
+        confirmed={bonusDemoConfirmed}
+        notice={bonusNotice}
+        onConfirm={confirmDemoDelivery}
+        onReset={() => { setBonusDemoConfirmed(false); setBonusNotice("") }}
+      /> : <>
       <section className="grid gap-3 sm:grid-cols-3">
         <Metric icon={<ShoppingBag />} value={String(data.orders.length)} label="заказов" hint="за всё время" />
         <Metric icon={<PackageCheck />} value={String(data.reservations.length)} label="поставок в плане" hint="активные заявки" />
@@ -144,8 +206,107 @@ export default function AccountPage() {
         <div className="overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white"><div className="flex items-center justify-between border-b border-slate-100 p-5 sm:p-7"><div><h2 className="text-xl font-semibold">Последние заказы</h2><p className="mt-1 text-sm text-slate-500">История, состав и согласованные цены</p></div><Link href="/products" className="text-sm font-semibold text-primary">Каталог</Link></div>{data.orders.length ? <div className="divide-y divide-slate-100">{data.orders.map(order => <OrderRow key={order.id} order={order} />)}</div> : <div className="p-12 text-center text-slate-400">Заказов пока нет</div>}</div>
         <aside className="space-y-5"><section className="rounded-[1.75rem] border border-slate-200 bg-white p-6"><div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary"><UserRound /></div><p className="mt-5 text-xs font-bold uppercase tracking-[.12em] text-slate-400">Персональный менеджер</p><h2 className="mt-2 text-xl font-semibold">{data.manager?.name || "Будет назначен"}</h2><div className="mt-5 space-y-2">{data.manager?.phone && <a href={`tel:${data.manager.phone}`} className="flex items-center gap-3 rounded-xl bg-slate-50 px-4 py-3 text-sm"><Phone className="h-4 w-4 text-primary" />{data.manager.phone}</a>}{data.manager?.email && <a href={`mailto:${data.manager.email}`} className="flex items-center gap-3 rounded-xl bg-slate-50 px-4 py-3 text-sm"><Mail className="h-4 w-4 text-primary" /><span className="truncate">{data.manager.email}</span></a>}</div></section><section className="rounded-[1.75rem] border border-slate-200 bg-white p-6"><div className="flex items-center gap-3"><Building2 className="h-5 w-5 text-primary" /><h2 className="font-semibold">Профиль покупателя</h2></div><dl className="mt-4 space-y-3 text-sm"><InfoRow label="ИНН" value={data.profile.inn || "Не указан"} /><InfoRow label="Контакт" value={data.profile.contact_name || "Не указан"} /><InfoRow label="Email" value={data.profile.email} /></dl></section></aside>
       </section>
+      </>}
     </div>
   </main>
+}
+
+function RetroBonusProgram({ directions, purchaseValue, accrued, confirmed, notice, onConfirm, onReset }: {
+  directions: BonusDirection[]
+  purchaseValue: number
+  accrued: number
+  confirmed: boolean
+  notice: string
+  onConfirm: () => void
+  onReset: () => void
+}) {
+  const [categoryFilter, setCategoryFilter] = useState("all")
+  const visibleDirections = categoryFilter === "all" ? directions : directions.filter(direction => direction.id === categoryFilter)
+
+  return <section className="overflow-hidden rounded-[2rem] border border-[#d7dfed] bg-white shadow-[0_22px_70px_rgba(20,50,100,.09)]">
+    <div className="relative overflow-hidden bg-[#0d2149] px-5 py-7 text-white sm:px-8 sm:py-9 lg:px-10">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_0%,rgba(73,125,246,.5),transparent_35%)]" />
+      <div className="absolute -right-20 -top-28 h-72 w-72 rounded-full border border-white/10" />
+      <div className="relative grid gap-7 lg:grid-cols-[1.1fr_.9fr] lg:items-end">
+        <div>
+          <div className="flex flex-wrap items-center gap-3">
+            <p className="text-xs font-bold uppercase tracking-[.16em] text-blue-200">Программа партнёрства</p>
+            <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[.12em] text-blue-100">Демо MVP</span>
+          </div>
+          <h2 className="mt-4 max-w-2xl text-3xl font-semibold tracking-[-.035em] sm:text-4xl">Ваш объём работает на следующий уровень</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-blue-100 sm:text-base">Подтверждённые и оплаченные поставки формируют годовой объём. Чем выше уровень, тем больше ретро-бонус на закупки в выбранном направлении.</p>
+          <div className="mt-6 flex flex-wrap gap-2 text-xs font-semibold">
+            <span className="rounded-full bg-white px-3.5 py-2 text-[#102757]">Золотой партнёр</span>
+            <span className="rounded-full border border-white/20 bg-white/10 px-3.5 py-2 text-blue-100">Период: 01.01–31.12.2026</span>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-sm sm:p-5">
+            <p className="text-[11px] font-semibold uppercase tracking-[.12em] text-blue-200">Зачтено в программу</p>
+            <p className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">{money(purchaseValue)}</p>
+            <p className="mt-1 text-xs text-blue-200">без НДС · 2026 год</p>
+          </div>
+          <div className="rounded-2xl border border-[#d8b96d]/35 bg-[linear-gradient(135deg,rgba(216,185,109,.2),rgba(255,255,255,.08))] p-4 sm:p-5">
+            <p className="text-[11px] font-semibold uppercase tracking-[.12em] text-[#f4dda5]">Предварительный бонус</p>
+            <p className="mt-3 text-2xl font-semibold tracking-tight text-[#ffe6a6] sm:text-3xl">{money(accrued)}</p>
+            <p className="mt-1 text-xs text-[#ead7ab]">финализация после закрытия года</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div className="p-4 sm:p-7 lg:p-8">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div><p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Прогресс по направлениям</p><h3 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Закупки и уровни на 2026 год</h3></div>
+        <p className="max-w-md text-sm leading-6 text-slate-500">В расчёт попадают только доставленные, оплаченные и подтверждённые менеджером поставки.</p>
+      </div>
+
+      <div className="mt-5 flex gap-2 overflow-x-auto pb-1" role="group" aria-label="Фильтр направлений программы">
+        <button type="button" onClick={() => setCategoryFilter("all")} aria-pressed={categoryFilter === "all"} className={`min-w-max rounded-xl border px-3.5 py-2 text-xs font-semibold transition ${categoryFilter === "all" ? "border-primary bg-primary text-white" : "border-slate-200 bg-white text-slate-500 hover:border-blue-200 hover:text-primary"}`}>Все направления</button>
+        {directions.map(direction => <button key={direction.id} type="button" onClick={() => setCategoryFilter(direction.id)} aria-pressed={categoryFilter === direction.id} className={`min-w-max rounded-xl border px-3.5 py-2 text-xs font-semibold transition ${categoryFilter === direction.id ? "border-primary bg-primary text-white" : "border-slate-200 bg-white text-slate-500 hover:border-blue-200 hover:text-primary"}`}>{direction.shortName}<span className="ml-1.5 hidden sm:inline">· {direction.name}</span></button>)}
+      </div>
+
+      <div className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        {visibleDirections.map(direction => <BonusDirectionCard key={direction.id} direction={direction} />)}
+      </div>
+
+      <div className="mt-6 grid gap-4 lg:grid-cols-[1.15fr_.85fr]">
+        <div className="rounded-[1.5rem] border border-slate-200 bg-[#f7f9fc] p-5 sm:p-6">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+            <div className="flex gap-4">
+              <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${confirmed ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"}`}>{confirmed ? <Check className="h-5 w-5" /> : <Truck className="h-5 w-5" />}</span>
+              <div><div className="flex flex-wrap items-center gap-2"><h4 className="font-semibold text-slate-900">Поставка № ДП-084 · АБС-пластики</h4><span className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${confirmed ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"}`}>{confirmed ? "Зачтена" : "Ожидает подтверждения"}</span></div><p className="mt-2 text-sm text-slate-500">84 т · {money(9240000)} · доставка 18 августа 2026</p><p className="mt-1 text-xs text-slate-400">В объём программы попадёт после подтверждения доставки и оплаты.</p></div>
+            </div>
+            {confirmed ? <button type="button" onClick={onReset} className="shrink-0 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-600 transition hover:border-slate-300">Повторить демо</button> : <button type="button" onClick={onConfirm} className="shrink-0 rounded-xl bg-primary px-4 py-2.5 text-xs font-semibold text-white shadow-lg shadow-primary/15 transition hover:bg-primary/90">Подтвердить от менеджера</button>}
+          </div>
+          <div aria-live="polite">{notice && <p className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">{notice}</p>}</div>
+        </div>
+
+        <div className="rounded-[1.5rem] border border-slate-200 p-5 sm:p-6">
+          <div className="flex items-center gap-3"><span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#f7eed7] text-[#9a7426]"><Award className="h-5 w-5" /></span><div><h4 className="font-semibold text-slate-900">Как растёт бонус</h4><p className="text-xs text-slate-400">Пример шкалы для АБС-пластиков</p></div></div>
+          <div className="mt-5 grid grid-cols-4 gap-1.5">{bonusDirections[0].tiers.map((tier, index) => <div key={tier.name} className={`rounded-xl p-2.5 text-center ${index === 1 ? "bg-[#f7eed7] text-[#765519] ring-1 ring-[#d8b96d]" : "bg-slate-50 text-slate-500"}`}><p className="truncate text-[10px] font-bold uppercase">{tier.name}</p><p className="mt-1 text-sm font-semibold">{tier.rate}%</p><p className="mt-0.5 text-[10px]">от {tier.threshold} т</p></div>)}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+}
+
+function BonusDirectionCard({ direction }: { direction: BonusDirection }) {
+  const currentTier = getBonusTier(direction)
+  const nextTier = direction.tiers.find(tier => direction.confirmed < tier.threshold)
+  const previousThreshold = currentTier?.threshold || 0
+  const target = nextTier?.threshold || direction.tiers[direction.tiers.length - 1].threshold
+  const progress = nextTier ? Math.min(100, Math.max(0, ((direction.confirmed - previousThreshold) / (target - previousThreshold)) * 100)) : 100
+  const remaining = nextTier ? Math.max(0, nextTier.threshold - direction.confirmed) : 0
+  const tone = currentTier?.name === "Платиновый" ? "bg-slate-200 text-slate-700" : currentTier?.name === "Золотой" ? "bg-[#f7eed7] text-[#806021]" : "bg-[#edf1f7] text-slate-600"
+
+  return <article className="rounded-[1.35rem] border border-slate-200 bg-white p-4 transition duration-300 hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-[0_14px_35px_rgba(25,60,120,.08)] sm:p-5">
+    <div className="flex items-start justify-between gap-3"><div className="flex min-w-0 items-center gap-3"><span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#edf3ff] text-xs font-bold text-primary">{direction.shortName}</span><div className="min-w-0"><h4 className="truncate font-semibold text-slate-900">{direction.name}</h4><p className="mt-0.5 text-xs text-slate-400">Подтверждено: {money(direction.purchaseValue)}</p></div></div><span className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-bold ${tone}`}>{currentTier?.name || "Участник"}</span></div>
+    <div className="mt-5 flex items-end justify-between gap-3"><div><p className="text-2xl font-semibold tracking-tight text-slate-900">{formatBonusVolume(direction.confirmed, direction.unit)}</p><p className="mt-1 text-xs text-slate-400">годовой подтверждённый объём</p></div><div className="text-right"><p className="text-xl font-semibold text-primary">{currentTier?.rate || 0}%</p><p className="text-[10px] uppercase tracking-wide text-slate-400">текущий бонус</p></div></div>
+    <div className="mt-5 h-2 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-[linear-gradient(90deg,#2450b8,#5d89ef)] transition-[width] duration-700" style={{ width: `${progress}%` }} /></div>
+    <div className="mt-2.5 flex items-start justify-between gap-3 text-xs"><span className="text-slate-400">{nextTier ? `До «${nextTier.name}»` : "Максимальный уровень"}</span><span className="text-right font-semibold text-slate-600">{nextTier ? `${formatBonusVolume(remaining, direction.unit)} · ${nextTier.rate}%` : "Уровень достигнут"}</span></div>
+    {!!direction.pending && <div className="mt-4 flex items-center justify-between rounded-xl bg-amber-50 px-3 py-2.5 text-xs text-amber-800"><span className="flex items-center gap-2"><Clock3 className="h-3.5 w-3.5" />Ожидает подтверждения</span><strong>+{formatBonusVolume(direction.pending, direction.unit)}</strong></div>}
+  </article>
 }
 
 function DeliveryCalendar({ month, setMonth, reservations, selected, onSelect }: { month: Date; setMonth: (value: Date) => void; reservations: Reservation[]; selected: string; onSelect: (value: string) => void }) {

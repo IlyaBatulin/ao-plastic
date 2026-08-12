@@ -59,7 +59,7 @@ const SUBCATEGORY_DESCRIPTIONS: Record<string, { ru: string; en: string }> = {
     en: "Manufacturing of ABS parts to individual orders",
   },
   "ps-psv-s": {
-    ru: "Вспенивающийся полистирол самозатухающийся",
+    ru: "Вспенивающийся полистирол",
     en: "Self-extinguishing expandable polystyrene",
   },
   "ps-psv-l": {

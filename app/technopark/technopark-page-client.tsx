@@ -173,7 +173,7 @@ export function TechnoparkPageClient() {
       <section className="relative flex min-h-[70svh] items-center overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src={`${IMG}/hero-render.jpg`}
+            src={`${IMG}/industrial-park-aerial-sunset.png`}
             alt={en ? "Plastik Industrial Park" : "Индустриальный парк «Пластик»"}
             fill
             priority

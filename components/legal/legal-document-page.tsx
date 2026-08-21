@@ -1,3 +1,5 @@
+"use client"
+
 import { Download } from "lucide-react"
 import Link from "next/link"
 import { Footer } from "@/components/footer"
@@ -6,6 +8,7 @@ import { LegalDocumentToc } from "@/components/legal/legal-document-toc"
 import { formatCompanyRequisitesParagraph } from "@/lib/company-requisites"
 import { getTocEntries, sanitizeLegalParagraphs } from "@/lib/legal-content/parse-sections"
 import type { LegalDocumentContent } from "@/lib/legal-content/documents"
+import { useLanguage } from "@/contexts/language-context"
 
 type LegalDocumentPageProps = {
   document: LegalDocumentContent
@@ -23,22 +26,31 @@ function shouldSkipParagraph(paragraph: string, document: LegalDocumentContent):
   return false
 }
 
-function getBodyParagraphs(document: LegalDocumentContent): string[] {
+function getBodyParagraphs(document: LegalDocumentContent, appendRussianRequisites = true): string[] {
   const raw = document.paragraphs.filter((p) => !shouldSkipParagraph(p, document))
 
   return sanitizeLegalParagraphs(raw, {
-    appendRequisites: document.key === "privacyPolicy",
+    appendRequisites: document.key === "privacyPolicy" && appendRussianRequisites,
     requisitesText: formatCompanyRequisitesParagraph(),
   })
 }
 
 export function LegalDocumentPage({ document, children }: LegalDocumentPageProps) {
-  const bodyParagraphs = getBodyParagraphs(document)
-  const tocEntries = document.showToc
+  const { lang } = useLanguage()
+  const hasEnglishDocument = lang === "en" && Array.isArray(document.paragraphsEn)
+  const localizedDocument: LegalDocumentContent = hasEnglishDocument
+    ? {
+        ...document,
+        title: document.titleEn || document.title,
+        paragraphs: document.paragraphsEn!,
+      }
+    : document
+  const bodyParagraphs = getBodyParagraphs(localizedDocument, !hasEnglishDocument)
+  const tocEntries = localizedDocument.showToc
     ? getTocEntries(bodyParagraphs, {
-        headingMode: document.headingMode,
+        headingMode: localizedDocument.headingMode,
         skipTitles: [
-          document.title,
+          localizedDocument.title,
           "ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ",
           "Политика конфиденциальности",
           "Согласие на обработку персональных данных",
@@ -52,28 +64,30 @@ export function LegalDocumentPage({ document, children }: LegalDocumentPageProps
         <div className="container mx-auto px-4 lg:px-8">
           <div className="mx-auto max-w-4xl text-center">
             <h1 className="mb-6 text-4xl font-bold text-primary dark:text-[#60a5fa] md:text-5xl">
-              {document.title}
+              {localizedDocument.title}
             </h1>
             <Link
-              href={document.pdfHref}
+              href={localizedDocument.pdfHref}
               download
               className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-medium text-white transition-opacity hover:opacity-90 dark:bg-[#60a5fa]"
             >
               <Download className="h-5 w-5" />
-              Скачать PDF
+              {lang === "en" ? "Download PDF" : "Скачать PDF"}
             </Link>
           </div>
         </div>
       </section>
 
       <article className="container mx-auto max-w-4xl px-4 pb-16 lg:px-8">
-        {document.showToc && <LegalDocumentToc entries={tocEntries} />}
+        {localizedDocument.showToc && (
+          <LegalDocumentToc entries={tocEntries} label={lang === "en" ? "Contents" : "Оглавление"} />
+        )}
 
         <div className="rounded-2xl border border-border bg-card/95 p-6 shadow-sm backdrop-blur-sm md:p-10">
           <LegalDocumentBody
             paragraphs={bodyParagraphs}
             tocEntries={tocEntries}
-            headingMode={document.headingMode}
+            headingMode={localizedDocument.headingMode}
           />
         </div>
 

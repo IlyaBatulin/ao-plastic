@@ -49,7 +49,11 @@ export function FilteredProductsSection({
 
   // Для экструзии не показываем стандартные фильтры и сравнительные таблицы ABS/ПС
   const showFilters = !isHouseholdCategory && !isExtrusionSubcategory
-  const showComparisonTable = false
+  const showComparisonTable =
+    !isHouseholdCategory &&
+    !isExtrusionSubcategory &&
+    products.length > 1 &&
+    (categoryId === "abs" || categoryId === "polystyrene")
 
   // ----- Фильтры для экструзионных изделий (тип + поиск) -----
   const [extrusionSearch, setExtrusionSearch] = useState("")
@@ -215,14 +219,21 @@ export function FilteredProductsSection({
       {/* Таблица характеристик и применения (только для промышленных товаров) */}
       {showComparisonTable && (
         <div className="mt-12">
-        <h3 className="text-h3 mb-6">Сравнительная таблица характеристик</h3>
-        <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
+        <h3 className="text-h3 mb-2">
+          {lang === "en" ? "Specifications comparison" : "Сравнение характеристик"}
+        </h3>
+        <p className="mb-6 text-sm text-muted-foreground">
+          {lang === "en"
+            ? "Scroll horizontally to compare every parameter."
+            : "Прокрутите таблицу по горизонтали, чтобы сравнить все параметры."}
+        </p>
+        <div className="relative isolate overflow-x-auto rounded-2xl border border-border bg-card shadow-sm [scrollbar-gutter:stable]">
           {subcategoryId === 'ps-psv-s' || subcategoryId === 'psv-s' ? (
             // Таблица качества «УПЕКС» строго по ТУ 20.16.20-067-05762341-2026
-            <table className="w-full text-sm border-collapse">
+            <table className="w-full min-w-[1080px] border-separate border-spacing-0 text-sm">
               <thead>
                 <tr className="bg-muted/50 border-b border-border">
-                  <th className="py-4 px-4 text-left font-semibold sticky left-0 bg-muted/50 z-10">Марка</th>
+                  <th className="sticky left-0 z-30 w-[180px] min-w-[180px] max-w-[180px] border-r border-border bg-muted px-4 py-4 text-left font-semibold shadow-[10px_0_16px_-16px_rgba(15,23,42,0.8)] sm:w-[240px] sm:min-w-[240px] sm:max-w-[240px]">Марка</th>
                   <th className="py-4 px-4 text-left font-semibold">Размер частиц основной фракции</th>
                   <th className="py-4 px-4 text-left font-semibold">Массовая доля основной фракции, %, не менее</th>
                   <th className="py-4 px-4 text-left font-semibold">Массовая доля пентанов, %, в пределах</th>
@@ -237,8 +248,8 @@ export function FilteredProductsSection({
                   const value = (key: string) => String(specs[key] ?? "—")
                   
                   return (
-                    <tr key={p.id} className="border-b border-border/60 hover:bg-muted/30 transition-colors">
-                      <td className="py-4 px-4 font-semibold sticky left-0 bg-card z-10 border-r border-border/60">{p.name}</td>
+                    <tr key={p.id} className="group border-b border-border/60 transition-colors hover:bg-muted/30">
+                      <td className="sticky left-0 z-20 w-[180px] min-w-[180px] max-w-[180px] break-words border-r border-border bg-card px-4 py-4 font-semibold leading-snug shadow-[10px_0_16px_-16px_rgba(15,23,42,0.8)] group-hover:bg-muted sm:w-[240px] sm:min-w-[240px] sm:max-w-[240px]">{p.name}</td>
                       <td className="py-4 px-4">{value("Размер частиц основной фракции")}</td>
                       <td className="py-4 px-4">{value("Массовая доля частиц основной фракции, %, не менее")}</td>
                       <td className="py-4 px-4">{value("Массовая доля пентанов, %, в пределах")}</td>
@@ -252,10 +263,10 @@ export function FilteredProductsSection({
             </table>
           ) : (
             // Стандартная таблица для других товаров
-            <table className="w-full text-sm border-collapse">
+            <table className="w-full min-w-[1180px] border-separate border-spacing-0 text-sm">
               <thead>
                 <tr className="bg-muted/50 border-b border-border">
-                  <th className="py-4 px-4 text-left font-semibold sticky left-0 bg-muted/50 z-10">Марка</th>
+                  <th className="sticky left-0 z-30 w-[180px] min-w-[180px] max-w-[180px] border-r border-border bg-muted px-4 py-4 text-left font-semibold shadow-[10px_0_16px_-16px_rgba(15,23,42,0.8)] sm:w-[240px] sm:min-w-[240px] sm:max-w-[240px]">Марка</th>
                   <th className="py-4 px-4 text-left font-semibold">Плотность, кг/м³</th>
                   <th className="py-4 px-4 text-left font-semibold">Усадка, %, в пределах</th>
                   <th className="py-4 px-4 text-left font-semibold">ПТР (MFR), г/10 мин</th>
@@ -270,18 +281,19 @@ export function FilteredProductsSection({
                 {filteredProducts.map((p) => {
                   const specs = parseSpecifications(p.specifications)
                   const brand = p.name
-                  const density = specs["Плотность, кг/м³"] ?? "—"
-                  const shrinkage = specs["Усадка при литье под давлением, %, в пределах"] ?? "—"
-                  const mfr = specs["Показатель текучести расплава, г/10 мин"] ?? "—"
-                  const elongation = specs["Относительное удлинение при разрыве, %, не менее"] ?? "—"
-                  const impactStrength = specs["Ударная вязкость по Изоду, кДж/м², не менее"] ?? "—"
-                  const tensileStrength = specs["Предел текучести при растяжении, кгс/см², не менее"] ?? "—"
-                  const vicaTemp = specs["Температура размягчения по Вика, °C, не менее"] ?? "—"
-                  const gloss = specs["Блеск, %"] ?? "—"
+                  const textValue = (key: string) => String(specs[key] ?? "—")
+                  const density = textValue("Плотность, кг/м³")
+                  const shrinkage = textValue("Усадка при литье под давлением, %, в пределах")
+                  const mfr = textValue("Показатель текучести расплава, г/10 мин")
+                  const elongation = textValue("Относительное удлинение при разрыве, %, не менее")
+                  const impactStrength = textValue("Ударная вязкость по Изоду, кДж/м², не менее")
+                  const tensileStrength = textValue("Предел текучести при растяжении, кгс/см², не менее")
+                  const vicaTemp = textValue("Температура размягчения по Вика, °C, не менее")
+                  const gloss = textValue("Блеск, %")
                   
                   return (
-                    <tr key={p.id} className="border-b border-border/60 hover:bg-muted/30 transition-colors">
-                      <td className="py-4 px-4 font-semibold sticky left-0 bg-card z-10 border-r border-border/60">{brand}</td>
+                    <tr key={p.id} className="group border-b border-border/60 transition-colors hover:bg-muted/30">
+                      <td className="sticky left-0 z-20 w-[180px] min-w-[180px] max-w-[180px] break-words border-r border-border bg-card px-4 py-4 font-semibold leading-snug shadow-[10px_0_16px_-16px_rgba(15,23,42,0.8)] group-hover:bg-muted sm:w-[240px] sm:min-w-[240px] sm:max-w-[240px]">{brand}</td>
                       <td className="py-4 px-4">{density}</td>
                       <td className="py-4 px-4">{shrinkage}</td>
                       <td className="py-4 px-4">{mfr}</td>

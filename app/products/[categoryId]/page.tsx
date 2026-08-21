@@ -113,7 +113,7 @@ export default async function CategoryPage({
   const { category, subcategories } = pageData
   const categoryTitle =
     typeof category?.name === "string" ? category.name : categoryId
-  const showcaseCategoryIds = new Set(["abs", "polystyrene", "hoztovary", "machine-parts"])
+  const showcaseCategoryIds = new Set(["abs", "polystyrene", "dispersion", "hoztovary", "machine-parts"])
   const showcaseGroups: CatalogShowcaseGroup[] | undefined =
     showcaseCategoryIds.has(categoryId)
       ? await Promise.all(

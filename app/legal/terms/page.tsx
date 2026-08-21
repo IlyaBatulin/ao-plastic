@@ -1,8 +1,7 @@
 import type { Metadata } from "next"
 import { LegalDocumentPage } from "@/components/legal/legal-document-page"
 import { LEGAL_DOCUMENT_CONTENT } from "@/lib/legal-content/documents"
-import { LEGAL_DOCUMENTS } from "@/lib/legal-documents"
-import Link from "next/link"
+import { LegalRelatedLinks } from "@/components/legal/legal-related-links"
 import { pageOpenGraph } from "@/lib/seo/page-metadata"
 
 export const metadata: Metadata = {
@@ -23,20 +22,7 @@ export default function TermsPage() {
 
   return (
     <LegalDocumentPage document={doc}>
-      <p className="mt-8 text-sm text-muted-foreground">
-        Связанные документы:{" "}
-        <Link href={LEGAL_DOCUMENTS.privacyPolicyPage} className="text-primary hover:underline">
-          политика конфиденциальности
-        </Link>
-        ,{" "}
-        <Link
-          href={LEGAL_DOCUMENTS.personalDataConsentPage}
-          className="text-primary hover:underline"
-        >
-          согласие на обработку персональных данных
-        </Link>
-        .
-      </p>
+      <LegalRelatedLinks current="terms" />
     </LegalDocumentPage>
   )
 }

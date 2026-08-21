@@ -3,6 +3,7 @@ const CATEGORY_IMAGE_OVERRIDES: Record<string, string> = {
   kors: "/images/kors-bentol-main.png",
   styrene: "/images/styrolmain.png",
   polystyrene: "/images/polist-main.png",
+  dispersion: "/images/finndisp/segment-paints.png",
   hoztovary: "/images/hoztov-main.png",
   "machine-parts": "/images/machine-main.png",
   "pvc-modifier": "/images/pvc-modifier-profiles.png",

@@ -92,7 +92,14 @@ function buildDisplayProducts(
     })
   )
 
-  const baseProducts = products && products.length > 0 ? products : fallbackProducts
+  // Дисперсии поддерживаются как проверенный редакционный каталог в JSON:
+  // не даём устаревшей одиночной записи из БД скрыть актуальный ассортимент.
+  const baseProducts =
+    categoryId === "dispersion"
+      ? fallbackProducts
+      : products && products.length > 0
+        ? products
+        : fallbackProducts
   const normalizedBaseProducts = normalizeHouseholdProducts(
     baseProducts,
     categoryId,

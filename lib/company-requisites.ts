@@ -55,13 +55,43 @@ export const COMPANY_REQUISITES_FIELDS: RequisitesField[] = [
   { label: "Сайт", value: COMPANY_REQUISITES.website, href: COMPANY_REQUISITES.website },
 ]
 
+export const COMPANY_REQUISITES_FIELDS_EN: RequisitesField[] = [
+  { label: "Full legal name", value: "Joint Stock Company «Plastic»" },
+  { label: "Abbreviated name", value: "JSC «Plastic»" },
+  { label: "Primary State Registration Number (OGRN)", value: COMPANY_REQUISITES.ogrn },
+  { label: "Taxpayer Identification Number (INN)", value: COMPANY_REQUISITES.inn },
+  { label: "Tax Registration Reason Code (KPP)", value: COMPANY_REQUISITES.kpp },
+  { label: "Russian Classification of Enterprises and Organizations (OKPO)", value: COMPANY_REQUISITES.okpo },
+  { label: "Legal address", value: "1 Tulskaya St., Uzlovaya, Uzlovsky District, Tula Region, 301600, Russia" },
+  { label: "Operating address (plant)", value: "1 Tulskaya St., Uzlovaya, Tula Region, 301600, Russia" },
+  { label: "Moscow office", value: "7–9, Bldg. 1, 3rd Kadashevsky Lane, Moscow, 115035, Russia" },
+  {
+    label: "Telephone",
+    value: COMPANY_REQUISITES.phone,
+    href: `tel:${COMPANY_REQUISITES.phone.replace(/\D/g, "")}`,
+  },
+  {
+    label: "Email",
+    value: COMPANY_REQUISITES.email,
+    href: `mailto:${COMPANY_REQUISITES.email}`,
+  },
+  {
+    label: "Product orders email",
+    value: COMPANY_REQUISITES.salesEmail,
+    href: `mailto:${COMPANY_REQUISITES.salesEmail}`,
+  },
+  { label: "Website", value: COMPANY_REQUISITES.website, href: COMPANY_REQUISITES.website },
+]
+
 export function formatCompanyRequisitesParagraph(): string {
   const r = COMPANY_REQUISITES
   return `${r.shortName}. ОГРН ${r.ogrn}, ИНН ${r.inn}, КПП ${r.kpp}, ОКПО ${r.okpo}. Юридический адрес: ${r.legalAddress}. Тел.: ${r.phone}, e-mail: ${r.email}, сайт: ${r.website}.`
 }
 
 /** Текст для копирования карточки реквизитов в буфер обмена. */
-export function formatCompanyRequisitesForClipboard(): string {
-  const lines = COMPANY_REQUISITES_FIELDS.map((field) => `${field.label}: ${field.value}`)
-  return [`Реквизиты ${COMPANY_REQUISITES.shortName}`, "", ...lines].join("\n")
+export function formatCompanyRequisitesForClipboard(lang: "ru" | "en" = "ru"): string {
+  const fields = lang === "en" ? COMPANY_REQUISITES_FIELDS_EN : COMPANY_REQUISITES_FIELDS
+  const lines = fields.map((field) => `${field.label}: ${field.value}`)
+  const title = lang === "en" ? "Company details — JSC «Plastic»" : `Реквизиты ${COMPANY_REQUISITES.shortName}`
+  return [title, "", ...lines].join("\n")
 }

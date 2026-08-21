@@ -29,7 +29,6 @@ interface Category {
 const getJsonCategories = (): Category[] =>
   sortCatalogCategories(
     productsData.categories
-      .filter((cat) => cat.id !== "dispersion")
       .map((cat) => ({
         id: cat.id,
         name: cat.name,

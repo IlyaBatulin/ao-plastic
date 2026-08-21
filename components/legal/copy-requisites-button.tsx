@@ -5,24 +5,27 @@ import { Check, Copy } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { formatCompanyRequisitesForClipboard } from "@/lib/company-requisites"
 import { useToast } from "@/hooks/use-toast"
+import { useLanguage } from "@/contexts/language-context"
 
 export function CopyRequisitesButton() {
   const [copied, setCopied] = useState(false)
   const { toast } = useToast()
+  const { lang } = useLanguage()
+  const en = lang === "en"
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(formatCompanyRequisitesForClipboard())
+      await navigator.clipboard.writeText(formatCompanyRequisitesForClipboard(lang))
       setCopied(true)
       toast({
-        title: "Скопировано",
-        description: "Реквизиты скопированы в буфер обмена",
+        title: en ? "Copied" : "Скопировано",
+        description: en ? "Company details copied to the clipboard" : "Реквизиты скопированы в буфер обмена",
       })
       window.setTimeout(() => setCopied(false), 2000)
     } catch {
       toast({
-        title: "Не удалось скопировать",
-        description: "Разрешите доступ к буферу обмена в браузере",
+        title: en ? "Could not copy" : "Не удалось скопировать",
+        description: en ? "Allow clipboard access in your browser" : "Разрешите доступ к буферу обмена в браузере",
         variant: "destructive",
       })
     }
@@ -39,12 +42,12 @@ export function CopyRequisitesButton() {
       {copied ? (
         <>
           <Check className="mr-2 h-4 w-4" />
-          Скопировано
+          {en ? "Copied" : "Скопировано"}
         </>
       ) : (
         <>
           <Copy className="mr-2 h-4 w-4" />
-          Скопировать карточку
+          {en ? "Copy details" : "Скопировать карточку"}
         </>
       )}
     </Button>

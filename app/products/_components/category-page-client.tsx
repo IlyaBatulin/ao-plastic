@@ -76,7 +76,7 @@ export function CategoryPageClient({
   const isKors = categoryId === "kors"
   const isAbs = categoryId === "abs"
   const isPvcModifier = categoryId === "pvc-modifier"
-  const usesCatalogShowcase = ["abs", "polystyrene", "hoztovary", "machine-parts"].includes(categoryId)
+  const usesCatalogShowcase = ["abs", "polystyrene", "dispersion", "hoztovary", "machine-parts"].includes(categoryId)
 
   return (
     <div className="min-h-screen">

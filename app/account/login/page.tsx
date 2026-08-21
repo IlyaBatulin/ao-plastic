@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { Building2, LockKeyhole, UserRound } from "lucide-react"
+import { ArrowRight, Building2, LockKeyhole, UserRound } from "lucide-react"
 import { createClient } from "@/utils/supabase/client"
 
 export default function CustomerLoginPage() {
@@ -40,6 +40,19 @@ export default function CustomerLoginPage() {
     setPending(false)
   }
 
+  async function openDemo() {
+    setPending(true)
+    setError("")
+    const response = await fetch("/api/customer/demo-auth", { method: "POST" })
+    if (!response.ok) {
+      setError("Демо-доступ доступен только при локальном запуске.")
+      setPending(false)
+      return
+    }
+    router.push("/account")
+    router.refresh()
+  }
+
   const field = (key: keyof typeof form, placeholder: string, type = "text", required = true) => (
     <input type={type} required={required} value={form[key]} onChange={(e) => setForm({ ...form, [key]: e.target.value })} placeholder={placeholder}
       className="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10" />
@@ -60,6 +73,7 @@ export default function CustomerLoginPage() {
           {error && <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}{message && <p className="rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{message}</p>}
           <button disabled={pending} className="h-12 w-full rounded-xl bg-primary font-semibold text-white transition hover:bg-primary/90 disabled:opacity-60">{pending ? "Подождите…" : mode === "login" ? "Войти в кабинет" : "Создать кабинет"}</button>
         </form>
+        {process.env.NODE_ENV === "development" && mode === "login" && <div className="mt-6 border-t border-slate-100 pt-6"><button type="button" onClick={openDemo} disabled={pending} className="group flex w-full items-center justify-between rounded-2xl bg-[#eef4ff] px-5 py-4 text-left text-[#173b88] transition hover:bg-[#e5eeff] disabled:opacity-60"><span><span className="block text-sm font-semibold">Посмотреть демо-кабинет</span><span className="mt-0.5 block text-xs text-[#5570a8]">Silver, Gold, Partner и режим менеджера</span></span><ArrowRight className="h-5 w-5 transition group-hover:translate-x-1" /></button></div>}
         <p className="mt-6 text-center text-xs leading-relaxed text-slate-400">Продолжая, вы соглашаетесь с <Link href="/legal/privacy-policy" className="text-primary hover:underline">политикой конфиденциальности</Link>.</p>
       </section>
     </div>

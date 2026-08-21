@@ -6,8 +6,8 @@ import { Header } from "@/components/header/header"
 export function ConditionalHeader() {
   const pathname = usePathname()
   
-  // Не показываем Header на странице входа
-  if (pathname === "/login") {
+  // В кабинете используется собственная компактная навигация.
+  if (pathname === "/login" || pathname === "/account") {
     return null
   }
 

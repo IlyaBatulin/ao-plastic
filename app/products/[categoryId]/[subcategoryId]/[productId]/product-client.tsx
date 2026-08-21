@@ -132,7 +132,12 @@ export function ProductPageClient({
     return stripHiddenSpecs(specs)
   }, [product.specifications])
 
-  const detailSections = Array.isArray(product.detailSections) ? product.detailSections : []
+  const detailSections =
+    lang === "en" && Array.isArray(product.detailSectionsEn)
+      ? product.detailSectionsEn
+      : Array.isArray(product.detailSections)
+        ? product.detailSections
+        : []
 
   // Для экструзионных изделий скрываем блок "ключевые фичи" и оставляем только описание/характеристики
   const isExtrusionProduct =

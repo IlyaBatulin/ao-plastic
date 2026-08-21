@@ -13,7 +13,7 @@ const RussiaMap = dynamic(() => import("@/components/russia-map"), {
   ),
 })
 
-/** География поставок: карта России и стран СНГ на главной странице. */
+/** География поставок: Россия и подтверждённые дружественные направления. */
 export function Geography() {
   const { t, lang } = useLanguage()
 

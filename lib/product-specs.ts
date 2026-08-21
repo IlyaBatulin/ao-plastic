@@ -43,6 +43,27 @@ export const POLYSTYRENE_CARD_SPEC_KEYS = [
 
 const LOW_VALUE_CARD_SPEC_KEYS = new Set(["Тип", "Марка", "Применение"])
 
+const ASCENDING_RANGE_SPEC_KEYS = new Set([
+  "Размер частиц основной фракции",
+  "Размер основной фракции по маркам",
+  "Размер гранул",
+])
+
+function normalizeAscendingRangeValue(value: unknown): unknown {
+  if (typeof value !== "string") return value
+
+  return value.replace(
+    /(\d+(?:[.,]\d+)?)\s*[-–—]\s*(\d+(?:[.,]\d+)?)/g,
+    (range, left: string, right: string) => {
+      const leftNumber = Number(left.replace(",", "."))
+      const rightNumber = Number(right.replace(",", "."))
+
+      if (!Number.isFinite(leftNumber) || !Number.isFinite(rightNumber)) return range
+      return leftNumber > rightNumber ? `${right}–${left}` : `${left}–${right}`
+    }
+  )
+}
+
 function isValidSpecValue(value: unknown) {
   return value !== null && value !== undefined && value !== ""
 }
@@ -68,7 +89,12 @@ export function parseSpecifications(specs: unknown): Record<string, unknown> {
 
 export function stripHiddenSpecs(specs: Record<string, unknown>): Record<string, unknown> {
   return Object.fromEntries(
-    Object.entries(specs).filter(([key]) => !HIDDEN_SPEC_KEYS.has(key))
+    Object.entries(specs)
+      .filter(([key]) => !HIDDEN_SPEC_KEYS.has(key))
+      .map(([key, value]) => [
+        key,
+        ASCENDING_RANGE_SPEC_KEYS.has(key) ? normalizeAscendingRangeValue(value) : value,
+      ])
   )
 }
 

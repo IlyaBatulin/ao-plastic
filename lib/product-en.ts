@@ -31,19 +31,54 @@ const CATALOG_PRODUCT_EN: Record<string, ProductEnEntry> = {
     ["1", "2", "3", "4", "6"].map((grade) => [
       `psv-s-${grade}`,
       {
-        name: `UPEKS Expandable Polystyrene, Grade ${grade}`,
-        description: `Self-extinguishing UPEKS expandable polystyrene, grade ${grade}.`,
+        name: `UPEX Expandable Polystyrene, Grade ${grade}`,
+        description: `Self-extinguishing UPEX expandable polystyrene, grade ${grade}.`,
       },
     ])
   ),
   "psv-s-5m": {
-    name: "UPEKS Expandable Polystyrene, Grade 5",
-    description: "Self-extinguishing UPEKS expandable polystyrene, grade 5.",
+    name: "UPEX Expandable Polystyrene, Grade 5",
+    description: "Self-extinguishing UPEX expandable polystyrene, grade 5.",
   },
-  "dispersion-paint": {
-    name: "Paint-grade Dispersion",
-    description:
-      "Styrene-acrylic dispersion for water-based paints, building materials and coatings.",
+  "finndisp-a-10": {
+    name: "FINNDISP A-10",
+    description: "Plasticizer-free aqueous styrene-acrylic copolymer dispersion for interior, exterior and washable paints, varnishes and primers.",
+  },
+  "finndisp-a-10l": {
+    name: "FINNDISP A-10L (freeze-resistant)",
+    description: "Freeze-resistant, plasticizer-free aqueous styrene-acrylic copolymer dispersion for interior, exterior and washable paints, varnishes and primers.",
+  },
+  "finndisp-ac-2010": {
+    name: "FINNDISP AC-2010",
+    description: "Plasticizer-free aqueous styrene-acrylic copolymer dispersion used for geogrids and glass-fiber mat.",
+  },
+  "finndisp-ac-2020": {
+    name: "FINNDISP AC-2020",
+    description: "Plasticizer-free aqueous styrene-acrylic copolymer dispersion for water-based interior and exterior paints, varnishes, primers and fillers.",
+  },
+  "akromol-ac-101": {
+    name: "AKROMOL AC-101",
+    description: "Plasticizer-free aqueous styrene-acrylic copolymer dispersion for geogrids, glass-fiber mat, interior and exterior paints, primers, fillers and renders.",
+  },
+  "finndisp-a-1049": {
+    name: "FINNDISP A-1049",
+    description: "Polymer adhesive dispersion for protective films and removable adhesive tapes applied to polyolefin films.",
+  },
+  "finndisp-a-801": {
+    name: "FINNDISP A-801",
+    description: "Polymer adhesive dispersion for packaging-tape production.",
+  },
+  "finndisp-a-337": {
+    name: "FINNDISP A-337",
+    description: "Plasticizer-free aqueous acrylic copolymer dispersion for interior and exterior paints and wood coatings, varnishes and stains.",
+  },
+  "finndisp-a-09": {
+    name: "FINNDISP A-09",
+    description: "Aqueous styrene-acrylic copolymer dispersion for waterproofing membranes, mastics, fillers and sealants.",
+  },
+  "finndisp-ac-129": {
+    name: "FINNDISP AC-129",
+    description: "Polymer dispersion for coalescent-free interior paints and silicate paints.",
   },
   "door-handle-profile": {
     name: "Decorative Door Handle Profile",

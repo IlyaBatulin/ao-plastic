@@ -151,6 +151,24 @@ const SPEC_KEY_EN: Record<string, string> = {
   "Назначение": "Purpose",
   "Вес изделия": "Product weight",
   "Количество в упаковке": "Quantity per pack",
+  "Длина": "Length",
+  "Диаметр": "Diameter",
+  "Размер": "Size",
+  "Размеры": "Dimensions",
+  "Объем": "Volume",
+  "Объём": "Volume",
+  "Вес": "Weight",
+  "Вес ящика": "Crate weight",
+  "Максимальный вес содержимого": "Maximum payload",
+  "Габаритные размеры, Ш×Д×В": "Overall dimensions, W×L×H",
+  "Массовая доля нелетучих веществ, %": "Non-volatile matter, %",
+  "Вязкость при 23 °C, мПа·с": "Viscosity at 23 °C, mPa·s",
+  "Минимальная температура пленкообразования, °C": "Minimum film-forming temperature, °C",
+  "Тип дисперсии": "Dispersion type",
+  "Плотность, г/см³": "Density, g/cm³",
+  "Содержание остаточных мономеров, %, не более": "Residual monomers, % max.",
+  "Температура стеклования, °C": "Glass-transition temperature, °C",
+  "Технические показатели": "Technical data",
 }
 
 /** Точные совпадения значений характеристик RU → EN */
@@ -182,6 +200,20 @@ const SPEC_VALUE_EN_EXACT: Record<string, string> = {
   "Натуральный": "Natural",
   "Полипропилен": "Polypropylene",
   "Для мангала, барбекю": "For barbecue grill",
+  "Молочно-белая жидкость": "Milky-white liquid",
+  "Анионная": "Anionic",
+  "Интерьерные, фасадные и моющиеся краски, лаки, грунтовки": "Interior, exterior and washable paints, varnishes and primers",
+  "Геосетки, стеклохолст": "Geogrids and glass-fiber mat",
+  "Краски для внутренних и наружных работ, лаки, грунтовки, шпатлёвки": "Interior and exterior paints, varnishes, primers and fillers",
+  "Геосетки, стеклохолст, краски, грунтовки, шпатлёвки, штукатурки": "Geogrids, glass-fiber mat, paints, primers, fillers and renders",
+  "Клей для защитных плёнок и легкосъёмных лент": "Adhesive for protective films and removable tapes",
+  "Клей для упаковочной ленты": "Adhesive for packaging tape",
+  "Интерьерные и фасадные краски, материалы по древесине": "Interior and exterior paints and wood coatings",
+  "Гидроизоляционные мембраны, мастики, шпатлёвки, герметики": "Waterproofing membranes, mastics, fillers and sealants",
+  "Интерьерные бескоалесцентные краски, силикатные краски": "Coalescent-free interior paints and silicate paints",
+  "По актуальной спецификации производителя": "According to the current manufacturer specification",
+  "менее 1000": "< 1000",
+  "менее 0": "< 0",
 }
 
 function normalizeSpecValueInput(text: string): string {
@@ -240,6 +272,8 @@ function translateSpecValueText(text: string, lang: "ru" | "en"): string {
   for (const [pattern, replacement] of SPEC_VALUE_PHRASES_EN) {
     result = result.replace(pattern, replacement)
   }
+
+  result = result.replace(/(\d),(\d)/g, "$1.$2")
 
   return result
 }

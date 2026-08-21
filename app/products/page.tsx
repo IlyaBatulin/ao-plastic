@@ -40,7 +40,6 @@ export default async function ProductsPage() {
 
     if (!error && data && data.length > 0) {
       categories = data
-        .filter((cat: any) => cat.id !== "dispersion")
         .map((cat) => {
           const fallback = fallbackMap.get(cat.id)
           const image = cat.image ?? fallback?.image ?? undefined
@@ -52,15 +51,19 @@ export default async function ProductsPage() {
             subcategories: fallback?.subcategories ?? [],
           }
         })
+
+      // Раздел дисперсий пока хранится в локальном каталоге и может отсутствовать
+      // в Supabase. Добавляем его к данным БД, чтобы каталог был одинаковым при
+      // любом источнике загрузки.
+      if (!categories.some((cat) => cat.id === "dispersion")) {
+        const dispersion = fallbackMap.get("dispersion")
+        if (dispersion) categories.push(dispersion)
+      }
     } else {
-      categories = sortCatalogCategories(
-        productsData.categories.filter((cat) => cat.id !== "dispersion")
-      )
+      categories = sortCatalogCategories(productsData.categories)
     }
   } catch {
-    categories = sortCatalogCategories(
-      productsData.categories.filter((cat) => cat.id !== "dispersion")
-    )
+    categories = sortCatalogCategories(productsData.categories)
   }
 
   categories = sortCatalogCategories(categories)

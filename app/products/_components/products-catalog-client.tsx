@@ -58,6 +58,7 @@ export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps
           <div className="grid grid-cols-1 items-stretch gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
             {catalogCategories.map((category) => {
               const categoryName =
+                t(`homePage.catalog.categoryCardNames.${category.id}`) ||
                 t(`homePage.catalog.categories.${category.id}`) || category.name
               const categoryDescription =
                 t(`homePage.catalog.categoryDescriptions.${category.id}`) ||

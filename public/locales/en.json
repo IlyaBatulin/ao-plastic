@@ -113,7 +113,7 @@
     "closeAria": "Close cookie notice"
   },
   "footer": {
-    "logoAlt": "JSC «Plastik»",
+    "logoAlt": "JSC «Plastic»",
     "description": "Leader in the chemical industry in ABS plastics and polystyrene production. Quality, reliability, innovation.",
     "navigation": "Navigation",
     "aboutLink": "About",
@@ -124,7 +124,7 @@
     "addressLine2": "1 Tulskaya St.",
     "copyright": "All rights reserved.",
     "privacyPolicy": "Privacy Policy",
-    "terms": "Terms of Use",
+    "terms": "Public Offer Agreement",
     "companyDetails": "Company Details",
     "ethicsCode": "Code of Ethics",
     "legacySite": "Previous version of the website"
@@ -147,14 +147,14 @@
     "description": "Contact us in any convenient way. We are always happy to answer your questions",
     "ourContacts": "Our Contacts",
     "production": {
-      "title": "JSC «Plastik» — Production",
+      "title": "JSC «Plastic» — Production",
       "badge": "Production",
       "reception": "General Director's Office",
       "correspondence": "For Correspondence",
       "address": "301600, Tula Region, Uzlovaya, 1 Tulskaya St."
     },
     "sales": {
-      "title": "JSC «Plastik» — Sales and Promotion",
+      "title": "JSC «Plastic» — Sales and Promotion",
       "badge": "Legal Address",
       "mainContacts": "Main Contacts",
       "ordersEmail": "Orders Email",
@@ -163,7 +163,7 @@
     "procurement": {
       "title": "Procurement and Supply",
       "badge": "Supply",
-      "companyName": "LLC «TEK-SNAB»",
+      "companyName": "LLC «TEC-SNAB»",
       "description": "Prompt procurement of raw materials and auxiliary supplies",
       "address": "119361, Moscow, Ochakovo-Matveyevskoye municipal district, 41 Lobachevskogo St., premises 6, floor 1, office 102B"
     },
@@ -172,7 +172,7 @@
       "badge": "Sales",
       "directions": {
         "abs": "ABS Plastics",
-        "polystyrene": "UPEKS Expandable Polystyrene",
+        "polystyrene": "Polystyrene",
         "machineParts": "Machine Parts",
         "cors": "CORS (Cubic Residue of Styrene Rectification)",
         "liquidation": "Liquidation",
@@ -211,7 +211,7 @@
       "weekend": "Sat-Sun: Closed",
       "unifiedPhone": "For urgent contact, use the unified phone:"
     },
-    "mapTitle": "JSC «Plastik» — Production"
+    "mapTitle": "JSC «Plastic» — Production"
   },
   "suppliersPage": {
     "badge": "For Suppliers",
@@ -357,7 +357,7 @@
     "stats": {
       "title": "Production Volumes",
       "subtitle": "Our Enterprise Capacity",
-      "sadStyreneAcrylicDispersions": "Styrene-acrylic dispersions (SAD) per year, including the Ramenskoye site; up to 60,000 t at stage 2",
+      "sadStyreneAcrylicDispersions": "Current styrene-acrylic dispersion capacity; stage 2 adds 45,000 tons, bringing total capacity to 69,000 tons",
       "absPlastics": "ABS plastics per year",
       "expandablePolystyrene": "Expandable polystyrene (EPS) per year",
       "styrene": "Styrene per year",
@@ -494,8 +494,8 @@
       "categories": {
         "styrene": "Styrene",
         "abs": "ABS Plastics",
-        "polystyrene": "Polystyrene",
-        "dispersion": "Styrene-Acrylic Dispersion",
+        "polystyrene": "UPEX Expandable Polystyrene",
+        "dispersion": "Acrylic and Styrene-Acrylic Dispersions",
         "machine-parts": "Machine Parts",
         "hoztovary": "Consumer Goods",
         "canisters": "Canisters",
@@ -504,13 +504,17 @@
         "kors": "CORS and Bentol",
         "custom-abs": "Custom ABS Plastic Products Manufacturing"
       },
+      "categoryCardNames": {
+        "polystyrene": "Polystyrene"
+      },
       "subcategories": {
         "abs-injection": "Injection Grades",
         "abs-extrusion": "Extrusion Grades",
         "abs-custom": "Custom ABS Plastic Products Manufacturing",
-        "ps-psv-s": "UPEKS Expandable Polystyrene",
+        "ps-psv-s": "UPEX Expandable Polystyrene",
         "ps-psv-l": "Expandable Polystyrene EPS-L",
         "ps-pse": "Polystyrene PSE-1",
+        "dispersion-coatings": "Dispersion Product Range",
         "extrusion-parts": "Extrusion Products",
         "injection-parts": "Injection Products",
         "vedra-tazy": "Buckets and Basins",
@@ -525,10 +529,10 @@
       },
       "categoryDescriptions": {
         "styrene": "Styrene is a colorless liquid with a characteristic slightly sweet odor and high chemical reactivity",
-        "abs": "Wide range of ABS plastics for automotive, appliances, medical and other applications",
-        "polystyrene": "Self-extinguishing UPEKS expandable polystyrene grades 1-6 for insulation, soundproofing, packaging and molded products",
-        "dispersion": "Styrene-acrylic dispersion for water-based paints and coatings",
-        "machine-parts": "Plastic parts for automotive and general engineering",
+        "abs": "ABS is a modern impact-resistant thermoplastic based on acrylonitrile, butadiene and styrene. Injection and extrusion grades combine strength, rigidity, dimensional stability and reliable processing for automotive, electronics, medical, appliance and engineering applications.",
+        "polystyrene": "Expandable polystyrene for thermal insulation, protective packaging, moulded products and foundry applications.",
+        "dispersion": "Water-based acrylic and styrene-acrylic dispersions for modern coatings and construction materials, including interior and exterior paints, primers, renders, adhesive formulations and nonwoven substrates.",
+        "machine-parts": "Polymer engineering parts manufactured by injection moulding and extrusion. The range includes profiles, tubes, seals, trim and protective components for automotive and industrial equipment.",
         "hoztovary": "Quality plastic household products for home and everyday use",
         "pvc-modifier": "ABS-based PVC impact modifier — improved impact strength and heat resistance of rigid PVC profiles",
         "kors": "CORS rectification bottoms and Bentol fraction — fuels and industrial solvents",
@@ -538,9 +542,10 @@
         "abs-injection": "ABS grades for injection molding",
         "abs-extrusion": "ABS grades for sheet and profile extrusion",
         "abs-custom": "Manufacturing of ABS parts to individual orders",
-        "ps-psv-s": "Self-extinguishing expandable polystyrene",
-        "ps-psv-l": "Casting-grade expandable polystyrene",
+        "ps-psv-s": "Self-extinguishing UPEX expandable polystyrene in grades 1–6. The grades differ by bead size and are intended for thermal insulation, sound insulation, protective packaging and moulded products.",
+        "ps-psv-l": "Casting-grade EPS-L expandable polystyrene for expendable patterns. During moulding, the material accurately reproduces the future casting geometry and is displaced when molten metal is poured.",
         "ps-pse": "General-purpose emulsion polystyrene",
+        "dispersion-coatings": "Acrylic and styrene-acrylic dispersions for coatings, construction and nonwoven materials, protective films and packaging tapes",
         "extrusion-parts": "Profiles, tubes, seals",
         "injection-parts": "Trim panels, inserts, protective parts",
         "vedra-tazy": "Durable plastic buckets and basins in various volumes",
@@ -711,8 +716,8 @@
       },
       "polystyrene": {
         "label": "Polystyrene",
-        "title": "Advanced Polystyrene Grades",
-        "description": "Expandable PSV-S and PSV-L, as well as extrusion-grade PSE-1, for thermal insulation, construction and packaging solutions",
+        "title": "Polystyrene",
+        "description": "High-quality expandable polymer beads for lightweight insulation, construction components, protective packaging and moulded products. Grades 1–6 provide a controlled particle-size range for different processing requirements",
         "cta": "Explore products"
       },
       "hoztovary": {
@@ -727,7 +732,7 @@
     },
     "geography": {
       "title": "Delivery Geography",
-      "subtitle": "We deliver across Russia, as well as to Belarus, Kazakhstan and Uzbekistan",
+      "subtitle": "We deliver across Russia and to partner countries: Belarus, Kazakhstan, Uzbekistan, Kyrgyzstan, China, Vietnam, Brazil and Argentina",
       "factory": "Uzlovaya — production site",
       "office": "Moscow — sales office"
     }

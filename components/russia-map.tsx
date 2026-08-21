@@ -2,10 +2,11 @@
 
 import { useEffect, useMemo, useRef, useState, useCallback } from "react"
 import Link from "next/link"
-import { geoConicEqualArea, geoPath, type GeoPermissibleObjects } from "d3-geo"
+import { geoConicEqualArea, geoNaturalEarth1, geoPath, type GeoPermissibleObjects } from "d3-geo"
 import am5geodata_russiaLow from "@amcharts/amcharts5-geodata/russiaLow"
 import am5geodata_worldLow from "@amcharts/amcharts5-geodata/worldLow"
 import { Plus, Minus, Home, X, ArrowRight } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 type ProductKey = "abs" | "ps" | "styrene" | "dispersion" | "household"
 
@@ -20,11 +21,13 @@ type City = {
   products: ProductKey[]
 }
 
-type DestinationCountry = City & { countryId: "BY" | "KZ" | "UZ" }
+type DestinationCountry = City & {
+  countryId: "BY" | "KZ" | "UZ" | "KG" | "VN" | "CN" | "BR" | "AR"
+}
 
 const PRODUCT_LABELS: Record<ProductKey, { ru: string; en: string }> = {
   abs: { ru: "АБС-пластики", en: "ABS plastics" },
-  ps: { ru: "Полистирол", en: "Polystyrene" },
+  ps: { ru: "Полистирол вспенивающийся «УПЕКС»", en: "UPEX Expandable Polystyrene" },
   styrene: { ru: "Стирол", en: "Styrene" },
   dispersion: { ru: "Дисперсии", en: "Dispersions" },
   household: { ru: "Товары для дома", en: "Household goods" },
@@ -89,6 +92,56 @@ const DESTINATION_COUNTRIES: DestinationCountry[] = [
     lon: 64.6,
     products: ["abs", "ps"],
   },
+  {
+    countryId: "KG",
+    name: "Кыргызстан",
+    nameEn: "Kyrgyzstan",
+    region: "Кыргызская Республика",
+    regionEn: "Kyrgyz Republic",
+    lat: 41.2,
+    lon: 74.8,
+    products: ["abs"],
+  },
+  {
+    countryId: "VN",
+    name: "Вьетнам",
+    nameEn: "Vietnam",
+    region: "Социалистическая Республика Вьетнам",
+    regionEn: "Socialist Republic of Vietnam",
+    lat: 16.0,
+    lon: 106.0,
+    products: ["abs"],
+  },
+  {
+    countryId: "CN",
+    name: "Китай",
+    nameEn: "China",
+    region: "Китайская Народная Республика",
+    regionEn: "People's Republic of China",
+    lat: 35.9,
+    lon: 104.2,
+    products: ["abs"],
+  },
+  {
+    countryId: "BR",
+    name: "Бразилия",
+    nameEn: "Brazil",
+    region: "Федеративная Республика Бразилия",
+    regionEn: "Federative Republic of Brazil",
+    lat: -10.8,
+    lon: -52.9,
+    products: ["abs"],
+  },
+  {
+    countryId: "AR",
+    name: "Аргентина",
+    nameEn: "Argentina",
+    region: "Аргентинская Республика",
+    regionEn: "Argentine Republic",
+    lat: -34.6,
+    lon: -64.8,
+    products: ["abs"],
+  },
 ]
 
 const FACTORY = {
@@ -138,13 +191,11 @@ const LIGHT_STAGGER = 110
 
 const russiaGeodata = am5geodata_russiaLow as unknown as GeoJSON.FeatureCollection
 const worldGeodata = am5geodata_worldLow as unknown as GeoJSON.FeatureCollection
+const DOMESTIC_COUNTRY_IDS = new Set(["BY", "KZ", "UZ", "KG"])
 const destinationFeatures = worldGeodata.features.filter((feature) =>
   DESTINATION_COUNTRIES.some((country) => country.countryId === String(feature.id))
 )
-const mapExtentData = {
-  type: "FeatureCollection",
-  features: [...russiaGeodata.features, ...destinationFeatures],
-} as GeoJSON.FeatureCollection
+const russiaWorldFeature = worldGeodata.features.find((feature) => String(feature.id) === "RU")
 
 type Selected = (City | DestinationCountry | typeof FACTORY) & {
   isFactory?: boolean
@@ -159,6 +210,7 @@ export function RussiaMap({
   factoryLabel: string
 }) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const [viewMode, setViewMode] = useState<"russia" | "world">("russia")
   const [transform, setTransform] = useState({ k: 1, x: 0, y: 0 })
   const [hoverRegion, setHoverRegion] = useState<string | null>(null)
   const [tooltip, setTooltip] = useState<{ x: number; y: number; text: string } | null>(null)
@@ -188,24 +240,47 @@ export function RussiaMap({
     return () => observer.disconnect()
   }, [])
 
-  const { regionPaths, countryPaths, project } = useMemo(() => {
-    const projection = geoConicEqualArea()
-      .rotate([-100, 0])
-      .parallels([50, 70])
-      .fitExtent(
+  const { basePaths, regionPaths, countryPaths, project } = useMemo(() => {
+    const visibleDestinationFeatures =
+      viewMode === "world"
+        ? destinationFeatures
+        : destinationFeatures.filter((feature) => DOMESTIC_COUNTRY_IDS.has(String(feature.id)))
+    const extentData =
+      viewMode === "world"
+        ? worldGeodata
+        : ({
+            type: "FeatureCollection",
+            features: [...russiaGeodata.features, ...visibleDestinationFeatures],
+          } as GeoJSON.FeatureCollection)
+    const projection =
+      viewMode === "world"
+        ? geoNaturalEarth1()
+        : geoConicEqualArea().rotate([-100, 0]).parallels([50, 70])
+    projection.fitExtent(
         [
           [PAD, PAD],
           [VIEW_W - PAD, VIEW_H - PAD - 10],
         ],
-        mapExtentData as GeoPermissibleObjects
+        extentData as GeoPermissibleObjects
       )
     const path = geoPath(projection)
-    const regions = russiaGeodata.features.map((f) => ({
+    const regionFeatures =
+      viewMode === "world"
+        ? russiaWorldFeature
+          ? [russiaWorldFeature]
+          : []
+        : russiaGeodata.features
+    const regions = regionFeatures.map((f) => ({
       d: path(f as GeoPermissibleObjects) ?? "",
-      name: String((f.properties as { name?: string })?.name ?? ""),
+      name:
+        viewMode === "world"
+          ? lang === "en"
+            ? "Russia"
+            : "Россия"
+          : String((f.properties as { name?: string })?.name ?? ""),
       id: String(f.id ?? (f.properties as { id?: string })?.id ?? Math.random()),
     }))
-    const countries = destinationFeatures.flatMap((feature) => {
+    const countries = visibleDestinationFeatures.flatMap((feature) => {
       const country = DESTINATION_COUNTRIES.find(
         (item) => item.countryId === String(feature.id)
       )
@@ -217,11 +292,18 @@ export function RussiaMap({
       }]
     })
     return {
+      basePaths:
+        viewMode === "world"
+          ? worldGeodata.features.map((feature) => ({
+              id: String(feature.id ?? Math.random()),
+              d: path(feature as GeoPermissibleObjects) ?? "",
+            }))
+          : [],
       regionPaths: regions,
       countryPaths: countries,
       project: (lon: number, lat: number) => projection([lon, lat]) ?? [0, 0],
     }
-  }, [])
+  }, [lang, viewMode])
 
   // Порядок подсветки: с запада на восток
   const cityPoints = useMemo(() => {
@@ -231,19 +313,38 @@ export function RussiaMap({
       return { ...c, x, y, order }
     })
   }, [project])
+  const countryPoints = useMemo(
+    () =>
+      countryPaths.map((country, order) => {
+        const [x, y] = project(country.lon, country.lat)
+        return { ...country, x, y, order }
+      }),
+    [countryPaths, project]
+  )
   const factoryPoint = useMemo(() => {
     const [x, y] = project(FACTORY.lon, FACTORY.lat)
     return { ...FACTORY, x, y }
   }, [project])
-  const webLines = useMemo(
-    () =>
-      WEB_EDGES.map(([a, b], i) => {
+  const webLines = useMemo(() => {
+    const edges =
+      viewMode === "world"
+        ? DESTINATION_COUNTRIES.map((country) => [FACTORY, country] as const)
+        : WEB_EDGES.filter(([a, b]) => {
+            const allowedNames = new Set([
+              FACTORY.name,
+              ...CITIES.map((city) => city.name),
+              ...DESTINATION_COUNTRIES.filter((country) =>
+                DOMESTIC_COUNTRY_IDS.has(country.countryId)
+              ).map((country) => country.name),
+            ])
+            return allowedNames.has(a.name) && allowedNames.has(b.name)
+          })
+    return edges.map(([a, b], i) => {
         const [x1, y1] = project(a.lon, a.lat)
         const [x2, y2] = project(b.lon, b.lat)
         return { x1, y1, x2, y2, key: i }
-      }),
-    [project]
-  )
+      })
+  }, [project, viewMode])
 
   const clampTransform = useCallback((t: { k: number; x: number; y: number }) => {
     const k = Math.min(MAX_ZOOM, Math.max(1, t.k))
@@ -263,6 +364,13 @@ export function RussiaMap({
     [clampTransform]
   )
   const resetView = useCallback(() => setTransform({ k: 1, x: 0, y: 0 }), [])
+  const changeViewMode = useCallback((mode: "russia" | "world") => {
+    setViewMode(mode)
+    setTransform({ k: 1, x: 0, y: 0 })
+    setSelected(null)
+    setTooltip(null)
+    setHoverRegion(null)
+  }, [])
 
   const onPointerDown = (e: React.PointerEvent) => {
     ;(e.target as Element).setPointerCapture?.(e.pointerId)
@@ -320,6 +428,24 @@ export function RussiaMap({
 
   return (
     <div ref={containerRef} className="group relative h-full w-full touch-pan-y overflow-hidden" onPointerLeave={() => setTooltip(null)}>
+      <div className="absolute left-3 top-3 z-30 flex rounded-xl border border-border/70 bg-white/95 p-1 shadow-md backdrop-blur sm:left-4 sm:top-4">
+        {([
+          ["russia", en ? "Russia" : "Россия"],
+          ["world", en ? "Partner countries" : "Дружественные страны"],
+        ] as const).map(([mode, label]) => (
+          <button
+            key={mode}
+            type="button"
+            onClick={() => changeViewMode(mode)}
+            className={cn(
+              "rounded-lg px-3 py-2 text-xs font-semibold transition-colors sm:px-4",
+              viewMode === mode ? "bg-primary text-white" : "text-muted-foreground hover:text-primary"
+            )}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
       <svg
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
         className="h-full w-full cursor-grab select-none active:cursor-grabbing"
@@ -329,7 +455,11 @@ export function RussiaMap({
         onPointerCancel={onPointerUp}
         onTouchMove={onTouchMove}
         role="img"
-        aria-label={en ? "Delivery map of Russia and CIS" : "Карта поставок по России и СНГ"}
+        aria-label={
+          en
+            ? "Delivery map of Russia and partner countries"
+            : "Карта поставок по России и дружественным странам"
+        }
       >
         <defs>
           <linearGradient id="rm-land" x1="0" y1="0" x2="0" y2="1">
@@ -346,6 +476,20 @@ export function RussiaMap({
         </defs>
 
         <g transform={`translate(${VIEW_W / 2 + transform.x} ${VIEW_H / 2 + transform.y}) scale(${transform.k}) translate(${-VIEW_W / 2} ${-VIEW_H / 2})`}>
+          {viewMode === "world" && (
+            <g className="rm-fade-in">
+              {basePaths.map((feature) => (
+                <path
+                  key={`base-${feature.id}`}
+                  d={feature.d}
+                  fill="#f0f4fa"
+                  stroke="#ffffff"
+                  strokeWidth={0.55 * inv}
+                  aria-hidden
+                />
+              ))}
+            </g>
+          )}
           {/* Россия и страны экспортных поставок */}
           <g filter="url(#rm-shadow)" className="rm-fade-in">
             {regionPaths.map((r) => (
@@ -413,7 +557,7 @@ export function RussiaMap({
           </g>
 
           {/* Города — точки без подписей, загораются по очереди */}
-          {cityPoints.map((c) => {
+          {viewMode === "russia" && cityPoints.map((c) => {
             const isSelected = selected && !selected.isFactory && selected.name === c.name
             return (
               <g
@@ -437,6 +581,42 @@ export function RussiaMap({
                   }}
                   onMouseEnter={(e) => showTooltip(e, cityName(c))}
                   onMouseMove={(e) => showTooltip(e, cityName(c))}
+                  onMouseLeave={() => setTooltip(null)}
+                />
+              </g>
+            )
+          })}
+
+          {/* Страны поставок — заметные точки поверх интерактивных контуров. */}
+          {countryPoints.map((country) => {
+            const isSelected = selected?.isCountry && selected.name === country.name
+            return (
+              <g
+                key={`point-${country.id}`}
+                transform={`translate(${country.x} ${country.y}) scale(${inv})`}
+                className={lit ? "rm-light-up" : "opacity-0"}
+                style={{ animationDelay: `${250 + country.order * 90}ms` }}
+              >
+                <circle r="12" fill="#0046FF" fillOpacity="0.10" className="rm-pulse" />
+                {isSelected && <circle r="9" fill="none" stroke="#0046FF" strokeWidth="1.8" />}
+                <circle
+                  r={isSelected ? 6 : 5}
+                  fill="#1e3a8a"
+                  stroke="#ffffff"
+                  strokeWidth="2"
+                  className="rm-dot"
+                  onPointerDown={(event) => event.stopPropagation()}
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    setSelected({ ...country, isCountry: true })
+                    setTooltip(null)
+                  }}
+                  onMouseEnter={(event) =>
+                    showTooltip(event, `${cityName(country)} — ${productCountLabel(country.products.length)}`)
+                  }
+                  onMouseMove={(event) =>
+                    showTooltip(event, `${cityName(country)} — ${productCountLabel(country.products.length)}`)
+                  }
                   onMouseLeave={() => setTooltip(null)}
                 />
               </g>

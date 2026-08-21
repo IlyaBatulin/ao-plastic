@@ -84,6 +84,7 @@ export default function ProductsGrid({
           categoryId && subcategoryId
             ? `/products/${categoryId}/${subcategoryId}/${encodeURIComponent(productPathSegment)}`
             : "#"
+        const isFinndispLogo = imageUrl.endsWith("/finndisp/finndisp-product-logo.png")
 
         const handleAddToCart = () => {
           const isHouseholdProduct = categoryId === "hoztovary"
@@ -120,14 +121,20 @@ export default function ProductsGrid({
             className="product-card group relative bg-card rounded-3xl overflow-hidden border border-border/50 hover:border-primary/50 flex flex-col"
           >
             <Link href={productHref} prefetch={productHref !== "#"} className="block flex-1">
-              <div className="relative h-64 bg-gradient-to-br from-primary/10 to-primary/5 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent z-10" />
+              <div className={`relative h-64 overflow-hidden ${isFinndispLogo ? "bg-[#08759b]" : "bg-gradient-to-br from-primary/10 to-primary/5"}`}>
+                {!isFinndispLogo && (
+                  <div className="absolute inset-0 z-10 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
+                )}
                 <Image
                   src={imageUrl}
                   alt={displayName}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  className={
+                    isFinndispLogo
+                      ? "object-contain p-3 transition-transform duration-700 group-hover:scale-105"
+                      : "object-cover transition-transform duration-700 group-hover:scale-110"
+                  }
                 />
                 <ProductCardPlasticLogo imageSrc={imageUrl} />
               </div>

@@ -4,7 +4,7 @@ import productsData from "@/data/products.json"
 
 export const revalidate = 3600
 
-const HIDDEN_CATEGORIES = new Set(["dispersion"])
+const HIDDEN_CATEGORIES = new Set<string>()
 
 const STATIC_PATHS = [
   "",
@@ -233,7 +233,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPart = staticEntries(base)
 
   const fromDb = await fetchSupabaseProductUrls(base)
-  const productPart = fromDb ?? productEntriesFromJson(base)
+  const localProductEntries = productEntriesFromJson(base)
+  const localDispersionEntries = localProductEntries.filter((entry) =>
+    entry.url.includes("/products/dispersion")
+  )
+  const productPart = fromDb
+    ? dedupeSitemap([...fromDb, ...localDispersionEntries])
+    : localProductEntries
   const newsPart = await fetchNewsUrls(base)
 
   return dedupeSitemap([...staticPart, ...productPart, ...newsPart])

@@ -9,10 +9,15 @@ create table if not exists public.customer_profiles (
   email text not null,
   delivery_address text,
   manager_id bigint references public.managers(id) on delete set null,
+  access_tier text not null default 'silver' check (access_tier in ('silver', 'gold', 'partner')),
   is_approved boolean not null default false,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+alter table public.customer_profiles
+  add column if not exists access_tier text not null default 'silver'
+  check (access_tier in ('silver', 'gold', 'partner'));
 
 alter table public.orders add column if not exists customer_user_id uuid references auth.users(id) on delete set null;
 alter table public.orders add column if not exists requested_delivery_date date;

@@ -1,13 +1,15 @@
 /**
- * Канонический порядок разделов каталога (АБС и полистирол — в начале, стирол не первый).
+ * Канонический порядок разделов каталога: «УПЕКС» открывает каталог,
+ * затем идут основные сырьевые направления и весь существующий ассортимент.
  * Применяется поверх sort из Supabase и порядка в products.json.
  */
 export const CATALOG_CATEGORY_ORDER = [
+  "styrene",
   "abs",
   "polystyrene",
-  "styrene",
-  "hoztovary",
+  "dispersion",
   "machine-parts",
+  "hoztovary",
   "pvc-modifier",
   "kors",
 ] as const

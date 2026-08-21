@@ -72,7 +72,6 @@ const mapJsonSubcategories = (category: any) =>
 const getJsonCategories = (): Category[] =>
   sortCatalogCategories(
     productsData.categories
-      .filter((cat) => cat.id !== "dispersion")
       .map((cat) => ({
         id: cat.id,
         name: cat.name,
@@ -109,7 +108,17 @@ export const loadCategoriesCached = async (): Promise<Category[]> => {
       )
 
       if (!categoriesError && categoriesData && categoriesData.length > 0) {
-        const filteredCategories = categoriesData.filter((cat: any) => cat.id !== 'dispersion')
+        const filteredCategories = [...categoriesData]
+        if (!filteredCategories.some((cat: any) => cat.id === "dispersion")) {
+          const fallbackDispersion = productsData.categories.find((cat) => cat.id === "dispersion")
+          if (fallbackDispersion) {
+            filteredCategories.push({
+              id: fallbackDispersion.id,
+              name: fallbackDispersion.name,
+              slug: fallbackDispersion.id,
+            })
+          }
+        }
         const { data: allSubcatsData, error: allSubcatsError } = await withClientTimeout(
           supabase
             .from("subcategories")

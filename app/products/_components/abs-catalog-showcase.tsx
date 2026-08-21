@@ -6,8 +6,6 @@ import { ArrowLeft, ArrowUpRight, ChevronDown } from "lucide-react"
 import { useState } from "react"
 import { useLanguage } from "@/contexts/language-context"
 import { getCatalogSubcategoryDescription, getCatalogSubcategoryLabel } from "@/lib/catalog-translations"
-import { getProductPathSegment } from "@/lib/catalog-product"
-import { resolveProductDisplay } from "@/lib/product-en"
 import { cn } from "@/lib/utils"
 
 export type CatalogShowcaseProduct = {
@@ -42,15 +40,20 @@ const copy = {
     eyebrow: "Каталог АБС-пластиков",
     directions: "Три направления",
     directionsLead: "Выберите способ переработки, чтобы посмотреть доступные марки и решения.",
-    products: "Продукция",
-    details: "Подробнее",
+    assortment: "Ассортимент направления",
+    viewAll: "Смотреть все товары и сравнить",
+    viewOne: "Смотреть товар и характеристики",
+    productCount: (count: number) =>
+      `${count} ${count === 1 ? "позиция" : count < 5 ? "позиции" : "позиций"}`,
   },
   en: {
     eyebrow: "ABS plastics catalog",
     directions: "Three product lines",
     directionsLead: "Choose a processing method to explore available grades and solutions.",
-    products: "Products",
-    details: "View details",
+    assortment: "Product line overview",
+    viewAll: "View all products and compare",
+    viewOne: "View product specifications",
+    productCount: (count: number) => `${count} ${count === 1 ? "product" : "products"}`,
   },
 } as const
 
@@ -68,7 +71,14 @@ export function CatalogShowcase({
   const labels = copy[locale]
   const [openGroup, setOpenGroup] = useState(groups[0]?.id ?? "")
   const isAbs = categoryId === "abs"
-  const eyebrow = isAbs ? labels.eyebrow : locale === "en" ? `${title} catalog` : `Каталог · ${title}`
+  const eyebrow =
+    categoryId === "polystyrene"
+      ? ""
+      : isAbs
+        ? labels.eyebrow
+        : locale === "en"
+          ? `${title} catalog`
+          : `Каталог · ${title}`
   const directionCount = String(groups.length).padStart(2, "0")
   const directionsLabel = isAbs
     ? labels.directions
@@ -115,9 +125,11 @@ export function CatalogShowcase({
           </Link>
 
           <div className="max-w-2xl">
-            <p className="mb-5 text-xs font-semibold uppercase tracking-[0.18em] text-white/65">
-              {eyebrow}
-            </p>
+            {eyebrow && (
+              <p className="mb-5 text-xs font-semibold uppercase tracking-[0.18em] text-white/65">
+                {eyebrow}
+              </p>
+            )}
             <h1 className="text-[clamp(3.1rem,6vw,6.8rem)] font-semibold leading-[0.92] tracking-[-0.045em] text-white">
               {title}
             </h1>
@@ -209,11 +221,6 @@ export function CatalogShowcase({
                       <span className="block text-xl font-semibold leading-tight tracking-[-0.02em] text-slate-950 md:text-2xl">
                         {groupName}
                       </span>
-                      {groupDescription && (
-                        <span className="mt-2 block text-sm leading-relaxed text-slate-500 sm:text-base">
-                          {groupDescription}
-                        </span>
-                      )}
                     </span>
                     <span className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-50">
                       <ChevronDown
@@ -232,47 +239,27 @@ export function CatalogShowcase({
                         transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
                         className="overflow-hidden"
                       >
-                        <div className="border-t border-slate-200 px-5 pb-5 pt-2 sm:px-7 sm:pb-7">
-                          <p className="py-4 text-xs font-bold uppercase tracking-[0.14em] text-slate-400">
-                            {labels.products}
-                          </p>
-                          <div className="divide-y divide-slate-200">
-                            {products.map((product) => {
-                              const productDisplay = resolveProductDisplay(
-                                {
-                                  id: product.id,
-                                  name: product.name,
-                                  description: product.description,
-                                  slug: product.slug,
-                                  brand: product.brand,
-                                  specifications: product.specifications,
-                                },
-                                locale,
-                                { categoryId, subcategoryId: group.slug }
-                              )
-                              const href = `/products/${categoryId}/${group.slug}/${encodeURIComponent(getProductPathSegment(product))}`
-
-                              return (
-                                <div key={product.id} className="grid gap-4 py-5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
-                                  <div>
-                                    <h3 className="text-lg font-semibold text-slate-950">{productDisplay.name}</h3>
-                                    {productDisplay.description && (
-                                      <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-slate-500">
-                                        {productDisplay.description}
-                                      </p>
-                                    )}
-                                  </div>
-                                  <Link
-                                    href={href}
-                                    className="inline-flex w-fit items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
-                                  >
-                                    {labels.details}
-                                    <ArrowUpRight className="h-4 w-4" aria-hidden />
-                                  </Link>
-                                </div>
-                              )
-                            })}
+                        <div className="border-t border-slate-200 px-5 pb-5 pt-5 sm:px-7 sm:pb-7 sm:pt-6">
+                          <div className="flex flex-wrap items-center justify-between gap-3">
+                            <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-400">
+                              {labels.assortment}
+                            </p>
+                            {products.length > 0 && (
+                              <span className="rounded-full bg-primary/8 px-3 py-1 text-xs font-semibold text-primary">
+                                {labels.productCount(products.length)}
+                              </span>
+                            )}
                           </div>
+                          <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
+                            {groupDescription || directionsLead}
+                          </p>
+                          <Link
+                            href={`/products/${categoryId}/${group.slug}`}
+                            className="mt-6 inline-flex min-h-14 w-full items-center justify-center gap-3 rounded-2xl bg-primary px-5 py-3.5 text-center text-base font-semibold text-white transition-all hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/20"
+                          >
+                            {products.length > 1 ? labels.viewAll : labels.viewOne}
+                            <ArrowUpRight className="h-5 w-5 shrink-0" aria-hidden />
+                          </Link>
                         </div>
                       </motion.div>
                     )}

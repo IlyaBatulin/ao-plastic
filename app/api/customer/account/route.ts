@@ -12,6 +12,7 @@ async function authenticatedUser() {
 export async function GET(request: NextRequest) {
   if (hasCustomerPreviewSession(request)) {
     return NextResponse.json({
+      demoMode: true,
       profile: { account_type: "company", company_name: "Тестовый покупатель", inn: "7100000000", contact_name: "Администратор проверки", phone: "+7 (495) 201-03-33", email: "info@td-plastic.ru", is_approved: true },
       manager: { name: "Отдел продаж АО «Пластик»", email: "info@td-plastic.ru", phone: "+7 (495) 201-03-33" },
       orders: [
@@ -73,6 +74,7 @@ export async function GET(request: NextRequest) {
   }
 
   return NextResponse.json({
+    demoMode: false,
     profile,
     manager: managerResult.data,
     orders: (orders || []).map((order) => ({ ...order, items: itemsByOrder.get(order.id) || [] })),

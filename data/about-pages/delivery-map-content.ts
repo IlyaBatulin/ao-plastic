@@ -20,7 +20,7 @@ export const deliveryMapContent = {
     loading: "Loading map…",
     badge: "Delivery Geography",
     title: "Products Worldwide",
-    descriptionPrefix: "JSC «Plastik» delivers products to",
+    descriptionPrefix: "JSC «Plastic» delivers products to",
     descriptionSuffix: "regions across Russia and worldwide",
     mapHint:
       "Toggle: flat map / globe. Blue markers — plant in Uzlovaya and sales office in Moscow; gray dots — delivery regions.",

@@ -59,7 +59,7 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
         id: "period-2",
         title: "1974–1992",
         subtitle: "Рост мощностей и выпуск продукции для автопрома",
-        image: "/images/history/period-1974-1992.png",
+        image: "/images/history/period-1974-1992-v2.webp",
         timeline: [
           {
             year: "1974–1975",
@@ -202,12 +202,12 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
   },
   en: {
     scrollHint: "Scroll down",
-    heroImageAlt: "JSC Plastik production site",
+    heroImageAlt: "JSC Plastic production site",
     closingPhrase:
       "Our history continues — preserving accumulated expertise, we keep improving production and laying the foundation for new achievements.",
     hero: {
       heroImage: "/images/history/history-hero.jpeg",
-      heroTitle: "History of JSC «Plastik»",
+      heroTitle: "History of JSC «Plastic»",
       heroSubTitle: "Key milestones in the development of the enterprise",
       heroTextSlides: [],
     },
@@ -230,7 +230,7 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
         id: "period-2",
         title: "1974–1992",
         subtitle: "Capacity growth and production for the automotive industry",
-        image: "/images/history/period-1974-1992.png",
+        image: "/images/history/period-1974-1992-v2.webp",
         timeline: [
           { year: "1974–1975", description: "The first and second phases of the thermoplastic products shop for the Kama Automobile Plant were commissioned." },
           { year: "Late 1975", description: "The styrene production facility reached its design capacity." },
@@ -246,7 +246,7 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
         timeline: [
           { year: "2001", description: "The enterprise joined the SIBUR Group." },
           { year: "April 2003", description: "A line for producing compounds based on the company's own ABS plastic was commissioned." },
-          { year: "December 2005", description: "OJSC Plastik was certified to the international ISO 9001 standard." },
+          { year: "December 2005", description: "OJSC Plastic was certified to the international ISO 9001 standard." },
           { year: "2009", description: "The ABS-PC plastics production line was reconstructed and modernized." },
           { year: "7 November 2010", description: "Following reconstruction, the upgraded styrene shop was launched at increased capacity and produced its first output." },
         ],
@@ -258,12 +258,12 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
         subtitle: "A new stage in the company's development",
         image: "/images/history/period-2019-present.jpeg",
         timeline: [
-          { year: "December 2011", description: "Plastik passed a quality management system recertification audit for compliance with ISO 9001:2008 and its Russian counterpart GOST R ISO 9001-2008." },
-          { year: "December 2013", description: "The ownership of OJSC Plastik changed, with a group of private investors acquiring 100% of the company's shares." },
-          { year: "January 2014", description: "Trading House Plastik was established." },
-          { year: "March 2014", description: "Uzlovaya Structural Components Plant joined Plastik Group, producing expanded-polystyrene wall panels and floor slabs, as well as reinforcement frames using Plastbau-3 technology." },
-          { year: "December 2014", description: "OJSC Plastik passed a QMS recertification audit for compliance with ISO 9001-2008 and GOST ISO 9001-2011. The relevant certificates were issued by ACADEMY-CERT and INTERCERTIFICA-TÜV." },
-          { year: "June 2019", description: "OJSC Plastik changed its legal name to JSC Plastik." },
+          { year: "December 2011", description: "Plastic passed a quality management system recertification audit for compliance with ISO 9001:2008 and its Russian counterpart GOST R ISO 9001-2008." },
+          { year: "December 2013", description: "The ownership of OJSC Plastic changed, with a group of private investors acquiring 100% of the company's shares." },
+          { year: "January 2014", description: "Trading House Plastic was established." },
+          { year: "March 2014", description: "Uzlovaya Structural Components Plant joined Plastic Group, producing expanded-polystyrene wall panels and floor slabs, as well as reinforcement frames using Plastbau-3 technology." },
+          { year: "December 2014", description: "OJSC Plastic passed a QMS recertification audit for compliance with ISO 9001-2008 and GOST ISO 9001-2011. The relevant certificates were issued by ACADEMY-CERT and INTERCERTIFICA-TÜV." },
+          { year: "June 2019", description: "OJSC Plastic changed its legal name to JSC Plastic." },
         ],
         infographic: [],
       },
@@ -275,7 +275,7 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
         timeline: [
           { year: "2020", description: "The product portfolio continued to evolve, with modern polymer solutions developed for Russian and international customers." },
           { year: "2022", description: "Batch traceability and digital accounting systems were introduced for major contracts and export deliveries." },
-          { year: "2024", description: "JSC Plastik celebrated its 65th anniversary and reaffirmed its status as one of Russia's largest manufacturers of ABS plastics and suspension polystyrene." },
+          { year: "2024", description: "JSC Plastic celebrated its 65th anniversary and reaffirmed its status as one of Russia's largest manufacturers of ABS plastics and suspension polystyrene." },
         ],
         infographic: [],
       },
@@ -285,8 +285,8 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
         subtitle: "Group development and new production projects",
         image: "/images/history/period-2024-2026.png",
         timeline: [
-          { year: "2024", description: "JSC Plastik celebrated its 65th anniversary and reaffirmed its status as one of Russia's largest manufacturers of ABS plastics and suspension polystyrene." },
-          { year: "2024", description: "Finndisp LLC joined the JSC Plastik Group." },
+          { year: "2024", description: "JSC Plastic celebrated its 65th anniversary and reaffirmed its status as one of Russia's largest manufacturers of ABS plastics and suspension polystyrene." },
+          { year: "2024", description: "Finndisp LLC joined the JSC Plastic Group." },
           { year: "2025", description: "The first specialists graduated under the Professionalitet program. Together with educational institutions in Uzlovaya, the enterprise established its own training system for chemical production personnel." },
           { year: "2026 · in progress", description: "A project for a new GPPS polystyrene production shop is under development." },
         ],

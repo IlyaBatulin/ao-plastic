@@ -113,7 +113,7 @@ const content = {
   },
   en: {
     heroBadge: "Professional emergency rescue formation",
-    heroTitle: "PASF PLASTIK",
+    heroTitle: "PASF PLASTIC",
     heroText:
       "Comprehensive safety support for customer facilities, damage minimization in emergency situations and protection of environmental safety.",
     requestButton: "Send Request",
@@ -130,14 +130,14 @@ const content = {
     outsourcingTitle: "Transfer of Functions to a Specialized Organization",
     outsourcingParagraphs: [
       "Organizations operating hazardous production facilities are required to establish their own professional emergency rescue formations or enter into service contracts with specialized providers.",
-      "AO PLASTIK offers to transfer gas rescue and fire safety functions to a professional emergency rescue formation. The work is performed in the interests of the customer under the management and control of the contractor.",
+      "AO PLASTIC offers to transfer gas rescue and fire safety functions to a professional emergency rescue formation. The work is performed in the interests of the customer under the management and control of the contractor.",
     ],
     benefitsTitle: "Benefits for the Enterprise",
     benefits: [
       "Reduction of personnel, training, insurance and recruitment costs.",
       "Reduction of indirect and non-production costs related to maintaining emergency rescue readiness.",
       "Access to the expertise, methodology and experience of a professional emergency rescue formation.",
-      "Responsibility of PASF AO PLASTIK for operational readiness, response and scheduled technical re-equipment.",
+      "Responsibility of PASF AO PLASTIC for operational readiness, response and scheduled technical re-equipment.",
     ],
     servicesBadge: "Main Areas",
     servicesTitle: "Gas Rescue Operations and Fire Safety",
@@ -164,8 +164,8 @@ const content = {
     resourcesBadge: "Unit Resources",
     resourcesTitle: "Personnel, Equipment and Preventive Activities",
     resourcesText:
-      "PASF PLASTIK is staffed with professional operational command and personnel experienced in all types of emergency rescue operations. Employees have completed mandatory training and are certified to perform their assigned tasks.",
-    fireTruckAlt: "PASF PLASTIK fire truck",
+      "PASF PLASTIC is staffed with professional operational command and personnel experienced in all types of emergency rescue operations. Employees have completed mandatory training and are certified to perform their assigned tasks.",
+    fireTruckAlt: "PASF PLASTIC fire truck",
     equipmentTitle: "Unit Equipment",
     equipment: [
       "Modern fire trucks equipped in accordance with EMERCOM requirements.",
@@ -184,15 +184,15 @@ const content = {
     docsBadge: "Documents and Certification",
     docsTitle: "Authorization to Conduct Emergency Rescue Operations",
     docsText:
-      "PASF AO PLASTIK performs works and provides services under its valid certificate of attestation and fire safety license.",
+      "PASF AO PLASTIC performs works and provides services under its valid certificate of attestation and fire safety license.",
     docsNote:
       "When entering into a service agreement, additional equipment, machinery and fire extinguishing means may be provided according to the specifics of your production facility.",
-    certificateAlt: "PASF PLASTIK certificate of attestation",
+    certificateAlt: "PASF PLASTIC certificate of attestation",
     licenseAlt: "EMERCOM license notification",
     cooperationBadge: "Cooperation Experience",
-    cooperationTitle: "PASF PLASTIK Provides Services to Industrial Customers",
+    cooperationTitle: "PASF PLASTIC Provides Services to Industrial Customers",
     cooperationText:
-      "The emergency rescue service of AO PLASTIK works with production, infrastructure and service companies, ensuring comprehensive safety of the facilities under service.",
+      "The emergency rescue service of AO PLASTIC works with production, infrastructure and service companies, ensuring comprehensive safety of the facilities under service.",
     partners: [
       "Polymerdor LLC",
       "Adventum Technologies LLC",
@@ -202,7 +202,7 @@ const content = {
       "Fabriks LLC",
       "Fun Fun Bakery LLC",
     ],
-    ctaTitle: "Consider PASF PLASTIK as a Reliable Safety Partner",
+    ctaTitle: "Consider PASF PLASTIC as a Reliable Safety Partner",
     ctaText:
       "We are ready to support the comprehensive safety of hazardous production facilities and assume responsibility for readiness, response and preventive activities.",
     ctaButton: "Contact Us",

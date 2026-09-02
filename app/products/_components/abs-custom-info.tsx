@@ -4,23 +4,54 @@ import Image from "next/image"
 import { useEffect, useRef, useState, type ReactNode } from "react"
 import { CustomOrderForm } from "./custom-order-form"
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/contexts/language-context"
 
-const introText =
-  "Наша компания изготавливает разнообразные изделия из АБС-пластика. Также мы готовы реализовывать индивидуальные заказы любого объема. Современные производственные мощности предприятия и высококвалифицированный персонал позволяют нам гарантировать высокое качество продукции при оптимальной цене. Также мы организуем отправку приобретенной партии товаров в оптимальные сроки."
-
-const advantages = [
-  "Высокие показатели надежности и ударопрочности, стойкости к механическим повреждениям.",
-  "Теплостойкость и морозостойкость.",
-  "Стойкость к разнообразным негативным факторам – атмосферным, химическим.",
-  "Привлекательная стоимость.",
-  "Эстетичность. Пластик можно окрашивать практически в любой цвет.",
-]
-
-const applicationsList = [
-  "корпусы для бытовой техники: холодильников, пылесосов, сушилок и т. д.;",
-  "элементы автомобилей: радиаторные решетки, приборные панели, другие части отделки;",
-  "бытовые изделия, игрушки и др.",
-]
+const copy = {
+  ru: {
+    intro: "Наша компания изготавливает разнообразные изделия из АБС-пластика. Также мы готовы реализовывать индивидуальные заказы любого объема. Современные производственные мощности предприятия и высококвалифицированный персонал позволяют нам гарантировать высокое качество продукции при оптимальной цене. Также мы организуем отправку приобретенной партии товаров в оптимальные сроки.",
+    advantagesTitle: "Преимущества АБС-пластика",
+    advantages: [
+      "Высокие показатели надежности и ударопрочности, стойкости к механическим повреждениям.",
+      "Теплостойкость и морозостойкость.",
+      "Стойкость к разнообразным негативным факторам – атмосферным, химическим.",
+      "Привлекательная стоимость.",
+      "Эстетичность. Пластик можно окрашивать практически в любой цвет.",
+    ],
+    applicationsTitle: "Что изготавливают из АБС-пластика",
+    applicationsIntro: "Мы осуществляем экструзию или литье АБС-пластика в готовые изделия. Также имеется оборудование для изготовления компаундов. Именно поэтому предлагается широкий спектр продукции с нужными характеристиками для медицинской, радиотехнической, приборостроительной и других отраслей промышленности. Производственные мощности позволяют изготавливать из АБС-пластика на заказ:",
+    applications: [
+      "корпусы для бытовой техники: холодильников, пылесосов, сушилок и т. д.;",
+      "элементы автомобилей: радиаторные решетки, приборные панели, другие части отделки;",
+      "бытовые изделия, игрушки и др.",
+    ],
+    materialsTitle: "Материалы и примеры применения",
+    materialsText: "Визуальный ряд с гранулами, компаундами и готовыми пластиковыми изделиями показывает связь сырья с конечной продукцией и помогает быстрее понять возможности производства.",
+    contactText: "Чтобы приобрести имеющиеся товары или заказать изготовление изделий из АБС-пластика под индивидуальные требования, оставьте запрос на сайте либо свяжитесь с нашими специалистами по контактному номеру телефона. Также можно написать письмо на электронную почту info@td-plastic.ru.",
+    formTitle: "Оставить заявку на изготовление",
+  },
+  en: {
+    intro: "Our company manufactures a wide range of ABS plastic products and fulfils custom orders of any volume. Modern production facilities and an experienced team enable us to deliver consistently high quality at a competitive price. We also arrange reliable and timely shipment of every order.",
+    advantagesTitle: "Advantages of ABS plastic",
+    advantages: [
+      "High reliability and impact strength, with excellent resistance to mechanical damage.",
+      "Resistance to both high and low temperatures.",
+      "Resistance to atmospheric exposure and a wide range of chemicals.",
+      "Cost-effective material and production.",
+      "An attractive finish with the option of colouring the plastic in virtually any shade.",
+    ],
+    applicationsTitle: "Products made from ABS plastic",
+    applicationsIntro: "We use extrusion and injection moulding to manufacture finished ABS plastic products. Our compounding equipment also allows us to produce materials with properties tailored to medical technology, radio electronics, instrumentation and other industries. Our production capabilities include custom manufacturing of:",
+    applications: [
+      "housings for household appliances, including refrigerators, vacuum cleaners and dryers;",
+      "automotive components, including radiator grilles, instrument panels and interior trim parts;",
+      "household products, toys and other polymer items.",
+    ],
+    materialsTitle: "Materials and application examples",
+    materialsText: "The images of granules, compounds and finished plastic products illustrate the complete path from raw material to the final product and demonstrate the breadth of our manufacturing capabilities.",
+    contactText: "To purchase available products or order custom ABS plastic components, submit a request on the website or contact our specialists by phone. You can also email us at info@td-plastic.ru.",
+    formTitle: "Request custom manufacturing",
+  },
+} as const
 
 const galleryImages = [
   {
@@ -121,12 +152,15 @@ function ScrollReveal({
 }
 
 export function AbsCustomInfo() {
+  const { lang } = useLanguage()
+  const text = copy[lang === "en" ? "en" : "ru"]
+
   return (
     <div className="w-full max-w-none space-y-12 lg:space-y-14">
       <ScrollReveal direction="left" className="py-2 lg:py-4">
         <div className="w-full rounded-3xl border border-border bg-card/80 p-6 shadow-sm sm:p-8">
           <p className="text-lg leading-relaxed text-muted-foreground sm:text-xl">
-            {introText}
+            {text.intro}
           </p>
         </div>
       </ScrollReveal>
@@ -146,12 +180,12 @@ export function AbsCustomInfo() {
         <div className="space-y-6 lg:space-y-8">
           <ScrollReveal direction="right">
             <h3 className="text-h3">
-              Преимущества АБС-пластика
+              {text.advantagesTitle}
             </h3>
           </ScrollReveal>
 
           <div className="grid md:grid-cols-2 gap-5 lg:gap-6">
-            {advantages.map((advantage, index) => (
+            {text.advantages.map((advantage, index) => (
               <ScrollReveal key={advantage} direction="right" delayMs={index * 70}>
                 <div className="bg-background rounded-2xl p-6 lg:p-7 border border-border transition-all duration-500 h-full">
                   <div className="flex items-start gap-3">
@@ -171,21 +205,18 @@ export function AbsCustomInfo() {
         <div className="space-y-6 lg:space-y-8">
           <ScrollReveal direction="left">
             <h3 className="text-h3">
-              Что изготавливают из АБС-пластика
+              {text.applicationsTitle}
             </h3>
           </ScrollReveal>
 
           <ScrollReveal direction="left" delayMs={40}>
             <p className="max-w-5xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-              Мы осуществляем экструзию или литье АБС-пластика в готовые изделия. Также имеется оборудование для
-              изготовления компаундов. Именно поэтому предлагается широкий спектр продукции с нужными характеристиками для
-              медицинской, радиотехнической, приборостроительной и других отраслей промышленности. Производственные
-              мощности позволяют изготавливать из АБС-пластика на заказ:
+              {text.applicationsIntro}
             </p>
           </ScrollReveal>
 
           <ul className="space-y-5 lg:space-y-6">
-            {applicationsList.map((item, index) => (
+            {text.applications.map((item, index) => (
               <li key={item} className="list-none">
                 <ScrollReveal direction="left" delayMs={index * 90}>
                   <div className="flex items-start gap-3">
@@ -229,16 +260,13 @@ export function AbsCustomInfo() {
         <ScrollReveal direction="right" delayMs={100}>
           <div className="space-y-4">
             <h3 className="text-h3">
-              Материалы и примеры применения
+              {text.materialsTitle}
             </h3>
             <p className="max-w-3xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-              Визуальный ряд с гранулами, компаундами и готовыми пластиковыми изделиями показывает связь сырья с
-              конечной продукцией и помогает быстрее понять возможности производства.
+              {text.materialsText}
             </p>
             <p className="max-w-3xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-              Чтобы приобрести имеющиеся товары или заказать изготовление изделий из АБС-пластика под индивидуальные
-              требования, оставьте запрос на сайте либо свяжитесь с нашими специалистами по контактному номеру телефона.
-              Также можно написать письмо на электронную почту info@td-plastic.ru.
+              {text.contactText}
             </p>
           </div>
         </ScrollReveal>
@@ -257,7 +285,7 @@ export function AbsCustomInfo() {
           </div>
 
           <h3 className="text-h2 mb-8 relative z-10">
-            Оставить заявку на изготовление
+            {text.formTitle}
           </h3>
           <div className="relative z-10">
             <CustomOrderForm />

@@ -111,7 +111,7 @@ export const qualityPageContent = {
     qmsTitle: "Quality Management System (QMS)",
     qmsParagraphs: [
       "Our plant operates a quality management system certified for compliance with ISO 9001:2008 and GOST ISO 9001:2011. The company undergoes regular audits and confirms that its products meet all applicable standards. The foundation of quality for polymer products is the raw materials used in their manufacture and their properties.",
-      "JSC Plastik has implemented and maintains a quality management system in accordance with international and national standards. This ensures stable quality of styrene, polystyrene, ABS plastics and finished products, and improves customer satisfaction and process efficiency.",
+      "JSC Plastic has implemented and maintains a quality management system in accordance with international and national standards. This ensures stable quality of styrene, polystyrene, ABS plastics and finished products, and improves customer satisfaction and process efficiency.",
       "The QMS is based on the Plan–Do–Check–Act (PDCA) cycle: we plan quality processes and objectives, execute them under control, conduct internal and external audits and corrective actions, and then improve the system.",
       "The quality policy is part of the company's overall strategy and is communicated to all employees; management and quality officers are responsible for its implementation.",
     ],

@@ -115,7 +115,7 @@ const content = {
     plant: "Завод",
   },
   en: {
-    heroBadge: "AO Plastik Group Company",
+    heroBadge: "AO Plastic Group Company",
     heroTitle: "Finndisp",
     heroSubtitle: "Manufacturer of acrylic dispersions",
     heroText:
@@ -124,9 +124,9 @@ const content = {
     logoAlt: "Finndisp logo",
     contactButton: "Contact us",
     groupBadge: "Group structure",
-    groupTitle: "In January 2024, Finndisp joined AO Plastik",
+    groupTitle: "In January 2024, Finndisp joined AO Plastic",
     groupParagraphs: [
-      "In January 2024, Finndisp was acquired by Russian investors and became part of AO Plastik (Uzlоvaya), a Russian chemical company.",
+      "In January 2024, Finndisp was acquired by Russian investors and became part of AO Plastic (Uzlоvaya), a Russian chemical company.",
       "The plant has operated in Ramenskoye since 2008. Production capacity is up to 20,000 tonnes of polymer dispersions per year for the paint and coatings industry.",
       "Safety, quality, environmental responsibility, and automation are the core principles of Finndisp.",
     ],
@@ -149,7 +149,7 @@ const content = {
       {
         title: "Capacity expansion",
         description:
-          "Plans include increasing capacity by 60,000 tonnes per year at the AO Plastik site in Uzlоvaya.",
+          "Plans include increasing capacity by 60,000 tonnes per year at the AO Plastic site in Uzlоvaya.",
       },
     ],
     segmentsBadge: "Product range",
@@ -192,7 +192,7 @@ const content = {
       { year: "2012", text: "The plant was fully adapted to Dow standards." },
       {
         year: "2024",
-        text: "In January, Finndisp was acquired by Russian investors and joined AO Plastik (Uzlоvaya).",
+        text: "In January, Finndisp was acquired by Russian investors and joined AO Plastic (Uzlоvaya).",
       },
     ],
     contactsBadge: "Contacts",

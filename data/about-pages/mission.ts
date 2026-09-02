@@ -13,7 +13,7 @@ export const missionPageContent = {
       "От первых специализированных цехов до современного промышленного предприятия — ключевые этапы развития АО «Пластик».",
   },
   en: {
-    eyebrow: "JSC «Plastik»",
+    eyebrow: "JSC «Plastic»",
     title: "Company Mission",
     intro:
       "We achieve maximum business efficiency by meeting the needs and expectations of our customers, through long-term sound planning, organizing effective work for every employee, and improving the comfort and quality of life in society.",
@@ -23,6 +23,6 @@ export const missionPageContent = {
     scrollToHistory: "Company history",
     historyEyebrow: "Our development",
     historyLead:
-      "From the first specialized production shops to a modern industrial enterprise — the key milestones in the development of JSC «Plastik».",
+      "From the first specialized production shops to a modern industrial enterprise — the key milestones in the development of JSC «Plastic».",
   },
 }

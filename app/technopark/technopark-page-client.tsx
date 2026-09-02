@@ -174,7 +174,7 @@ export function TechnoparkPageClient() {
         <div className="absolute inset-0">
           <Image
             src={`${IMG}/hero-render.jpg`}
-            alt={en ? "Plastik Industrial Park" : "Индустриальный парк «Пластик»"}
+            alt={en ? "Plastic Industrial Park" : "Индустриальный парк «Пластик»"}
             fill
             priority
             className="object-cover object-center"
@@ -188,7 +188,7 @@ export function TechnoparkPageClient() {
             {en ? "Uzlovaya, Tula Region" : "г. Узловая, Тульская область"}
           </p>
           <h1 className="text-h1 max-w-3xl text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
-            {en ? "Plastik Industrial Park" : "Индустриальный парк «Пластик»"}
+            {en ? "Plastic Industrial Park" : "Индустриальный парк «Пластик»"}
           </h1>
           <p className="text-body-lead mt-5 max-w-2xl text-white/90">
             {en
@@ -407,7 +407,7 @@ export function TechnoparkPageClient() {
               </h2>
               <p className="text-body mt-5 text-muted-foreground">
                 {en
-                  ? "Plastik participates in the federal Professionalitet project together with the Uzlovaya Polytechnic College. In 2022 a new training and laboratory building was opened on the plant's territory."
+                  ? "Plastic participates in the federal Professionalitet project together with the Uzlovaya Polytechnic College. In 2022 a new training and laboratory building was opened on the plant's territory."
                   : "«Пластик» участвует в федеральном проекте «Профессионалитет» вместе с Узловским политехническим колледжем. В 2022 году на территории предприятия открыт учебно-лабораторный корпус."}
               </p>
               <div className="mt-8 grid grid-cols-2 gap-4">
@@ -446,7 +446,7 @@ export function TechnoparkPageClient() {
             </h2>
             <p className="text-body-lead relative mx-auto mt-4 max-w-2xl text-white/85">
               {en
-                ? "Ready sites, utilities, logistics and workforce — start your production at the Plastik Industrial Park."
+                ? "Ready sites, utilities, logistics and workforce — start your production at the Plastic Industrial Park."
                 : "Готовые площадки, коммуникации, логистика и кадры — запустите производство в индустриальном парке «Пластик»."}
             </p>
             <div className="relative mt-8">

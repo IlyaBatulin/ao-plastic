@@ -174,18 +174,18 @@ export const safetyPageContent = {
   en: {
     heroTitle: "Occupational Safety and Environment",
     heroSubtitle:
-      "JSC Plastik considers environmental safety, protection of human health and the environment an integral part of its activities and a key priority.",
+      "JSC Plastic considers environmental safety, protection of human health and the environment an integral part of its activities and a key priority.",
     cards: [
       { title: "Occupational Safety", description: "Compliance with all occupational health and safety standards" },
       { title: "Environment", description: "Minimizing environmental impact" },
       { title: "Training", description: "Regular staff training" },
     ],
-    policyTitle: "Environmental Policy of JSC Plastik",
+    policyTitle: "Environmental Policy of JSC Plastic",
     policyIntro: [
-      "JSC Plastik is a chemical enterprise producing styrene, ABS plastics, polystyrene, separators, plastics in primary forms and products from recycled plastics. The company's main objectives are continuous capitalization growth, maximum business efficiency and leadership in chemical production while ensuring environmental safety.",
-      "JSC Plastik considers environmental safety, protection of human health and the environment an integral element of its activities and a priority; this Environmental Policy is therefore part of the mission and development strategy of JSC Plastik.",
+      "JSC Plastic is a chemical enterprise producing styrene, ABS plastics, polystyrene, separators, plastics in primary forms and products from recycled plastics. The company's main objectives are continuous capitalization growth, maximum business efficiency and leadership in chemical production while ensuring environmental safety.",
+      "JSC Plastic considers environmental safety, protection of human health and the environment an integral element of its activities and a priority; this Environmental Policy is therefore part of the mission and development strategy of JSC Plastic.",
     ],
-    goalsTitle: "Main Objectives of the Environmental Policy of JSC Plastik",
+    goalsTitle: "Main Objectives of the Environmental Policy of JSC Plastic",
     goals: [
       "Implementing advanced scientific developments and technologies to increase efficient use of raw materials with maximum product yield.",
       "Prioritizing planned and implemented preventive measures regarding environmental impact over measures to remediate such impact.",
@@ -196,9 +196,9 @@ export const safetyPageContent = {
       "Informing and maintaining active dialogue with stakeholders, the public and local communities on the company's environmental safety activities.",
       "Complying with environmental legislation of the Russian Federation, developing cooperation with federal and regional legislative and executive authorities on environmental protection, and expanding international cooperation in environmentally clean, efficient and economically viable technologies and equipment.",
     ],
-    commitmentsTitle: "Commitments of JSC Plastik",
+    commitmentsTitle: "Commitments of JSC Plastic",
     commitmentsIntro:
-      "To achieve the stated objectives, JSC Plastik undertakes the following commitments:",
+      "To achieve the stated objectives, JSC Plastic undertakes the following commitments:",
     commitments: [
       "Make and implement decisions with mandatory consideration of environmental aspects of planned activities, products and services.",
       "Assess environmental aspects and systematically develop and implement measures to reduce them and compensate damage caused by environmental aspects.",
@@ -206,10 +206,10 @@ export const safetyPageContent = {
       "Plan and implement measures to improve the environmental management system, reduce environmental impact, prevent accidents and mitigate their consequences.",
       "Upgrade existing process equipment and improve production schemes using resource-saving and low-waste technologies.",
       "Ensure involvement of all employees in environmental management through systematic training, competence development and motivation.",
-      "Require contractors performing work on behalf of JSC Plastik to comply with legal norms and internal requirements of JSC Plastik.",
+      "Require contractors performing work on behalf of JSC Plastic to comply with legal norms and internal requirements of JSC Plastic.",
     ],
     policyClosing:
-      "Achievement of the objectives of this policy is ensured by the personal responsibility of management and every employee of JSC Plastik.",
+      "Achievement of the objectives of this policy is ensured by the personal responsibility of management and every employee of JSC Plastic.",
     documentsTitle: "Documents",
     documentsIntro:
       "Policies, special assessment of working conditions reports, environmental policy and certificates.",

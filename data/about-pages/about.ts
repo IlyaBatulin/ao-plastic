@@ -51,8 +51,8 @@ export const aboutPageContent = {
     ] as AboutMissionCard[],
   },
   en: {
-    heroImageAlt: "Production columns at JSC «Plastik», winter",
-    heroBadge: "JSC «Plastik» · since 1959",
+    heroImageAlt: "Production columns at JSC «Plastic», winter",
+    heroBadge: "JSC «Plastic» · since 1959",
     heroTitle: "About Us",
     heroSubtitle: "Building the future of the plastics industry — from Uzlovaya for all of Russia",
     stats: {
@@ -63,8 +63,8 @@ export const aboutPageContent = {
       productionSuffix: "+ thousand tons",
     },
     historyTitle: "Our History",
-    historyImageAlt: "JSC Plastik production site in winter",
-    historyLeadCompany: "JSC «Plastik»",
+    historyImageAlt: "JSC Plastic production site in winter",
+    historyLeadCompany: "JSC «Plastic»",
     historyLeadText:
       " was founded in 1959 in Uzlovaya, Tula Region. Over more than 65 years, we have grown from a small plant into a leader of the Russian chemical industry in the ABS plastics segment.",
     historyParagraphs: [

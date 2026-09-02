@@ -16,13 +16,16 @@ import { useLanguage } from "@/contexts/language-context"
 import { useToast } from "@/hooks/use-toast"
 import type { NextPageProps } from "@/lib/next-page-props"
 import { FACTORY_YANDEX_MAP_EMBED_URL } from "@/lib/yandex-maps"
-import { SALES_DIRECTION_CONTACTS } from "@/lib/sales-direction-contacts"
+import {
+  formatSalesDirectionPhone,
+  SALES_DIRECTION_CONTACTS,
+} from "@/lib/sales-direction-contacts"
 import { TEK_SNAB_CONTACTS } from "@/lib/tek-snab-contacts"
 
 export default function ContactsPage({ params, searchParams }: NextPageProps) {
   use(params ?? Promise.resolve({}))
   use(searchParams ?? Promise.resolve({}))
-  const { t } = useLanguage()
+  const { lang, t } = useLanguage()
   const { toast } = useToast()
 
   const salesDirections = SALES_DIRECTION_CONTACTS
@@ -234,7 +237,7 @@ export default function ContactsPage({ params, searchParams }: NextPageProps) {
                           {salesDirections.map((item) => (
                             <div key={item.key} className="border border-border/60 rounded-2xl p-4">
                               <p className="font-semibold text-foreground mb-2">{t(`contactsPage.salesByDirection.directions.${item.key}`)}</p>
-                              <p>{item.phone}</p>
+                              <p>{formatSalesDirectionPhone(item.phone, lang)}</p>
                               <p>{item.email}</p>
                             </div>
                           ))}

@@ -159,6 +159,15 @@ const LOOKUP_ALIASES = buildLookupAliases()
 
 /** Фразы в описаниях товаров RU → EN */
 const PRODUCT_DESCRIPTION_PHRASES_EN: [RegExp, string][] = [
+  [/\bУПЕКС\b/gi, "UPEX"],
+  [/Нерассеянная\s+фракция/gi, "Unscreened fraction"],
+  [/для\s+изготовления\s+газифицируемых\s+моделей\s+в\s+литейном\s+производстве/gi, "for expendable-pattern casting"],
+  [/Способ\s+получения:\s*Э\s*[—-]\s*эмульсионный\.?/gi, "Production method: E — emulsion process."],
+  [/Первый\s+сорт\.?/gi, "First grade."],
+  [/Нормативный\s+документ:\s*/gi, "Specification: "],
+  [/ТУ/g, "TU"],
+  [/ГОСТ/g, "GOST"],
+  [/изменение\s*№?\s*(\d+)/gi, "amendment No. $1"],
   [
     /Экструзионный\s+АБС-пластик\s+марки\s+/gi,
     "Extrusion ABS plastic grade ",
@@ -172,6 +181,10 @@ const PRODUCT_DESCRIPTION_PHRASES_EN: [RegExp, string][] = [
     "for sheet and profile production by extrusion",
   ],
   [/литьевой\s+АБС-пластик/gi, "Injection ABS plastic"],
+  [/марки\s+/gi, "grade "],
+  [/для\s+производства\s+деталей\s+методом\s+литья\s+под\s+давлением/gi, "for manufacturing parts by injection molding"],
+  [/для\s+производства\s+деталей/gi, "for manufacturing parts"],
+  [/методом\s+литья\s+под\s+давлением/gi, "by injection molding"],
   [/АБС-пластик/gi, "ABS plastic"],
   [/вспенивающийся\s+полистирол/gi, "expandable polystyrene"],
   [/полистирол\s+экструзионный/gi, "extrusion polystyrene"],
@@ -186,6 +199,9 @@ const PRODUCT_DESCRIPTION_PHRASES_EN: [RegExp, string][] = [
 
 /** Длинные фразы в названиях ДМС / каталога (сначала длинные) */
 const PRODUCT_NAME_PHRASES_EN: [RegExp, string][] = [
+  [/Направляющий диск/gi, "Guide disc"],
+  [/Заглушка отверстия внутренней панели/gi, "Inner panel hole plug"],
+  [/Ролик/gi, "Roller"],
   [
     /Накладка облицовочная сточного желоба крыши «удочка» 2101-07/i,
     'Roof gutter trim overlay "Fishing rod" 2101-07',
@@ -206,6 +222,10 @@ const PRODUCT_NAME_PHRASES_EN: [RegExp, string][] = [
  * иначе «ПСВ-С» превращается только в «EPS-С» (частичная замена ПСВ→EPS).
  */
 const CYRILLIC_MARK_REPLACEMENTS: [RegExp, string][] = [
+  [/КА\s*[-–]?\s*(\d+)\s*А/gi, "KA-$1A"],
+  [/КА(?=\s*[-–]?\s*\d)/gi, "KA"],
+  [/УПЕКС/gi, "UPEX"],
+  [/Нерассеянная\s+фракция/gi, "Unscreened Fraction"],
   [/ПСВ\s*[-–]?\s*[СC](?![А-Яа-яA-Za-z])/gi, "EPS-S"],
   [/ПСВ\s*[-–]?\s*[ЛL](?![А-Яа-яA-Za-z])/gi, "EPS-L"],
   [/PSV\s*[-–]?\s*[СC](?![А-Яа-яA-Za-z])/gi, "EPS-S"],

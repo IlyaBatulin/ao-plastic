@@ -45,3 +45,10 @@ export const SALES_DIRECTION_CONTACTS: SalesDirectionContact[] = [
     email: "info@td-plastic.ru",
   },
 ]
+
+/** Formats Russian extension abbreviations for the English interface. */
+export function formatSalesDirectionPhone(phone: string, language: string): string {
+  if (language === "ru") return phone
+
+  return phone.replace(/\s*доб\.(\d+)/g, " ext. $1")
+}

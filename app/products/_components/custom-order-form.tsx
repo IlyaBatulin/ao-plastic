@@ -35,6 +35,13 @@ export function CustomOrderForm({
   const { toast } = useToast()
   const { lang } = useLanguage()
   const isEn = lang === "en"
+  const resolvedCommentLabel = isEn && commentLabel === "Описание заказа / Комментарий" ? "Order details / Comments" : commentLabel
+  const resolvedCommentPlaceholder = isEn && commentPlaceholder.startsWith("Опишите,")
+    ? "Describe the ABS plastic products you require, including specifications, quantity, delivery schedule and any other requirements..."
+    : commentPlaceholder
+  const resolvedCommentHint = isEn && commentHint.startsWith("Укажите тип")
+    ? "Specify the product type, dimensions, quantity, colour and any special requirements"
+    : commentHint
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [consentAccepted, setConsentAccepted] = useState(false)
   const [formData, setFormData] = useState({
@@ -114,8 +121,8 @@ export function CustomOrderForm({
           customerPhone: formData.customerPhone.trim(),
           customerEmail: formData.customerEmail.trim() || undefined,
           comment: formData.comment.trim()
-            ? `${orderCommentPrefix}\n\n${formData.comment.trim()}`
-            : orderCommentPrefix,
+            ? `${isEn && orderCommentPrefix === "Заявка об АБС пластике на заказ" ? "Custom ABS plastic manufacturing request" : orderCommentPrefix}\n\n${formData.comment.trim()}`
+            : isEn && orderCommentPrefix === "Заявка об АБС пластике на заказ" ? "Custom ABS plastic manufacturing request" : orderCommentPrefix,
           payload: {
             orderType,
             source,
@@ -159,20 +166,20 @@ export function CustomOrderForm({
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
         <label className="text-sm font-semibold mb-2 block">
-          Ваше имя <span className="text-destructive">*</span>
+          {isEn ? "Your name" : "Ваше имя"} <span className="text-destructive">*</span>
         </label>
         <Input
           value={formData.customerName}
           onChange={(e) => setFormData({ ...formData, customerName: e.target.value })}
           required
-          placeholder="Иван Иванов"
+          placeholder={isEn ? "John Smith" : "Иван Иванов"}
           className="h-12"
         />
       </div>
 
       <div>
         <label className="text-sm font-semibold mb-2 block">
-          Телефон <span className="text-destructive">*</span>
+          {isEn ? "Phone" : "Телефон"} <span className="text-destructive">*</span>
         </label>
         <Input
           type="tel"
@@ -196,15 +203,15 @@ export function CustomOrderForm({
       </div>
 
       <div>
-        <label className="text-sm font-semibold mb-2 block">{commentLabel}</label>
+        <label className="text-sm font-semibold mb-2 block">{resolvedCommentLabel}</label>
         <Textarea
           value={formData.comment}
           onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
-          placeholder={commentPlaceholder}
+          placeholder={resolvedCommentPlaceholder}
           rows={6}
           className="resize-none"
         />
-        <p className="text-xs text-muted-foreground mt-2">{commentHint}</p>
+        <p className="text-xs text-muted-foreground mt-2">{resolvedCommentHint}</p>
       </div>
 
       <div className="flex items-start gap-2">
@@ -216,29 +223,29 @@ export function CustomOrderForm({
           className="mt-1"
         />
         <label htmlFor="consent-custom-order" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
-          Я согласен(а) с{" "}
+          {isEn ? "I agree to the " : "Я согласен(а) с "}
           <Link
             href={LEGAL_DOCUMENTS.personalDataConsentPage}
             className="text-primary hover:underline"
             target="_blank"
             rel="noopener noreferrer"
           >
-            согласием на обработку персональных данных
+            {isEn ? "personal data processing consent" : "согласием на обработку персональных данных"}
           </Link>{" "}
-          и{" "}
+          {isEn ? " and the " : " и "}
           <Link
             href={LEGAL_DOCUMENTS.privacyPolicyPage}
             className="text-primary hover:underline"
             target="_blank"
             rel="noopener noreferrer"
           >
-            политикой конфиденциальности
+            {isEn ? "privacy policy" : "политикой конфиденциальности"}
           </Link>
         </label>
       </div>
 
       <Button type="submit" className="w-full h-14 text-lg" disabled={isSubmitting || !consentAccepted}>
-        {isSubmitting ? "Отправка..." : "Отправить заявку"}
+        {isSubmitting ? (isEn ? "Sending..." : "Отправка...") : (isEn ? "Submit request" : "Отправить заявку")}
       </Button>
     </form>
   )

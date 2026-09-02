@@ -5,6 +5,6 @@ export const publicationsHeroContent = {
   },
   en: {
     heroTitle: "Publications",
-    heroSubtitle: "News and articles about Plastik's activities",
+    heroSubtitle: "News and articles about Plastic's activities",
   },
 } as const

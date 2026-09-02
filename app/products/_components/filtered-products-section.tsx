@@ -10,6 +10,8 @@ import ProductsGrid from "./products-grid"
 import { isMachinePartsExtrusion } from "@/lib/catalog-slugs"
 import { parseSpecifications } from "@/lib/product-specs"
 import { translateExtrusionPartType } from "@/lib/extrusion-i18n"
+import { resolveProductDisplay } from "@/lib/product-en"
+import { formatSpecValue } from "@/lib/formatters"
 import { Input } from "@/components/ui/input"
 
 const ProductFilters = dynamic(
@@ -104,6 +106,20 @@ export function FilteredProductsSection({
   }, [isExtrusionSubcategory, products, extrusionSearch, extrusionSelectedTypes, extrusionTypeKey])
 
   const effectiveProducts = isExtrusionSubcategory ? extrusionFilteredProducts : filteredProducts
+  const tableLabel = (ru: string, en: string) => (specLang === "en" ? en : ru)
+  const productTableName = (product: Product) =>
+    resolveProductDisplay(
+      {
+        id: String(product.id),
+        name: product.name,
+        description: product.description,
+        slug: product.slug,
+        brand: product.brand,
+        specifications: parseSpecifications(product.specifications),
+      },
+      specLang,
+      { categoryId, subcategoryId }
+    ).name
 
   return (
     <>
@@ -233,23 +249,23 @@ export function FilteredProductsSection({
             <table className="w-full min-w-[1080px] border-separate border-spacing-0 text-sm">
               <thead>
                 <tr className="bg-muted/50 border-b border-border">
-                  <th className="sticky left-0 z-30 w-[180px] min-w-[180px] max-w-[180px] border-r border-border bg-muted px-4 py-4 text-left font-semibold shadow-[10px_0_16px_-16px_rgba(15,23,42,0.8)] sm:w-[240px] sm:min-w-[240px] sm:max-w-[240px]">Марка</th>
-                  <th className="py-4 px-4 text-left font-semibold">Размер частиц основной фракции</th>
-                  <th className="py-4 px-4 text-left font-semibold">Массовая доля основной фракции, %, не менее</th>
-                  <th className="py-4 px-4 text-left font-semibold">Массовая доля пентанов, %, в пределах</th>
-                  <th className="py-4 px-4 text-left font-semibold">Потеря массы при сушке, %, не более</th>
-                  <th className="py-4 px-4 text-left font-semibold">Остаточный мономер (стирол), %, не более</th>
-                  <th className="py-4 px-4 text-left font-semibold">Относительная вязкость, не менее</th>
+                  <th className="sticky left-0 z-30 w-[180px] min-w-[180px] max-w-[180px] border-r border-border bg-muted px-4 py-4 text-left font-semibold shadow-[10px_0_16px_-16px_rgba(15,23,42,0.8)] sm:w-[240px] sm:min-w-[240px] sm:max-w-[240px]">{tableLabel("Марка", "Grade")}</th>
+                  <th className="py-4 px-4 text-left font-semibold">{tableLabel("Размер частиц основной фракции", "Main fraction particle size")}</th>
+                  <th className="py-4 px-4 text-left font-semibold">{tableLabel("Массовая доля основной фракции, %, не менее", "Main fraction content, % min.")}</th>
+                  <th className="py-4 px-4 text-left font-semibold">{tableLabel("Массовая доля пентанов, %, в пределах", "Pentane content, %")}</th>
+                  <th className="py-4 px-4 text-left font-semibold">{tableLabel("Потеря массы при сушке, %, не более", "Mass loss on drying, % max.")}</th>
+                  <th className="py-4 px-4 text-left font-semibold">{tableLabel("Остаточный мономер (стирол), %, не более", "Residual monomer (styrene), % max.")}</th>
+                  <th className="py-4 px-4 text-left font-semibold">{tableLabel("Относительная вязкость, не менее", "Relative viscosity, min.")}</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredProducts.map((p) => {
                   const specs = parseSpecifications(p.specifications)
-                  const value = (key: string) => String(specs[key] ?? "—")
+                  const value = (key: string) => formatSpecValue(key, specs[key], specLang)
                   
                   return (
                     <tr key={p.id} className="group border-b border-border/60 transition-colors hover:bg-muted/30">
-                      <td className="sticky left-0 z-20 w-[180px] min-w-[180px] max-w-[180px] break-words border-r border-border bg-card px-4 py-4 font-semibold leading-snug shadow-[10px_0_16px_-16px_rgba(15,23,42,0.8)] group-hover:bg-muted sm:w-[240px] sm:min-w-[240px] sm:max-w-[240px]">{p.name}</td>
+                      <td className="sticky left-0 z-20 w-[180px] min-w-[180px] max-w-[180px] break-words border-r border-border bg-card px-4 py-4 font-semibold leading-snug shadow-[10px_0_16px_-16px_rgba(15,23,42,0.8)] group-hover:bg-muted sm:w-[240px] sm:min-w-[240px] sm:max-w-[240px]">{productTableName(p)}</td>
                       <td className="py-4 px-4">{value("Размер частиц основной фракции")}</td>
                       <td className="py-4 px-4">{value("Массовая доля частиц основной фракции, %, не менее")}</td>
                       <td className="py-4 px-4">{value("Массовая доля пентанов, %, в пределах")}</td>
@@ -266,21 +282,21 @@ export function FilteredProductsSection({
             <table className="w-full min-w-[1180px] border-separate border-spacing-0 text-sm">
               <thead>
                 <tr className="bg-muted/50 border-b border-border">
-                  <th className="sticky left-0 z-30 w-[180px] min-w-[180px] max-w-[180px] border-r border-border bg-muted px-4 py-4 text-left font-semibold shadow-[10px_0_16px_-16px_rgba(15,23,42,0.8)] sm:w-[240px] sm:min-w-[240px] sm:max-w-[240px]">Марка</th>
-                  <th className="py-4 px-4 text-left font-semibold">Плотность, кг/м³</th>
-                  <th className="py-4 px-4 text-left font-semibold">Усадка, %, в пределах</th>
-                  <th className="py-4 px-4 text-left font-semibold">ПТР (MFR), г/10 мин</th>
-                  <th className="py-4 px-4 text-left font-semibold">Удлинение при разрыве, %, не менее</th>
-                  <th className="py-4 px-4 text-left font-semibold">Ударная вязкость по Изоду, кДж/м², не менее</th>
-                  <th className="py-4 px-4 text-left font-semibold">Предел текучести при растяжении, кгс/см², не менее</th>
-                  <th className="py-4 px-4 text-left font-semibold">Температура размягчения по Вика, °C, не менее</th>
-                  <th className="py-4 px-4 text-left font-semibold">Блеск, %</th>
+                  <th className="sticky left-0 z-30 w-[180px] min-w-[180px] max-w-[180px] border-r border-border bg-muted px-4 py-4 text-left font-semibold shadow-[10px_0_16px_-16px_rgba(15,23,42,0.8)] sm:w-[240px] sm:min-w-[240px] sm:max-w-[240px]">{tableLabel("Марка", "Grade")}</th>
+                  <th className="py-4 px-4 text-left font-semibold">{tableLabel("Плотность, кг/м³", "Density, kg/m³")}</th>
+                  <th className="py-4 px-4 text-left font-semibold">{tableLabel("Усадка, %, в пределах", "Molding shrinkage, %")}</th>
+                  <th className="py-4 px-4 text-left font-semibold">{tableLabel("ПТР (MFR), г/10 мин", "Melt flow rate (MFR), g/10 min")}</th>
+                  <th className="py-4 px-4 text-left font-semibold">{tableLabel("Удлинение при разрыве, %, не менее", "Elongation at break, % min.")}</th>
+                  <th className="py-4 px-4 text-left font-semibold">{tableLabel("Ударная вязкость по Изоду, кДж/м², не менее", "Izod impact strength, kJ/m² min.")}</th>
+                  <th className="py-4 px-4 text-left font-semibold">{tableLabel("Предел текучести при растяжении, кгс/см², не менее", "Tensile yield strength, kgf/cm² min.")}</th>
+                  <th className="py-4 px-4 text-left font-semibold">{tableLabel("Температура размягчения по Вика, °C, не менее", "Vicat softening temperature, °C min.")}</th>
+                  <th className="py-4 px-4 text-left font-semibold">{tableLabel("Блеск, %", "Gloss, %")}</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredProducts.map((p) => {
                   const specs = parseSpecifications(p.specifications)
-                  const brand = p.name
+                  const brand = productTableName(p)
                   const textValue = (key: string) => String(specs[key] ?? "—")
                   const density = textValue("Плотность, кг/м³")
                   const shrinkage = textValue("Усадка при литье под давлением, %, в пределах")

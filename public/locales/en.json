@@ -98,7 +98,7 @@
     "thankYouDescription": "Your order has been sent successfully. Our team will contact you shortly.",
     "backToShopping": "Back to shopping",
     "metaTitle": "Cart",
-    "metaDescription": "Order cart on the JSC «Plastik» website."
+    "metaDescription": "Order cart on the JSC «Plastic» website."
   },
   "common": {
     "download": "Download",
@@ -131,11 +131,11 @@
   },
   "dealersPage": {
     "badge": "Dealer Network",
-    "title": "Partners and Regional Warehouses of JSC «Plastik»",
-    "description": "Products of JSC «Plastik» can be purchased from dealers with warehouse complexes in regions of Russia and CIS countries. We are developing a partner network to ensure prompt deliveries and service near our clients' production facilities.",
+    "title": "Partners and Regional Warehouses of JSC «Plastic»",
+    "description": "Products of JSC «Plastic» can be purchased from dealers with warehouse complexes in regions of Russia and CIS countries. We are developing a partner network to ensure prompt deliveries and service near our clients' production facilities.",
     "location": "Nizhny Novgorod and other cities",
     "sectionTitle": "Nizhny Novgorod — Partner Warehouse",
-    "sectionDescription": "Dealers based in Nizhny Novgorod provide warehouse stocks and shipment of JSC «Plastik» products throughout the Volga region and the Urals.",
+    "sectionDescription": "Dealers based in Nizhny Novgorod provide warehouse stocks and shipment of JSC «Plastic» products throughout the Volga region and the Urals.",
     "logoAlt": "Nizhny Novgorod dealers logos",
     "partners": {
       "trastPolimer": "Trust Polimer NN LLC",
@@ -168,15 +168,15 @@
       "address": "119361, Moscow, Ochakovo-Matveyevskoye municipal district, 41 Lobachevskogo St., premises 6, floor 1, office 102B"
     },
     "salesByDirection": {
-      "title": "Sales by Direction",
+      "title": "Sales by Product Line",
       "badge": "Sales",
       "directions": {
         "abs": "ABS Plastics",
-        "polystyrene": "Polystyrene",
-        "machineParts": "Machine Parts",
-        "cors": "CORS (Cubic Residue of Styrene Rectification)",
-        "liquidation": "Liquidation",
-        "consumerGoods": "Consumer Goods"
+        "polystyrene": "UPEX Expandable Polystyrene",
+        "machineParts": "Machine-Building Components",
+        "cors": "Styrene Rectification Bottoms (CORS)",
+        "liquidation": "Surplus Inventory",
+        "consumerGoods": "Consumer Products"
       }
     },
     "form": {
@@ -215,7 +215,7 @@
   },
   "suppliersPage": {
     "badge": "For Suppliers",
-    "title": "Partnership with JSC «Plastik»: Raw Materials and Supplies Procurement",
+    "title": "Partnership with JSC «Plastic»: Raw Materials and Supplies Procurement",
     "description": "We are open to cooperation with reliable suppliers of raw materials, chemical components, packaging, and services. Below are key contacts, current requests, and supplier requirements.",
     "contacts": {
       "title": "Main Contacts",
@@ -233,7 +233,7 @@
     },
     "etpTenders": {
       "title": "Tenders on ETP GPB",
-      "description": "Current procurements of JSC «Plastik» on Gazprombank's electronic trading platform. Participation is subject to ETP GPB rules.",
+      "description": "Current procurements of JSC «Plastic» on Gazprombank's electronic trading platform. Participation is subject to ETP GPB rules.",
       "openOnEtp": "Go to tenders",
       "loading": "Loading procurements…",
       "empty": "No active procedures match the current filters. Open ETP GPB for the full list.",
@@ -242,7 +242,7 @@
     "rfps": {
       "title": "Active Requests for Proposals",
       "description": "Select an interesting request and submit a proposal directly on the page. Our specialists will contact you to clarify details.",
-      "customer": "Customer: JSC «Plastik»",
+      "customer": "Customer: JSC «Plastic»",
       "submitProposal": "Submit Proposal",
       "submitDescription": "Provide contact details and briefly describe the terms. The procurement team will respond to the specified email.",
       "companyPlaceholder": "Company",
@@ -252,7 +252,7 @@
       "requests": {
         "req001": {
           "title": "Comprehensive Supply of General Purpose Polystyrene",
-          "description": "JSC «Plastik» is considering proposals for the supply of PSE-1 polystyrene (granules) for the production of mass consumption products.",
+          "description": "JSC «Plastic» is considering proposals for the supply of PSE-1 polystyrene (granules) for the production of mass consumption products.",
           "details": [
             "Volume: 48 tons (4 batches of 12 tons)",
             "Requirements: density 1.04 g/cm³, MFR 5–7 g/10 min, big bag packaging 1200 kg",
@@ -325,7 +325,7 @@
     "loadError": "Failed to load vacancies",
     "retry": "Try again",
     "listUnavailableTitle": "List temporarily unavailable on the website",
-    "listUnavailableDefault": "Current vacancies at JSC Plastik are published on HeadHunter.",
+    "listUnavailableDefault": "Current vacancies at JSC Plastic are published on HeadHunter.",
     "allOnHh": "All vacancies on hh.ru",
     "noResultsFiltered": "No vacancies match these filters",
     "noResultsEmpty": "There are no open vacancies at the moment",
@@ -349,7 +349,7 @@
   },
   "homePage": {
     "hero": {
-      "title": "Plastik — Technologies of the Future",
+      "title": "Plastic — Technologies of the Future",
       "description": "A leader in the chemical industry producing ABS plastics and expandable polystyrene since 1959. We continuously improve our product range",
       "catalogButton": "Product Catalog",
       "aboutButton": "Learn More About Us"
@@ -368,9 +368,9 @@
     },
     "about": {
       "title": "About Us",
-      "paragraph1": "<strong>JSC «Plastik»</strong> is a leader in the Russian chemical industry in the ABS plastics segment. 98% of the polystyrene we produce are modern target grades. Founded in 1959, our enterprise continuously develops, exploring new directions and constantly modernizing.",
+      "paragraph1": "<strong>JSC «Plastic»</strong> is a leader in the Russian chemical industry in the ABS plastics segment. 98% of the polystyrene we produce are modern target grades. Founded in 1959, our enterprise continuously develops, exploring new directions and constantly modernizing.",
       "paragraph2": "We produce polymer raw materials that meet modern quality standards. Our products include expandable polystyrene, styrene-acrylic dispersions, extrusion and injection grades of ABS plastics, as well as various plastic products used in industry and everyday life.",
-      "paragraph3": "Our plant operates a <strong>quality management system certified for compliance with ISO 9001-2008 and GOST ISO 9001:2011</strong>. Premium product quality and competitive pricing make cooperation with JSC «Plastik» both reliable and commercially advantageous.",
+      "paragraph3": "Our plant operates a <strong>quality management system certified for compliance with ISO 9001-2008 and GOST ISO 9001:2011</strong>. Premium product quality and competitive pricing make cooperation with JSC «Plastic» both reliable and commercially advantageous.",
       "feature1": {
         "title": "ABS Market Leader",
         "description": "Leading positions in the Russian chemical market in the ABS plastics segment"
@@ -613,7 +613,7 @@
         },
         "extrusion": {
           "title": "Extrusion ABS plastic",
-          "intro": "AO Plastik offers several grades of extrusion ABS plastic. In extrusion, the material is melted in an extruder, then pushed through a die, cooled and calibrated. Advantages of extrusion ABS include high impact properties, mechanical strength and rigidity.",
+          "intro": "AO Plastic offers several grades of extrusion ABS plastic. In extrusion, the material is melted in an extruder, then pushed through a die, cooled and calibrated. Advantages of extrusion ABS include high impact properties, mechanical strength and rigidity.",
           "applicationsHeading": "Applications",
           "details": "Grades in this section are most often used to produce sheets of various thickness with glossy or matte surfaces, and in some cases with embossing. Sheets are later vacuum- or pressure-formed into finished parts.",
           "applications": [
@@ -628,10 +628,10 @@
       },
       "styrenePage": {
         "title": "Styrene",
-        "lead": "A monomer for polystyrene, copolymers and synthetic rubber — the foundation of many polymer materials in the AO Plastik product range.",
-        "imageAlt": "SDEB grade styrene — clear liquid, AO Plastik production",
+        "lead": "A monomer for polystyrene, copolymers and synthetic rubber — the foundation of many polymer materials in the AO Plastic product range.",
+        "imageAlt": "SDEB grade styrene — clear liquid, AO Plastic production",
         "p1": "Styrene (vinylbenzene) is a liquid aromatic hydrocarbon and the key building block in the polymer chain: expandable and extrusion polystyrene, ABS plastics, styrene-butadiene and styrene-containing rubbers, latices and other downstream products.",
-        "p2": "High chemical purity of the monomer directly affects polymerization stability and the quality of the finished product — from sheets and profiles to machine parts and consumer goods. AO Plastik maintains strict control of specification parameters plus storage and shipping conditions.",
+        "p2": "High chemical purity of the monomer directly affects polymerization stability and the quality of the finished product — from sheets and profiles to machine parts and consumer goods. AO Plastic maintains strict control of specification parameters plus storage and shipping conditions.",
         "gradeTitle": "STYRENE, grade SDEB",
         "gradeGost": "GOST 10003-90 \"Styrene\", Amendment No. 1",
         "gradeNote": "This grade meets premium-grade styrene requirements for appearance, main substance content and impurities — see the table below.",
@@ -666,8 +666,8 @@
         "stat3Label": "impact strength increase at −5 °C (PVC pipes)",
         "stat4Label": "modifier grades in the range",
         "articleTitle": "Russian alternative",
-        "articleLead": "From the article by PhD G. Barsamyan in Plastiks magazine",
-        "articleQuote": "Besides acrylic modifiers and CPE, there is another product widely used as a PVC modifier — acrylonitrile-butadiene-styrene (ABS) copolymer, considered in the USA the most cost-effective impact modifier for PVC. AO Plastik (UzlOVaya) is the largest ABS producer in Russia. ABS testing as impact and processing modifier for PVC began in July 2016.",
+        "articleLead": "From the article by PhD G. Barsamyan in Plastics magazine",
+        "articleQuote": "Besides acrylic modifiers and CPE, there is another product widely used as a PVC modifier — acrylonitrile-butadiene-styrene (ABS) copolymer, considered in the USA the most cost-effective impact modifier for PVC. AO Plastic (UzlOVaya) is the largest ABS producer in Russia. ABS testing as impact and processing modifier for PVC began in July 2016.",
         "articleResultsTitle": "PVC samples with ABS modifier were tested at NIC Wood-Polymer Composites LLC with the following results:",
         "articleResults": [
           "reduced brittleness and 9% increase in impact strength",
@@ -676,7 +676,7 @@
           "17% increase in extrusion speed compared to the current formulation",
           "reduced compound cost"
         ],
-        "articleLink": "Full text: PhD G.B. Barsamyan / Modifiers for rigid PVC / Plastiks No. 3/2017"
+        "articleLink": "Full text: PhD G.B. Barsamyan / Modifiers for rigid PVC / Plastics No. 3/2017"
       },
       "korsPage": {
         "corsTitle": "CORS",
@@ -685,15 +685,15 @@
         "corsP1": "CORS (cubic residue of styrene rectification) is a by-product of styrene production.",
         "corsP2": "It is used as fuel in some modern heating systems and boilers. CORS is also a solvent and a component in various types of industrial production.",
         "corsP3": "The main application is film-forming materials. CORS residues are also used to improve mechanical strength and reduce static in rubber-based floor coatings, and for impregnating wood and fibreboard to improve moisture resistance, strength and durability.",
-        "corsP4": "CORS quality from AO Plastik meets TU 2415-038-05762341-2012, rev. 1, 2, 3.",
+        "corsP4": "CORS quality from AO Plastic meets TU 2415-038-05762341-2012, rev. 1, 2, 3.",
         "corsNormTitle": "Specification limits — CORS",
         "bentolTitle": "Bentol",
         "bentolLead": "Benzene-toluene fraction — a processing product used as feedstock and solvent across several industries.",
         "bentolAlt": "Bentol — benzene-toluene fraction, 500 ml lab bottle",
         "bentolP1": "Bentol is a liquid hydrocarbon mixture (mainly benzene and toluene) with composition and physico-chemical properties regulated by specifications. It is used as a solvent and feedstock component in paints, enamels and binders, and in rubber, adhesives and other organic synthesis where controlled aromatic hydrocarbon content is required.",
         "bentolP2": "Depending on the customer's process chain, Bentol can be used to adjust viscosity of coatings, accelerate drying of film coatings, and in formulations for polymer and rubber product processing. Delivery complies with labelling, packaging and safe transport requirements for chemicals.",
-        "bentolP3": "AO Plastik ensures consistent batch quality: fraction parameters meet approved TU limits, confirmed by incoming raw material control and acceptance testing of finished product.",
-        "bentolP4": "Bentol from AO Plastik meets TU 2415-032-05762341-2009.",
+        "bentolP3": "AO Plastic ensures consistent batch quality: fraction parameters meet approved TU limits, confirmed by incoming raw material control and acceptance testing of finished product.",
+        "bentolP4": "Bentol from AO Plastic meets TU 2415-032-05762341-2009.",
         "bentolNormTitle": "Specification limits — Bentol",
         "contactUs": "Contact us",
         "normColNo": "No.",
@@ -704,8 +704,8 @@
     },
     "heroSlides": {
       "factory": {
-        "label": "Plant",
-        "title": "Plastik — Technologies of the Future",
+        "label": "Our Production",
+        "title": "Plastic — Technologies of the Future",
         "description": "A Russian manufacturer of polymer materials since 1959. The Uzlovaya production site combines decades of expertise, modern technologies and systematic quality control"
       },
       "abs": {

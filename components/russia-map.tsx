@@ -699,7 +699,7 @@ export function RussiaMap({
               <>
                 <p className="text-caption mb-1 text-[#0046FF]">{en ? "Production site" : "Производственная площадка"}</p>
                 <h3 className="text-lg font-semibold text-foreground">
-                  {en ? "Uzlovaya — Plastik JSC" : "Узловая — АО «Пластик»"}
+                  {en ? "Uzlovaya — Plastic JSC" : "Узловая — АО «Пластик»"}
                 </h3>
                 <p className="mt-1 text-xs text-muted-foreground">{en ? selected.regionEn : selected.region}</p>
               </>

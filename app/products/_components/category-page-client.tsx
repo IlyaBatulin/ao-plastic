@@ -68,9 +68,15 @@ export function CategoryPageClient({
   videoSrc,
   showcaseGroups = [],
 }: CategoryPageClientProps) {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
 
   const categoryName = t(`homePage.catalog.categories.${categoryId}`) || category.name
+  const categoryDescription =
+    categoryId === "polystyrene"
+      ? lang === "en"
+        ? "UPEKS expandable polystyrene grades 1–6 for thermal insulation, sound insulation, packaging and molded products"
+        : "Вспенивающийся полистирол «УПЕКС» марок 1–6 для теплоизоляции, звукоизоляции, упаковки и формованных изделий"
+      : t(`homePage.catalog.categoryDescriptions.${categoryId}`) || category.description
   const backLabel = t("homePage.catalog.backToCatalog") || "Назад к каталогу"
   const isStyrene = categoryId === "styrene"
   const isKors = categoryId === "kors"
@@ -84,7 +90,7 @@ export function CategoryPageClient({
         <CatalogShowcase
           categoryId={categoryId}
           title={categoryName}
-          description={t(`homePage.catalog.categoryDescriptions.${categoryId}`) || category.description}
+          description={categoryDescription}
           videoSrc={videoSrc}
           imageSrc={getCategoryImageUrl(categoryId, category.image, categoryName)}
           groups={showcaseGroups}
@@ -93,7 +99,7 @@ export function CategoryPageClient({
       ) : (
         <CategoryHero
           title={categoryName}
-          description={t(`homePage.catalog.categoryDescriptions.${categoryId}`) || category.description}
+          description={categoryDescription}
           backHref="/products"
           backLabel={backLabel}
           hasVideo={hasVideo}

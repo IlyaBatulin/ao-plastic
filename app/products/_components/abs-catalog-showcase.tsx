@@ -69,7 +69,8 @@ export function CatalogShowcase({
   const { lang } = useLanguage()
   const locale = lang === "en" ? "en" : "ru"
   const labels = copy[locale]
-  const [openGroup, setOpenGroup] = useState(groups[0]?.id ?? "")
+  // Направления открываются только по осознанному клику пользователя.
+  const [openGroup, setOpenGroup] = useState("")
   const isAbs = categoryId === "abs"
   const eyebrow =
     categoryId === "polystyrene"
@@ -92,7 +93,7 @@ export function CatalogShowcase({
       : "Выберите направление, чтобы посмотреть доступную продукцию и решения."
 
   return (
-    <section className="relative bg-[#f4f6f9] lg:grid lg:min-h-[100svh] lg:grid-cols-2">
+    <section className="relative bg-[#f4f6f9] lg:grid lg:min-h-[calc(100svh-7rem)] lg:grid-cols-2">
       <div className="relative min-h-[70svh] overflow-hidden bg-[#07142f] lg:sticky lg:top-28 lg:h-[calc(100svh-7rem)] lg:min-h-0">
         {imageSrc && (
           <img src={imageSrc} alt="" aria-hidden className="absolute inset-0 h-full w-full object-cover" />
@@ -115,7 +116,7 @@ export function CatalogShowcase({
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,12,30,0.2)_0%,rgba(4,15,39,0.42)_45%,rgba(3,12,31,0.94)_100%)]" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#06132d]/45 via-transparent to-transparent" />
 
-        <div className="relative z-10 flex h-full min-h-[70svh] flex-col justify-between px-5 pb-10 pt-24 text-white sm:px-8 lg:min-h-0 lg:px-12 lg:pb-14 lg:pt-28 xl:px-16">
+        <div className="relative z-10 flex h-full min-h-[70svh] flex-col justify-between px-5 pb-10 pt-24 text-white sm:px-8 lg:min-h-0 lg:px-10 lg:pb-9 lg:pt-8 xl:px-14 xl:pb-11 xl:pt-10">
           <Link
             href="/products"
             className="inline-flex w-fit items-center gap-2 rounded-full border border-white/25 bg-black/25 px-4 py-2.5 text-sm font-medium text-white backdrop-blur-md transition-colors hover:bg-black/40"
@@ -134,7 +135,7 @@ export function CatalogShowcase({
               {title}
             </h1>
             {description && (
-              <p className="mt-7 max-w-xl text-lg leading-relaxed text-white/82 md:text-xl">
+              <p className="mt-5 max-w-xl text-base leading-relaxed text-white/82 md:text-lg xl:text-xl">
                 {description}
               </p>
             )}
@@ -142,9 +143,9 @@ export function CatalogShowcase({
         </div>
       </div>
 
-      <div className="flex min-h-[100svh] items-center px-4 py-16 sm:px-8 lg:px-10 lg:py-28 xl:px-16 2xl:px-20">
+      <div className="flex min-h-[calc(100svh-7rem)] items-start px-4 py-10 sm:px-8 lg:items-center lg:px-8 lg:py-5 xl:px-12 xl:py-7 2xl:px-16">
         <div className="mx-auto w-full max-w-3xl">
-          <div className="relative mb-7 min-h-[240px] overflow-hidden rounded-[1.75rem] bg-[#0b1e45] shadow-[0_24px_70px_rgba(15,42,89,0.18)] md:mb-9 md:min-h-[290px]">
+          <div className="relative mb-5 min-h-[210px] overflow-hidden rounded-[1.5rem] bg-[#0b1e45] shadow-[0_20px_55px_rgba(15,42,89,0.16)] md:min-h-[220px] lg:mb-4 lg:min-h-[168px] xl:min-h-[190px] 2xl:min-h-[220px]">
             {imageSrc && (
               <img
                 src={imageSrc}
@@ -159,16 +160,16 @@ export function CatalogShowcase({
               {directionCount}
             </div>
 
-            <div className="relative z-10 flex min-h-[240px] flex-col justify-end p-6 text-white md:min-h-[290px] md:p-9">
-              <div className="mb-5 h-px w-16 bg-white/55" />
+            <div className="relative z-10 flex min-h-[210px] flex-col justify-end p-6 text-white md:min-h-[220px] md:p-7 lg:min-h-[168px] lg:p-6 xl:min-h-[190px] 2xl:min-h-[220px]">
+              <div className="mb-3 h-px w-16 bg-white/55" />
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/68">{directionsLabel}</p>
-              <p className="mt-4 max-w-xl text-lg font-medium leading-relaxed text-white/92 md:text-2xl md:leading-snug">
+              <p className="mt-2.5 max-w-xl text-lg font-medium leading-snug text-white/92 md:text-xl xl:text-2xl">
                 {directionsLead}
               </p>
             </div>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {groups.map((group, index) => {
               const isOpen = group.id === openGroup
               const groupName = getCatalogSubcategoryLabel(group.id, group.slug, group.name, locale)
@@ -182,15 +183,15 @@ export function CatalogShowcase({
                   <Link
                     key={group.id}
                     href={`/products/${categoryId}/${group.slug}`}
-                    className="group grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-5 text-left transition-all duration-300 hover:border-primary/35 hover:shadow-[0_20px_55px_rgba(15,42,89,0.10)] sm:px-7 sm:py-6"
+                    className="group grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-4 text-left transition-all duration-300 hover:border-primary/35 hover:shadow-[0_20px_55px_rgba(15,42,89,0.10)] sm:px-6 lg:py-3.5 xl:py-4"
                   >
                     <span className="text-sm font-bold tabular-nums text-primary/55">0{index + 1}</span>
                     <span>
-                      <span className="block text-xl font-semibold leading-tight tracking-[-0.02em] text-slate-950 md:text-2xl">
+                      <span className="block text-lg font-semibold leading-tight tracking-[-0.02em] text-slate-950 md:text-xl xl:text-2xl">
                         {groupName}
                       </span>
                       {groupDescription && (
-                        <span className="mt-2 block text-sm leading-relaxed text-slate-500 sm:text-base">
+                        <span className="mt-1 block text-sm leading-snug text-slate-500 xl:text-base">
                           {groupDescription}
                         </span>
                       )}
@@ -213,12 +214,12 @@ export function CatalogShowcase({
                   <button
                     type="button"
                     onClick={() => setOpenGroup(isOpen ? "" : group.id)}
-                    className="grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 px-5 py-5 text-left sm:px-7 sm:py-6"
+                    className="grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 px-5 py-4 text-left sm:px-6 lg:py-3.5 xl:py-4"
                     aria-expanded={isOpen}
                   >
                     <span className="text-sm font-bold tabular-nums text-primary/55">0{index + 1}</span>
                     <span>
-                      <span className="block text-xl font-semibold leading-tight tracking-[-0.02em] text-slate-950 md:text-2xl">
+                      <span className="block text-lg font-semibold leading-tight tracking-[-0.02em] text-slate-950 md:text-xl xl:text-2xl">
                         {groupName}
                       </span>
                     </span>

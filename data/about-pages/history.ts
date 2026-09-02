@@ -82,7 +82,7 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
         id: "period-3",
         title: "2001–2010",
         subtitle: "Модернизация и развитие технологий",
-        image: "/images/history/period-2010-2014.jpeg",
+        image: "/images/history/period-modernization.png",
         timeline: [
           {
             year: "2001",
@@ -151,16 +151,24 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
       {
         id: "period-5",
         title: "2019–2024",
-        subtitle: "Обновление производства и развитие экспортных поставок",
-        image: "/images/history/period-2019-present.jpeg",
+        subtitle: "Развитие продуктовой линейки и рынков России и СНГ",
+        image: "/images/history/period-1974-1992.png",
         timeline: [
           {
-            year: "2020",
-            description: "Продолжилось обновление продуктовой линейки и развитие современных полимерных решений для российских и зарубежных заказчиков.",
+            year: "2019",
+            description: "На территории промышленной площадки АО «Пластик» компания «ФНМ Алькар» открыла производство геотекстиля — продолжилось развитие промышленного технопарка и размещение новых производств.",
           },
           {
-            year: "2022",
-            description: "Внедрены системы прослеживаемости партий и цифрового учёта для крупных контрактов и экспортных поставок.",
+            year: "2020",
+            description: "АО «Пластик» продолжило поставки АБС-пластиков и полистиролов российским потребителям и заказчикам ближнего зарубежья, сохраняя работу логистических цепочек в период ограничений.",
+          },
+          {
+            year: "2021",
+            description: "Представлен проект развития промышленного технопарка «Пластик»: территория 50 га, 67 тыс. м² объектов промышленной инфраструктуры, собственные инженерные сети и железнодорожная логистика.",
+          },
+          {
+            year: "2021–2024",
+            description: "Расширена линейка стирольных материалов: наряду с АБС-пластиками и полистиролами компания развивает направление стирол-акриловых дисперсий для лакокрасочных материалов и строительной химии.",
           },
           {
             year: "2024",
@@ -242,7 +250,7 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
         id: "period-3",
         title: "2001–2010",
         subtitle: "Modernization and technological development",
-        image: "/images/history/period-2010-2014.jpeg",
+        image: "/images/history/period-modernization.png",
         timeline: [
           { year: "2001", description: "The enterprise joined the SIBUR Group." },
           { year: "April 2003", description: "A line for producing compounds based on the company's own ABS plastic was commissioned." },
@@ -270,8 +278,8 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
       {
         id: "period-5",
         title: "2019–2024",
-        subtitle: "Production renewal and development of export deliveries",
-        image: "/images/history/period-2019-present.jpeg",
+        subtitle: "Product portfolio development across Russia and the CIS",
+        image: "/images/history/period-1974-1992.png",
         timeline: [
           { year: "2020", description: "The product portfolio continued to evolve, with modern polymer solutions developed for Russian and international customers." },
           { year: "2022", description: "Batch traceability and digital accounting systems were introduced for major contracts and export deliveries." },

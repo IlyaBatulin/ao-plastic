@@ -74,7 +74,7 @@ export function CategoryPageClient({
   const categoryDescription =
     categoryId === "polystyrene"
       ? lang === "en"
-        ? "UPEKS expandable polystyrene grades 1–6 for thermal insulation, sound insulation, packaging and molded products"
+        ? "UPEX expandable polystyrene grades 1–6 for thermal insulation, sound insulation, packaging and molded products"
         : "Вспенивающийся полистирол «УПЕКС» марок 1–6 для теплоизоляции, звукоизоляции, упаковки и формованных изделий"
       : t(`homePage.catalog.categoryDescriptions.${categoryId}`) || category.description
   const backLabel = t("homePage.catalog.backToCatalog") || "Назад к каталогу"

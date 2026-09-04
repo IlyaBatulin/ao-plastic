@@ -50,6 +50,15 @@ type RawHhVacancy = {
   "@workSchedule"?: string
 }
 
+function decodeHtmlEntities(value: string): string {
+  return value
+    .replace(/&#34;|&quot;/g, '"')
+    .replace(/&#39;|&apos;/g, "'")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+}
+
 export type HHSearchVacancy = {
   id: string
   name: string
@@ -126,6 +135,44 @@ function parseVacanciesJsonArray(html: string): RawHhVacancy[] {
   }
 
   return []
+}
+
+/** Резерв для новой SSR-разметки HH, если внутренний JSON снова изменился. */
+function parseVacancyCards(html: string): HHSearchVacancy[] {
+  const items: HHSearchVacancy[] = []
+  const seen = new Set<string>()
+  const anchorPattern = /<a\b[^>]*data-qa="serp-item__title"[^>]*>/gi
+
+  for (const anchor of html.matchAll(anchorPattern)) {
+    const hrefMatch = anchor[0].match(/href="([^"]*\/vacancy\/(\d+)[^"]*)"/i)
+    if (!hrefMatch || anchor.index == null) continue
+    const titleWindow = html.slice(anchor.index, anchor.index + 2_000)
+    const titleMatch = titleWindow.match(
+      /data-qa="serp-item__title-text"[^>]*>([\s\S]*?)<\/span>/i
+    )
+    if (!titleMatch) continue
+
+    const id = hrefMatch[2]
+    if (seen.has(id)) continue
+    seen.add(id)
+
+    const name = decodeHtmlEntities(titleMatch[1].replace(/<[^>]+>/g, ""))
+      .replace(/\s+/g, " ")
+      .trim()
+    if (!name) continue
+
+    items.push({
+      id,
+      name,
+      area: { name: "" },
+      salary: null,
+      alternate_url: decodeHtmlEntities(hrefMatch[1]),
+      employer: { name: "АО «Пластик»" },
+      published_at: new Date().toISOString(),
+    })
+  }
+
+  return items
 }
 
 function mapRawVacancy(raw: RawHhVacancy): HHSearchVacancy | null {
@@ -232,7 +279,7 @@ export async function fetchHhVacanciesFromSearchHtml(
 ): Promise<HHSearchHtmlResult | null> {
   const params = new URLSearchParams({
     employer_id: HH_EMPLOYER_ID,
-    per_page: String(Math.min(Math.max(options.perPage, 1), 50)),
+    items_on_page: String(Math.min(Math.max(options.perPage, 1), 50)),
     page: String(Math.max(options.page, 0)),
   })
 
@@ -251,11 +298,17 @@ export async function fetchHhVacanciesFromSearchHtml(
     if (!response.ok) return null
 
     const html = await response.text()
-    const totalResults = Number(html.match(/"totalResults":(\d+)/)?.[1] ?? 0)
-    const rawItems = parseVacanciesJsonArray(html)
-    let items = rawItems
-      .map(mapRawVacancy)
-      .filter((item): item is HHSearchVacancy => item != null)
+    const decodedHtml = decodeHtmlEntities(html)
+    const totalResults = Number(
+      decodedHtml.match(/"totalResults"\s*:\s*(\d+)/)?.[1] ?? 0
+    )
+    const rawItems = parseVacanciesJsonArray(decodedHtml)
+    let items =
+      rawItems.length > 0
+        ? rawItems
+            .map(mapRawVacancy)
+            .filter((item): item is HHSearchVacancy => item != null)
+        : parseVacancyCards(html)
 
     items = applyFilters(items, options)
 

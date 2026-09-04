@@ -48,9 +48,10 @@ export function FilteredProductsSection({
     categoryId != null &&
     subcategoryId != null &&
     isMachinePartsExtrusion(categoryId, subcategoryId)
+  const isDmsCategory = categoryId === "machine-parts"
 
   // Для экструзии не показываем стандартные фильтры и сравнительные таблицы ABS/ПС
-  const showFilters = !isHouseholdCategory && !isExtrusionSubcategory
+  const showFilters = !isHouseholdCategory && !isDmsCategory
   const showComparisonTable =
     !isHouseholdCategory &&
     !isExtrusionSubcategory &&
@@ -64,28 +65,31 @@ export function FilteredProductsSection({
   const extrusionTypeKey = "Тип изделия"
 
   const extrusionTypeOptions = useMemo(() => {
-    if (!isExtrusionSubcategory) return []
+    if (!isDmsCategory) return []
     const set = new Set<string>()
     products.forEach((p) => {
       const specs = parseSpecifications(p.specifications)
-      const specType =
-        (specs[extrusionTypeKey] as string | undefined) ?? (specs.type as string | undefined)
+      const specType = isExtrusionSubcategory
+        ? (specs[extrusionTypeKey] as string | undefined) ??
+          (specs.type as string | undefined)
+        : p.name?.trim().split(/\s+/)[0]
       if (specType) set.add(specType)
     })
     return Array.from(set).sort((a, b) => a.localeCompare(b, "ru"))
-  }, [isExtrusionSubcategory, products])
+  }, [isDmsCategory, isExtrusionSubcategory, products])
 
   const extrusionFilteredProducts = useMemo(() => {
-    if (!isExtrusionSubcategory) return products
+    if (!isDmsCategory) return products
 
     const q = extrusionSearch.trim().toLowerCase()
 
     return products.filter((p) => {
       const specs = parseSpecifications(p.specifications)
-      const t =
-        (specs[extrusionTypeKey] as string | undefined) ??
-        (specs.type as string | undefined) ??
-        ""
+      const t = isExtrusionSubcategory
+        ? (specs[extrusionTypeKey] as string | undefined) ??
+          (specs.type as string | undefined) ??
+          ""
+        : p.name?.trim().split(/\s+/)[0] ?? ""
 
       if (extrusionSelectedTypes.length > 0 && !extrusionSelectedTypes.includes(t)) {
         return false
@@ -103,9 +107,9 @@ export function FilteredProductsSection({
 
       return true
     })
-  }, [isExtrusionSubcategory, products, extrusionSearch, extrusionSelectedTypes, extrusionTypeKey])
+  }, [isDmsCategory, isExtrusionSubcategory, products, extrusionSearch, extrusionSelectedTypes, extrusionTypeKey])
 
-  const effectiveProducts = isExtrusionSubcategory ? extrusionFilteredProducts : filteredProducts
+  const effectiveProducts = isDmsCategory ? extrusionFilteredProducts : filteredProducts
   const tableLabel = (ru: string, en: string) => (specLang === "en" ? en : ru)
   const productTableName = (product: Product) =>
     resolveProductDisplay(
@@ -137,7 +141,7 @@ export function FilteredProductsSection({
       </div>
 
       {/* Фильтры для экструзионных изделий ДМС */}
-      {isExtrusionSubcategory && (
+      {isDmsCategory && (
         <div className="mb-8 space-y-5">
           <div className="relative">
             <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
@@ -145,7 +149,7 @@ export function FilteredProductsSection({
               type="text"
               placeholder={
                 t("homePage.catalog.productList.extrusionSearchPlaceholder") ||
-                "Поиск по названию или шифру изделия..."
+                "Поиск по названию, артикулу или шифру..."
               }
               value={extrusionSearch}
               onChange={(e) => setExtrusionSearch(e.target.value)}
@@ -163,7 +167,9 @@ export function FilteredProductsSection({
                     </span>
                     <div>
                       <div className="text-sm font-semibold tracking-tight text-foreground">
-                        {t("homePage.catalog.productList.extrusionTypeLabel") || "Тип изделия"}
+                        {isExtrusionSubcategory
+                          ? t("homePage.catalog.productList.extrusionTypeLabel") || "Тип изделия"
+                          : "Группа изделий"}
                       </div>
                       <p className="text-xs text-muted-foreground">
                         {t("homePage.catalog.productList.extrusionTypeHint") ||
@@ -171,13 +177,16 @@ export function FilteredProductsSection({
                       </p>
                     </div>
                   </div>
-                  {extrusionSelectedTypes.length > 0 && (
+                  {(extrusionSelectedTypes.length > 0 || extrusionSearch) && (
                     <Button
                       type="button"
                       variant="ghost"
                       size="sm"
                       className="shrink-0 gap-1.5 text-muted-foreground hover:text-foreground"
-                      onClick={() => setExtrusionSelectedTypes([])}
+                      onClick={() => {
+                        setExtrusionSelectedTypes([])
+                        setExtrusionSearch("")
+                      }}
                     >
                       <X className="h-3.5 w-3.5" />
                       {t("homePage.catalog.productList.extrusionTypeReset") || "Сбросить"}
@@ -206,7 +215,9 @@ export function FilteredProductsSection({
                         )}
                       >
                         <span className="whitespace-normal break-words text-balance">
-                          {translateExtrusionPartType(typeOption, specLang)}
+                          {isExtrusionSubcategory
+                            ? translateExtrusionPartType(typeOption, specLang)
+                            : typeOption}
                         </span>
                       </button>
                     )

@@ -1,5 +1,6 @@
 import { cache } from "react"
 import productsData from "@/data/products.json"
+import { DMS_EXTRUSION_FALLBACK, DMS_INJECTION_FALLBACK } from "@/data/dms-fallback"
 import { findJsonSubcategory, resolveSubcategory } from "@/lib/catalog-slugs"
 import { normalizeHouseholdProduct } from "@/lib/household-product-content"
 import { isNextBuild } from "@/lib/next-build"
@@ -26,6 +27,19 @@ export function findJsonProduct(categoryId: string, productIdOrSlug: string) {
         String(product.slug ?? "").toLowerCase() === needle.toLowerCase()
     ) ?? null
   )
+}
+
+function findLocalProduct(categoryId: string, subcategoryId: string, productIdOrSlug: string) {
+  const jsonProduct = findJsonProduct(categoryId, productIdOrSlug)
+  if (jsonProduct) return jsonProduct
+  if (categoryId !== "machine-parts") return null
+
+  const decoded = decodeURIComponent(productIdOrSlug).toLowerCase()
+  const products = subcategoryId.includes("extrusion")
+    ? DMS_EXTRUSION_FALLBACK
+    : DMS_INJECTION_FALLBACK
+
+  return products.find((product) => product.id.toLowerCase() === decoded) ?? null
 }
 
 export function getProductPathSegment(product: { id: string; slug?: string | null }) {
@@ -74,7 +88,11 @@ async function fetchProductRecord(
 
     return {
       id: decoded,
-      name: extrusionProduct.name,
+      name:
+        typeof extrusionProduct.name === "string" &&
+        extrusionProduct.name.startsWith("По документу")
+          ? extrusionProduct.code || "Изделие ДМС"
+          : extrusionProduct.name,
       description: parts.join(" · ") || null,
       image: extrusionProduct.image || "/placeholder-logo.png",
       specifications: {
@@ -125,10 +143,14 @@ export const getProductPageData = cache(
     const fallbackSubcategory = findJsonSubcategory(categoryId, subcategoryId)
 
     if (isNextBuild()) {
-      const fallbackProduct = findJsonProduct(categoryId, productId)
+      const fallbackProduct = findLocalProduct(categoryId, subcategoryId, productId)
       if (!fallbackProduct) return null
       return {
-        product: normalizeHouseholdProduct(fallbackProduct, categoryId, subcategoryId),
+        product: normalizeHouseholdProduct(
+          fallbackProduct as unknown as Record<string, unknown>,
+          categoryId,
+          subcategoryId
+        ),
         category: fallbackCategory,
         subcategory: fallbackSubcategory,
       }
@@ -151,9 +173,9 @@ export const getProductPageData = cache(
 
     let resolvedProduct = product
     if (!resolvedProduct) {
-      const fallbackProduct = findJsonProduct(categoryId, productId)
+      const fallbackProduct = findLocalProduct(categoryId, subcategoryId, productId)
       if (!fallbackProduct) return null
-      resolvedProduct = fallbackProduct
+      resolvedProduct = fallbackProduct as unknown as Record<string, unknown>
     }
 
     const category =

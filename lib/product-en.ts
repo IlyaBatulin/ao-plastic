@@ -400,7 +400,7 @@ export function buildDmsEnglishName(product: {
   const typeRu = String(specs["Тип изделия"] ?? specs.type ?? "").trim()
   const typeEn = typeRu ? translateExtrusionType(typeRu) : ""
 
-  const code = specs["Шифр изделия"] ?? specs.code
+  const code = specs["Шифр изделия"] ?? specs["Артикул"] ?? specs.code
   const sizeRaw = specs["Габаритные размеры"] ?? specs.size_raw
   const lengthRaw = specs["Длина изделия"] ?? specs.length_raw
 
@@ -429,14 +429,23 @@ export function buildDmsEnglishName(product: {
       name: product.name,
       brand: product.brand,
     })
-    if (fromDict && !hasCyrillic(fromDict.name)) return fromDict.name
+    if (
+      fromDict &&
+      !hasCyrillic(fromDict.name) &&
+      fromDict.name !== "Machine-building part"
+    ) {
+      return fromDict.name
+    }
   }
 
   const fromPhrase = translateProductNameFallback(product.name)
   if (!hasCyrillic(fromPhrase)) return fromPhrase
 
-  if (codeStr) return typeEn ? `${typeEn} — ${codeStr}` : codeStr
-  return typeEn || "Machine-building part"
+  if (typeEn && codeStr) return `${typeEn} — ${codeStr}`
+  if (product.name?.trim()) {
+    return codeStr ? `${product.name.trim()} — ${codeStr}` : product.name.trim()
+  }
+  return typeEn || codeStr || "Machine-building part"
 }
 
 export function buildDmsEnglishDescription(product: {

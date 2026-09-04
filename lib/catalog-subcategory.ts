@@ -12,6 +12,7 @@ import { isNextBuild } from "@/lib/next-build"
 import { resolveProductImageUrl } from "@/lib/product-image"
 import { stripHiddenSpecs } from "@/lib/product-specs"
 import { createCatalogClient, supabaseCatalogQuery } from "@/utils/supabase/server"
+import { DMS_EXTRUSION_FALLBACK, DMS_INJECTION_FALLBACK } from "@/data/dms-fallback"
 
 const EXTRUSION_SELECT =
   "id, name, type, subtype, size_raw, length_raw, code, length_kind, image, source_no"
@@ -49,7 +50,10 @@ function mapExtrusionProducts(extrusionData: Record<string, unknown>[]) {
 
     return {
       id: `extrusion-${item.id}`,
-      name: item.name,
+      name:
+        typeof item.name === "string" && item.name.startsWith("По документу")
+          ? item.code || "Изделие ДМС"
+          : item.name,
       description: description || null,
       image: item.image || "/placeholder-logo.png",
       specifications: {
@@ -77,10 +81,25 @@ function buildDisplayProducts(
   categoryImage: string | null
 ) {
   const fallbackCategory = productsData.categories.find((cat) => cat.id === categoryId)
-  const fallbackProductsAll = fallbackCategory?.products ?? []
+  const jsonProducts = fallbackCategory?.products ?? []
+  const dmsAssetProducts =
+    categoryId === "machine-parts"
+      ? publicSubcategorySlug.includes("extrusion")
+        ? DMS_EXTRUSION_FALLBACK
+        : DMS_INJECTION_FALLBACK
+      : []
+  const fallbackProductsAll: Record<string, unknown>[] =
+    categoryId === "machine-parts"
+      ? (dmsAssetProducts as unknown as Record<string, unknown>[])
+      : (jsonProducts as Record<string, unknown>[])
 
   const slugCandidates = new Set(getSubcategorySlugCandidates(categoryId, subcategoryId))
   const fallbackProducts = fallbackProductsAll.filter((product: Record<string, unknown>) => {
+    // Other catalogue sections historically use the complete local fallback when
+    // Supabase is slow or unavailable. Narrow grouping is only required for the
+    // three newly separated dispersion application segments.
+    if (categoryId !== "dispersion" && categoryId !== "machine-parts") return true
+
     const productSub = product.subcategory ?? ""
     return (
       slugCandidates.has(String(productSub)) ||
@@ -170,7 +189,6 @@ function buildJsonSubcategoryPageData(
   subcategoryId: string
 ): SubcategoryPageData | null {
   const fallbackCategory = productsData.categories.find((cat) => cat.id === categoryId) ?? null
-  const isExtrusion = isMachinePartsExtrusion(categoryId, subcategoryId)
   const jsonSub = fallbackCategory?.subcategories?.find((sub) => {
     const candidates = new Set(getSubcategorySlugCandidates(categoryId, subcategoryId))
     return candidates.has(sub.slug) || candidates.has(sub.id)
@@ -183,9 +201,7 @@ function buildJsonSubcategoryPageData(
     publicSubcategorySlug,
     categoryDisplayName: fallbackCategory?.name ?? categoryId,
     categoryImage: (fallbackCategory?.image as string) ?? null,
-    displayProducts: isExtrusion
-      ? []
-      : buildDisplayProducts(
+    displayProducts: buildDisplayProducts(
           categoryId,
           publicSubcategorySlug,
           jsonSub,
@@ -293,8 +309,13 @@ async function fetchSubcategoryPageDataFromDb(
       ? rawProducts.filter((product) => dispersionProductIds.has(String(product.id)))
       : rawProducts
 
+  const extrusionProducts = mapExtrusionProducts(
+    (extrusionResult?.data as Record<string, unknown>[]) ?? []
+  )
   const displayProducts = isExtrusion
-    ? mapExtrusionProducts((extrusionResult?.data as Record<string, unknown>[]) ?? [])
+    ? extrusionProducts.length > 0
+      ? extrusionProducts
+      : (DMS_EXTRUSION_FALLBACK as unknown as Record<string, unknown>[])
     : buildDisplayProducts(
         categoryId,
         publicSubcategorySlug,

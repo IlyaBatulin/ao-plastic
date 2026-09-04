@@ -1,0 +1,1960 @@
+{
+  "products": [
+    {
+      "id": "ka-25b",
+      "name": "Крышка верхняя рулевого колеса",
+      "slug": "ka-25b",
+      "description": null,
+      "image": "/images/litev/СП КА-25Б_1.jpg",
+      "specifications": {
+        "Артикул": "КА-25Б"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 5,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-56r",
+      "name": "Упор пружины ручки регулирования торсиона",
+      "slug": "ka-56r",
+      "description": null,
+      "image": "/images/litev/СП КА-56Р_1.jpg",
+      "specifications": {
+        "Артикул": "КА-56Р"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 19,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-62a",
+      "name": "Распределитель воздуха",
+      "slug": "ka-62a",
+      "description": null,
+      "image": "/images/litev/СП КА-62А_1.jpg",
+      "specifications": {
+        "Артикул": "КА-62А"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 20,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-65",
+      "name": "Фланец крепления распределителя воздуха",
+      "slug": "ka-65",
+      "description": null,
+      "image": "/images/litev/СП КА-65_1.jpg",
+      "specifications": {
+        "Артикул": "КА-65"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 21,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-70",
+      "name": "Крючок для одежды",
+      "slug": "ka-70",
+      "description": null,
+      "image": "/images/litev/СП КА-70_1.jpg",
+      "specifications": {
+        "Артикул": "КА-70"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 22,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-80",
+      "name": "Скрепка",
+      "slug": "ka-80",
+      "description": null,
+      "image": "/images/litev/СП КА-80_1.jpg",
+      "specifications": {
+        "Артикул": "КА-80"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 23,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-83a",
+      "name": "Петля шторы спального места",
+      "slug": "ka-83a",
+      "description": null,
+      "image": "/images/litev/СП КА-83А_1.jpg",
+      "specifications": {
+        "Артикул": "КА-83А"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 24,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-288a",
+      "name": "Проставка",
+      "slug": "ka-288a",
+      "description": null,
+      "image": "/images/litev/СП  КА-288А_1.jpg",
+      "specifications": {
+        "Артикул": "КА-288А"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 41,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-555",
+      "name": "Втулка",
+      "slug": "ka-555",
+      "description": null,
+      "image": "/images/litev/СП КА-555_1.jpg",
+      "specifications": {
+        "Артикул": "КА-555"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 50,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-560",
+      "name": "Корпус клапана",
+      "slug": "ka-560",
+      "description": null,
+      "image": "/images/litev/СП КА-560_1.jpg",
+      "specifications": {
+        "Артикул": "КА-560"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 51,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-561",
+      "name": "Поршень",
+      "slug": "ka-561",
+      "description": null,
+      "image": "/images/litev/СП КА-561_1.jpg",
+      "specifications": {
+        "Артикул": "КА-561"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 52,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-562",
+      "name": "Кольцо направляющее",
+      "slug": "ka-562",
+      "description": null,
+      "image": "/images/litev/СП КА-562_1.jpg",
+      "specifications": {
+        "Артикул": "КА-562"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 53,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-564",
+      "name": "Кольцо направляющее",
+      "slug": "ka-564",
+      "description": null,
+      "image": "/images/litev/СП  КА-564_1.jpg",
+      "specifications": {
+        "Артикул": "КА-564"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 54,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-565",
+      "name": "Кольцо направляющее",
+      "slug": "ka-565",
+      "description": null,
+      "image": "/images/litev/СП  КА-565_1.jpg",
+      "specifications": {
+        "Артикул": "КА-565"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 55,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-572a",
+      "name": "Крышка",
+      "slug": "ka-572a",
+      "description": null,
+      "image": "/images/litev/СП КА-572А_1.jpg",
+      "specifications": {
+        "Артикул": "КА-572А"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 59,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-134",
+      "name": "Шкала управления отоплением",
+      "slug": "ka-134",
+      "description": null,
+      "image": "/images/litev/СП КА-134_1.jpg",
+      "specifications": {
+        "Артикул": "КА-134"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 70,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-287a",
+      "name": "Проставка",
+      "slug": "ka-287a",
+      "description": null,
+      "image": "/images/litev/СП КА-287А_1.jpg",
+      "specifications": {
+        "Артикул": "КА-287А"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 71,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-27b",
+      "name": "Крышка нижняя рулевого колеса",
+      "slug": "ka-27b",
+      "description": null,
+      "image": "/images/litev/СП КА-27Б_1.jpg",
+      "specifications": {
+        "Артикул": "КА-27Б"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 6,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-28b",
+      "name": "Рамка выключателей",
+      "slug": "ka-28b",
+      "description": null,
+      "image": "/images/litev/СП КА-28Б_1.jpg",
+      "specifications": {
+        "Артикул": "КА-28Б"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 7,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-37-ka-38",
+      "name": "Накладка панели",
+      "slug": "ka-37-ka-38",
+      "description": null,
+      "image": "/images/litev/СП КА-37,38_1.jpg",
+      "specifications": {
+        "Артикул": "КА-37/КА-38"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 8,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-39a",
+      "name": "Штабик крыши",
+      "slug": "ka-39a",
+      "description": null,
+      "image": "/images/litev/СП КА-39А_1.jpg",
+      "specifications": {
+        "Артикул": "КА-39А"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 9,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-44",
+      "name": "Заглушка отверстия Ø20,5",
+      "slug": "ka-44",
+      "description": null,
+      "image": "/images/litev/СП КА-44_1.jpg",
+      "specifications": {
+        "Артикул": "КА-44"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 12,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-46a",
+      "name": "Розетка ручки",
+      "slug": "ka-46a",
+      "description": null,
+      "image": "/images/litev/СП КА-46А_1.jpg",
+      "specifications": {
+        "Артикул": "КА-46А"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 13,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-50a",
+      "name": "Ролик шарнира подвески сиденья водителя",
+      "slug": "ka-50a",
+      "description": null,
+      "image": "/images/litev/СП КА-50А_1.jpg",
+      "specifications": {
+        "Артикул": "КА-50А"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 14,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-51",
+      "name": "Окантовка трубы торсиона подвески сиденья водителя",
+      "slug": "ka-51",
+      "description": null,
+      "image": "/images/litev/СП КА-51_1.jpg",
+      "specifications": {
+        "Артикул": "КА-51"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 15,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-53",
+      "name": "Втулка оси шарниров подвески сиденья водителя",
+      "slug": "ka-53",
+      "description": null,
+      "image": "/images/litev/СП КА-53_1.jpg",
+      "specifications": {
+        "Артикул": "КА-53"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 16,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-54a",
+      "name": "Облицовка ручки регулирования торсиона подвески сиденья водителя",
+      "slug": "ka-54a",
+      "description": null,
+      "image": "/images/litev/СП КА-54А_1.jpg",
+      "specifications": {
+        "Артикул": "КА-54А"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 17,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-55",
+      "name": "Ограничитель винта регулирования подвески сиденья водителя",
+      "slug": "ka-55",
+      "description": null,
+      "image": "/images/litev/СП КА-55_1.jpg",
+      "specifications": {
+        "Артикул": "КА-55"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 18,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-89",
+      "name": "Проставка крыла",
+      "slug": "ka-89",
+      "description": null,
+      "image": "/images/litev/СП КА-89_1.jpg",
+      "specifications": {
+        "Артикул": "КА-89"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 25,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-96",
+      "name": "Скрепка",
+      "slug": "ka-96",
+      "description": null,
+      "image": "/images/litev/СП КА-96_1.jpg",
+      "specifications": {
+        "Артикул": "КА-96"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 26,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-122",
+      "name": "Пробка",
+      "slug": "ka-122",
+      "description": null,
+      "image": "/images/litev/СП КА-122_1.jpg",
+      "specifications": {
+        "Артикул": "КА-122"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 28,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-123",
+      "name": "Пробка транспортная",
+      "slug": "ka-123",
+      "description": null,
+      "image": "/images/litev/СП КА-123_1.jpg",
+      "specifications": {
+        "Артикул": "КА-123"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 29,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-124",
+      "name": "Пробка транспортная",
+      "slug": "ka-124",
+      "description": null,
+      "image": "/images/litev/СП КА-124_1.jpg",
+      "specifications": {
+        "Артикул": "КА-124"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 30,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-128",
+      "name": "Патрубок подводящий распределителя воздуха",
+      "slug": "ka-128",
+      "description": null,
+      "image": "/images/litev/СП КА-128_1.jpg",
+      "specifications": {
+        "Артикул": "КА-128"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 31,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-132",
+      "name": "Колодка фиксатора",
+      "slug": "ka-132",
+      "description": null,
+      "image": "/images/litev/СП КА-132_1.jpg",
+      "specifications": {
+        "Артикул": "КА-132"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 32,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-133a",
+      "name": "Ручка управления",
+      "slug": "ka-133a",
+      "description": null,
+      "image": "/images/litev/СП КА-133А_1.jpg",
+      "specifications": {
+        "Артикул": "КА-133А"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 33,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-280a",
+      "name": "Чистильщик",
+      "slug": "ka-280a",
+      "description": null,
+      "image": "/images/litev/СП КА-280А_1.jpg",
+      "specifications": {
+        "Артикул": "КА-280А"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 34,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-281a",
+      "name": "Чистильщик",
+      "slug": "ka-281a",
+      "description": null,
+      "image": "/images/litev/СП КА-281А_1.jpg",
+      "specifications": {
+        "Артикул": "КА-281А"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 35,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-282a",
+      "name": "Чистильщик",
+      "slug": "ka-282a",
+      "description": null,
+      "image": "/images/litev/СП КА-282А_1.jpg",
+      "specifications": {
+        "Артикул": "КА-282А"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 36,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-283",
+      "name": "Кольцо защитное",
+      "slug": "ka-283",
+      "description": null,
+      "image": "/images/litev/СП  КА-283_1.jpg",
+      "specifications": {
+        "Артикул": "КА-283"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 37,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-284",
+      "name": "Кольцо защитное",
+      "slug": "ka-284",
+      "description": null,
+      "image": "/images/litev/СП КА-284_1.jpg",
+      "specifications": {
+        "Артикул": "КА-284"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 38,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-285",
+      "name": "Кольцо защитное",
+      "slug": "ka-285",
+      "description": null,
+      "image": "/images/litev/СП КА-285_1.jpg",
+      "specifications": {
+        "Артикул": "КА-285"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 39,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-286a",
+      "name": "Проставка",
+      "slug": "ka-286a",
+      "description": null,
+      "image": "/images/litev/СП КА-286А_1.jpg",
+      "specifications": {
+        "Артикул": "КА-286А"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 40,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-345a",
+      "name": "Поршень",
+      "slug": "ka-345a",
+      "description": null,
+      "image": "/images/litev/СП КА-345А_1.jpg",
+      "specifications": {
+        "Артикул": "КА-345А"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 43,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-346",
+      "name": "Мембранный диск",
+      "slug": "ka-346",
+      "description": null,
+      "image": "/images/litev/СП КА-346_1.jpg",
+      "specifications": {
+        "Артикул": "КА-346"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 44,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-551b",
+      "name": "Гайка-барашек",
+      "slug": "ka-551b",
+      "description": null,
+      "image": "/images/litev/СП КА-551Б_1.jpg",
+      "specifications": {
+        "Артикул": "КА-551Б"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 46,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-552",
+      "name": "Лента",
+      "slug": "ka-552",
+      "description": null,
+      "image": "/images/litev/СП КА-552_1.jpg",
+      "specifications": {
+        "Артикул": "КА-552"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 47,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-553",
+      "name": "Кольцо опорное",
+      "slug": "ka-553",
+      "description": null,
+      "image": "/images/litev/СП КА-553_1.jpg",
+      "specifications": {
+        "Артикул": "КА-553"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 48,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-554a",
+      "name": "Тарелка пружины",
+      "slug": "ka-554a",
+      "description": null,
+      "image": "/images/litev/СП КА-554А_1.jpg",
+      "specifications": {
+        "Артикул": "КА-554А"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 49,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-568",
+      "name": "Крышка",
+      "slug": "ka-568",
+      "description": null,
+      "image": "/images/litev/СП КА-568_1.jpg",
+      "specifications": {
+        "Артикул": "КА-568"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 56,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-568a",
+      "name": "Крышка",
+      "slug": "ka-568a",
+      "description": null,
+      "image": "/images/litev/СП КА-568А_1.jpg",
+      "specifications": {
+        "Артикул": "КА-568а"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 57,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-572",
+      "name": "Крышка",
+      "slug": "ka-572",
+      "description": null,
+      "image": "/images/litev/СП КА-572_1.jpg",
+      "specifications": {
+        "Артикул": "КА-572"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 58,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-583",
+      "name": "Пробка",
+      "slug": "ka-583",
+      "description": null,
+      "image": "/images/litev/СП КА-583_1.jpg",
+      "specifications": {
+        "Артикул": "КА-583"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 60,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-585",
+      "name": "Колпачок направляющий",
+      "slug": "ka-585",
+      "description": null,
+      "image": "/images/litev/СП КА-585_1.jpg",
+      "specifications": {
+        "Артикул": "КА-585"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 61,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-586",
+      "name": "Поршень",
+      "slug": "ka-586",
+      "description": null,
+      "image": "/images/litev/СП КА-586_1.jpg",
+      "specifications": {
+        "Артикул": "КА-586"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 62,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-589",
+      "name": "Втулка",
+      "slug": "ka-589",
+      "description": null,
+      "image": "/images/litev/СП КА-589_1.jpg",
+      "specifications": {
+        "Артикул": "КА-589"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 64,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-590",
+      "name": "Направляющая",
+      "slug": "ka-590",
+      "description": null,
+      "image": "/images/litev/СП КА-590_1.jpg",
+      "specifications": {
+        "Артикул": "КА-590"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 65,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-603",
+      "name": "Крышка",
+      "slug": "ka-603",
+      "description": null,
+      "image": "/images/litev/СП КА-603_1.jpg",
+      "specifications": {
+        "Артикул": "КА-603"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 66,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "mmz-10",
+      "name": "Заготовка втулки",
+      "slug": "mmz-10",
+      "description": null,
+      "image": "/images/litev/СП ММЗ-10_1.jpg",
+      "specifications": {
+        "Артикул": "ММЗ-10"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 67,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-587",
+      "name": "Ролик КА587",
+      "slug": "ka-587",
+      "description": null,
+      "image": "/images/litev/ka-587.webp",
+      "specifications": {
+        "Артикул": "КА-587"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 63,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-343a",
+      "name": "Направляющий диск КА343А",
+      "slug": "ka-343a",
+      "description": null,
+      "image": "/images/litev/ka-343a.webp",
+      "specifications": {
+        "Артикул": "КА-343А"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 42,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-41a",
+      "name": "Заглушка отверстия внутренней панели КА41А",
+      "slug": "ka-41a",
+      "description": null,
+      "image": "/images/litev/ka-41a-v2.webp",
+      "specifications": {
+        "Артикул": "КА-41А"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 64,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-02",
+      "name": "Скрепка",
+      "slug": "ka-02",
+      "description": null,
+      "image": "/images/litev/СП КА-02_1.jpg",
+      "specifications": {
+        "Артикул": "КА-02"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 1,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-10a",
+      "name": "Пробка транспортная",
+      "slug": "ka-10a",
+      "description": null,
+      "image": "/images/litev/СП КА-10А_1.jpg",
+      "specifications": {
+        "Артикул": "КА-10А"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 2,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-19",
+      "name": "Втулка",
+      "slug": "ka-19",
+      "description": null,
+      "image": "/images/litev/СП КА-19_1.jpg",
+      "specifications": {
+        "Артикул": "КА-19"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 3,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-23",
+      "name": "Втулка",
+      "slug": "ka-23",
+      "description": null,
+      "image": "/images/litev/СП КА-23_1.jpg",
+      "specifications": {
+        "Артикул": "КА-23"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 4,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-43",
+      "name": "Колпачок",
+      "slug": "ka-43",
+      "description": null,
+      "image": "/images/litev/СП КА-43_1.jpg",
+      "specifications": {
+        "Артикул": "КА-43"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 11,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-114",
+      "name": "Кружка емкостью 1 л.",
+      "slug": "ka-114",
+      "description": null,
+      "image": "/images/litev/logo123.jpg",
+      "specifications": {
+        "Артикул": "КА-114"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 27,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "ka-510",
+      "name": "Хомут крепления тормозов",
+      "slug": "ka-510",
+      "description": null,
+      "image": "/images/litev/logo123.jpg",
+      "specifications": {
+        "Артикул": "КА-510"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 45,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "f-226-1",
+      "name": "Облицовка нижнего молдинга боковины левая",
+      "slug": "f-226-1",
+      "description": null,
+      "image": "/images/litev/СП Ф-226 1(2_1.jpg",
+      "specifications": {
+        "Артикул": "Ф-226/I"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 68,
+      "package_quantity": null,
+      "brand": null
+    },
+    {
+      "id": "f-226-2",
+      "name": "Облицовка нижнего молдинга боковины правая",
+      "slug": "f-226-2",
+      "description": null,
+      "image": "/images/litev/СП Ф-226 1(2_1.jpg",
+      "specifications": {
+        "Артикул": "Ф-226/II"
+      },
+      "subcategory_id": "injection-parts",
+      "sort": 69,
+      "package_quantity": null,
+      "brand": null
+    }
+  ],
+  "extrusion_products": [
+    {
+      "id": 1,
+      "name": "Сепаратор шариков салазок переднего сиденья",
+      "type": "Сепаратор",
+      "subtype": null,
+      "size_raw": "5,3х2,3 мм",
+      "length_raw": "155-2 мм",
+      "code": "Ф-29В",
+      "length_kind": "fixed",
+      "image": "/images/extrusion/СП Ф-29В_1.jpg",
+      "source_no": 1
+    },
+    {
+      "id": 2,
+      "name": "Трубка от тройника к правому жиклеру фар",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "3,8х2,0 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "Ф-08Б",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП Ф-08Б_1.jpg",
+      "source_no": 2
+    },
+    {
+      "id": 3,
+      "name": "Трубка от насоса к тройнику омывателя ветрового окна",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "6,0х4,0 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "Ф-10Б",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП Ф-10Б_1.jpg",
+      "source_no": 3
+    },
+    {
+      "id": 4,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "6,0х4,0 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "2321-01",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП 2321-01_1.jpg",
+      "source_no": 5
+    },
+    {
+      "id": 5,
+      "name": "Шланг воздушный трубки топливного бака",
+      "type": "Шланг",
+      "subtype": null,
+      "size_raw": "9,0х5,0 мм (с развальцовкой)",
+      "length_raw": "1400+20 мм",
+      "code": "Ф-11",
+      "length_kind": "fixed",
+      "image": "/images/extrusion/СП Ф-11_1.jpg",
+      "source_no": 6
+    },
+    {
+      "id": 6,
+      "name": "Шланг соединения сепаратора и паровой трубы",
+      "type": "Шланг",
+      "subtype": null,
+      "size_raw": "9,0х5,0 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "Ф-11Б",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП Ф-11_1.jpg",
+      "source_no": 7
+    },
+    {
+      "id": 7,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "9,0х5,0 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "2321-04",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП 2321-04_1.jpg",
+      "source_no": 8
+    },
+    {
+      "id": 8,
+      "name": "Трубка соединительная от расширительного бачка к радиатору",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "20,0х13,0 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "Г-03",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП Г-03_1.jpg",
+      "source_no": 9
+    },
+    {
+      "id": 9,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "20,0х13,0 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "2321",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП 2321-01_1.jpg",
+      "source_no": 10
+    },
+    {
+      "id": 10,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "20,0х13,0 мм",
+      "length_raw": "660±5 мм",
+      "code": "2488",
+      "length_kind": "fixed",
+      "image": "/images/extrusion/СП 2488_1.jpg",
+      "source_no": 11
+    },
+    {
+      "id": 11,
+      "name": "Окантовка уплотнителя ветрового окна",
+      "type": "Окантовка",
+      "subtype": null,
+      "size_raw": "",
+      "length_raw": "поставка в бухтах",
+      "code": "2158",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП 2158_1.jpg",
+      "source_no": 13
+    },
+    {
+      "id": 12,
+      "name": "Окантовка уплотнителя ветрового окна",
+      "type": "Окантовка",
+      "subtype": null,
+      "size_raw": "",
+      "length_raw": "поставка в бухтах",
+      "code": "2158-02",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП 2158-02_1.jpg",
+      "source_no": 15
+    },
+    {
+      "id": 13,
+      "name": "Профиль упора кожуха вентилятора",
+      "type": "Профиль",
+      "subtype": null,
+      "size_raw": "6,5х4,4 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "Ф-23",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП Ф-23_1.jpg",
+      "source_no": 17
+    },
+    {
+      "id": 14,
+      "name": "Втулка кронштейна троса привода ручного тормоза",
+      "type": "Втулка",
+      "subtype": null,
+      "size_raw": "ø 25х29",
+      "length_raw": "35±2 мм",
+      "code": "Ф-30",
+      "length_kind": "fixed",
+      "image": "/images/extrusion/СП Ф-30_1.jpg",
+      "source_no": 19
+    },
+    {
+      "id": 15,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "8,0х5,5 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "Ф-31",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП Ф-31_1.jpg",
+      "source_no": 20
+    },
+    {
+      "id": 16,
+      "name": "Шланг соединительный воздушных патрубков топливного бака и наливной трубы",
+      "type": "Шланг",
+      "subtype": null,
+      "size_raw": "22,0х14,0 мм",
+      "length_raw": "1520+10 мм",
+      "code": "Ф-124Л",
+      "length_kind": "fixed",
+      "image": "/images/extrusion/СП Ф-124Л, Ф-124К_1.jpg",
+      "source_no": 28
+    },
+    {
+      "id": 17,
+      "name": "Шланг соединительный воздушных патрубков топливного бака и наливной трубы",
+      "type": "Шланг",
+      "subtype": null,
+      "size_raw": "22,0х14,0 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "Ф-124К",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП Ф-124Л, Ф-124К_1.jpg",
+      "source_no": 29
+    },
+    {
+      "id": 18,
+      "name": "Трубка защитная",
+      "type": "Трубка",
+      "subtype": "защитная",
+      "size_raw": "5х4 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "Ф-138",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП Ф-138, 142_1.jpg",
+      "source_no": 30
+    },
+    {
+      "id": 19,
+      "name": "Трубка защитная",
+      "type": "Трубка",
+      "subtype": "защитная",
+      "size_raw": "5х4 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "Ф-142",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП Ф-138, 142_1.jpg",
+      "source_no": 31
+    },
+    {
+      "id": 20,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "7х5 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "Ф-154",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП Ф-154И_1.jpg",
+      "source_no": 32
+    },
+    {
+      "id": 21,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "12х8 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "Ф-181",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП Ф-181_1.jpg",
+      "source_no": 33
+    },
+    {
+      "id": 22,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "12х8 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "2320",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП 2320_1.jpg",
+      "source_no": 34
+    },
+    {
+      "id": 23,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "13х9 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "Ф-182",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП Ф-182_1.jpg",
+      "source_no": 35
+    },
+    {
+      "id": 24,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "13х9 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "2320-01",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП 2320-01_1.jpg",
+      "source_no": 36
+    },
+    {
+      "id": 25,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "14х10 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "Ф-183",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП Ф-183_1.jpg",
+      "source_no": 37
+    },
+    {
+      "id": 26,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "14х10 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "2320-02",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП 2320-02_1.jpg",
+      "source_no": 38
+    },
+    {
+      "id": 27,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "16х12 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "Ф-184",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП Ф-184_1.jpg",
+      "source_no": 39
+    },
+    {
+      "id": 28,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "16х12 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "2320-03",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП 2320-03_1.jpg",
+      "source_no": 40
+    },
+    {
+      "id": 29,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "18х14 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "Ф-185",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП Ф-185_1.jpg",
+      "source_no": 42
+    },
+    {
+      "id": 30,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "18х14 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "2320-04",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП 2320-04_1.jpg",
+      "source_no": 43
+    },
+    {
+      "id": 31,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "21х16 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "Ф-186",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП Ф-186_1.jpg",
+      "source_no": 44
+    },
+    {
+      "id": 32,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "21х16 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "2320-05",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП 2320-05_1.jpg",
+      "source_no": 45
+    },
+    {
+      "id": 33,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "26х20 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "Ф-187",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП Ф-187_1.jpg",
+      "source_no": 46
+    },
+    {
+      "id": 34,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "26х20 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "2320-06",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП 2320-06_1.jpg",
+      "source_no": 47
+    },
+    {
+      "id": 35,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "30х24 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "Ф-188",
+      "length_kind": "coil",
+      "image": "/images/extrusion/logo123.jpg",
+      "source_no": 48
+    },
+    {
+      "id": 36,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "30х24 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "2320-07",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП 2320-07_1.jpg",
+      "source_no": 49
+    },
+    {
+      "id": 37,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "36х30 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "2320-09",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП 2320-09_1.jpg",
+      "source_no": 50
+    },
+    {
+      "id": 38,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "",
+      "length_raw": "поставка в бухтах",
+      "code": "Ф-191",
+      "length_kind": "coil",
+      "image": "/images/extrusion/logo123.jpg",
+      "source_no": 51
+    },
+    {
+      "id": 39,
+      "name": "Прокладка защитная пучка проводов (заготовка)",
+      "type": "Прокладка",
+      "subtype": null,
+      "size_raw": "",
+      "length_raw": "поставка в бухтах",
+      "code": "КА-30",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП КА-30_1.jpg",
+      "source_no": 52
+    },
+    {
+      "id": 40,
+      "name": "Профиль буфера педали",
+      "type": "Профиль",
+      "subtype": null,
+      "size_raw": "8х5,5 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "АЗЛК-253",
+      "length_kind": "coil",
+      "image": "/images/extrusion/logo123.jpg",
+      "source_no": 53
+    },
+    {
+      "id": 41,
+      "name": "Профиль шланга",
+      "type": "Профиль",
+      "subtype": null,
+      "size_raw": "9х6 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "ИМ-03",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП ИМ-03_1.jpg",
+      "source_no": 54
+    },
+    {
+      "id": 42,
+      "name": "Трубка",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "9х6 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "2321-02",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП 2321-02_1.jpg",
+      "source_no": 55
+    },
+    {
+      "id": 43,
+      "name": "Профиль трубки эконометра",
+      "type": "Профиль",
+      "subtype": null,
+      "size_raw": "5х3 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "АЗЛК-248",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП АЗЛК -248_1.jpg",
+      "source_no": 58
+    },
+    {
+      "id": 44,
+      "name": "Профиль защитный",
+      "type": "Профиль",
+      "subtype": null,
+      "size_raw": "",
+      "length_raw": "поставка в бухтах",
+      "code": "УАЗ-02",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП УАЗ-02_1.jpg",
+      "source_no": 59
+    },
+    {
+      "id": 45,
+      "name": "Окантовка ручки",
+      "type": "Окантовка",
+      "subtype": null,
+      "size_raw": "",
+      "length_raw": "385±5 мм",
+      "code": "КА-523",
+      "length_kind": "fixed",
+      "image": "/images/extrusion/СП КА-523_1.jpg",
+      "source_no": 60
+    },
+    {
+      "id": 46,
+      "name": "Окантовка поручня",
+      "type": "Окантовка",
+      "subtype": null,
+      "size_raw": "",
+      "length_raw": "220±5 мм",
+      "code": "КА-524",
+      "length_kind": "fixed",
+      "image": "/images/extrusion/СП КА-524_1.jpg",
+      "source_no": 61
+    },
+    {
+      "id": 47,
+      "name": "Облицовка сточного жёлоба крыши",
+      "type": "Облицовка",
+      "subtype": null,
+      "size_raw": "",
+      "length_raw": "2120±5 мм",
+      "code": "2147-04",
+      "length_kind": "fixed",
+      "image": "/images/extrusion/СП 2147-04,06_1.jpg",
+      "source_no": 67
+    },
+    {
+      "id": 48,
+      "name": "Облицовка сточного жёлоба крыши",
+      "type": "Облицовка",
+      "subtype": null,
+      "size_raw": "",
+      "length_raw": "2067±5 мм",
+      "code": "2147-06",
+      "length_kind": "fixed",
+      "image": "/images/extrusion/СП 2147-04,06_1.jpg",
+      "source_no": 68
+    },
+    {
+      "id": 49,
+      "name": "Накладка облицовочная сточного жёлоба крыши",
+      "type": "Накладка",
+      "subtype": null,
+      "size_raw": "",
+      "length_raw": "2210±5 мм",
+      "code": "2148-02",
+      "length_kind": "fixed",
+      "image": "/images/extrusion/СП 2148-03_1.jpg",
+      "source_no": 69
+    },
+    {
+      "id": 50,
+      "name": "Накладка облицовочная сточного жёлоба крыши",
+      "type": "Накладка",
+      "subtype": null,
+      "size_raw": "",
+      "length_raw": "2910±5 мм",
+      "code": "2148-03",
+      "length_kind": "fixed",
+      "image": "/images/extrusion/СП 2148-03_1.jpg",
+      "source_no": 70
+    },
+    {
+      "id": 51,
+      "name": "Трубка перфорированная",
+      "type": "Трубка",
+      "subtype": "перфорированная",
+      "size_raw": "20х13 мм",
+      "length_raw": "поставка в бухтах",
+      "code": "2516",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП 2516_1.jpg",
+      "source_no": 71
+    },
+    {
+      "id": 52,
+      "name": "Молдинг боковины нижний",
+      "type": "Молдинг",
+      "subtype": null,
+      "size_raw": "41х10,5 мм",
+      "length_raw": "1566-4(+5) мм",
+      "code": "2187",
+      "length_kind": "fixed",
+      "image": "/images/extrusion/СП 2187_1.jpg",
+      "source_no": 73
+    },
+    {
+      "id": 53,
+      "name": "По документу (шифр МКП-01)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "МКП-01",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП МКП-01_1.jpg",
+      "source_no": 74
+    },
+    {
+      "id": 54,
+      "name": "По документу (шифр РЛ-232)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "РЛ-232",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП РЛ-232_1.jpg",
+      "source_no": 75
+    },
+    {
+      "id": 55,
+      "name": "По документу (шифр РУС-02А)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "РУС-02А",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП РУС-02А, 02Б_1.jpg",
+      "source_no": 76
+    },
+    {
+      "id": 56,
+      "name": "По документу (шифр РУС-02Б)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "РУС-02Б",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП РУС-02А, 02Б_1.jpg",
+      "source_no": 77
+    },
+    {
+      "id": 57,
+      "name": "По документу (шифр РУС-03)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "РУС-03",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП РУС-03_1.jpg",
+      "source_no": 78
+    },
+    {
+      "id": 58,
+      "name": "По документу (шифр РУС-03-2А)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "РУС-03-2А",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП РУС-03-2(А, 2(Б_1.jpg",
+      "source_no": 79
+    },
+    {
+      "id": 59,
+      "name": "По документу (шифр РУС-03-2Б)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "РУС-03-2Б",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП РУС-03-2(А, 2(Б_1.jpg",
+      "source_no": 80
+    },
+    {
+      "id": 60,
+      "name": "По документу (шифр РУС-04А)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "РУС-04А",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП РУС-04А, 04Б_1.jpg",
+      "source_no": 81
+    },
+    {
+      "id": 61,
+      "name": "По документу (шифр РУС-04Б)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "РУС-04Б",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП РУС-04А, 04Б_1.jpg",
+      "source_no": 82
+    },
+    {
+      "id": 62,
+      "name": "По документу (шифр РУС-108)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "РУС-108",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП РУС-108_1.jpg",
+      "source_no": 83
+    },
+    {
+      "id": 63,
+      "name": "По документу (шифр РУС-12)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "РУС-12",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП РУС-12_1.jpg",
+      "source_no": 84
+    },
+    {
+      "id": 64,
+      "name": "По документу (шифр РУС-24)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "РУС-24",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП РУС-24_1.jpg",
+      "source_no": 85
+    },
+    {
+      "id": 65,
+      "name": "По документу (шифр РУС-31)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "РУС-31",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП РУС-31, 31А, 31Б, 31В_1.jpg",
+      "source_no": 86
+    },
+    {
+      "id": 66,
+      "name": "По документу (шифр РУС-31А)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "РУС-31А",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП РУС-31, 31А, 31Б, 31В_1.jpg",
+      "source_no": 87
+    },
+    {
+      "id": 67,
+      "name": "По документу (шифр РУС-31Б)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "РУС-31Б",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП РУС-31, 31А, 31Б, 31В_1.jpg",
+      "source_no": 88
+    },
+    {
+      "id": 68,
+      "name": "По документу (шифр РУС-31В)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "РУС-31В",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП РУС-31, 31А, 31Б, 31В_1.jpg",
+      "source_no": 89
+    },
+    {
+      "id": 69,
+      "name": "По документу (шифр РУС-33)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "РУС-33",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП РУС-33_1.jpg",
+      "source_no": 90
+    },
+    {
+      "id": 70,
+      "name": "По документу (шифр РУС-42)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "РУС-42",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП РУС-42_1.jpg",
+      "source_no": 91
+    },
+    {
+      "id": 71,
+      "name": "По документу (шифр Г-08)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "Г-08",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП Г-08_1.jpg",
+      "source_no": 92
+    },
+    {
+      "id": 72,
+      "name": "По документу (шифр ГЛ-860)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "ГЛ-860",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП ГЛ-860,860А,860Б,860В_1.jpg",
+      "source_no": 93
+    },
+    {
+      "id": 73,
+      "name": "По документу (шифр ГЛ-860А)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "ГЛ-860А",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП ГЛ-860,860А,860Б,860В_1.jpg",
+      "source_no": 94
+    },
+    {
+      "id": 74,
+      "name": "По документу (шифр ГЛ-860Б)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "ГЛ-860Б",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП ГЛ-860,860А,860Б,860В_1.jpg",
+      "source_no": 95
+    },
+    {
+      "id": 75,
+      "name": "По документу (шифр ГЛ-860В)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "ГЛ-860В",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП ГЛ-860,860А,860Б,860В_1.jpg",
+      "source_no": 96
+    },
+    {
+      "id": 76,
+      "name": "По документу (шифр 2900)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "2900",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП 2900_1.jpg",
+      "source_no": 97
+    },
+    {
+      "id": 77,
+      "name": "По документу (шифр 2974)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "2974",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП 2974_1.jpg",
+      "source_no": 98
+    },
+    {
+      "id": 78,
+      "name": "По документу (шифр Ф-22)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "Ф-22",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП Ф-22_1.jpg",
+      "source_no": 99
+    },
+    {
+      "id": 79,
+      "name": "По документу (шифр Ф-225)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "Ф-225",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП Ф-225_1.jpg",
+      "source_no": 100
+    },
+    {
+      "id": 80,
+      "name": "По документу (шифр Ф-190)",
+      "type": "Трубка",
+      "subtype": null,
+      "size_raw": "Превью по документу",
+      "length_raw": "поставка в бухтах",
+      "code": "Ф-190",
+      "length_kind": "coil",
+      "image": "/images/extrusion/СП Ф-190_1.jpg",
+      "source_no": 101
+    }
+  ]
+}

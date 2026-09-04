@@ -217,6 +217,19 @@ const SPEC_KEY_EN: Record<string, string> = {
 
 /** Точные совпадения значений характеристик RU → EN */
 const SPEC_VALUE_EN_EXACT: Record<string, string> = {
+  "Да": "Yes",
+  "Нет": "No",
+  "экструзионно-выдувной метод": "extrusion blow moulding",
+  "литье под давлением": "injection moulding",
+  "химически стойкие марки полиэтилена": "chemically resistant polyethylene grades",
+  "канистра с крышкой": "canister with cap",
+  "полиэтиленовые мешки по 5 штук": "polyethylene bags, 5 canisters per bag",
+  "ящики из гофрированного картона, не менее 200 штук в коробке": "corrugated cardboard boxes, at least 200 caps per box",
+  "Удобная система штабелирования": "Convenient stacking system",
+  "синий, черный": "blue, black",
+  "до 3 кг": "up to 3 kg",
+  "175 гр": "175 g",
+  "160 штук на поддоне (8 шт. в ряду, 20 рядов по высоте)": "160 units per pallet (8 per row, 20 rows high)",
   "Мешки 25 кг": "Bags, 25 kg",
   "Мешки 15 кг": "Bags, 15 kg",
   "Комплект": "Set",
@@ -269,6 +282,12 @@ function normalizeSpecValueInput(text: string): string {
 
 /** Шаблоны для составных значений */
 const SPEC_VALUE_PHRASES_EN: [RegExp, string][] = [
+  [/ширина/gi, "width"],
+  [/длина/gi, "length"],
+  [/высота/gi, "height"],
+  [/до\s+(\d+(?:[.,]\d+)?)\s*г\/см3/gi, "up to $1 g/cm³"],
+  [/(\d+(?:[.,]\d+)?)\s*дм3/gi, "$1 dm³"],
+  [/(\d+(?:[.,]\d+)?)\s*гр\b/gi, "$1 g"],
   [/КА\s*[-–]?\s*(\d+)\s*А/gi, "KA-$1A"],
   [/КА(?=\s*[-–]?\s*\d)/gi, "KA"],
   [/\bУПЕКС\b/gi, "UPEX"],

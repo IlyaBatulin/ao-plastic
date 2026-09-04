@@ -358,7 +358,11 @@ export function ProductPageClient({
                     {section.image && (
                       <div
                         className={`relative min-h-64 overflow-hidden rounded-2xl border border-border shadow-sm lg:min-h-80 ${
-                          section.imageBackground === "black" ? "bg-black" : "bg-muted"
+                          section.imageBackground === "black"
+                            ? "bg-black"
+                            : section.imageBackground === "white"
+                              ? "bg-white"
+                              : "bg-muted"
                         }`}
                       >
                         <Image

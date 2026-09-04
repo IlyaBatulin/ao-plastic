@@ -51,6 +51,26 @@ const BOX_PRODUCT = {
       ],
     },
   ],
+  detailSectionsEn: [
+    {
+      title: "Benefits",
+      paragraphs: [
+        "JSC Plastic polymer crates are designed for packaging, storage and transportation of fresh mushrooms, vegetables, berries, herbs and other food products.",
+        "Through perforations provide ventilation and help preserve product quality. The stackable design protects the contents, saves space and keeps loads stable during transportation.",
+        "Each crate carries up to 3 kg while weighing only 175 g. Polypropylene makes it lightweight, durable and recyclable.",
+      ],
+    },
+    {
+      title: "Applications",
+      paragraphs: ["The crate can be used as reusable transport packaging, in food-production facilities or as recyclable single-use packaging."],
+    },
+    {
+      title: "Supply",
+      paragraphs: [
+        "Crates are supplied in industrial packaging: 160 units per pallet. Other packaging options are available by agreement. Wholesale delivery is available from the production site in Uzlovaya, Tula Region, to any region of Russia.",
+      ],
+    },
+  ],
 }
 
 const CANISTER_PRODUCT = {
@@ -77,10 +97,10 @@ const CANISTER_PRODUCT = {
   detailSections: [
     {
       title: "Описание",
-      image: "/prevyu/produktsiya/kanistry-polimernye-color.png",
+      image: "/prevyu/produktsiya/kanistry-polimernye-white-bg.png",
       imageAlt: "Канистры полимерные с крышками",
       imageFit: "contain",
-      imageBackground: "black",
+      imageBackground: "white",
       paragraphs: [
         "Канистры полимерные с крышками.",
         "Канистры изготавливают экструзионно-выдувным методом, крышки методом литья под давлением из химически стойких марок полиэтилена. Вместимость канистр 21,5 дм3.",
@@ -103,6 +123,32 @@ const CANISTER_PRODUCT = {
         "Канистры упаковывают в полиэтиленовые мешки по 5 штук.",
         "По согласованию с Потребителем допускаются другие способы и иные виды тары и упаковки, обеспечивающие сохранность канистр при транспортировании и хранении.",
         "Крышки для канистр в собранном виде укладывают насыпью ровными слоями в ящики из гофрированного картона. Количество крышек в одной коробке должно быть не менее 200 штук.",
+      ],
+    },
+  ],
+  detailSectionsEn: [
+    {
+      title: "Description",
+      image: "/prevyu/produktsiya/kanistry-polimernye-white-bg.png",
+      imageAlt: "Polymer canisters with caps",
+      imageFit: "contain",
+      imageBackground: "white",
+      paragraphs: [
+        "The 21.5 dm³ canisters are extrusion blow-moulded from chemically resistant polyethylene; the caps are injection-moulded.",
+        "They are suitable for food products, drinking water, beverages, dairy products, disinfectants, medicines, cosmetics, paints, chemicals and other industrial or household liquids with a density of up to 1.35 g/cm³.",
+        "Suitability for dangerous goods is determined by the applicable product and transport regulations.",
+      ],
+    },
+    {
+      title: "Cap and components",
+      paragraphs: [
+        "Canisters are supplied with caps. Caps may include a seal and a pressure-relief valve and feature a tamper-evident ring that breaks upon first opening.",
+      ],
+    },
+    {
+      title: "Packaging",
+      paragraphs: [
+        "Canisters are packed in polyethylene bags, five units per bag. Caps are packed in corrugated cardboard boxes containing at least 200 units. Alternative packaging can be agreed with the customer.",
       ],
     },
   ],

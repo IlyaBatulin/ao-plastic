@@ -135,7 +135,11 @@ export function FilteredProductsSection({
           <Sparkles className="w-4 h-4 text-primary" />
           <span>
             {effectiveProducts.length}{" "}
-            {t("homePage.catalog.productList.countSuffix") || "товаров"}
+            {lang === "en"
+              ? effectiveProducts.length === 1
+                ? "product"
+                : "products"
+              : t("homePage.catalog.productList.countSuffix") || "товаров"}
           </span>
         </div>
       </div>

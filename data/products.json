@@ -282,9 +282,24 @@
       "subcategories": [
         {
           "id": "dispersion-coatings",
-          "name": "Ассортимент дисперсий",
+          "name": "ЛКМ и строительные материалы",
           "slug": "coatings",
-          "description": "Акриловые и стирол-акриловые дисперсии для ЛКМ, строительных и нетканых материалов, защитных плёнок и упаковочных лент"
+          "description": "Дисперсии для водно-дисперсионных красок, лаков, грунтовок, шпатлёвок и строительных материалов",
+          "image": "/images/finndisp/catalog-paints.webp"
+        },
+        {
+          "id": "dispersion-nonwovens",
+          "name": "Нетканые материалы",
+          "slug": "nonwovens",
+          "description": "Дисперсии для синтетических волокон, геосеток, стеклохолста и кровельных материалов",
+          "image": "/images/finndisp/catalog-nonwovens.jpg"
+        },
+        {
+          "id": "dispersion-adhesives",
+          "name": "Адгезивы",
+          "slug": "adhesives",
+          "description": "Полимерные дисперсии для промышленного применения в составе клеевых материалов",
+          "image": "/images/finndisp/catalog-adhesives.jpg"
         }
       ],
       "products": [
@@ -371,7 +386,7 @@
           "name": "ФИННДИСП АС-2010",
           "brand": "ФИННДИСП",
           "type": "Водная стирол-акриловая дисперсия",
-          "subcategory": "coatings",
+          "subcategory": "nonwovens",
           "description": "Водная дисперсия стирол-акрилового сополимера без пластификаторов, применяемая при производстве геосеток и стеклохолста.",
           "image": "/images/finndisp/finndisp-product-logo.png",
           "specifications": {
@@ -449,7 +464,7 @@
           "name": "АКРОМОЛ АС-101",
           "brand": "АКРОМОЛ",
           "type": "Водная стирол-акриловая дисперсия",
-          "subcategory": "coatings",
+          "subcategory": "nonwovens",
           "description": "Водная дисперсия стирол-акрилового сополимера без пластификаторов для геосеток, стеклохолста, интерьерных и фасадных красок, грунтовок, шпатлёвок и штукатурок.",
           "image": "/images/finndisp/finndisp-product-logo.png",
           "specifications": {
@@ -488,7 +503,7 @@
           "name": "ФИННДИСП А-1049",
           "brand": "ФИННДИСП",
           "type": "Клеевая полимерная дисперсия",
-          "subcategory": "coatings",
+          "subcategory": "adhesives",
           "description": "Полимерная клеевая дисперсия для защитных плёнок и легкосъёмных клейких лент, наносимых на полиолефиновые плёнки.",
           "image": "/images/finndisp/finndisp-product-logo.png",
           "specifications": {
@@ -533,7 +548,7 @@
           "name": "ФИННДИСП А-801",
           "brand": "ФИННДИСП",
           "type": "Клеевая полимерная дисперсия",
-          "subcategory": "coatings",
+          "subcategory": "adhesives",
           "description": "Полимерная клеевая дисперсия для производства упаковочной ленты.",
           "image": "/images/finndisp/finndisp-product-logo.png",
           "specifications": {

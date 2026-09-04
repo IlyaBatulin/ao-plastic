@@ -117,6 +117,6 @@ export async function resolveSubcategory(
     description: jsonSub.description ?? null,
     category_id: categoryId,
     is_active: true,
-    image: null,
+    image: (jsonSub as { image?: string }).image ?? null,
   }
 }

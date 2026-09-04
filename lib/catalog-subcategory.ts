@@ -18,6 +18,19 @@ const EXTRUSION_SELECT =
 
 const CATALOG_DB_BUDGET_MS = 5_500
 
+const DISPERSION_PRODUCT_IDS: Record<string, Set<string>> = {
+  coatings: new Set([
+    "finndisp-a-10",
+    "finndisp-a-10l",
+    "finndisp-ac-2020",
+    "finndisp-a-337",
+    "finndisp-a-09",
+    "finndisp-ac-129",
+  ]),
+  nonwovens: new Set(["finndisp-ac-2010", "akromol-ac-101"]),
+  adhesives: new Set(["finndisp-a-1049", "finndisp-a-801"]),
+}
+
 export type SubcategoryPageData = {
   subcategory: Record<string, unknown>
   publicSubcategorySlug: string
@@ -70,10 +83,7 @@ function buildDisplayProducts(
   const fallbackProducts = fallbackProductsAll.filter((product: Record<string, unknown>) => {
     const productSub = product.subcategory ?? ""
     return (
-      slugCandidates.has(String(subcategory.slug)) ||
-      slugCandidates.has(subcategoryId) ||
       slugCandidates.has(String(productSub)) ||
-      slugCandidates.has(String(subcategory.id)) ||
       slugCandidates.has(`ps-${String(productSub)}`)
     )
   })
@@ -243,7 +253,7 @@ async function fetchSubcategoryPageDataFromDb(
       : Promise.resolve(null),
   ])
 
-  const subcategoryRecord =
+  const resolvedSubcategoryRecord: Record<string, unknown> | null =
     subcategory ??
     (jsonSub
       ? {
@@ -254,7 +264,15 @@ async function fetchSubcategoryPageDataFromDb(
         }
       : null)
 
-  if (!subcategoryRecord) return null
+  if (!resolvedSubcategoryRecord) return null
+
+  const subcategoryRecord: Record<string, unknown> = {
+    ...resolvedSubcategoryRecord,
+    image:
+      resolvedSubcategoryRecord.image ??
+      (jsonSub as { image?: string } | null)?.image ??
+      null,
+  }
 
   const publicSubcategorySlug = getPublicSubcategorySlug(categoryId, {
     id: String(subcategoryRecord.id),
@@ -268,6 +286,13 @@ async function fetchSubcategoryPageDataFromDb(
   const categoryDisplayName =
     (categoryResult?.data?.name as string) ?? fallbackCategory?.name ?? categoryId
 
+  const rawProducts = (productsResult?.data as Record<string, unknown>[]) ?? []
+  const dispersionProductIds = DISPERSION_PRODUCT_IDS[publicSubcategorySlug]
+  const productsForSection =
+    categoryId === "dispersion" && dispersionProductIds
+      ? rawProducts.filter((product) => dispersionProductIds.has(String(product.id)))
+      : rawProducts
+
   const displayProducts = isExtrusion
     ? mapExtrusionProducts((extrusionResult?.data as Record<string, unknown>[]) ?? [])
     : buildDisplayProducts(
@@ -275,7 +300,7 @@ async function fetchSubcategoryPageDataFromDb(
         publicSubcategorySlug,
         subcategoryRecord,
         subcategoryId,
-        (productsResult?.data as Record<string, unknown>[]) ?? null,
+        productsForSection,
         categoryImage
       )
 

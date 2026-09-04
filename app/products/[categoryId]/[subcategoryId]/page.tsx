@@ -79,11 +79,7 @@ export default async function SubcategoryPage({
         backHref={`/products/${categoryId}`}
         hasVideo={!!getCategoryVideo(categoryId, publicSubcategorySlug)}
         videoSrc={getCategoryVideo(categoryId, publicSubcategorySlug)}
-        imageSrc={
-          categoryId === "dispersion" && publicSubcategorySlug === "coatings"
-            ? "/images/finndisp/segment-paints.png"
-            : categoryImage || undefined
-        }
+        imageSrc={(typeof subcategory.image === "string" ? subcategory.image : categoryImage) || undefined}
       >
         {categoryId === "abs" && subcategory.slug === "abs-custom" && (
           <section className="w-full py-20 bg-muted/20">

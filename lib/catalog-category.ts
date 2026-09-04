@@ -62,6 +62,12 @@ async function fetchCategoryPageDataFromDb(
   let category: CategoryRecord | null = catResult?.data ?? null
   let subcategories: SubcategoryRecord[] = subResult?.data ?? []
 
+  // The former database row combines every dispersion grade into one group.
+  // Keep the three public application segments defined by the site catalogue.
+  if (categoryId === "dispersion" && fallbackCategory?.subcategories) {
+    subcategories = fallbackCategory.subcategories as SubcategoryRecord[]
+  }
+
   if (!category && fallbackCategory) {
     category = fallbackCategory
     subcategories = (fallbackCategory.subcategories as SubcategoryRecord[]) ?? []

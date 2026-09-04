@@ -33,6 +33,7 @@ export function CategoryHero({
   const sectionRef = useRef<HTMLElement>(null)
   const videoUrl = hasVideo && videoSrc ? videoSrc : DEFAULT_CATEGORY_VIDEO
   const backdrop = categoryId ? getCategoryVideoBackdrop(categoryId, subcategoryId) : undefined
+  const useVibrantImage = imageSrc?.startsWith("/images/finndisp/catalog-") ?? false
   const mediaClassName = cn(
     "absolute inset-0 h-full w-full object-cover",
     backdrop?.scale && "origin-top"
@@ -97,8 +98,17 @@ export function CategoryHero({
             <source src={videoUrl} type="video/mp4" />
           </video>
         )}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background/95" />
-        <div className="absolute inset-0 bg-gradient-to-t from-primary/40 via-transparent to-transparent" />
+        {useVibrantImage ? (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#06142f]/78 via-[#071a38]/35 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#06142f]/55 via-transparent to-[#06142f]/15" />
+          </>
+        ) : (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background/95" />
+            <div className="absolute inset-0 bg-gradient-to-t from-primary/40 via-transparent to-transparent" />
+          </>
+        )}
       </div>
 
       <div className="relative z-10 container mx-auto px-4 lg:px-8 pt-24 pb-12 sm:pt-28 sm:pb-14 lg:pt-32 lg:pb-16 min-h-[60vh] flex flex-col">
@@ -111,11 +121,11 @@ export function CategoryHero({
         </Link>
         <div className="flex-1 flex items-center">
           <div className="max-w-4xl">
-            <h1 className="text-h1 mb-6 text-primary break-words">
+            <h1 className={cn("text-h1 mb-6 break-words", useVibrantImage ? "text-white drop-shadow-lg" : "text-primary")}>
               {title}
             </h1>
             {description && (
-              <p className="text-xl lg:text-2xl text-primary/90 leading-relaxed">
+              <p className={cn("text-xl lg:text-2xl leading-relaxed", useVibrantImage ? "max-w-3xl text-white/90 drop-shadow-md" : "text-primary/90")}>
                 {description}
               </p>
             )}

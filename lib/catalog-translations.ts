@@ -24,7 +24,9 @@ export function getCategoryName(categoryId: string, lang: "ru" | "en" = "ru"): s
     "ps-psv-s": { ru: "Полистирол вспенивающийся «УПЕКС»", en: "UPEX Expandable Polystyrene" },
     "ps-psv-l": { ru: "Полистирол вспенивающийся ПСВ-Л", en: "Expandable Polystyrene EPS-L" },
     "ps-pse": { ru: "Полистирол ПСЭ-1", en: "Polystyrene PSE-1" },
-    "dispersion-coatings": { ru: "Ассортимент дисперсий", en: "Dispersion Product Range" },
+    "dispersion-coatings": { ru: "ЛКМ и строительные материалы", en: "Coatings and Construction Materials" },
+    "dispersion-nonwovens": { ru: "Нетканые материалы", en: "Nonwoven Materials" },
+    "dispersion-adhesives": { ru: "Адгезивы", en: "Adhesives" },
     "extrusion-parts": { ru: "Экструзионные изделия", en: "Extrusion Products" },
     "parts-extrusion": { ru: "Экструзионные изделия", en: "Extrusion Products" },
     "injection-parts": { ru: "Литьевые изделия", en: "Injection Products" },
@@ -72,8 +74,16 @@ const SUBCATEGORY_DESCRIPTIONS: Record<string, { ru: string; en: string }> = {
     en: "General-purpose emulsion polystyrene",
   },
   "dispersion-coatings": {
-    ru: "Акриловые и стирол-акриловые дисперсии для ЛКМ, строительных и нетканых материалов, защитных плёнок и упаковочных лент",
-    en: "Acrylic and styrene-acrylic dispersions for coatings, construction and nonwoven materials, protective films and packaging tapes",
+    ru: "Дисперсии для водно-дисперсионных красок, лаков, грунтовок, шпатлёвок и строительных материалов",
+    en: "Dispersions for water-based paints, varnishes, primers, fillers and construction materials",
+  },
+  "dispersion-nonwovens": {
+    ru: "Дисперсии для синтетических волокон, геосеток, стеклохолста и кровельных материалов",
+    en: "Dispersions for synthetic fibres, geogrids, glass fibre mats and roofing materials",
+  },
+  "dispersion-adhesives": {
+    ru: "Полимерные дисперсии для промышленного применения в составе клеевых материалов",
+    en: "Polymer dispersions for industrial adhesive formulations",
   },
   "extrusion-parts": {
     ru: "Профили, трубы, уплотнители",
@@ -133,6 +143,9 @@ export function getCatalogSubcategoryTranslationKey(slug: string): string {
     injection: "injection-parts",
     "parts-extrusion": "extrusion-parts",
     "parts-injection": "injection-parts",
+    coatings: "dispersion-coatings",
+    nonwovens: "dispersion-nonwovens",
+    adhesives: "dispersion-adhesives",
   }
   return slugToI18nKey[slug] ?? slug
 }
@@ -172,6 +185,9 @@ export function getSubcategoryNameBySlug(slug: string, lang: "ru" | "en" = "ru")
     "injection": "injection-parts",
     "parts-extrusion": "extrusion-parts",
     "parts-injection": "injection-parts",
+    "coatings": "dispersion-coatings",
+    "nonwovens": "dispersion-nonwovens",
+    "adhesives": "dispersion-adhesives",
     "vedra-tazy": "vedra-tazy",
     "uborka": "uborka",
     "steklo": "steklo",

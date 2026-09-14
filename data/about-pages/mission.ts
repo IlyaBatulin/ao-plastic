@@ -3,10 +3,10 @@ export const missionPageContent = {
     eyebrow: "АО «Пластик»",
     title: "Миссия компании",
     intro:
-      "Мы достигаем максимальной эффективности бизнеса на основе удовлетворения потребностей и ожиданий Потребителей, долгосрочного обоснованного планирования, организации результативной работы каждого сотрудника, повышения уровня комфорта и жизни общества.",
+      "Мы строим эффективный бизнес, создавая качественный продукт, который полностью отвечает запросам наших клиентов. Мы верим в долгосрочное планирование, ценим вклад каждого сотрудника и стремимся улучшать качество жизни общества.",
     motto: "«От достигнутого — к совершенству»",
     mottoSuffix:
-      "— девиз, отражающий наше твёрдое намерение не останавливаться на достигнутом и направленность на получение результатов в тех делах, в которых мы всегда должны быть, по крайней мере, не хуже мировых практик.",
+      "— наш девиз. Мы никогда не останавливаемся на месте, задаём высокие стандарты в своей отрасли и выпускаем продукцию на уровне лучших мировых практик.",
     scrollToHistory: "История компании",
     historyEyebrow: "Путь развития",
     historyLead:
@@ -16,10 +16,10 @@ export const missionPageContent = {
     eyebrow: "JSC «Plastic»",
     title: "Company Mission",
     intro:
-      "We achieve maximum business efficiency by meeting the needs and expectations of our customers, through long-term sound planning, organizing effective work for every employee, and improving the comfort and quality of life in society.",
+      "We build an efficient business by creating quality products that fully meet our customers' needs. We believe in long-term planning, value every employee's contribution and strive to improve quality of life in society.",
     motto: "“From achievement to excellence”",
     mottoSuffix:
-      "— a motto reflecting our firm commitment not to rest on our achievements and our focus on delivering results in areas where we must always be at least on par with global best practices.",
+      "— our motto. We never stand still: we set high standards in our industry and manufacture products in line with leading global practices.",
     scrollToHistory: "Company history",
     historyEyebrow: "Our development",
     historyLead:

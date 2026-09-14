@@ -19,7 +19,7 @@ export type CertificateItem = {
   description: string
 }
 
-export function CertificatesCarousel({ certificates }: { certificates: CertificateItem[] }) {
+export function CertificatesCarousel({ certificates }: { certificates: readonly CertificateItem[] }) {
   const { t } = useLanguage()
 
   return (

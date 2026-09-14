@@ -217,6 +217,128 @@ const PRODUCT_NAME_PHRASES_EN: [RegExp, string][] = [
 ]
 
 /**
+ * Exact English names for injection-moulded machine parts.
+ * Generic names are paired with the stable product code in the card title.
+ */
+const DMS_INJECTION_PRODUCT_NAME_EN: Record<string, string> = {
+  "ka-02": "Clip",
+  "ka-10a": "Transit plug",
+  "ka-19": "Bushing",
+  "ka-23": "Bushing",
+  "ka-25b": "Upper steering wheel cover",
+  "ka-27b": "Lower steering wheel cover",
+  "ka-28b": "Switch frame",
+  "ka-37-ka-38": "Dashboard trim",
+  "ka-39a": "Roof strip",
+  "ka-43": "Cap",
+  "ka-44": "Hole plug Ø20.5",
+  "ka-46a": "Handle escutcheon",
+  "ka-50a": "Driver's seat suspension hinge roller",
+  "ka-51": "Driver's seat suspension torsion tube edging",
+  "ka-53": "Driver's seat suspension hinge-axis bushing",
+  "ka-54a": "Driver's seat suspension torsion adjustment handle trim",
+  "ka-55": "Driver's seat suspension adjustment screw limiter",
+  "ka-56r": "Torsion adjustment handle spring stop",
+  "ka-62a": "Air distributor",
+  "ka-65": "Air distributor mounting flange",
+  "ka-70": "Clothes hook",
+  "ka-80": "Clip",
+  "ka-83a": "Sleeper curtain loop",
+  "ka-89": "Fender spacer",
+  "ka-96": "Clip",
+  "ka-114": "1 L mug",
+  "ka-122": "Plug",
+  "ka-123": "Transit plug",
+  "ka-124": "Transit plug",
+  "ka-128": "Air distributor inlet pipe",
+  "ka-132": "Retainer block",
+  "ka-133a": "Control handle",
+  "ka-134": "Heater control scale",
+  "ka-280a": "Cleaner",
+  "ka-281a": "Cleaner",
+  "ka-282a": "Cleaner",
+  "ka-283": "Protective ring",
+  "ka-284": "Protective ring",
+  "ka-285": "Protective ring",
+  "ka-286a": "Spacer",
+  "ka-287a": "Spacer",
+  "ka-288a": "Spacer",
+  "ka-343a": "Guide disc",
+  "ka-345a": "Piston",
+  "ka-346": "Diaphragm disc",
+  "ka-510": "Brake mounting clamp",
+  "ka-551b": "Wing nut",
+  "ka-552": "Strip",
+  "ka-553": "Support ring",
+  "ka-554a": "Spring plate",
+  "ka-555": "Bushing",
+  "ka-560": "Valve body",
+  "ka-561": "Piston",
+  "ka-562": "Guide ring",
+  "ka-564": "Guide ring",
+  "ka-565": "Guide ring",
+  "ka-568": "Cover",
+  "ka-568a": "Cover",
+  "ka-572": "Cover",
+  "ka-572a": "Cover",
+  "ka-583": "Plug",
+  "ka-585": "Guide cap",
+  "ka-586": "Piston",
+  "ka-587": "Roller",
+  "ka-41a": "Inner panel hole plug",
+  "ka-589": "Bushing",
+  "ka-590": "Guide",
+  "ka-603": "Cover",
+  "mmz-10": "Bushing blank",
+  "f-226-1": "Left lower body-side moulding trim",
+  "f-226-2": "Right lower body-side moulding trim",
+}
+
+const CATALOG_PRODUCT_RU_DESCRIPTION: Record<string, string> = {
+  "pse-1": "Эмульсионный полистирол общего назначения в виде белого порошка.",
+}
+
+const DMS_INJECTION_GROUP_EN: Record<string, string> = {
+  "Втулка": "Bushings",
+  "Гайка-барашек": "Wing nuts",
+  "Заглушка": "Hole plugs",
+  "Заготовка": "Blanks",
+  "Колодка": "Retainer blocks",
+  "Колпачок": "Caps",
+  "Кольцо": "Rings",
+  "Корпус": "Housings",
+  "Кружка": "Mugs",
+  "Крышка": "Covers",
+  "Крючок": "Hooks",
+  "Лента": "Strips",
+  "Мембранный": "Diaphragm discs",
+  "Накладка": "Overlays",
+  "Направляющая": "Guides",
+  "Направляющий": "Guide discs",
+  "Облицовка": "Trim parts",
+  "Ограничитель": "Limiters",
+  "Окантовка": "Edging",
+  "Патрубок": "Pipes",
+  "Петля": "Loops",
+  "Поршень": "Pistons",
+  "Пробка": "Plugs",
+  "Проставка": "Spacers",
+  "Рамка": "Frames",
+  "Распределитель": "Distributors",
+  "Розетка": "Escutcheons",
+  "Ролик": "Rollers",
+  "Ручка": "Handles",
+  "Скрепка": "Clips",
+  "Тарелка": "Spring plates",
+  "Упор": "Stops",
+  "Фланец": "Flanges",
+  "Хомут": "Clamps",
+  "Чистильщик": "Cleaners",
+  "Шкала": "Control scales",
+  "Штабик": "Roof strips",
+}
+
+/**
  * Кириллица в марках → общепринятые EN-аббревиатуры.
  * Без \b после кириллицы: в JS \b не работает на границе кириллических букв,
  * иначе «ПСВ-С» превращается только в «EPS-С» (частичная замена ПСВ→EPS).
@@ -370,6 +492,30 @@ function latinizeUnits(value: string): string {
     .trim()
 }
 
+function latinizeDmsCode(value: string): string {
+  const map: Record<string, string> = {
+    А: "A", Б: "B", В: "V", Г: "G", Д: "D", Е: "E", Ё: "E",
+    Ж: "ZH", З: "Z", И: "I", Й: "Y", К: "K", Л: "L", М: "M",
+    Н: "N", О: "O", П: "P", Р: "R", С: "S", Т: "T", У: "U",
+    Ф: "F", Х: "KH", Ц: "TS", Ч: "CH", Ш: "SH", Щ: "SHCH",
+    Ъ: "", Ы: "Y", Ь: "", Э: "E", Ю: "YU", Я: "YA",
+  }
+
+  return value
+    .toUpperCase()
+    .split("")
+    .map((char) => map[char] ?? char)
+    .join("")
+    .replace(/KA\s*(\d)/g, "KA-$1")
+    .replace(/MMZ\s*(\d)/g, "MMZ-$1")
+    .replace(/F\s*(\d)/g, "F-$1")
+}
+
+export function translateDmsInjectionGroup(value: string, lang: "ru" | "en"): string {
+  if (lang !== "en") return value
+  return DMS_INJECTION_GROUP_EN[value] ?? value
+}
+
 /** Убрать кириллицу, оставить цифры/латиницу/знаки */
 function toLatinOnly(text: string, fallback = "Product"): string {
   const latin = text
@@ -404,12 +550,19 @@ export function buildDmsEnglishName(product: {
   const sizeRaw = specs["Габаритные размеры"] ?? specs.size_raw
   const lengthRaw = specs["Длина изделия"] ?? specs.length_raw
 
-  const codeStr = code != null ? String(code).trim() : ""
+  const codeStr = code != null ? latinizeDmsCode(String(code).trim()) : ""
   const sizeStr = sizeRaw != null ? latinizeUnits(String(sizeRaw)) : ""
   const lengthStr = lengthRaw != null ? latinizeUnits(String(lengthRaw)) : ""
 
   const titleParts: string[] = []
   if (typeEn) titleParts.push(typeEn)
+
+  const exactInjectionName = product.id
+    ? DMS_INJECTION_PRODUCT_NAME_EN[String(product.id)]
+    : undefined
+  if (exactInjectionName) {
+    return codeStr ? `${exactInjectionName} — ${codeStr}` : exactInjectionName
+  }
 
   const detail =
     codeStr && !hasCyrillic(codeStr)
@@ -539,7 +692,10 @@ export function resolveProductDisplay(
     }
     return {
       name: product.name,
-      description: product.description ?? undefined,
+      description:
+        CATALOG_PRODUCT_RU_DESCRIPTION[String(product.id)] ??
+        product.description ??
+        undefined,
     }
   }
 

@@ -4,7 +4,7 @@ export const qualityPageContent = {
     heroSubtitle: "Системы качества и соответствие международным стандартам",
     qmsTitle: "Система менеджмента качества (СМК)",
     qmsParagraphs: [
-      "На нашем заводе действует система менеджмента качества, сертифицированная на соответствие ISO 9001-2008 и ГОСТ ISO 9001:2011. Компания регулярно проходит аудиты и подтверждает соответствие продукции всем необходимым стандартам. Основа качества изделий из полимерных материалов — сырьё, используемое для их изготовления, и его свойства.",
+      "На нашем заводе действует система менеджмента качества, сертифицированная на соответствие ISO 9001:2015 и ГОСТ Р ИСО 9001-2015. Компания регулярно проходит аудиты и подтверждает соответствие продукции всем необходимым стандартам. Основа качества изделий из полимерных материалов — сырьё, используемое для их изготовления, и его свойства.",
       "АО «Пластик» внедрило и поддерживает систему менеджмента качества в соответствии с международными и национальными стандартами. Это позволяет гарантировать стабильное качество стирола, полистирола, АБС-пластиков и готовых изделий, а также повышать удовлетворённость потребителей и эффективность процессов.",
       "В основе СМК лежит цикл «Планирование — Выполнение — Проверка — Действие» (PDCA): мы планируем процессы и цели в области качества, выполняем их с контролем, проводим внутренние и внешние аудиты и корректирующие действия, после чего совершенствуем систему.",
       "Политика в области качества является частью общей стратегии компании и доводится до всех сотрудников; за её реализацию отвечает руководство и уполномоченные по качеству.",
@@ -60,16 +60,16 @@ export const qualityPageContent = {
       "Документы, подтверждающие соответствие системы менеджмента качества и экологического менеджмента международным и национальным стандартам. Нажмите на документ для просмотра или скачивания.",
     certificates: [
       {
-        href: "/docs/quality/sertifikat-smk-2026.jpg",
-        image: "/docs/quality/sertifikat-smk-2026.jpg",
-        title: "Сертификат системы менеджмента качества (СМК)",
-        description: "Соответствие ISO 9001, действителен до 2026 г.",
+        href: "/docs/quality/certificate-academy-cert-2026.pdf",
+        image: "/docs/quality/certificate-academy-cert-2026.jpg",
+        title: "Сертификат СМК «АКАДЕМИЯ-СЕРТ»",
+        description: "ГОСТ Р ИСО 9001-2015 (ISO 9001:2015), действителен до 25.12.2026.",
       },
       {
-        href: "/docs/quality/iso-2020.jpg",
-        image: "/docs/quality/iso-2020.jpg",
-        title: "Сертификат соответствия ISO 9001",
-        description: "Система менеджмента качества (2020).",
+        href: "/docs/quality/certificate-intercertifica-2026.pdf",
+        image: "/docs/quality/certificate-intercertifica-2026.jpg",
+        title: "Сертификат СМК «ИНТЕРСЕРТИФИКА»",
+        description: "ISO 9001:2015, действителен до 30.12.2026.",
       },
       {
         href: "/docs/quality/svidetelstvo.jpg",
@@ -83,12 +83,6 @@ export const qualityPageContent = {
         title: "Диплом в области АБС-пластиков",
         description: "Признание достижений в производстве и качестве АБС-пластиков.",
       },
-      {
-        href: "/docs/quality/kaski1.jpg",
-        image: "/docs/quality/kaski1.jpg",
-        title: "Сертификат на продукцию (СИЗ)",
-        description: "Соответствие средств индивидуальной защиты требованиям безопасности.",
-      },
     ],
     additionalDocsTitle: "Дополнительные документы",
     docLinks: [
@@ -99,8 +93,8 @@ export const qualityPageContent = {
     ],
     standardsTitle: "Соответствие стандартам",
     standardsList: [
-      "ISO 9001-2008 — Системы менеджмента качества",
-      "ГОСТ ISO 9001:2011 — Системы менеджмента качества (национальный стандарт)",
+      "ISO 9001:2015 — Системы менеджмента качества",
+      "ГОСТ Р ИСО 9001-2015 — Системы менеджмента качества (национальный стандарт)",
       "ISO 14001:2015 — Системы экологического менеджмента",
       "Сертификаты соответствия ГОСТ на продукцию",
     ],
@@ -110,7 +104,7 @@ export const qualityPageContent = {
     heroSubtitle: "Quality systems and compliance with international standards",
     qmsTitle: "Quality Management System (QMS)",
     qmsParagraphs: [
-      "Our plant operates a quality management system certified for compliance with ISO 9001:2008 and GOST ISO 9001:2011. The company undergoes regular audits and confirms that its products meet all applicable standards. The foundation of quality for polymer products is the raw materials used in their manufacture and their properties.",
+      "Our plant operates a quality management system certified for compliance with ISO 9001:2015 and GOST R ISO 9001-2015. The company undergoes regular audits and confirms that its products meet all applicable standards. The foundation of quality for polymer products is the raw materials used in their manufacture and their properties.",
       "JSC Plastic has implemented and maintains a quality management system in accordance with international and national standards. This ensures stable quality of styrene, polystyrene, ABS plastics and finished products, and improves customer satisfaction and process efficiency.",
       "The QMS is based on the Plan–Do–Check–Act (PDCA) cycle: we plan quality processes and objectives, execute them under control, conduct internal and external audits and corrective actions, and then improve the system.",
       "The quality policy is part of the company's overall strategy and is communicated to all employees; management and quality officers are responsible for its implementation.",
@@ -166,16 +160,16 @@ export const qualityPageContent = {
       "Documents confirming compliance of the quality and environmental management systems with international and national standards. Click a document to view or download.",
     certificates: [
       {
-        href: "/docs/quality/sertifikat-smk-2026.jpg",
-        image: "/docs/quality/sertifikat-smk-2026.jpg",
-        title: "Quality Management System Certificate",
-        description: "ISO 9001 compliance, valid until 2026.",
+        href: "/docs/quality/certificate-academy-cert-2026.pdf",
+        image: "/docs/quality/certificate-academy-cert-2026.jpg",
+        title: "ACADEMY-CERT QMS Certificate",
+        description: "GOST R ISO 9001-2015 (ISO 9001:2015), valid until 25 December 2026.",
       },
       {
-        href: "/docs/quality/iso-2020.jpg",
-        image: "/docs/quality/iso-2020.jpg",
-        title: "ISO 9001 Certificate of Conformity",
-        description: "Quality management system (2020).",
+        href: "/docs/quality/certificate-intercertifica-2026.pdf",
+        image: "/docs/quality/certificate-intercertifica-2026.jpg",
+        title: "INTERCERTIFICA QMS Certificate",
+        description: "ISO 9001:2015, valid until 30 December 2026.",
       },
       {
         href: "/docs/quality/svidetelstvo.jpg",
@@ -189,12 +183,6 @@ export const qualityPageContent = {
         title: "ABS Plastics Achievement Diploma",
         description: "Recognition of achievements in ABS plastics production and quality.",
       },
-      {
-        href: "/docs/quality/kaski1.jpg",
-        image: "/docs/quality/kaski1.jpg",
-        title: "Product Certificate (PPE)",
-        description: "Personal protective equipment compliance with safety requirements.",
-      },
     ],
     additionalDocsTitle: "Additional Documents",
     docLinks: [
@@ -205,8 +193,8 @@ export const qualityPageContent = {
     ],
     standardsTitle: "Standards Compliance",
     standardsList: [
-      "ISO 9001:2008 — Quality management systems",
-      "GOST ISO 9001:2011 — Quality management systems (national standard)",
+      "ISO 9001:2015 — Quality management systems",
+      "GOST R ISO 9001-2015 — Quality management systems (national standard)",
       "ISO 14001:2015 — Environmental management systems",
       "GOST certificates of conformity for products",
     ],

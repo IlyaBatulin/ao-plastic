@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { Factory, FlaskConical, Leaf, Award, Truck, HeadphonesIcon } from "lucide-react"
+import { Award, BadgeDollarSign, ShieldCheck } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 import { FeatureCard } from "@/components/feature-card"
 
@@ -41,16 +41,12 @@ export function About() {
   const aboutParagraphs = [
     t("homePage.about.paragraph1"),
     t("homePage.about.paragraph2"),
-    t("homePage.about.paragraph3"),
   ] as string[]
 
   const features = [
     { icon: Award, key: "feature1" },
-    { icon: FlaskConical, key: "feature2" },
-    { icon: Factory, key: "feature3" },
-    { icon: HeadphonesIcon, key: "feature4" },
-    { icon: Truck, key: "feature5" },
-    { icon: Leaf, key: "feature6" },
+    { icon: ShieldCheck, key: "feature2" },
+    { icon: BadgeDollarSign, key: "feature3" },
   ]
 
   return (
@@ -108,6 +104,9 @@ export function About() {
       {/* Преимущества — на спокойном фоне под фото */}
       <div className="bg-gradient-to-b from-secondary via-primary/5 to-secondary py-20 lg:py-28">
         <div className="container mx-auto px-4 lg:px-8">
+          <h2 className="mb-10 text-center text-h2 text-foreground lg:mb-14">
+            {t("homePage.about.featuresTitle")}
+          </h2>
           <div className="grid gap-8 md:grid-cols-2 md:gap-10 lg:grid-cols-3 lg:gap-12">
             {features.map((feature, index) => (
               <FeatureCard

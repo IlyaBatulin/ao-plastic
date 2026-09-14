@@ -12,6 +12,7 @@ const nextConfig = {
     // Оптимизация включена: AVIF/WebP + ресайз под устройство.
     // Требует пакет sharp в production (добавлен в dependencies).
     formats: ["image/avif", "image/webp"],
+    qualities: [75, 95, 100],
     remotePatterns: [
       {
         protocol: "https",

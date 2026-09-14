@@ -13,6 +13,8 @@ import { resolveProductImageUrl } from "@/lib/product-image"
 import { stripHiddenSpecs } from "@/lib/product-specs"
 import { createCatalogClient, supabaseCatalogQuery } from "@/utils/supabase/server"
 import { DMS_EXTRUSION_FALLBACK, DMS_INJECTION_FALLBACK } from "@/data/dms-fallback"
+import { ABS_PRODUCTS_FALLBACK } from "@/data/abs-fallback"
+import { applyCatalogSpecCorrections } from "@/data/catalog-spec-corrections"
 
 const EXTRUSION_SELECT =
   "id, name, type, subtype, size_raw, length_raw, code, length_kind, image, source_no"
@@ -91,14 +93,23 @@ function buildDisplayProducts(
   const fallbackProductsAll: Record<string, unknown>[] =
     categoryId === "machine-parts"
       ? (dmsAssetProducts as unknown as Record<string, unknown>[])
+      : categoryId === "abs"
+        ? (ABS_PRODUCTS_FALLBACK as unknown as Record<string, unknown>[])
       : (jsonProducts as Record<string, unknown>[])
 
   const slugCandidates = new Set(getSubcategorySlugCandidates(categoryId, subcategoryId))
   const fallbackProducts = fallbackProductsAll.filter((product: Record<string, unknown>) => {
-    // Other catalogue sections historically use the complete local fallback when
-    // Supabase is slow or unavailable. Narrow grouping is only required for the
-    // three newly separated dispersion application segments.
-    if (categoryId !== "dispersion" && categoryId !== "machine-parts") return true
+    // Keep each independently routed section isolated even when Supabase is slow
+    // or unavailable. Without this guard every polystyrene fallback product was
+    // shown on every subcategory page.
+    if (
+      categoryId !== "dispersion" &&
+      categoryId !== "machine-parts" &&
+      categoryId !== "polystyrene" &&
+      categoryId !== "abs"
+    ) {
+      return true
+    }
 
     const productSub = product.subcategory ?? ""
     return (
@@ -155,8 +166,15 @@ function buildDisplayProducts(
       specifications &&
       typeof specifications === "object" &&
       Object.keys(specifications).length > 0
-    const mergedSpecs = stripHiddenSpecs(
-      hasProductSpecs ? specifications : ((fallback as Record<string, unknown>)?.specifications ?? {})
+    const sourceSpecs = hasProductSpecs
+      ? (specifications as Record<string, unknown>)
+      : (((fallback as Record<string, unknown>)?.specifications ?? {}) as Record<
+          string,
+          unknown
+        >)
+    const mergedSpecs = applyCatalogSpecCorrections(
+      String(product.id),
+      stripHiddenSpecs(sourceSpecs)
     )
 
     const imageRaw =

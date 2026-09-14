@@ -1,6 +1,7 @@
 "use client"
 
 import { use } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { Warehouse, MapPinned } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
@@ -99,11 +100,15 @@ export default function DealersPage({ params, searchParams }: NextPageProps) {
                 ))}
               </div>
             </div>
-            <div className="rounded-3xl border border-border bg-card p-6 shadow-sm flex items-center justify-center">
-              <img
-                src="/images/dillerlogo.jpg"
+            <div className="flex w-full max-w-[360px] items-center justify-center justify-self-center rounded-3xl border border-border bg-card p-5 shadow-sm lg:p-6">
+              <Image
+                src="/images/dillerlogo-hq.png"
                 alt={t("dealersPage.logoAlt")}
-                className="w-full h-auto object-contain"
+                width={1464}
+                height={1075}
+                sizes="(min-width: 1536px) 340px, (min-width: 1024px) 300px, 260px"
+                quality={95}
+                className="h-auto w-full max-w-[260px] object-contain sm:max-w-[300px] lg:max-w-[260px] xl:max-w-[300px] 2xl:max-w-[340px]"
               />
             </div>
           </div>

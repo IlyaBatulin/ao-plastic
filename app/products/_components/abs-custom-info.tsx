@@ -25,7 +25,7 @@ const copy = {
       "бытовые изделия, игрушки и др.",
     ],
     materialsTitle: "Материалы и примеры применения",
-    materialsText: "Визуальный ряд с гранулами, компаундами и готовыми пластиковыми изделиями показывает связь сырья с конечной продукцией и помогает быстрее понять возможности производства.",
+    materialsText: "",
     contactText: "Чтобы приобрести имеющиеся товары или заказать изготовление изделий из АБС-пластика под индивидуальные требования, оставьте запрос на сайте либо свяжитесь с нашими специалистами по контактному номеру телефона. Также можно написать письмо на электронную почту info@td-plastic.ru.",
     formTitle: "Оставить заявку на изготовление",
   },
@@ -47,7 +47,7 @@ const copy = {
       "household products, toys and other polymer items.",
     ],
     materialsTitle: "Materials and application examples",
-    materialsText: "The images of granules, compounds and finished plastic products illustrate the complete path from raw material to the final product and demonstrate the breadth of our manufacturing capabilities.",
+    materialsText: "",
     contactText: "To purchase available products or order custom ABS plastic components, submit a request on the website or contact our specialists by phone. You can also email us at info@td-plastic.ru.",
     formTitle: "Request custom manufacturing",
   },
@@ -262,9 +262,11 @@ export function AbsCustomInfo() {
             <h3 className="text-h3">
               {text.materialsTitle}
             </h3>
-            <p className="max-w-3xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-              {text.materialsText}
-            </p>
+            {text.materialsText && (
+              <p className="max-w-3xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
+                {text.materialsText}
+              </p>
+            )}
             <p className="max-w-3xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
               {text.contactText}
             </p>

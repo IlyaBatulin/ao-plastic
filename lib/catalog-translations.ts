@@ -50,12 +50,12 @@ export function getCategoryName(categoryId: string, lang: "ru" | "en" = "ru"): s
 
 const SUBCATEGORY_DESCRIPTIONS: Record<string, { ru: string; en: string }> = {
   "abs-injection": {
-    ru: "Литьевые марки АБС-пластика для термопластавтоматов",
-    en: "ABS grades for injection molding",
+    ru: "Литьевые марки АБС-пластика",
+    en: "Injection grades of ABS plastic",
   },
   "abs-extrusion": {
-    ru: "Экструзионные марки АБС-пластика для листов и профилей",
-    en: "ABS grades for sheet and profile extrusion",
+    ru: "Экструзионные марки АБС-пластика",
+    en: "Extrusion grades of ABS plastic",
   },
   "abs-custom": {
     ru: "Изготовление изделий из АБС-пластика по индивидуальным заказам",

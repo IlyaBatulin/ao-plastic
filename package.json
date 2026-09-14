@@ -9,6 +9,7 @@
     "start": "next start -H 0.0.0.0",
     "get-chat-id": "node scripts/get-chat-id.js",
     "test-tg": "node scripts/test-telegram.js",
+    "audit:catalog": "node scripts/audit-catalog.mjs",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui"
   },

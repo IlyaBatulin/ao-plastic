@@ -1,6 +1,7 @@
 import { cache } from "react"
 import productsData from "@/data/products.json"
 import { DMS_EXTRUSION_FALLBACK, DMS_INJECTION_FALLBACK } from "@/data/dms-fallback"
+import { applyCatalogSpecCorrections } from "@/data/catalog-spec-corrections"
 import { findJsonSubcategory, resolveSubcategory } from "@/lib/catalog-slugs"
 import { normalizeHouseholdProduct } from "@/lib/household-product-content"
 import { isNextBuild } from "@/lib/next-build"
@@ -131,6 +132,27 @@ export type ProductPageData = {
   subcategory: Record<string, unknown> | null
 }
 
+function withCorrectedSpecifications(product: Record<string, unknown>) {
+  let specifications = product.specifications
+  if (typeof specifications === "string") {
+    try {
+      specifications = JSON.parse(specifications)
+    } catch {
+      specifications = {}
+    }
+  }
+
+  return {
+    ...product,
+    specifications: applyCatalogSpecCorrections(
+      String(product.id),
+      specifications && typeof specifications === "object"
+        ? (specifications as Record<string, unknown>)
+        : {}
+    ),
+  }
+}
+
 /** Один запрос на страницу товара (metadata + page делят результат через cache). */
 export const getProductPageData = cache(
   async (
@@ -145,12 +167,14 @@ export const getProductPageData = cache(
     if (isNextBuild()) {
       const fallbackProduct = findLocalProduct(categoryId, subcategoryId, productId)
       if (!fallbackProduct) return null
+      const normalizedProduct = normalizeHouseholdProduct(
+        fallbackProduct as unknown as Record<string, unknown>,
+        categoryId,
+        subcategoryId
+      )
+      if (!normalizedProduct) return null
       return {
-        product: normalizeHouseholdProduct(
-          fallbackProduct as unknown as Record<string, unknown>,
-          categoryId,
-          subcategoryId
-        ),
+        product: withCorrectedSpecifications(normalizedProduct),
         category: fallbackCategory,
         subcategory: fallbackSubcategory,
       }
@@ -183,8 +207,15 @@ export const getProductPageData = cache(
     const subcategory =
       subcategoryData ?? fallbackSubcategory
 
+    const normalizedProduct = normalizeHouseholdProduct(
+      resolvedProduct,
+      categoryId,
+      subcategoryId
+    )
+    if (!normalizedProduct) return null
+
     return {
-      product: normalizeHouseholdProduct(resolvedProduct, categoryId, subcategoryId),
+      product: withCorrectedSpecifications(normalizedProduct),
       category,
       subcategory,
     }

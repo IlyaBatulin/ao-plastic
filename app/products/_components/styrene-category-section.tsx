@@ -59,11 +59,10 @@ export function StyreneCategorySection({ categoryName }: StyreneCategorySectionP
             variants={storyParent}
           >
             <motion.div variants={storyChild} className="col-span-full">
-              <h2 className="text-h2 text-primary">{t(styreneK.title)}</h2>
-              <p className="mt-4 max-w-2xl text-body text-primary/85 dark:text-blue-100/85">
+              <p className="max-w-2xl text-body text-primary/85 dark:text-blue-100/85">
                 {t(styreneK.lead)}
               </p>
-              <div className="mt-8 h-1 w-28 rounded-full bg-primary" />
+              <div className="mt-6 h-1 w-28 rounded-full bg-primary" />
             </motion.div>
             <motion.div
               variants={storyChild}

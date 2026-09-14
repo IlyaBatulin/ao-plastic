@@ -368,20 +368,21 @@
     },
     "about": {
       "title": "About Us",
-      "paragraph1": "<strong>JSC «Plastic»</strong> is a leader in the Russian chemical industry in the ABS plastics segment. 98% of the polystyrene we produce are modern target grades. Founded in 1959, our enterprise continuously develops, exploring new directions and constantly modernizing.",
-      "paragraph2": "We produce polymer raw materials that meet modern quality standards. Our products include expandable polystyrene, styrene-acrylic dispersions, extrusion and injection grades of ABS plastics, as well as various plastic products used in industry and everyday life.",
-      "paragraph3": "Our plant operates a <strong>quality management system certified for compliance with ISO 9001-2008 and GOST ISO 9001:2011</strong>. Premium product quality and competitive pricing make cooperation with JSC «Plastic» both reliable and commercially advantageous.",
+      "paragraph1": "<strong>JSC «Plastic»</strong> is a leading Russian manufacturer of ABS plastics and polymer raw materials. Operating since 1959, we continuously modernise production and introduce advanced technologies. Today, 98% of our output consists of modern grades used across industry and everyday applications.",
+      "paragraph2": "<strong>Our product range:</strong><br>• Expandable polystyrene<br>• Styrene-acrylic dispersions<br>• Extrusion and injection grades of ABS plastics<br>• Finished plastic products",
+      "paragraph3": "",
+      "featuresTitle": "Why Customers Choose Us",
       "feature1": {
-        "title": "ABS Market Leader",
-        "description": "Leading positions in the Russian chemical market in the ABS plastics segment"
+        "title": "ISO Standards",
+        "description": "Our quality management system is certified to ISO 9001:2015 and GOST R ISO 9001-2015 international and Russian standards"
       },
       "feature2": {
-        "title": "Certified Quality",
-        "description": "ISO 9001-2008 and GOST ISO 9001:2011 - strict control at all stages"
+        "title": "Consistency and Reliability",
+        "description": "We guarantee consistent raw-material characteristics from batch to batch"
       },
       "feature3": {
-        "title": "Wide Range",
-        "description": "ABS plastics, polystyrene and styrene-acrylic dispersions — over 12 grades in a range that keeps expanding"
+        "title": "Competitive Value",
+        "description": "We offer competitive direct manufacturer pricing for long-term partnerships"
       },
       "feature4": {
         "title": "Technical Support",
@@ -462,7 +463,7 @@
     },
     "partners": {
       "title": "Our Partners",
-      "description": "We collaborate with leading companies in Russia and ensure high product quality",
+      "description": "We work with leading Russian companies and ensure consistently high product quality",
       "ariaLabel": "Our Partners"
     },
     "catalog": {
@@ -528,7 +529,7 @@
         "boxes": "Boxes"
       },
       "categoryDescriptions": {
-        "styrene": "Styrene is a colorless liquid with a characteristic slightly sweet odor and high chemical reactivity",
+        "styrene": "A colorless liquid with a characteristic slightly sweet odor and high chemical reactivity",
         "abs": "ABS is a modern impact-resistant thermoplastic based on acrylonitrile, butadiene and styrene. Injection and extrusion grades combine strength, rigidity, dimensional stability and reliable processing for automotive, electronics, medical, appliance and engineering applications.",
         "polystyrene": "Expandable polystyrene for thermal insulation, protective packaging, moulded products and foundry applications.",
         "dispersion": "Water-based acrylic and styrene-acrylic dispersions for modern coatings and construction materials, including interior and exterior paints, primers, renders, adhesive formulations and nonwoven substrates.",
@@ -575,7 +576,7 @@
       },
       "absPage": {
         "sectionTitle": "About ABS plastic grades",
-        "sectionIntro": "A brief overview of injection grades (injection molding machines) and extrusion grades (sheets and profiles). The product catalog is in the subcategories above.",
+        "sectionIntro": "A brief overview of injection and extrusion grades of ABS plastic. Product listings are available in the subcategories above.",
         "injection": {
           "title": "Injection ABS plastic",
           "intro": "A wide range of injection ABS plastic grades. The main processing method is injection molding on thermoplastic machines.",
@@ -722,8 +723,8 @@
       },
       "hoztovary": {
         "label": "Household Goods",
-        "title": "Products for Home and Household",
-        "description": "Serial production of household items, canisters and kitchen accessories made from polymer materials with controlled quality characteristics",
+        "title": "Products for Home and Everyday Life",
+        "description": "Serial production of plastic products for the home, kitchen and everyday use, as well as technical canisters, with strict quality control",
         "cta": "Explore products"
       },
       "pause": "Pause slider",

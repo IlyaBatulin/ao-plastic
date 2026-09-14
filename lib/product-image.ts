@@ -35,6 +35,36 @@ function normalizeImagePathForLookup(path: string): string {
   return path.trim().replace(/\\/g, "/").toLowerCase()
 }
 
+function transliterateLegacyDmsFilename(filename: string): string {
+  const transliteration: Record<string, string> = {
+    а: "a", б: "b", в: "v", г: "g", д: "d", е: "e", ё: "e",
+    ж: "zh", з: "z", и: "i", й: "y", к: "k", л: "l", м: "m",
+    н: "n", о: "o", п: "p", р: "r", с: "s", т: "t", у: "u",
+    ф: "f", х: "kh", ц: "ts", ч: "ch", ш: "sh", щ: "shch",
+    ъ: "", ы: "y", ь: "", э: "e", ю: "yu", я: "ya",
+  }
+
+  const dot = filename.lastIndexOf(".")
+  const stem = dot >= 0 ? filename.slice(0, dot) : filename
+  const extension = dot >= 0 ? filename.slice(dot).toLowerCase() : ""
+  const latinStem = stem
+    .toLowerCase()
+    .split("")
+    .map((char) => transliteration[char] ?? char)
+    .join("")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+
+  return `${latinStem}${extension}`
+}
+
+function normalizeLegacyDmsImagePath(path: string): string {
+  const normalized = path.trim().replace(/\\/g, "/")
+  const match = normalized.match(/^\/images\/(litev|extrusion)\/([^/]+)$/i)
+  if (!match || !/[\u0400-\u04ff]/i.test(match[2])) return normalized
+  return `/images/${match[1].toLowerCase()}/${transliterateLegacyDmsFilename(match[2])}`
+}
+
 /** Считаем, что у товара нет своего фото — показываем бренд-значок на карточке. */
 export function isProductImagePlaceholder(url: string | null | undefined): boolean {
   if (url == null || String(url).trim() === "") return true
@@ -55,6 +85,7 @@ export function resolveProductImageUrl(
     if (IMAGE_PATH_OVERRIDES[normalized]) {
       return IMAGE_PATH_OVERRIDES[normalized]
     }
+    return normalizeLegacyDmsImagePath(imageValue)
   }
   return imageValue || fallback || "/placeholder.svg"
 }

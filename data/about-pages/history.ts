@@ -23,10 +23,15 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
     periods: [
       {
         id: "period-1",
-        title: "1964–1973",
+        title: "1959–1973",
         subtitle: "Формирование производственного комплекса",
         image: "/images/history/period-1959-1992.jpeg",
         timeline: [
+          {
+            year: "1959",
+            description:
+              "В Узловой основано предприятие, с которого началась история АО «Пластик».",
+          },
           {
             year: "1964",
             description:
@@ -222,10 +227,11 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
     periods: [
       {
         id: "period-1",
-        title: "1964–1973",
+        title: "1959–1973",
         subtitle: "Formation of the production complex",
         image: "/images/history/period-1959-1992.jpeg",
         timeline: [
+          { year: "1959", description: "The enterprise that began the history of JSC Plastic was founded in Uzlovaya." },
           { year: "1964", description: "A phenolic molding compound (fibrous molding material) shop began operation, producing raw material for components used in various machines." },
           { year: "1967", description: "A shop producing emulsion and suspension polystyrene was commissioned." },
           { year: "1968", description: "A press shop was commissioned to manufacture components for VAZ and consumer goods." },

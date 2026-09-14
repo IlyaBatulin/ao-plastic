@@ -22,8 +22,8 @@ const BENTOL_NORM_ROWS_EN: NormRow[] = [
     norm: "Clear colorless or light yellow liquid free of mechanical impurities",
   },
   { n: "2", name: "Density at 20 °C", unit: "g/cm³", norm: "0.867–0.873" },
-  { n: "3", name: "Benzene mass fraction", unit: "%", norm: "20.0–50.0" },
-  { n: "4", name: "Toluene mass fraction", unit: "%", norm: "50.0–80.0" },
+  { n: "3", name: "Benzene mass fraction, max.", unit: "%", norm: "65.0" },
+  { n: "4", name: "Toluene mass fraction, min.", unit: "%", norm: "35.0" },
   { n: "5", name: "Ethylbenzene and styrene mass fraction, max.", unit: "%", norm: "6.0" },
 ]
 
@@ -36,7 +36,7 @@ export function getBentolNormRows(lang: "ru" | "en"): NormRow[] {
 }
 
 export function getKorsTuLabel(lang: "ru" | "en"): string {
-  return KORS_TU_LABEL
+  return lang === "en" ? "TU 2415-038-05762341-2012, rev. 1, 2, 3" : KORS_TU_LABEL
 }
 
 export function getBentolTuLabel(lang: "ru" | "en"): string {

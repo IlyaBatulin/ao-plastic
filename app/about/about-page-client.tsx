@@ -112,7 +112,7 @@ export function AboutPageClient() {
         <div className="container mx-auto px-4 lg:px-8">
           <h2 className="text-h2 text-primary mb-10 text-center">{page.valuesTitle}</h2>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="mx-auto grid max-w-5xl md:grid-cols-3 gap-8">
             {page.values.map((value, index) => {
               const Icon = valueIcons[index]
               return (

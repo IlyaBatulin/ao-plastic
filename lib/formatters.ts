@@ -210,6 +210,9 @@ const SPEC_KEY_EN: Record<string, string> = {
   "Хранение": "Storage",
   "Чистота поверхности диска": "Disc surface cleanliness",
   "Нормативный документ": "Specification",
+  "Термостабилизированная марка": "Heat-stabilized grade",
+  "Термо- и светостабилизированная марка": "Heat- and light-stabilized grade",
+  "Разрешен контакт с пищевыми продуктами": "Approved for food contact",
   "Размер основной фракции": "Main fraction size",
   "Способ получения": "Production method",
   "Сорт": "Grade",
@@ -219,6 +222,9 @@ const SPEC_KEY_EN: Record<string, string> = {
 const SPEC_VALUE_EN_EXACT: Record<string, string> = {
   "Да": "Yes",
   "Нет": "No",
+  "только для неокрашенного материала": "uncoloured material only",
+  "ТУ 2214-033-05762341-2009, с изм. № 7, № 8 и № 9":
+    "TU 2214-033-05762341-2009, with Amendments No. 7, 8 and 9",
   "экструзионно-выдувной метод": "extrusion blow moulding",
   "литье под давлением": "injection moulding",
   "химически стойкие марки полиэтилена": "chemically resistant polyethylene grades",
@@ -278,6 +284,24 @@ const SPEC_VALUE_EN_EXACT: Record<string, string> = {
 
 function normalizeSpecValueInput(text: string): string {
   return text.replace(/\u00a0/g, " ").replace(/\s+/g, " ").trim()
+}
+
+function latinizeProductCode(value: string): string {
+  const map: Record<string, string> = {
+    А: "A", Б: "B", В: "V", Г: "G", Д: "D", Е: "E", Ё: "E",
+    Ж: "ZH", З: "Z", И: "I", Й: "Y", К: "K", Л: "L", М: "M",
+    Н: "N", О: "O", П: "P", Р: "R", С: "S", Т: "T", У: "U",
+    Ф: "F", Х: "KH", Ц: "TS", Ч: "CH", Ш: "SH", Щ: "SHCH",
+    Ъ: "", Ы: "Y", Ь: "", Э: "E", Ю: "YU", Я: "YA",
+  }
+  return value
+    .toUpperCase()
+    .split("")
+    .map((char) => map[char] ?? char)
+    .join("")
+    .replace(/KA\s*(\d)/g, "KA-$1")
+    .replace(/MMZ\s*(\d)/g, "MMZ-$1")
+    .replace(/F\s*(\d)/g, "F-$1")
 }
 
 /** Шаблоны для составных значений */
@@ -446,6 +470,11 @@ export function formatSpecValue(key: string, value: any, lang: "ru" | "en" = "ru
   const text = String(value)
 
   if (lang === "en") {
+    const normalizedKey = normalizeSpecKey(key)
+    if (normalizedKey === "Артикул" || normalizedKey === "Шифр изделия") {
+      return latinizeProductCode(text)
+    }
+
     const supply = translateSupplyPhrase(text, lang)
     if (supply !== text) return supply
 

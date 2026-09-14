@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic"
 import { useState, useMemo } from "react"
-import { Search, SlidersHorizontal, Sparkles, X } from "lucide-react"
+import { Minus, Plus, Search, SlidersHorizontal, Sparkles, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
@@ -10,7 +10,7 @@ import ProductsGrid from "./products-grid"
 import { isMachinePartsExtrusion } from "@/lib/catalog-slugs"
 import { parseSpecifications } from "@/lib/product-specs"
 import { translateExtrusionPartType } from "@/lib/extrusion-i18n"
-import { resolveProductDisplay } from "@/lib/product-en"
+import { resolveProductDisplay, translateDmsInjectionGroup } from "@/lib/product-en"
 import { formatSpecValue } from "@/lib/formatters"
 import { Input } from "@/components/ui/input"
 
@@ -61,6 +61,7 @@ export function FilteredProductsSection({
   // ----- Фильтры для экструзионных изделий (тип + поиск) -----
   const [extrusionSearch, setExtrusionSearch] = useState("")
   const [extrusionSelectedTypes, setExtrusionSelectedTypes] = useState<string[]>([])
+  const [isDmsFilterOpen, setIsDmsFilterOpen] = useState(false)
 
   const extrusionTypeKey = "Тип изделия"
 
@@ -98,11 +99,29 @@ export function FilteredProductsSection({
       if (q) {
         const name = p.name?.toLowerCase() || ""
         const desc = p.description?.toLowerCase() || ""
+        const englishDisplay = resolveProductDisplay(
+          {
+            id: String(p.id),
+            name: p.name,
+            description: p.description,
+            slug: p.slug,
+            brand: p.brand,
+            specifications: specs,
+          },
+          "en",
+          { categoryId, subcategoryId }
+        )
+        const englishHaystack = `${englishDisplay.name} ${englishDisplay.description ?? ""}`.toLowerCase()
         const specHaystack = Object.values(specs)
           .map((v) => (v != null ? String(v) : ""))
           .join(" ")
           .toLowerCase()
-        return name.includes(q) || desc.includes(q) || specHaystack.includes(q)
+        return (
+          name.includes(q) ||
+          desc.includes(q) ||
+          englishHaystack.includes(q) ||
+          specHaystack.includes(q)
+        )
       }
 
       return true
@@ -146,88 +165,118 @@ export function FilteredProductsSection({
 
       {/* Фильтры для экструзионных изделий ДМС */}
       {isDmsCategory && (
-        <div className="mb-8 space-y-5">
-          <div className="relative">
-            <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
-            <Input
-              type="text"
-              placeholder={
-                t("homePage.catalog.productList.extrusionSearchPlaceholder") ||
-                "Поиск по названию, артикулу или шифру..."
-              }
-              value={extrusionSearch}
-              onChange={(e) => setExtrusionSearch(e.target.value)}
-              className="h-12 rounded-2xl border-border/80 bg-card/60 pl-11 pr-4 shadow-sm focus-visible:ring-2 focus-visible:ring-primary/30"
-            />
-          </div>
-
-          {extrusionTypeOptions.length > 0 && (
-            <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-card/80 via-card/60 to-muted/20 p-1 shadow-sm">
-              <div className="rounded-[0.9rem] bg-background/40 p-4 sm:p-5 backdrop-blur-sm">
-                <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                      <SlidersHorizontal className="h-4 w-4" />
+        <div className="mb-8 overflow-hidden rounded-2xl border border-border/70 bg-card/70 shadow-sm">
+          <button
+            type="button"
+            aria-expanded={isDmsFilterOpen}
+            aria-controls="dms-product-filters"
+            onClick={() => setIsDmsFilterOpen((current) => !current)}
+            className="flex w-full items-center justify-between gap-4 px-4 py-3.5 text-left transition-colors hover:bg-muted/40 sm:px-5"
+          >
+            <span className="flex min-w-0 items-center gap-3">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <SlidersHorizontal className="h-4 w-4" />
+              </span>
+              <span className="min-w-0">
+                <span className="block font-semibold text-foreground">
+                  {t("homePage.catalog.productFilters.title") || (specLang === "en" ? "Filters" : "Фильтры")}
+                  {extrusionSelectedTypes.length > 0 && (
+                    <span className="ml-2 rounded-full bg-primary px-2 py-0.5 text-xs text-primary-foreground">
+                      {extrusionSelectedTypes.length}
                     </span>
+                  )}
+                </span>
+                <span className="block truncate text-xs text-muted-foreground">
+                  {specLang === "en"
+                    ? "Search and filter by product group"
+                    : "Поиск и отбор по группе изделий"}
+                </span>
+              </span>
+            </span>
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border bg-background text-primary">
+              {isDmsFilterOpen ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+            </span>
+          </button>
+
+          {isDmsFilterOpen && (
+            <div id="dms-product-filters" className="space-y-5 border-t border-border/70 p-4 sm:p-5">
+              <div className="relative">
+                <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder={
+                    t("homePage.catalog.productList.extrusionSearchPlaceholder") ||
+                    (specLang === "en"
+                      ? "Search by product name or code…"
+                      : "Поиск по названию, артикулу или шифру...")
+                  }
+                  value={extrusionSearch}
+                  onChange={(e) => setExtrusionSearch(e.target.value)}
+                  className="h-12 rounded-2xl border-border/80 bg-background pl-11 pr-4 focus-visible:ring-2 focus-visible:ring-primary/30"
+                />
+              </div>
+
+              {extrusionTypeOptions.length > 0 && (
+                <div>
+                  <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                     <div>
                       <div className="text-sm font-semibold tracking-tight text-foreground">
                         {isExtrusionSubcategory
-                          ? t("homePage.catalog.productList.extrusionTypeLabel") || "Тип изделия"
-                          : "Группа изделий"}
+                          ? t("homePage.catalog.productList.extrusionTypeLabel") || (specLang === "en" ? "Part type" : "Тип изделия")
+                          : specLang === "en" ? "Product group" : "Группа изделий"}
                       </div>
                       <p className="text-xs text-muted-foreground">
                         {t("homePage.catalog.productList.extrusionTypeHint") ||
-                          "Можно выбрать несколько типов"}
+                          (specLang === "en" ? "You can select multiple groups" : "Можно выбрать несколько групп")}
                       </p>
                     </div>
-                  </div>
-                  {(extrusionSelectedTypes.length > 0 || extrusionSearch) && (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="shrink-0 gap-1.5 text-muted-foreground hover:text-foreground"
-                      onClick={() => {
-                        setExtrusionSelectedTypes([])
-                        setExtrusionSearch("")
-                      }}
-                    >
-                      <X className="h-3.5 w-3.5" />
-                      {t("homePage.catalog.productList.extrusionTypeReset") || "Сбросить"}
-                    </Button>
-                  )}
-                </div>
-                <div className="flex max-h-[200px] flex-wrap gap-2 overflow-y-auto pr-0.5 [scrollbar-gutter:stable]">
-                  {extrusionTypeOptions.map((typeOption) => {
-                    const active = extrusionSelectedTypes.includes(typeOption)
-                    return (
-                      <button
-                        key={typeOption}
+                    {(extrusionSelectedTypes.length > 0 || extrusionSearch) && (
+                      <Button
                         type="button"
-                        onClick={() =>
-                          setExtrusionSelectedTypes((prev) =>
-                            prev.includes(typeOption)
-                              ? prev.filter((x) => x !== typeOption)
-                              : [...prev, typeOption]
-                          )
-                        }
-                        className={cn(
-                          "inline-flex min-h-9 max-w-full items-center rounded-full border px-3.5 py-1.5 text-left text-sm font-medium transition-all duration-200",
-                          active
-                            ? "border-primary bg-primary text-primary-foreground shadow-md shadow-primary/25"
-                            : "border-border/80 bg-card/50 text-foreground hover:border-primary/40 hover:bg-muted/50"
-                        )}
+                        variant="ghost"
+                        size="sm"
+                        className="w-fit shrink-0 gap-1.5 text-muted-foreground hover:text-foreground"
+                        onClick={() => {
+                          setExtrusionSelectedTypes([])
+                          setExtrusionSearch("")
+                        }}
                       >
-                        <span className="whitespace-normal break-words text-balance">
-                          {isExtrusionSubcategory
-                            ? translateExtrusionPartType(typeOption, specLang)
-                            : typeOption}
-                        </span>
-                      </button>
-                    )
-                  })}
+                        <X className="h-3.5 w-3.5" />
+                        {t("homePage.catalog.productList.extrusionTypeReset") || (specLang === "en" ? "Clear" : "Сбросить")}
+                      </Button>
+                    )}
+                  </div>
+                  <div className="flex max-h-[200px] flex-wrap gap-2 overflow-y-auto pr-0.5 [scrollbar-gutter:stable]">
+                    {extrusionTypeOptions.map((typeOption) => {
+                      const active = extrusionSelectedTypes.includes(typeOption)
+                      const displayType = isExtrusionSubcategory
+                        ? translateExtrusionPartType(typeOption, specLang)
+                        : translateDmsInjectionGroup(typeOption, specLang)
+                      return (
+                        <button
+                          key={typeOption}
+                          type="button"
+                          onClick={() =>
+                            setExtrusionSelectedTypes((prev) =>
+                              prev.includes(typeOption)
+                                ? prev.filter((x) => x !== typeOption)
+                                : [...prev, typeOption]
+                            )
+                          }
+                          className={cn(
+                            "inline-flex min-h-9 max-w-full items-center rounded-full border px-3.5 py-1.5 text-left text-sm font-medium transition-all duration-200",
+                            active
+                              ? "border-primary bg-primary text-primary-foreground shadow-md shadow-primary/25"
+                              : "border-border/80 bg-background text-foreground hover:border-primary/40 hover:bg-muted/50"
+                          )}
+                        >
+                          <span className="whitespace-normal break-words text-balance">{displayType}</span>
+                        </button>
+                      )
+                    })}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           )}
         </div>
@@ -287,6 +336,41 @@ export function FilteredProductsSection({
                       <td className="py-4 px-4">{value("Потеря массы при сушке, %, не более")}</td>
                       <td className="py-4 px-4">{value("Массовая доля остаточного мономера (стирола), %, не более")}</td>
                       <td className="py-4 px-4">{value("Относительная вязкость, не менее")}</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          ) : subcategoryId === 'psv-l' || subcategoryId === 'ps-psv-l' ? (
+            // Профильная таблица ПСВ-Л для литья по газифицируемым моделям
+            <table className="w-full min-w-[1180px] border-separate border-spacing-0 text-sm">
+              <thead>
+                <tr className="bg-muted/50 border-b border-border">
+                  <th className="sticky left-0 z-30 w-[180px] min-w-[180px] max-w-[180px] border-r border-border bg-muted px-4 py-4 text-left font-semibold shadow-[10px_0_16px_-16px_rgba(15,23,42,0.8)] sm:w-[240px] sm:min-w-[240px] sm:max-w-[240px]">{tableLabel("Марка", "Grade")}</th>
+                  <th className="px-4 py-4 text-left font-semibold">{tableLabel("Размер основной фракции", "Main fraction size")}</th>
+                  <th className="px-4 py-4 text-left font-semibold">{tableLabel("Массовая доля основной фракции, %, не менее", "Main fraction content, % min.")}</th>
+                  <th className="px-4 py-4 text-left font-semibold">{tableLabel("Массовая доля порообразователя, %, не менее", "Blowing agent content, % min.")}</th>
+                  <th className="px-4 py-4 text-left font-semibold">{tableLabel("Остаточный мономер (стирол), %, не более", "Residual monomer (styrene), % max.")}</th>
+                  <th className="px-4 py-4 text-left font-semibold">{tableLabel("Потеря массы при сушке, %, не более", "Mass loss on drying, % max.")}</th>
+                  <th className="px-4 py-4 text-left font-semibold">{tableLabel("Относительная вязкость, не менее", "Relative viscosity, min.")}</th>
+                  <th className="px-4 py-4 text-left font-semibold">{tableLabel("Нормативный документ", "Specification")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredProducts.map((p) => {
+                  const specs = parseSpecifications(p.specifications)
+                  const value = (key: string) => formatSpecValue(key, specs[key], specLang)
+
+                  return (
+                    <tr key={p.id} className="group border-b border-border/60 transition-colors hover:bg-muted/30">
+                      <td className="sticky left-0 z-20 w-[180px] min-w-[180px] max-w-[180px] break-words border-r border-border bg-card px-4 py-4 font-semibold leading-snug shadow-[10px_0_16px_-16px_rgba(15,23,42,0.8)] group-hover:bg-muted sm:w-[240px] sm:min-w-[240px] sm:max-w-[240px]">{productTableName(p)}</td>
+                      <td className="px-4 py-4">{value("Размер основной фракции")}</td>
+                      <td className="px-4 py-4">{value("Массовая доля частиц основной фракции, %, не менее")}</td>
+                      <td className="px-4 py-4">{value("Массовая доля порообразователя, %, не менее")}</td>
+                      <td className="px-4 py-4">{value("Массовая доля остаточного мономера (стирола), %, не более")}</td>
+                      <td className="px-4 py-4">{value("Потеря массы при сушке, %, не более")}</td>
+                      <td className="px-4 py-4">{value("Относительная вязкость, не менее")}</td>
+                      <td className="min-w-[260px] px-4 py-4">{value("Нормативный документ")}</td>
                     </tr>
                   )
                 })}

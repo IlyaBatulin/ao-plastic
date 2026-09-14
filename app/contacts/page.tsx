@@ -173,16 +173,16 @@ export default function ContactsPage({ params, searchParams }: NextPageProps) {
                         <p className="text-muted-foreground text-base leading-relaxed mt-2">
                           {t("contactsPage.sales.address")}
                         </p>
-                        <div className="mt-4 grid sm:grid-cols-2 gap-4 text-base text-muted-foreground">
-                          <div>
-                            <p className="font-semibold text-foreground">{t("contactsPage.sales.mainContacts")}</p>
-                            <p>+7 (495) 201-03-33</p>
-                            <p>info@td-plastic.ru</p>
-                          </div>
-                          <div>
-                            <p className="font-semibold text-foreground">{t("contactsPage.sales.ordersEmail")}</p>
-                            <p>sales@td-plastic.ru</p>
-                          </div>
+                        <div className="mt-5 rounded-2xl border border-primary/25 bg-primary/[0.06] p-5 shadow-sm">
+                          <p className="text-sm font-semibold uppercase tracking-[0.12em] text-primary">
+                            {t("contactsPage.sales.mainContacts")}
+                          </p>
+                          <a href="tel:+74952010333" className="mt-3 block text-xl font-semibold text-foreground transition-colors hover:text-primary">
+                            +7 (495) 201-03-33
+                          </a>
+                          <a href="mailto:info@td-plastic.ru" className="mt-1 block text-lg font-medium text-primary hover:underline">
+                            info@td-plastic.ru
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -208,6 +208,10 @@ export default function ContactsPage({ params, searchParams }: NextPageProps) {
                               <a href={TEK_SNAB_CONTACTS.phoneHref} className="hover:text-primary transition-colors">
                                 {TEK_SNAB_CONTACTS.phone}
                               </a>
+                              <span aria-hidden>;&nbsp; </span>
+                              <a href={TEK_SNAB_CONTACTS.secondaryPhoneHref} className="hover:text-primary transition-colors">
+                                {lang === "ru" ? TEK_SNAB_CONTACTS.secondaryPhone : TEK_SNAB_CONTACTS.secondaryPhoneEn}
+                              </a>
                             </p>
                             <p>
                               <a href={`mailto:${TEK_SNAB_CONTACTS.email}`} className="hover:text-primary transition-colors">
@@ -216,6 +220,51 @@ export default function ContactsPage({ params, searchParams }: NextPageProps) {
                             </p>
                             <p className="mt-2 text-base leading-relaxed">{t("contactsPage.procurement.address")}</p>
                           </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="rounded-3xl border border-border p-6 bg-card/60 shadow-sm">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <MapPin className="w-6 h-6 text-primary" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex justify-between flex-wrap gap-3">
+                          <h3 className="font-semibold text-foreground text-lg">{t("contactsPage.industrialPark.title")}</h3>
+                          <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary uppercase tracking-wide">
+                            {t("contactsPage.industrialPark.badge")}
+                          </span>
+                        </div>
+                        <p className="mt-2 text-base leading-relaxed text-muted-foreground">
+                          {t("contactsPage.industrialPark.description")}
+                        </p>
+                        <div className="mt-4 space-y-1 text-base text-muted-foreground">
+                          <a href="tel:+74873124731" className="block transition-colors hover:text-primary">+7 (487) 312-47-31</a>
+                          <a href="mailto:avinnichenko@uzlplast.ru" className="block transition-colors hover:text-primary">avinnichenko@uzlplast.ru</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="rounded-3xl border border-border p-6 bg-card/60 shadow-sm">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <Truck className="w-6 h-6 text-primary" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex justify-between flex-wrap gap-3">
+                          <h3 className="font-semibold text-foreground text-lg">{t("contactsPage.progressNeftekhim.title")}</h3>
+                          <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary uppercase tracking-wide">
+                            {t("contactsPage.progressNeftekhim.badge")}
+                          </span>
+                        </div>
+                        <div className="mt-4 space-y-1 text-base text-muted-foreground">
+                          <a href="tel:+74952010333,109" className="block transition-colors hover:text-primary">
+                            {lang === "ru" ? "+7 (495) 201-03-33 доб. 109" : "+7 (495) 201-03-33 ext. 109"}
+                          </a>
+                          <a href="mailto:snikolaev@uzlplast.ru" className="block transition-colors hover:text-primary">snikolaev@uzlplast.ru</a>
                         </div>
                       </div>
                     </div>

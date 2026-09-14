@@ -157,7 +157,6 @@
       "title": "JSC «Plastic» — Sales and Promotion",
       "badge": "Legal Address",
       "mainContacts": "Main Contacts",
-      "ordersEmail": "Orders Email",
       "address": "301600, Tula Region, Uzlovaya, 1 Tulskaya St."
     },
     "procurement": {
@@ -166,6 +165,15 @@
       "companyName": "LLC «TEC-SNAB»",
       "description": "Prompt procurement of raw materials and auxiliary supplies",
       "address": "119361, Moscow, Ochakovo-Matveyevskoye municipal district, 41 Lobachevskogo St., premises 6, floor 1, office 102B"
+    },
+    "industrialPark": {
+      "title": "INDUSTRIAL TECHNOPARK",
+      "badge": "Leasing",
+      "description": "Production and warehouse premises for rent"
+    },
+    "progressNeftekhim": {
+      "title": "PROGRESS NEFTEKHIM LLC",
+      "badge": "Contacts"
     },
     "salesByDirection": {
       "title": "Sales by Product Line",
@@ -357,7 +365,7 @@
     "stats": {
       "title": "Production Volumes",
       "subtitle": "Our Enterprise Capacity",
-      "sadStyreneAcrylicDispersions": "Current styrene-acrylic dispersion capacity; stage 2 adds 45,000 tons, bringing total capacity to 69,000 tons",
+      "sadStyreneAcrylicDispersions": "Current styrene-acrylic dispersion capacity; stage 2 adds 60,000 tons, bringing total capacity to 80,000 tons",
       "absPlastics": "ABS plastics per year",
       "expandablePolystyrene": "Expandable polystyrene (EPS) per year",
       "styrene": "Styrene per year",

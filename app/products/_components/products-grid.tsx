@@ -121,7 +121,7 @@ export default function ProductsGrid({
             className="product-card group relative bg-card rounded-3xl overflow-hidden border border-border/50 hover:border-primary/50 flex flex-col"
           >
             <Link href={productHref} prefetch={productHref !== "#"} className="block flex-1">
-              <div className={`relative h-64 overflow-hidden ${isFinndispLogo ? "bg-[#08759b]" : "bg-gradient-to-br from-primary/10 to-primary/5"}`}>
+              <div className={`relative h-64 overflow-hidden ${isFinndispLogo ? "bg-[#006999]" : "bg-gradient-to-br from-primary/10 to-primary/5"}`}>
                 {!isFinndispLogo && (
                   <div className="absolute inset-0 z-10 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
                 )}

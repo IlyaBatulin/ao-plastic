@@ -396,21 +396,21 @@
           "name": "ЛКМ и строительные материалы",
           "slug": "coatings",
           "description": "Дисперсии для водно-дисперсионных красок, лаков, грунтовок, шпатлёвок и строительных материалов",
-          "image": "/images/finndisp/catalog-paints.webp"
+          "image": "/images/finndisp/catalog-paints-hq.webp"
         },
         {
           "id": "dispersion-nonwovens",
           "name": "Нетканые материалы",
           "slug": "nonwovens",
           "description": "Дисперсии для синтетических волокон, геосеток, стеклохолста и кровельных материалов",
-          "image": "/images/finndisp/catalog-nonwovens.jpg"
+          "image": "/images/finndisp/catalog-nonwovens-hq.webp"
         },
         {
           "id": "dispersion-adhesives",
           "name": "Адгезивы",
           "slug": "adhesives",
           "description": "Полимерные дисперсии для промышленного применения в составе клеевых материалов",
-          "image": "/images/finndisp/catalog-adhesives.jpg"
+          "image": "/images/finndisp/catalog-adhesives-hq.webp"
         }
       ],
       "products": [

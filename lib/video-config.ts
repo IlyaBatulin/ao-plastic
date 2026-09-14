@@ -22,6 +22,12 @@ export const videoConfig: Record<string, string> = {
   'abs/abs-extrusion': '/videos/abs-extrusion.mp4',
   'abs/abs-custom': '/videos/abs-custom.mp4',
 
+  // Акриловые и стирол-акриловые дисперсии
+  'dispersion': '/videos/dispersion/paints.mp4',
+  'dispersion/coatings': '/videos/dispersion/paints.mp4',
+  'dispersion/nonwovens': '/videos/dispersion/nonwovens.mp4',
+  'dispersion/adhesives': '/videos/dispersion/adhesives.mp4',
+
   // Категория: Хозяйственные товары
   'hoztovary': '/videos/xoztov.mp4',
 

@@ -26,7 +26,7 @@ type EtpTendersResponse = {
 }
 
 export function SuppliersPageClient() {
-  const { t } = useLanguage()
+  const { lang, t } = useLanguage()
   const [etpTenders, setEtpTenders] = useState<EtpTenderItem[]>([])
   const [etpLoading, setEtpLoading] = useState(true)
   const [etpWarning, setEtpWarning] = useState<string | null>(null)
@@ -152,6 +152,10 @@ export function SuppliersPageClient() {
                   <p className="text-muted-foreground">
                     <a href={TEK_SNAB_CONTACTS.phoneHref} className="hover:text-primary transition-colors">
                       {TEK_SNAB_CONTACTS.phone}
+                    </a>
+                    <span aria-hidden>;&nbsp; </span>
+                    <a href={TEK_SNAB_CONTACTS.secondaryPhoneHref} className="hover:text-primary transition-colors">
+                      {lang === "ru" ? TEK_SNAB_CONTACTS.secondaryPhone : TEK_SNAB_CONTACTS.secondaryPhoneEn}
                     </a>
                   </p>
                 </div>

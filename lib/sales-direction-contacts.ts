@@ -21,12 +21,12 @@ export const SALES_DIRECTION_CONTACTS: SalesDirectionContact[] = [
   },
   {
     key: "polystyrene",
-    phone: "+7 (495) 201-03-33 доб.201, +7 (487) 312-49-48",
+    phone: "+7 (487) 312-49-48",
     email: "info@td-plastic.ru",
   },
   {
     key: "machineParts",
-    phone: "+7 (487) 412-43-06; +7 (495) 201-03-33 доб.206",
+    phone: "+7 (487) 412-43-06",
     email: "info@td-plastic.ru",
   },
   {

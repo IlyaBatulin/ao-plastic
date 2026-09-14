@@ -72,20 +72,20 @@ const content = {
         title: "ЛКМ и строительные материалы",
         description:
           "Дисперсии для водно-дисперсионных красок для внутренних и наружных работ, лаков, грунтовок и шпатлёвок.",
-        image: "/images/finndisp/segment-paints.png",
+        image: "/images/finndisp/catalog-paints-hq.webp",
         imageAlt: "Банки с краской — применение дисперсий в ЛКМ",
       },
       {
         title: "Нетканые материалы",
         description: "Дисперсии, используемые в синтетических волокнах, геосетках, стеклохолсте.",
-        image: "/images/finndisp/segment-nonwovens.png",
+        image: "/images/finndisp/catalog-nonwovens-hq.webp",
         imageAlt: "Нетканый материал — применение дисперсий",
       },
       {
         title: "Адгезивы",
         description:
           "Полимерные дисперсии для промышленного применения в качестве компонента клеящего состава.",
-        image: "/images/finndisp/segment-adhesives.png",
+        image: "/images/finndisp/catalog-adhesives-hq.webp",
         imageAlt: "Клеящие ленты — применение дисперсий в адгезивах",
       },
     ],
@@ -159,19 +159,19 @@ const content = {
         title: "Paints & building materials",
         description:
           "Dispersions for interior and exterior water-based paints, lacquers, primers, and putties.",
-        image: "/images/finndisp/segment-paints.png",
+        image: "/images/finndisp/catalog-paints-hq.webp",
         imageAlt: "Paint cans — dispersions for paints and coatings",
       },
       {
         title: "Nonwovens",
         description: "Dispersions used in synthetic fibers, geogrids, and fiberglass mat.",
-        image: "/images/finndisp/segment-nonwovens.png",
+        image: "/images/finndisp/catalog-nonwovens-hq.webp",
         imageAlt: "Nonwoven mesh — dispersion applications",
       },
       {
         title: "Adhesives",
         description: "Polymer dispersions for industrial use as a component of adhesive formulations.",
-        image: "/images/finndisp/segment-adhesives.png",
+        image: "/images/finndisp/catalog-adhesives-hq.webp",
         imageAlt: "Adhesive tape rolls — dispersion applications",
       },
     ],

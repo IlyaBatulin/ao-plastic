@@ -10,6 +10,7 @@ import { MobileMenu } from "./header/mobile-menu"
 import { Menu, X, ShoppingCart, UserRound } from "lucide-react"
 import { useCart } from "@/contexts/cart-context"
 import { Badge } from "@/components/ui/badge"
+import { SHOW_ACCOUNT_BUTTON } from "@/lib/site-features"
 
 const SCROLL_HIDE_THRESHOLD = 50 // сначала шапка героя полностью уходит
 
@@ -73,26 +74,30 @@ export function HeroNavigation() {
         {/* Right Controls */}
         <div className="hidden lg:flex items-center gap-2 xl:gap-4 flex-shrink-0 min-w-fit">
           <HeroLanguageSwitcher isMenuOpen={isMegaMenuOpen} />
-          <Link
-            href="/account"
-            aria-label="Личный кабинет"
-            title="Личный кабинет"
-            className={`flex h-11 w-11 items-center justify-center rounded-xl border backdrop-blur-sm transition ${isMegaMenuOpen ? "border-border/70 bg-white text-foreground hover:text-primary" : "border-white/30 bg-white/10 text-white hover:bg-white/20"}`}
-          >
-            <UserRound className="h-5 w-5" />
-          </Link>
+          {SHOW_ACCOUNT_BUTTON && (
+            <Link
+              href="/account"
+              aria-label="Личный кабинет"
+              title="Личный кабинет"
+              className={`flex h-11 w-11 items-center justify-center rounded-xl border backdrop-blur-sm transition ${isMegaMenuOpen ? "border-border/70 bg-white text-foreground hover:text-primary" : "border-white/30 bg-white/10 text-white hover:bg-white/20"}`}
+            >
+              <UserRound className="h-5 w-5" />
+            </Link>
+          )}
           <HeroOrderButton isMenuOpen={isMegaMenuOpen} />
         </div>
 
         {/* Mobile Controls */}
         <div className="flex lg:hidden items-center gap-3 sm:gap-4 flex-shrink-0 ml-auto">
-          <Link
-            href="/account"
-            className="relative flex h-14 w-14 items-center justify-center rounded-2xl border border-white/30 bg-white/10 text-white shadow-sm backdrop-blur-sm transition active:scale-95 hover:bg-white/20 sm:h-16 sm:w-16"
-            aria-label="Личный кабинет"
-          >
-            <UserRound className="h-6 w-6 sm:h-7 sm:w-7" />
-          </Link>
+          {SHOW_ACCOUNT_BUTTON && (
+            <Link
+              href="/account"
+              className="relative flex h-14 w-14 items-center justify-center rounded-2xl border border-white/30 bg-white/10 text-white shadow-sm backdrop-blur-sm transition active:scale-95 hover:bg-white/20 sm:h-16 sm:w-16"
+              aria-label="Личный кабинет"
+            >
+              <UserRound className="h-6 w-6 sm:h-7 sm:w-7" />
+            </Link>
+          )}
           {/* Mobile Cart Button */}
           <Link
             href="/cart"

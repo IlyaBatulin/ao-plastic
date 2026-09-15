@@ -14,7 +14,7 @@ import { SHOW_ACCOUNT_BUTTON } from "@/lib/site-features"
 
 const SCROLL_HIDE_THRESHOLD = 50 // сначала шапка героя полностью уходит
 
-export function HeroNavigation() {
+export function HeroNavigation({ logoVisible = true }: { logoVisible?: boolean }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false)
   const [isHiddenByScroll, setIsHiddenByScroll] = useState(false)
@@ -56,7 +56,7 @@ export function HeroNavigation() {
       <div className="flex w-full items-center justify-between gap-2 lg:gap-4 max-w-[1440px] mx-auto px-4 lg:px-8 py-4 lg:py-6">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 lg:gap-4 group flex-shrink-0 min-w-fit">
-          <div className="relative h-20 w-20 flex-shrink-0 transition-transform duration-300 group-hover:scale-110 sm:h-20 sm:w-20 lg:h-24 lg:w-24">
+          <div data-hero-logo-target className="relative h-20 w-20 flex-shrink-0 transition-transform duration-300 group-hover:scale-110 sm:h-20 sm:w-20 lg:h-24 lg:w-24" style={{ opacity: logoVisible ? 1 : 0 }}>
             <Image
               src="/images/logo123.png"
               alt="АО Пластик"

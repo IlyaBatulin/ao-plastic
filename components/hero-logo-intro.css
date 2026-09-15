@@ -1,0 +1,38 @@
+.hero-logo-intro-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 102;
+  background: #fff;
+  opacity: 1;
+  transition: opacity 1000ms ease;
+}
+.hero-logo-intro-backdrop.is-departing {
+  opacity: 0;
+  pointer-events: none;
+}
+.hero-logo-intro {
+  position: absolute;
+  z-index: 103;
+  width: min(76vw, 620px);
+  aspect-ratio: 2752 / 1535;
+  left: calc(50% - min(76vw, 620px) / 2);
+  top: calc(50% - min(76vw, 620px) * 1535 / 2752 / 2);
+  transform-origin: top left;
+  pointer-events: none;
+  filter: brightness(1) invert(0);
+  transition: filter 1000ms ease;
+}
+.hero-logo-intro.is-departing {
+  filter: brightness(0) invert(1);
+}
+.hero-logo-intro-art {
+  width: 100%;
+  overflow: visible;
+  animation: hero-logo-appear 650ms ease-out both;
+}
+.hero-logo-intro-symbol {
+  transform-origin: 465px 773px;
+  animation: hero-logo-spin 3500ms cubic-bezier(.4, 0, .2, 1) both;
+}
+@keyframes hero-logo-spin { from { transform: rotate(-720deg); } to { transform: rotate(0deg); } }
+@keyframes hero-logo-appear { from { opacity: 0; } to { opacity: 1; } }

@@ -28,6 +28,8 @@ const DISPERSION_PRODUCT_IDS: Record<string, Set<string>> = {
     "finndisp-ac-2020",
     "finndisp-a-337",
     "finndisp-a-09",
+    "finndisp-ac-401",
+    "finndisp-ac-402",
     "finndisp-ac-129",
   ]),
   nonwovens: new Set(["finndisp-ac-2010", "akromol-ac-101"]),

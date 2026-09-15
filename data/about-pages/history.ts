@@ -13,7 +13,7 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
     scrollHint: "Прокрутите вниз",
     heroImageAlt: "Производственная площадка АО «Пластик»",
     closingPhrase:
-      "История продолжается — сохраняя накопленный опыт, мы совершенствуем производство и создаём основу для новых достижений.",
+      "Опираясь на многолетний опыт, мы совершенствуем производство, осваиваем новые технологии и продолжаем историю предприятия.",
     hero: {
       heroImage: "/images/history/history-hero.jpeg",
       heroTitle: "История АО «Пластик»",
@@ -35,27 +35,27 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
           {
             year: "1964",
             description:
-              "Начал работу цех по производству фенопласта (волокнита), который является сырьём для изготовления деталей различных машин.",
+              "Введён в эксплуатацию цех по производству фенопласта (волокнита) — материала для изготовления деталей машин.",
           },
           {
             year: "1967",
             description:
-              "Введён в строй цех по производству эмульсионного и суспензионного полистиролов.",
+              "В новом цехе началось производство эмульсионного и суспензионного полистиролов.",
           },
           {
             year: "1968",
             description:
-              "Пущено в эксплуатацию прессовое отделение для производства деталей для ВАЗа и товаров народного потребления.",
+              "Прессовое отделение приступило к выпуску комплектующих для ВАЗа и товаров народного потребления.",
           },
           {
             year: "1969–1971",
             description:
-              "В 1969 году начал работать цех по выпуску профильно-погонажных изделий для ВАЗа, а в 1971 году освоено новое производство компаундов и металлизированного профиля.",
+              "В 1969 году в новом цехе организован выпуск профильно-погонажных изделий для ВАЗа. В 1971 году предприятие освоило производство компаундов и металлизированного профиля.",
           },
           {
             year: "1973",
             description:
-              "Введён в действие комплекс по производству пластика АБС — нового вида тройного сополимера, ударопрочного полистирольного пластика.",
+              "Введён в эксплуатацию комплекс по производству АБС-пластика — ударопрочного полимерного материала.",
           },
         ],
         infographic: [],
@@ -63,22 +63,22 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
       {
         id: "period-2",
         title: "1974–1992",
-        subtitle: "Рост мощностей и выпуск продукции для автопрома",
+        subtitle: "Расширение мощностей и производство автокомпонентов",
         image: "/images/history/period-1974-1992-v2.webp",
         timeline: [
           {
             year: "1974–1975",
             description:
-              "Пущены первая и вторая очереди цеха изделий из термопластов для Камского автомобильного завода.",
+              "Производственные мощности расширены: последовательно начали работу первая и вторая очереди цеха изделий из термопластов для Камского автомобильного завода.",
           },
           {
             year: "Конец 1975",
-            description: "Освоена проектная мощность производства стирола.",
+            description: "Производство стирола вышло на проектную мощность.",
           },
           {
             year: "Декабрь 1992",
             description:
-              "Завод был преобразован в акционерное общество открытого типа.",
+              "Предприятие преобразовано в акционерное общество открытого типа.",
           },
         ],
         infographic: [],
@@ -96,22 +96,22 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
           {
             year: "Апрель 2003",
             description:
-              "Введена в эксплуатацию линия по производству компаундов на базе выпускаемого предприятием АБС-пластика.",
+              "Новая технологическая линия обеспечила выпуск компаундов на основе АБС-пластика собственного производства.",
           },
           {
             year: "Декабрь 2005",
             description:
-              "ОАО «Пластик» сертифицировано по международному стандарту ИСО 9001.",
+              "Система менеджмента качества ОАО «Пластик» сертифицирована по международному стандарту ISO 9001.",
           },
           {
             year: "2009",
             description:
-              "Проведены реконструкция и модернизация линии по производству пластика АБС-ПК.",
+              "Завершены реконструкция и модернизация линии по производству АБС-ПК.",
           },
           {
             year: "7 ноября 2010",
             description:
-              "После завершения реконструкции запущен цех по производству стирола с увеличенной мощностью и получена первая продукция.",
+              "После реконструкции цех стирола возобновил работу с увеличенной производственной мощностью и выпустил первую партию продукции.",
           },
         ],
         infographic: [],
@@ -125,12 +125,12 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
           {
             year: "Декабрь 2011",
             description:
-              "На «Пластике» прошёл ресертификационный аудит системы менеджмента качества на соответствие требованиям международного стандарта ИСО 9001:2008 и его российского аналога ГОСТ Р ИСО 9001-2008.",
+              "Предприятие прошло ресертификационный аудит системы менеджмента качества на соответствие ISO 9001:2008 и ГОСТ Р ИСО 9001-2008.",
           },
           {
             year: "Декабрь 2013",
             description:
-              "Произошла смена собственников ОАО «Пластик»: 100% акций предприятия приобрела группа частных инвесторов.",
+              "Группа частных инвесторов приобрела 100% акций ОАО «Пластик».",
           },
           {
             year: "Январь 2014",
@@ -139,16 +139,16 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
           {
             year: "Март 2014",
             description:
-              "В Группу компаний «Пластик» вошло ЗАО «Узловский завод строительных конструкций», выпускающее стеновые панели и плиты перекрытия из пенополистирола и арматурных каркасов по технологии «Plastbau-3».",
+              "В группу компаний «Пластик» вошло ЗАО «Узловский завод строительных конструкций». Предприятие выпускает стеновые панели и плиты перекрытия из пенополистирола и арматурных каркасов по технологии Plastbau-3.",
           },
           {
             year: "Декабрь 2014",
             description:
-              "На ОАО «Пластик» прошёл ресертификационный аудит СМК на соответствие требованиям ISO 9001-2008 и ГОСТ ISO 9001-2011. По итогам аудита органы «АКАДЕМИЯ-СЕРТ» и «ИНТЕРСЕРТИФИКА-ТЮФ» выдали соответствующие сертификаты.",
+              "ОАО «Пластик» прошло ресертификационный аудит системы менеджмента качества на соответствие ISO 9001-2008 и ГОСТ ISO 9001-2011. По его итогам получены сертификаты органов по сертификации «АКАДЕМИЯ-СЕРТ» и «ИНТЕРСЕРТИФИКА-ТЮФ».",
           },
           {
             year: "Июнь 2019",
-            description: "ОАО «Пластик» сменило наименование на АО «Пластик».",
+            description: "Наименование предприятия изменено с ОАО «Пластик» на АО «Пластик».",
           },
         ],
         infographic: [],
@@ -161,23 +161,19 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
         timeline: [
           {
             year: "2019",
-            description: "На территории промышленной площадки АО «Пластик» компания «ФНМ Алькар» открыла производство геотекстиля — продолжилось развитие промышленного технопарка и размещение новых производств.",
+            description: "Компания «ФНМ Алькар» открыла производство геотекстиля на промышленной площадке АО «Пластик». Это стало новым этапом развития технопарка.",
           },
           {
             year: "2020",
-            description: "АО «Пластик» продолжило поставки АБС-пластиков и полистиролов российским потребителям и заказчикам ближнего зарубежья, сохраняя работу логистических цепочек в период ограничений.",
+            description: "В период ограничений АО «Пластик» сохранило поставки АБС-пластиков и полистиролов заказчикам в России и ближнем зарубежье.",
           },
           {
             year: "2021",
-            description: "Представлен проект развития промышленного технопарка «Пластик»: территория 50 га, 67 тыс. м² объектов промышленной инфраструктуры, собственные инженерные сети и железнодорожная логистика.",
+            description: "Представлен проект развития промышленного технопарка «Пластик»: 50 га территории, 67 тыс. м² объектов промышленной инфраструктуры, собственные инженерные сети и возможности железнодорожной доставки.",
           },
           {
             year: "2021–2024",
-            description: "Расширена линейка стирольных материалов: наряду с АБС-пластиками и полистиролами компания развивает направление стирол-акриловых дисперсий для лакокрасочных материалов и строительной химии.",
-          },
-          {
-            year: "2024",
-            description: "АО «Пластик» отметило 65-летие и подтвердило статус одного из крупнейших российских производителей АБС-пластиков и суспензионного полистирола.",
+            description: "Компания расширила ассортимент стирольных материалов и развивала направление стирол-акриловых дисперсий для лакокрасочных материалов и строительной химии.",
           },
         ],
         infographic: [],
@@ -191,7 +187,7 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
           {
             year: "2024",
             description:
-              "АО «Пластик» отметило 65-летие. Компания подтвердила статус одного из крупнейших российских производителей АБС-пластиков и суспензионного полистирола.",
+              "АО «Пластик» отметило 65-летие со дня основания — важную веху в истории одного из крупнейших российских производителей АБС-пластиков и суспензионного полистирола.",
           },
           {
             year: "2024",
@@ -201,12 +197,12 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
           {
             year: "2025",
             description:
-              "Состоялся первый выпуск специалистов по программе «Профессионалитет». Совместно с учебными заведениями Узловой предприятие сформировало собственную систему подготовки кадров для химического производства.",
+              "Состоялся первый выпуск специалистов по программе «Профессионалитет». Совместно с учебными заведениями Узловой предприятие создало систему подготовки кадров для химического производства.",
           },
           {
-            year: "2026 · в процессе",
+            year: "2026 · проект в реализации",
             description:
-              "Реализуется проект нового цеха по производству полистирола GPPS.",
+              "Продолжается реализация проекта по строительству нового цеха для производства вспенивающегося полистирола.",
           },
         ],
         infographic: [],
@@ -217,7 +213,7 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
     scrollHint: "Scroll down",
     heroImageAlt: "JSC Plastic production site",
     closingPhrase:
-      "Our history continues — preserving accumulated expertise, we keep improving production and laying the foundation for new achievements.",
+      "Building on decades of experience, we continue to improve production, adopt new technologies and write the next chapter of our history.",
     hero: {
       heroImage: "/images/history/history-hero.jpeg",
       heroTitle: "History of JSC «Plastic»",
@@ -232,18 +228,18 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
         image: "/images/history/period-1959-1992.jpeg",
         timeline: [
           { year: "1959", description: "The enterprise that began the history of JSC Plastic was founded in Uzlovaya." },
-          { year: "1964", description: "A phenolic molding compound (fibrous molding material) shop began operation, producing raw material for components used in various machines." },
+          { year: "1964", description: "A production facility for phenolic moulding compound (voloknit), a material used to manufacture machine components, was commissioned." },
           { year: "1967", description: "A shop producing emulsion and suspension polystyrene was commissioned." },
           { year: "1968", description: "A press shop was commissioned to manufacture components for VAZ and consumer goods." },
-          { year: "1969–1971", description: "In 1969, a shop producing profile and linear products for VAZ began operation; in 1971, production of compounds and metallized profiles was launched." },
-          { year: "1973", description: "An ABS plastics complex was commissioned to produce a new three-component copolymer — impact-resistant polystyrene plastic." },
+          { year: "1969–1971", description: "A facility producing extruded profiles for VAZ was commissioned in 1969. In 1971, the enterprise began manufacturing compounds and metallized profiles." },
+          { year: "1973", description: "A production complex for ABS plastic, an impact-resistant polymer material, was commissioned." },
         ],
         infographic: [],
       },
       {
         id: "period-2",
         title: "1974–1992",
-        subtitle: "Capacity growth and production for the automotive industry",
+        subtitle: "Capacity expansion and automotive component production",
         image: "/images/history/period-1974-1992-v2.webp",
         timeline: [
           { year: "1974–1975", description: "The first and second phases of the thermoplastic products shop for the Kama Automobile Plant were commissioned." },
@@ -260,9 +256,9 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
         timeline: [
           { year: "2001", description: "The enterprise joined the SIBUR Group." },
           { year: "April 2003", description: "A line for producing compounds based on the company's own ABS plastic was commissioned." },
-          { year: "December 2005", description: "OJSC Plastic was certified to the international ISO 9001 standard." },
+          { year: "December 2005", description: "The quality management system of OJSC Plastic was certified to the international ISO 9001 standard." },
           { year: "2009", description: "The ABS-PC plastics production line was reconstructed and modernized." },
-          { year: "7 November 2010", description: "Following reconstruction, the upgraded styrene shop was launched at increased capacity and produced its first output." },
+          { year: "7 November 2010", description: "The styrene facility was commissioned following reconstruction, with increased production capacity. The first batch of styrene was produced." },
         ],
         infographic: [],
       },
@@ -287,9 +283,10 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
         subtitle: "Product portfolio development across Russia and the CIS",
         image: "/images/history/period-1974-1992.png",
         timeline: [
-          { year: "2020", description: "The product portfolio continued to evolve, with modern polymer solutions developed for Russian and international customers." },
-          { year: "2022", description: "Batch traceability and digital accounting systems were introduced for major contracts and export deliveries." },
-          { year: "2024", description: "JSC Plastic celebrated its 65th anniversary and reaffirmed its status as one of Russia's largest manufacturers of ABS plastics and suspension polystyrene." },
+          { year: "2019", description: "FNM Alkar opened a geotextile production facility at the JSC Plastic industrial site, marking a new stage in the industrial park's development." },
+          { year: "2020", description: "During the period of restrictions, JSC Plastic maintained supplies of ABS plastics and polystyrene to customers in Russia and neighbouring countries." },
+          { year: "2021", description: "A development project for the Plastic industrial park was presented, covering 50 hectares, 67,000 m² of industrial infrastructure, dedicated utility networks and rail logistics." },
+          { year: "2021–2024", description: "The company expanded its styrenic materials portfolio and developed its styrene-acrylic dispersions business for paints, coatings and construction chemicals." },
         ],
         infographic: [],
       },
@@ -299,10 +296,10 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
         subtitle: "Group development and new production projects",
         image: "/images/history/period-2024-2026.png",
         timeline: [
-          { year: "2024", description: "JSC Plastic celebrated its 65th anniversary and reaffirmed its status as one of Russia's largest manufacturers of ABS plastics and suspension polystyrene." },
+          { year: "2024", description: "JSC Plastic celebrated its 65th anniversary, a milestone in the history of one of Russia's largest manufacturers of ABS plastics and suspension polystyrene." },
           { year: "2024", description: "Finndisp LLC joined the JSC Plastic Group." },
           { year: "2025", description: "The first specialists graduated under the Professionalitet program. Together with educational institutions in Uzlovaya, the enterprise established its own training system for chemical production personnel." },
-          { year: "2026 · in progress", description: "A project for a new GPPS polystyrene production shop is under development." },
+          { year: "2026 · project in progress", description: "Work continues on a project to build a new expandable polystyrene production facility." },
         ],
         infographic: [],
       },

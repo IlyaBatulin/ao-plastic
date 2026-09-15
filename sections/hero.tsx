@@ -10,6 +10,7 @@ import { useLanguage } from "@/contexts/language-context"
 import { HeroNavigation } from "@/components/hero-navigation"
 import { HERO_POSTER_SRC, HERO_VIDEO_READY_EVENT, HERO_VIDEO_SRC } from "@/lib/hero-media"
 import { getLenisInstance } from "@/lib/lenis-instance"
+import { HeroLogoIntro } from "@/components/hero-logo-intro"
 
 /** Слайды главного экрана — механика как у LG Chem: фоновые видео,
  *  нумерованная пагинация с прогрессом, автосмена, пауза. */
@@ -42,7 +43,10 @@ export function Hero() {
   const { t } = useLanguage()
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
   const [activeIndex, setActiveIndex] = useState(0)
+  const [introComplete, setIntroComplete] = useState(false)
+  const completeIntro = useCallback(() => setIntroComplete(true), [])
   const [isFirstVideoReady, setIsFirstVideoReady] = useState(false)
+  const [firstVideoFailed, setFirstVideoFailed] = useState(false)
   // Видео монтируем лениво: активное и следующее (чтобы не качать всё сразу)
   const [loadedSet, setLoadedSet] = useState<Set<number>>(() => new Set([0, 1]))
   // Ключ для перезапуска CSS-анимации прогресса при смене слайда
@@ -67,11 +71,13 @@ export function Hero() {
   }
 
   const handleFirstVideoError = () => {
+    setFirstVideoFailed(true)
     console.error("Hero video failed to load:", HERO_VIDEO_SRC)
     notifySplashReady()
   }
 
   const goToSlide = useCallback((next: number) => {
+    setIntroComplete(true)
     const target = ((next % SLIDES.length) + SLIDES.length) % SLIDES.length
     setActiveIndex(target)
     setProgressKey((k) => k + 1)
@@ -86,11 +92,12 @@ export function Hero() {
 
   // Автосмена слайдов
   useEffect(() => {
+    if (!introComplete) return
     const timer = window.setTimeout(() => {
       goToSlide(activeIndex + 1)
     }, SLIDE_DURATION_MS)
     return () => window.clearTimeout(timer)
-  }, [activeIndex, goToSlide, progressKey])
+  }, [activeIndex, goToSlide, progressKey, introComplete])
 
   // Управление воспроизведением: активное видео играет, остальные на паузе
   useEffect(() => {
@@ -127,7 +134,8 @@ export function Hero() {
   return (
     <section className="relative flex h-[100svh] min-h-[100svh] items-center justify-center overflow-hidden md:h-auto md:min-h-screen">
       {/* Navigation Overlay */}
-      <HeroNavigation />
+      <HeroNavigation logoVisible={introComplete} />
+      {!introComplete && <HeroLogoIntro mediaReady={isFirstVideoReady || firstVideoFailed} onComplete={completeIntro} />}
 
       {/* Background videos with crossfade */}
       <div className="absolute inset-0 z-0">
@@ -175,7 +183,10 @@ export function Hero() {
       </div>
 
       {/* Content — crossfade per slide */}
-      <div className="relative z-10 container mx-auto grid px-4 lg:px-8 text-center">
+      <div
+        className={`relative z-10 container mx-auto grid px-4 lg:px-8 text-center transition-all duration-700 ${introComplete ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}
+        inert={!introComplete}
+      >
         {SLIDES.map((slide, idx) => (
           <div
             key={slide.key}
@@ -276,6 +287,7 @@ export function Hero() {
                         className="hero-slide-progress absolute inset-y-0 left-0 block w-full rounded-full bg-white"
                         style={{
                           animationDuration: `${SLIDE_DURATION_MS}ms`,
+                          animationPlayState: introComplete ? "running" : "paused",
                         }}
                       />
                     )}

@@ -76,6 +76,14 @@ const CATALOG_PRODUCT_EN: Record<string, ProductEnEntry> = {
     name: "FINNDISP A-09",
     description: "Aqueous styrene-acrylic copolymer dispersion for waterproofing membranes, mastics, fillers and sealants.",
   },
+  "finndisp-ac-401": {
+    name: "FINNDISP AC-401",
+    description: "Plasticizer-free aqueous styrene-acrylic copolymer dispersion for wood and metal paints and varnishes and printing inks.",
+  },
+  "finndisp-ac-402": {
+    name: "FINNDISP AC-402",
+    description: "Plasticizer-free aqueous styrene-acrylic copolymer dispersion for interior and exterior coatings and varnishes.",
+  },
   "finndisp-ac-129": {
     name: "FINNDISP AC-129",
     description: "Polymer dispersion for coalescent-free interior paints and silicate paints.",

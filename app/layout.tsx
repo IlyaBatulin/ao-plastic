@@ -125,34 +125,9 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <link rel="preload" href="/images/logo123.jpg" as="image" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{
-              var p=location.pathname;
-              if(p!=='/'&&p!=='')return;
-              var dev=location.hostname==='localhost'||location.hostname==='127.0.0.1';
-              if(!dev&&sessionStorage.getItem('hasSeenLoading'))return;
-              if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-              document.documentElement.classList.add('splash-pending');
-              document.body.style.overflow='hidden';
-            }catch(e){}})();`,
-          }}
-        />
+        <link rel="preload" href="/images/logo123.png" as="image" />
       </head>
       <body className="min-h-screen overflow-x-clip bg-background text-foreground antialiased">
-        <div
-          id="splash-static"
-          aria-hidden
-          className="fixed inset-0 z-[9998] items-center justify-center bg-white p-4 sm:p-8"
-        >
-          <img
-            src="/images/logo123.jpg"
-            alt=""
-            className="w-full max-w-xs animate-pulse select-none sm:max-w-md md:max-w-2xl"
-            draggable={false}
-          />
-        </div>
         <AppProviders initialLang={initialLang} initialTranslations={initialTranslations}>
           {/* Синие линии — фирменный фон на всех страницах (portal в body, z-0) */}
           <BackgroundPaths />

@@ -316,10 +316,11 @@ export function FilteredProductsSection({
                   <th className="sticky left-0 z-30 w-[180px] min-w-[180px] max-w-[180px] border-r border-border bg-muted px-4 py-4 text-left font-semibold shadow-[10px_0_16px_-16px_rgba(15,23,42,0.8)] sm:w-[240px] sm:min-w-[240px] sm:max-w-[240px]">{tableLabel("Марка", "Grade")}</th>
                   <th className="py-4 px-4 text-left font-semibold">{tableLabel("Размер частиц основной фракции", "Main fraction particle size")}</th>
                   <th className="py-4 px-4 text-left font-semibold">{tableLabel("Массовая доля основной фракции, %, не менее", "Main fraction content, % min.")}</th>
-                  <th className="py-4 px-4 text-left font-semibold">{tableLabel("Массовая доля пентанов, %, в пределах", "Pentane content, %")}</th>
+                  <th className="py-4 px-4 text-left font-semibold">{tableLabel("Массовая доля порообразователя, %, не менее", "Blowing agent content, %")}</th>
                   <th className="py-4 px-4 text-left font-semibold">{tableLabel("Потеря массы при сушке, %, не более", "Mass loss on drying, % max.")}</th>
                   <th className="py-4 px-4 text-left font-semibold">{tableLabel("Остаточный мономер (стирол), %, не более", "Residual monomer (styrene), % max.")}</th>
                   <th className="py-4 px-4 text-left font-semibold">{tableLabel("Относительная вязкость, не менее", "Relative viscosity, min.")}</th>
+                  <th className="py-4 px-4 text-left font-semibold">{tableLabel("Горючесть — время самостоятельного горения, с, не более", "Flammability — self-burning time, s max.")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -332,10 +333,11 @@ export function FilteredProductsSection({
                       <td className="sticky left-0 z-20 w-[180px] min-w-[180px] max-w-[180px] break-words border-r border-border bg-card px-4 py-4 font-semibold leading-snug shadow-[10px_0_16px_-16px_rgba(15,23,42,0.8)] group-hover:bg-muted sm:w-[240px] sm:min-w-[240px] sm:max-w-[240px]">{productTableName(p)}</td>
                       <td className="py-4 px-4">{value("Размер частиц основной фракции")}</td>
                       <td className="py-4 px-4">{value("Массовая доля частиц основной фракции, %, не менее")}</td>
-                      <td className="py-4 px-4">{value("Массовая доля пентанов, %, в пределах")}</td>
+                      <td className="py-4 px-4">{value("Массовая доля порообразователя, %, не менее")}</td>
                       <td className="py-4 px-4">{value("Потеря массы при сушке, %, не более")}</td>
                       <td className="py-4 px-4">{value("Массовая доля остаточного мономера (стирола), %, не более")}</td>
                       <td className="py-4 px-4">{value("Относительная вязкость, не менее")}</td>
+                      <td className="py-4 px-4">{value("Горючесть — время самостоятельного горения, с, не более")}</td>
                     </tr>
                   )
                 })}

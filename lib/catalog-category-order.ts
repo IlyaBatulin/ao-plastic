@@ -8,8 +8,8 @@ export const CATALOG_CATEGORY_ORDER = [
   "abs",
   "polystyrene",
   "dispersion",
-  "machine-parts",
   "hoztovary",
+  "machine-parts",
   "pvc-modifier",
   "kors",
 ] as const

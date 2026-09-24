@@ -31,7 +31,7 @@ export const aboutPageContent = {
     historyLeadText:
       " — ведущий российский производитель АБС-пластиков и полимерного сырья. Работаем с 1959 года, постоянно модернизируем производство и внедряем передовые технологии.",
     historyParagraphs: [
-      "Сегодня 98% выпускаемых материалов — современные марки, востребованные в промышленности и быту.",
+      "Наши современные марки полимерных материалов востребованы в промышленности и производстве товаров повседневного спроса.",
       "В ассортимент входят вспенивающийся полистирол, стирол-акриловые дисперсии, экструзионные и литьевые марки АБС-пластиков, а также готовые изделия из пластмасс.",
       "Система менеджмента качества сертифицирована по международным и российским стандартам. Мы гарантируем стабильные характеристики сырья от партии к партии и предлагаем выгодные условия напрямую от производителя.",
     ],
@@ -68,7 +68,7 @@ export const aboutPageContent = {
     historyLeadText:
       " is a leading Russian manufacturer of ABS plastics and polymer raw materials. Since 1959, we have continuously modernised production and introduced advanced technologies.",
     historyParagraphs: [
-      "Today, 98% of our output consists of modern grades used across industry and consumer applications.",
+      "Our modern polymer grades are used in industry and in the production of everyday goods.",
       "Our portfolio includes expandable polystyrene, styrene-acrylic dispersions, extrusion and injection grades of ABS plastics, and finished plastic products.",
       "Our quality management system is certified to international and Russian standards. We ensure consistent raw-material characteristics from batch to batch and offer competitive terms directly from the manufacturer.",
     ],

@@ -376,8 +376,18 @@
     },
     "about": {
       "title": "About Us",
-      "paragraph1": "<strong>JSC «Plastic»</strong> is a leading Russian manufacturer of ABS plastics and polymer raw materials. Operating since 1959, we continuously modernise production and introduce advanced technologies. Today, 98% of our output consists of modern grades used across industry and everyday applications.",
-      "paragraph2": "<strong>Our product range:</strong><br>• Expandable polystyrene<br>• Styrene-acrylic dispersions<br>• Extrusion and injection grades of ABS plastics<br>• Finished plastic products",
+      "paragraph1": "<strong>JSC «Plastic»</strong> is a leading Russian manufacturer of ABS plastics and polymer raw materials. Operating since 1959, we continuously modernise production and introduce advanced technologies. Our modern polymer grades are used in industry and in the production of everyday goods.",
+      "assortmentTitle": "Our product range:",
+      "assortment": {
+        "styrene": "Styrene",
+        "abs": "ABS plastics",
+        "polystyrene": "Polystyrene",
+        "dispersion": "Acrylic and styrene-acrylic dispersions",
+        "hoztovary": "Consumer goods",
+        "machineParts": "Machine parts",
+        "pvcModifier": "PVC compound modifier",
+        "kors": "CORS and Bentol"
+      },
       "paragraph3": "",
       "featuresTitle": "Why Customers Choose Us",
       "feature1": {

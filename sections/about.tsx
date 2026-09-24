@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { motion } from "framer-motion"
 import { Award, BadgeDollarSign, ShieldCheck } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
@@ -38,10 +39,16 @@ const aboutTextItemVariants = {
 export function About() {
   const { t } = useLanguage()
 
-  const aboutParagraphs = [
-    t("homePage.about.paragraph1"),
-    t("homePage.about.paragraph2"),
-  ] as string[]
+  const assortmentItems = [
+    { key: "styrene", href: "/products/styrene" },
+    { key: "abs", href: "/products/abs" },
+    { key: "polystyrene", href: "/products/polystyrene" },
+    { key: "dispersion", href: "/products/dispersion" },
+    { key: "hoztovary", href: "/products/hoztovary" },
+    { key: "machineParts", href: "/products/machine-parts" },
+    { key: "pvcModifier", href: "/products/pvc-modifier" },
+    { key: "kors", href: "/products/kors" },
+  ]
 
   const features = [
     { icon: Award, key: "feature1" },
@@ -87,14 +94,26 @@ export function About() {
                 <h2 className="text-h1 text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
                   {t("homePage.about.title")}
                 </h2>
-                {aboutParagraphs.map((html, index) => (
-                  <motion.p
-                    key={index}
-                    variants={aboutTextItemVariants}
-                    className={aboutTextClass}
-                    dangerouslySetInnerHTML={{ __html: html }}
-                  />
-                ))}
+                <motion.p
+                  variants={aboutTextItemVariants}
+                  className={aboutTextClass}
+                  dangerouslySetInnerHTML={{ __html: t("homePage.about.paragraph1") }}
+                />
+                <motion.div variants={aboutTextItemVariants} className={aboutTextClass}>
+                  <h3 className="mb-4 font-bold text-white">
+                    {t("homePage.about.assortmentTitle")}
+                  </h3>
+                  <ul className="space-y-2" aria-label={t("homePage.about.assortmentTitle")}>
+                    {assortmentItems.map(({ key, href }) => (
+                      <li key={key} className="flex items-start gap-3 font-semibold">
+                        <span aria-hidden="true" className="shrink-0">•</span>
+                        <Link href={href} className="text-white no-underline transition-colors hover:text-blue-100 hover:underline focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+                          {t(`homePage.about.assortment.${key}`)}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
               </motion.div>
             </div>
           </div>

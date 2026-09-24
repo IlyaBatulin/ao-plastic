@@ -27,7 +27,11 @@ function getSubcategoryImage(subcategoryId: string, slug?: string): string | nul
     'abs-custom': '/images/abs-custom/abs-production-materials.png',
     // Хозтовары
     'vedra-tazy': '/images/xoztov/vedra-main.jpeg',
-    veshalki: '/images/xoztov/veshalki-card.png',
+    canisters: '/prevyu/produktsiya/kanistra-single-clean.webp',
+    boxes: '/prevyu/produktsiya/yaschik-polimernyi-studio.webp',
+    sanuzel: '/images/xoztov/p1611-studio.webp',
+    kuhnya: '/images/xoztov/p2040-studio.webp',
+    veshalki: '/images/xoztov/hanger-36-38-studio.webp',
     // Детали машиностроения (литьё / экструзия — как на главной карточке категории)
     'injection-parts': '/images/litmain.jpeg',
     'parts-injection': '/images/litmain.jpeg',
@@ -91,6 +95,8 @@ export function SubcategoriesGrid({ categoryId, subcategories }: SubcategoriesGr
       <div className="container mx-auto px-4 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {subcategories.map((subcategory) => {
+            const isHouseholdStudioCategory =
+              categoryId === "hoztovary" && (subcategory.id === "kuhnya" || subcategory.id === "sanuzel")
             const imageSrc =
               getSubcategoryImage(subcategory.id, subcategory.slug) ||
               subcategory.image ||
@@ -142,7 +148,10 @@ export function SubcategoriesGrid({ categoryId, subcategories }: SubcategoriesGr
                     <img
                       src={imageSrc}
                       alt={subcategory.name}
-                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      className={cn(
+                        "absolute inset-0 h-full w-full transition-transform duration-700 group-hover:scale-105",
+                        isHouseholdStudioCategory ? "bg-white object-contain p-4" : "object-cover"
+                      )}
                     />
                   )}
                 </div>

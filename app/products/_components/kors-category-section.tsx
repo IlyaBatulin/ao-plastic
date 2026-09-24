@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import { motion } from "framer-motion"
+import { motion, type Variants } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { CategoryContactDialog } from "@/app/products/_components/category-contact-dialog"
 import { KorsNormTable } from "@/app/products/_components/kors-norm-table"
@@ -15,7 +15,7 @@ import {
   KORS_PAGE_KEYS,
 } from "@/lib/kors-bentol-en"
 
-const storyParent = {
+const storyParent: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -23,7 +23,7 @@ const storyParent = {
   },
 }
 
-const storyChild = {
+const storyChild: Variants = {
   hidden: { opacity: 0, y: 22 },
   visible: {
     opacity: 1,

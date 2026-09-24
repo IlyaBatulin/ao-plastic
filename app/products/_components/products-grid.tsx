@@ -13,7 +13,7 @@ import { resolveProductDisplay } from "@/lib/product-en"
 import { resolveProductImageUrl } from "@/lib/product-image"
 import { getCardSpecEntries, parseSpecifications } from "@/lib/product-specs"
 import { ProductCardPlasticLogo } from "./product-card-plastic-logo"
-import { getProductPathSegment } from "@/lib/catalog-product"
+import { getProductPathSegment } from "@/lib/product-url"
 
 export default function ProductsGrid({
   products,
@@ -85,6 +85,9 @@ export default function ProductsGrid({
             ? `/products/${categoryId}/${subcategoryId}/${encodeURIComponent(productPathSegment)}`
             : "#"
         const isFinndispLogo = imageUrl.endsWith("/finndisp/finndisp-product-logo.png")
+        const isHouseholdStudioPhoto =
+          categoryId === "hoztovary" && (subcategoryId === "kuhnya" || subcategoryId === "sanuzel")
+        const isMachinePartPhoto = categoryId === "machine-parts"
 
         const handleAddToCart = () => {
           const isHouseholdProduct = categoryId === "hoztovary"
@@ -120,9 +123,9 @@ export default function ProductsGrid({
             key={product.id}
             className="product-card group relative bg-card rounded-3xl overflow-hidden border border-border/50 hover:border-primary/50 flex flex-col"
           >
-            <Link href={productHref} prefetch={productHref !== "#"} className="block flex-1">
-              <div className={`relative h-64 overflow-hidden ${isFinndispLogo ? "bg-[#006999]" : "bg-gradient-to-br from-primary/10 to-primary/5"}`}>
-                {!isFinndispLogo && (
+            <Link href={productHref} prefetch={false} className="block flex-1">
+              <div className={`relative h-64 overflow-hidden ${isFinndispLogo ? "bg-[#006999]" : isHouseholdStudioPhoto || isMachinePartPhoto ? "bg-white" : "bg-gradient-to-br from-primary/10 to-primary/5"}`}>
+                {!isFinndispLogo && !isHouseholdStudioPhoto && !isMachinePartPhoto && (
                   <div className="absolute inset-0 z-10 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
                 )}
                 <Image
@@ -133,6 +136,8 @@ export default function ProductsGrid({
                   className={
                     isFinndispLogo
                       ? "object-contain p-3 transition-transform duration-700 group-hover:scale-105"
+                      : isHouseholdStudioPhoto || isMachinePartPhoto
+                        ? "object-contain p-4 transition-transform duration-700 group-hover:scale-[1.04]"
                       : "object-cover transition-transform duration-700 group-hover:scale-110"
                   }
                 />

@@ -66,6 +66,11 @@
             "label": "Вакансии",
             "labelEn": "Vacancies",
             "href": "/about/vacancies"
+          },
+          {
+            "label": "Колледж и Профессионалитет",
+            "labelEn": "College & Professionalitet",
+            "href": "/about/college"
           }
         ]
       }

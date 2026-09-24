@@ -10,7 +10,7 @@ type HistoryItem = {
 }
 
 type FinndispHistoryTimelineProps = {
-  items: HistoryItem[]
+  items: readonly HistoryItem[]
 }
 
 export function FinndispHistoryTimeline({ items }: FinndispHistoryTimelineProps) {

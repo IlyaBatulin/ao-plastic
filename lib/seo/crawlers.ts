@@ -23,6 +23,12 @@ const SEARCH_CRAWLERS = [
   "petalbot",
   "mail.ru_bot",
   "sogou",
+  "oai-searchbot",
+  "chatgpt-user",
+  "perplexitybot",
+  "perplexity-user",
+  "claude-searchbot",
+  "claude-user",
 ] as const
 
 const SOCIAL_PREVIEW_BOTS = [
@@ -49,7 +55,7 @@ export function isSocialPreviewBot(userAgent: string): boolean {
   return SOCIAL_PREVIEW_BOTS.some((token) => ua.includes(token))
 }
 
-/** Поисковик или бот превью — не блокировать и не требовать SITE_PASSWORD. */
+/** Поисковик или бот превью. Не предоставляет обход парольной защиты. */
 export function isSeoBot(userAgent: string): boolean {
   return isSearchCrawler(userAgent) || isSocialPreviewBot(userAgent)
 }

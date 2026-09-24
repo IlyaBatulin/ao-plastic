@@ -739,10 +739,16 @@
         "description": "High-quality expandable polymer beads for lightweight insulation, construction components, protective packaging and moulded products. Grades 1–6 provide a controlled particle-size range for different processing requirements",
         "cta": "Explore products"
       },
+      "dispersion": {
+        "label": "Dispersions",
+        "title": "Acrylic and Styrene-Acrylic Dispersions",
+        "description": "Polymer dispersions for water-based paints and coatings, nonwoven materials and adhesive formulations",
+        "cta": "Explore products"
+      },
       "hoztovary": {
-        "label": "Household Goods",
-        "title": "Products for Home and Everyday Life",
-        "description": "Serial production of plastic products for the home, kitchen and everyday use, as well as technical canisters, with strict quality control",
+        "label": "Consumer Goods",
+        "title": "Consumer Plastic Products",
+        "description": "Plastic products for the home, kitchen, bathroom, cleaning and storage — from buckets and crates to canisters",
         "cta": "Explore products"
       },
       "pause": "Pause slider",

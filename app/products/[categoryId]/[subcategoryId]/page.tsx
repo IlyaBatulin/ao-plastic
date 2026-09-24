@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { cookies } from "next/headers"
 import { Footer } from "@/components/footer"
-import { notFound } from "next/navigation"
+import { notFound, permanentRedirect } from "next/navigation"
 import { FilteredProductsSection } from "@/app/products/_components/filtered-products-section"
 import { SubcategoryPageShell } from "@/app/products/_components/subcategory-page-shell"
 import { AbsCustomInfo } from "@/app/products/_components/abs-custom-info"
@@ -30,7 +30,10 @@ export async function generateMetadata({
   const lang = parseLanguage(cookieStore.get(LANG_COOKIE)?.value)
   const seo = await getSubcategorySeo(categoryId, subcategoryId)
   if (!seo) {
-    return { title: lang === "en" ? "Catalog" : "Каталог" }
+    notFound()
+  }
+  if (subcategoryId !== seo.canonicalSlug) {
+    permanentRedirect(`/products/${categoryId}/${seo.canonicalSlug}`)
   }
 
   const subName = getCatalogSubcategoryLabel(
@@ -56,11 +59,12 @@ export async function generateMetadata({
   return {
     title: `${subName} — ${categoryName}`,
     description: desc,
-    alternates: { canonical: `/products/${categoryId}/${subcategoryId}` },
+    alternates: { canonical: `/products/${categoryId}/${seo.canonicalSlug}` },
     openGraph: {
       title: `${subName} | ${companyName}`,
       description: desc,
-      url: `/products/${categoryId}/${subcategoryId}`,
+      url: `/products/${categoryId}/${seo.canonicalSlug}`,
+      images: [{ url: "/images/og-image.jpg", width: 1200, height: 630 }],
     },
   }
 }
@@ -85,6 +89,17 @@ export default async function SubcategoryPage({
     displayProducts,
   } = pageData
 
+  const householdStudioHeroImage = categoryId === "hoztovary"
+    ? ({
+        kuhnya: "/images/xoztov/p2040-studio.webp",
+        sanuzel: "/images/xoztov/p1611-studio.webp",
+      } as Record<string, string>)[publicSubcategorySlug]
+    : undefined
+
+  if (subcategoryId !== publicSubcategorySlug) {
+    permanentRedirect(`/products/${categoryId}/${publicSubcategorySlug}`)
+  }
+
   return (
     <div className="min-h-screen">
       <BreadcrumbJsonLd
@@ -106,7 +121,7 @@ export default async function SubcategoryPage({
         backHref={`/products/${categoryId}`}
         hasVideo={!!getCategoryVideo(categoryId, publicSubcategorySlug)}
         videoSrc={getCategoryVideo(categoryId, publicSubcategorySlug)}
-        imageSrc={(typeof subcategory.image === "string" ? subcategory.image : categoryImage) || undefined}
+        imageSrc={householdStudioHeroImage || (typeof subcategory.image === "string" ? subcategory.image : categoryImage) || undefined}
       >
         {categoryId === "abs" && subcategory.slug === "abs-custom" && (
           <section className="w-full py-20 bg-muted/20">
@@ -120,7 +135,7 @@ export default async function SubcategoryPage({
           <section className="py-20 relative">
             <div className="container mx-auto px-4 lg:px-8">
               <FilteredProductsSection
-                products={displayProducts}
+                products={displayProducts.map((p) => ({ ...p, id: String(p.id), name: String(p.name), specifications: p.specifications }))}
                 categoryId={categoryId}
                 subcategoryId={publicSubcategorySlug}
               />

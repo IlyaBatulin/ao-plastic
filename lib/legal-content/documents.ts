@@ -39,7 +39,7 @@ export const LEGAL_DOCUMENT_CONTENT: Record<LegalDocumentKey, LegalDocumentConte
   terms: {
     key: "terms",
     title: "Пользовательское соглашение",
-    titleEn: "Public Offer Agreement",
+    titleEn: "Website Terms of Use",
     pdfHref: LEGAL_DOCUMENTS.termsPdf,
     pageHref: LEGAL_DOCUMENTS.termsPage,
     paragraphs: termsParagraphs,

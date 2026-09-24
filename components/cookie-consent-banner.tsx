@@ -85,7 +85,7 @@ export function CookieConsentBanner() {
           </Button>
           <button
             type="button"
-            onClick={handleAccept}
+            onClick={() => setIsVisible(false)}
             className="flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             aria-label={closeAria}
           >

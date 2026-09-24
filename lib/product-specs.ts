@@ -149,8 +149,64 @@ export function parseSpecNumberRange(value: unknown): { min: number; max: number
   }
   if (typeof value !== "string") return null
 
-  const numbers = value.match(/[\d.]+/g)?.map(Number).filter(Number.isFinite) ?? []
+  // Read the first value/range, not digits in units such as g/10 min or kg/m3.
+  const match = value.replace(/(\d),(?=\d)/g, "$1.").match(/([+-]?\d+(?:\.\d+)?)(?:\s*(?:[-–—]|до|to)\s*([+-]?\d+(?:\.\d+)?))?/i)
+  const numbers = match ? [match[1], match[2]].filter(v => v !== undefined).map(Number).filter(Number.isFinite) : []
   if (numbers.length === 0) return null
   if (numbers.length === 1) return { min: numbers[0], max: numbers[0] }
   return { min: Math.min(...numbers), max: Math.max(...numbers) }
+}
+
+export type SpecRange = { min: number; max: number; minExclusive?: boolean; maxExclusive?: boolean }
+
+/** Canonical editorial values override legacy keys; UI tensile strength uses MPa. */
+export function getNumericFilterRanges(specs: Record<string, unknown>) {
+  const read = (...keys: string[]) => {
+    for (const key of keys) {
+      const range = parseSpecNumberRange(specs[key])
+      if (range) return range
+    }
+    return null
+  }
+  const endpoints = (a: string, b: string) => {
+    const min = read(a), max = read(b)
+    return min && max ? { min: Math.min(min.min, max.min), max: Math.max(min.max, max.max) } : min || max
+  }
+  const kgf = read("Предел текучести при растяжении, кгс/см², не менее", "Предел_текучести_при_растяжении_кгс_см2")
+  const particleRange = (): SpecRange | null => {
+    for (const key of ["Размер частиц основной фракции", "Размер основной фракции", "Размер гранул"]) {
+      const value = specs[key]
+      const range = parseSpecNumberRange(value)
+      if (!range) continue
+      if (typeof value === "string") {
+        if (/^(?:более|>|greater than)\s*/i.test(value.trim())) return { min: range.min, max: Infinity, minExclusive: true }
+        if (/^(?:менее|<|less than)\s*/i.test(value.trim())) return { min: 0, max: range.max, maxExclusive: true }
+      }
+      return range
+    }
+    return endpoints("Фракция_мин", "Фракция_макс")
+  }
+  return {
+    density: read("Плотность, кг/м³", "Плотность_кг_м3") || endpoints("Плотность_кг_м3_мин", "Плотность_кг_м3_макс"),
+    fraction: particleRange(),
+    mfr: read("Показатель текучести расплава, г/10 мин", "Показатель текучести расплава, г/10 мин, не менее", "Показатель текучести расплава, г/10 мин, в пределах", "Показатель_текучести_расплава_MFR_г_10мин"),
+    elongation: read("Относительное удлинение при разрыве, %, не менее", "Относительное_удлинение_при_разрыве_проц"),
+    impactStrength: read("Ударная вязкость по Изоду, кДж/м², не менее", "Ударная_вязкость_по_Изоду_кДж_м2"),
+    tensileStrength: kgf ? { min: kgf.min * 0.0980665, max: kgf.max * 0.0980665 }
+      : read("Предел текучести при растяжении, МПа, не менее", "Предел_текучести_при_растяжении_МПа"),
+    vicaTemp: read("Температура размягчения по Вика, °C, не менее", "Температура размягчения по Вика при P=5 кгс, °C, не ниже", "Температура_размягчения_по_Вика_градС"),
+    gloss: read("Блеск, %", "Блеск, %, не менее", "Блеск_проц"),
+    apparentDensity: read("Кажущаяся плотность пенополистирола, кг/м³, не более", "Кажущаяся_плотность_кг_м3"),
+    expansion: read("Коэффициент вспенивания"),
+    relativeViscosity: read("Относительная вязкость, не менее", "Относительная_вязкость"),
+  }
+}
+
+export function matchesSpecRange(range: SpecRange | null, min?: number, max?: number): boolean {
+  if (min === undefined && max === undefined) return true
+  if (!range || (min !== undefined && !Number.isFinite(min)) || (max !== undefined && !Number.isFinite(max))) return false
+  if (min !== undefined && max !== undefined && min > max) return false
+  if (range.minExclusive && max === range.min) return false
+  if (range.maxExclusive && min === range.max) return false
+  return (min === undefined || range.max >= min) && (max === undefined || range.min <= max)
 }

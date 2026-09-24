@@ -1,4 +1,5 @@
 import { HOUSEHOLD_PRODUCT_EN } from "@/lib/household-product-en"
+import { getDmsEditorialTitle, isMeaningfulDmsSize } from "@/lib/dms-product-content"
 import { getHouseholdProductRu } from "@/lib/household-product-ru"
 import productsData from "@/data/products.json"
 import {
@@ -226,7 +227,7 @@ const PRODUCT_NAME_PHRASES_EN: [RegExp, string][] = [
 
 /**
  * Exact English names for injection-moulded machine parts.
- * Generic names are paired with the stable product code in the card title.
+ * Product codes stay internal; the customer sees the part name.
  */
 const DMS_INJECTION_PRODUCT_NAME_EN: Record<string, string> = {
   "ka-02": "Clip",
@@ -542,7 +543,7 @@ function translateSupply(value: unknown): string | null {
   return s
 }
 
-/** EN-название ДМС только из латиницы: тип + шифр/размеры (без русского name из БД) */
+/** English machine-part title without internal article numbers. */
 export function buildDmsEnglishName(product: {
   id?: string
   name: string
@@ -554,35 +555,17 @@ export function buildDmsEnglishName(product: {
   const typeRu = String(specs["Тип изделия"] ?? specs.type ?? "").trim()
   const typeEn = typeRu ? translateExtrusionType(typeRu) : ""
 
-  const code = specs["Шифр изделия"] ?? specs["Артикул"] ?? specs.code
   const sizeRaw = specs["Габаритные размеры"] ?? specs.size_raw
-  const lengthRaw = specs["Длина изделия"] ?? specs.length_raw
-
-  const codeStr = code != null ? latinizeDmsCode(String(code).trim()) : ""
-  const sizeStr = sizeRaw != null ? latinizeUnits(String(sizeRaw)) : ""
-  const lengthStr = lengthRaw != null ? latinizeUnits(String(lengthRaw)) : ""
-
-  const titleParts: string[] = []
-  if (typeEn) titleParts.push(typeEn)
+  const editorial = getDmsEditorialTitle(String(product.id ?? ""), product.name, sizeRaw)
+  if (editorial) return editorial.en
+  const sizeStr = isMeaningfulDmsSize(sizeRaw) ? latinizeUnits(String(sizeRaw)) : ""
 
   const exactInjectionName = product.id
     ? DMS_INJECTION_PRODUCT_NAME_EN[String(product.id)]
     : undefined
-  if (exactInjectionName) {
-    return codeStr ? `${exactInjectionName} — ${codeStr}` : exactInjectionName
-  }
+  if (exactInjectionName) return exactInjectionName
 
-  const detail =
-    codeStr && !hasCyrillic(codeStr)
-      ? codeStr
-      : sizeStr && !hasCyrillic(sizeStr)
-        ? sizeStr
-        : lengthStr && !hasCyrillic(lengthStr)
-          ? lengthStr
-          : null
-
-  if (titleParts.length > 0 && detail) return `${titleParts[0]} — ${detail}`
-  if (titleParts.length > 0) return titleParts[0]
+  if (typeEn && sizeStr && !hasCyrillic(sizeStr)) return `${typeEn} ${sizeStr}`
 
   if (product.id) {
     const fromDict = getProductEn(String(product.id), {
@@ -602,11 +585,7 @@ export function buildDmsEnglishName(product: {
   const fromPhrase = translateProductNameFallback(product.name)
   if (!hasCyrillic(fromPhrase)) return fromPhrase
 
-  if (typeEn && codeStr) return `${typeEn} — ${codeStr}`
-  if (product.name?.trim()) {
-    return codeStr ? `${product.name.trim()} — ${codeStr}` : product.name.trim()
-  }
-  return typeEn || codeStr || "Machine-building part"
+  return typeEn || "Machine-building part"
 }
 
 export function buildDmsEnglishDescription(product: {
@@ -618,10 +597,9 @@ export function buildDmsEnglishDescription(product: {
 
   const size = specs["Габаритные размеры"] ?? specs.size_raw
   const length = specs["Длина изделия"] ?? specs.length_raw
-  const code = specs["Шифр изделия"] ?? specs.code
   const supply = translateSupply(specs["Поставка"] ?? specs.length_kind)
 
-  if (size) {
+  if (isMeaningfulDmsSize(size)) {
     const sizeStr = String(size)
     const sizeEn =
       translateExtrusionPlaceholder(sizeStr, "en") !== sizeStr
@@ -634,8 +612,6 @@ export function buildDmsEnglishDescription(product: {
   if (lengthStr && !isSupplyPhrase(lengthStr)) {
     parts.push(`Length: ${latinizeUnits(lengthStr)}`)
   }
-
-  if (code) parts.push(`Code: ${code}`)
 
   const supplyFromLength =
     lengthStr && isSupplyPhrase(lengthStr) ? translateSupplyPhrase(lengthStr, "en") : null

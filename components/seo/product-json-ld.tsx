@@ -1,5 +1,6 @@
 import { getSiteUrl } from "@/lib/site"
 import { JsonLd } from "@/components/seo/json-ld"
+import { parseSpecifications, stripHiddenSpecs } from "@/lib/product-specs"
 
 type Props = {
   name: string
@@ -8,6 +9,7 @@ type Props = {
   sku?: string
   category?: string
   urlPath: string
+  specifications?: unknown
 }
 
 function absoluteUrl(base: string, path: string) {
@@ -15,8 +17,8 @@ function absoluteUrl(base: string, path: string) {
   return `${base}${path.startsWith("/") ? path : `/${path}`}`
 }
 
-/** Product + Offer (цена по запросу — PreOrder). */
-export function ProductJsonLd({ name, description, image, sku, category, urlPath }: Props) {
+/** Product facts; request-a-quote is not a priced offer or a preorder. */
+export function ProductJsonLd({ name, description, image, sku, category, urlPath, specifications }: Props) {
   const base = getSiteUrl().replace(/\/$/, "")
   const url = absoluteUrl(base, urlPath)
   const images =
@@ -25,6 +27,8 @@ export function ProductJsonLd({ name, description, image, sku, category, urlPath
   const data: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Product",
+    "@id": `${url}#product`,
+    url,
     name,
     description,
     sku: sku || undefined,
@@ -35,17 +39,14 @@ export function ProductJsonLd({ name, description, image, sku, category, urlPath
       name: "АО «Пластик»",
     },
     manufacturer: {
+      "@id": `${base}/#organization`,
       "@type": "Organization",
       name: "АО «Пластик»",
       url: base,
     },
-    offers: {
-      "@type": "Offer",
-      url,
-      priceCurrency: "RUB",
-      availability: "https://schema.org/PreOrder",
-      seller: { "@type": "Organization", name: "АО «Пластик»" },
-    },
+    additionalProperty: Object.entries(stripHiddenSpecs(parseSpecifications(specifications)))
+      .filter(([, value]) => ["string", "number", "boolean"].includes(typeof value))
+      .map(([name, value]) => ({ "@type": "PropertyValue", name, value })),
   }
 
   return <JsonLd data={data} />

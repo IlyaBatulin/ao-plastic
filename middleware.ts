@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
-import { isSearchCrawler, isSeoBot } from "@/lib/seo/crawlers"
+import { isSeoBot } from "@/lib/seo/crawlers"
 import { canAccessSection, isAdminRole, type AdminRole } from "@/lib/admin-roles"
 
 const SITE_AUTH_COOKIE = "site_auth"
@@ -196,10 +196,9 @@ export async function middleware(request: NextRequest) {
   const isSitemapXml = pathname === "/sitemap.xml"
   const isSiteLoginPage = pathname === "/login"
   const userAgent = request.headers.get("user-agent") || ""
-  const isSearchBot = isSearchCrawler(userAgent)
 
   // Временная защита сайта паролем (если задан SITE_PASSWORD в .env).
-  // Поисковые роботы пропускаем — иначе сайт не проиндексируется в Google/Яндекс.
+  // User-Agent не является аутентификацией. Для индексации уберите SITE_PASSWORD.
   const sitePassword = process.env.SITE_PASSWORD
   if (
     sitePassword &&
@@ -207,8 +206,7 @@ export async function middleware(request: NextRequest) {
     !isApiRoute &&
     !isRobotsTxt &&
     !isSitemapXml &&
-    !isSiteLoginPage &&
-    !isSearchBot
+    !isSiteLoginPage
   ) {
     const siteAuth = request.cookies.get(SITE_AUTH_COOKIE)
     const hasSiteAuth = siteAuth?.value

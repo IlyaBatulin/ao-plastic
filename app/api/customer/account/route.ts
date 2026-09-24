@@ -89,7 +89,7 @@ export async function PATCH(request: NextRequest) {
   const body = await request.json()
   const allowed = {
     id: user.id,
-    account_type: body.account_type === "individual" ? "individual" : "company",
+    account_type: "company",
     company_name: String(body.company_name || "").slice(0, 200),
     inn: String(body.inn || "").replace(/\D/g, "").slice(0, 12),
     contact_name: String(body.contact_name || "").slice(0, 160),

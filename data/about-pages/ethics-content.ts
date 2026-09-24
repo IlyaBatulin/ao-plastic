@@ -9,7 +9,17 @@ export type EthicsSection = {
   blocks: EthicsBlock[]
 }
 
-export const ethicsPageContent = {
+type EthicsPage = {
+  heroTitle: string
+  heroCompany: string
+  downloadPdf: string
+  tocTitle: string
+  tocItems: { id: string; label: string }[]
+  sections: EthicsSection[]
+  antiCorruption: { title: string; blocks: EthicsBlock[] }
+}
+
+export const ethicsPageContent: Record<"ru" | "en", EthicsPage> = {
   ru: {
     heroTitle: "Кодекс корпоративной этики",
     heroCompany: "АО «Пластик»",

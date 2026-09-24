@@ -25,7 +25,7 @@ function isNetworkError(error: unknown): boolean {
 }
 
 export async function withTimeout<T>(
-	promise: Promise<T>,
+	promise: PromiseLike<T>,
 	ms: number,
 	label: string
 ): Promise<T> {
@@ -46,7 +46,7 @@ export async function withTimeout<T>(
 }
 
 export async function withRetry<T>(
-	fn: () => Promise<T>,
+	fn: () => PromiseLike<T>,
 	maxRetries: number = 3,
 	retryDelay: number = 1000
 ): Promise<T> {
@@ -77,7 +77,7 @@ export async function withRetry<T>(
 /** Запрос к Supabase с таймаутом и повтором при сетевых сбоях. */
 export async function supabaseQuery<T>(
 	label: string,
-	fn: () => Promise<T>
+	fn: () => PromiseLike<T>
 ): Promise<T> {
 	return withRetry(
 		() => withTimeout(fn(), SUPABASE_QUERY_TIMEOUT_MS, label),
@@ -95,7 +95,7 @@ const CATALOG_CRITICAL_TIMEOUT_MS = 5_000
  */
 export async function supabaseCatalogQuery<T>(
 	label: string,
-	fn: () => Promise<T>,
+	fn: () => PromiseLike<T>,
 	options?: { critical?: boolean }
 ): Promise<T | null> {
 	const timeoutMs = options?.critical

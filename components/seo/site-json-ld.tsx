@@ -10,6 +10,7 @@ export function SiteJsonLd() {
     {
       "@context": "https://schema.org",
       "@type": ["Organization", "Corporation"],
+      "@id": `${base}/#organization`,
       name: "АО «Пластик»",
       legalName: COMPANY_REQUISITES.fullName,
       alternateName: ["Пластик Узловая", "AO Plastic", "АО Пластик"],
@@ -50,19 +51,12 @@ export function SiteJsonLd() {
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
+      "@id": `${base}/#website`,
       name: "АО «Пластик»",
       alternateName: "АО Пластик — производство полимеров",
       url: base,
       inLanguage: "ru-RU",
-      publisher: { "@type": "Organization", name: "АО «Пластик»", url: base },
-      potentialAction: {
-        "@type": "SearchAction",
-        target: {
-          "@type": "EntryPoint",
-          urlTemplate: `${base}/products?search={search_term_string}`,
-        },
-        "query-input": "required name=search_term_string",
-      },
+      publisher: { "@id": `${base}/#organization` },
     },
   ]
 

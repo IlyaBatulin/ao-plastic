@@ -33,7 +33,7 @@ export function getCategoryName(categoryId: string, lang: "ru" | "en" = "ru"): s
     "vedra-tazy": { ru: "Ведра и тазы", en: "Buckets and Basins" },
     uborka: { ru: "Уборочный инвентарь", en: "Cleaning Supplies" },
     steklo: { ru: "Стеклоочистители", en: "Glass Cleaners" },
-    sanuzel: { ru: "Для санузла", en: "Bathroom Accessories" },
+    sanuzel: { ru: "Для ванной комнаты", en: "Bathroom Accessories" },
     kuhnya: { ru: "Кухонные принадлежности", en: "Kitchenware" },
     veshalki: { ru: "Вешалки и плечики", en: "Hangers and Clothes Hangers" },
     otdyh: { ru: "Товары для отдыха", en: "Leisure Products" },
@@ -106,7 +106,7 @@ const SUBCATEGORY_DESCRIPTIONS: Record<string, { ru: string; en: string }> = {
     en: "Squeegees for windows and mirrors",
   },
   sanuzel: {
-    ru: "Ёршики, мыльницы и аксессуары для санузла",
+    ru: "Ёршики, мыльницы и аксессуары для ванной комнаты",
     en: "Toilet brush sets, soap dishes and accessories",
   },
   kuhnya: {

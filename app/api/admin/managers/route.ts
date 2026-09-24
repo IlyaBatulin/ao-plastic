@@ -21,14 +21,12 @@ async function loadCategoryAssignments(supabase: ReturnType<typeof createService
 
   if (error || !data) return assignments
 
-  for (const row of data as Array<{
-    manager_id: number
-    category_id: string
-    categories: { id: string; name: string } | null
-  }>) {
-    if (!row.categories) continue
+  for (const row of data) {
+    const categories = Array.isArray(row.categories) ? row.categories : [row.categories]
     const list = assignments.get(row.manager_id) ?? []
-    list.push({ id: row.categories.id, name: row.categories.name })
+    for (const category of categories) {
+      if (category?.id && category?.name) list.push({ id: category.id, name: category.name })
+    }
     assignments.set(row.manager_id, list)
   }
 

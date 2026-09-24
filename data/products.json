@@ -1008,7 +1008,7 @@
       "name": "Товары народного потребления",
       "description": "Качественные изделия из пластика для дома и быта",
       "technical_purpose": "Производство товаров народного потребления из полипропилена и ПЭНД методом литья под давлением и выдувного формования",
-      "target_application": "Бытовые товары для дома, кухни, санузла, уборки и отдыха, канистры и ящики для хранения",
+      "target_application": "Бытовые товары для дома, кухни, ванной комнаты, уборки и отдыха, канистры и ящики для хранения",
       "is_custom_order": false,
       "image": "/images/hoztov-main.png",
       "subcategories": [
@@ -1035,24 +1035,24 @@
         },
         {
           "id": "sanuzel",
-          "name": "Для санузла",
+          "name": "Для ванной комнаты",
           "slug": "sanuzel",
           "description": "Комплекты для туалета, мыльницы и аксессуары",
-          "image": "/images/xoztov/p2717.jpg"
+          "image": "/images/xoztov/p1611-studio.webp"
         },
         {
           "id": "kuhnya",
           "name": "Кухонные принадлежности",
           "slug": "kuhnya",
           "description": "Воронки, кружки, фильтры и другие кухонные аксессуары",
-          "image": "/images/xoztov/p2040.jpg"
+          "image": "/images/xoztov/p2040-studio.webp"
         },
         {
           "id": "veshalki",
           "name": "Вешалки и плечики",
           "slug": "veshalki",
           "description": "Вешалки-плечики различных размеров",
-          "image": "/images/xoztov/veshalki-card.png"
+          "image": "/images/xoztov/hanger-36-38-studio.webp"
         },
         {
           "id": "otdyh",
@@ -1066,14 +1066,14 @@
           "name": "Канистры",
           "slug": "canisters",
           "description": "Полимерные канистры с крышками вместимостью 21,5 дм3",
-          "image": "/prevyu/produktsiya/kanistra-0.jpeg"
+          "image": "/prevyu/produktsiya/kanistra-single-clean.webp"
         },
         {
           "id": "boxes",
           "name": "Ящики",
           "slug": "boxes",
           "description": "Полимерные ящики для упаковки, хранения и транспортировки пищевой продукции",
-          "image": "/prevyu/produktsiya/yaschik-polimernyi-1.jpeg"
+          "image": "/prevyu/produktsiya/yaschik-polimernyi-studio.webp"
         }
       ],
       "products": [
@@ -1084,7 +1084,7 @@
           "type": "Экструзионно-выдувное изделие",
           "subcategory": "canisters",
           "description": "Канистры полимерные с крышками вместимостью 21,5 дм3 для упаковывания, транспортирования и хранения пищевой, химической и другой продукции.",
-          "image": "/prevyu/produktsiya/kanistra-0.jpeg",
+          "image": "/prevyu/produktsiya/kanistra-single-clean.webp",
           "package_quantity": 5,
           "specifications": {
             "Вместимость": "21,5 дм3",
@@ -1105,7 +1105,7 @@
           "type": "Литьевое изделие",
           "subcategory": "boxes",
           "description": "Полимерный ящик для упаковки, хранения и транспортировки свежих грибов, овощей, ягод, зелени и других пищевых продуктов.",
-          "image": "/prevyu/produktsiya/yaschik-polimernyi-1.jpeg",
+          "image": "/prevyu/produktsiya/yaschik-polimernyi-studio.webp",
           "package_quantity": 160,
           "specifications": {
             "Размер": "299 мм (ширина) × 399 мм (длина) × 123 мм (высота)",

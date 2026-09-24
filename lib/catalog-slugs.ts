@@ -25,8 +25,9 @@ export function getSubcategorySlugCandidates(
       return ["parts-injection", "injection", "injection-parts"]
     }
   }
-  if (categoryId === "polystyrene" && !urlSlug.startsWith("ps-")) {
-    return [urlSlug, `ps-${urlSlug}`]
+  if (categoryId === "polystyrene") {
+    const slug = urlSlug.replace(/^ps-/, "")
+    return [slug, `ps-${slug}`]
   }
   return [urlSlug]
 }
@@ -36,6 +37,7 @@ export function getPublicSubcategorySlug(
   categoryId: string,
   sub: { id: string; slug: string }
 ): string {
+  if (categoryId === "polystyrene") return sub.slug.replace(/^ps-/, "")
   if (categoryId === "machine-parts") {
     if (MACHINE_PARTS_EXTRUSION.has(sub.slug) || sub.id === "extrusion-parts") {
       return "parts-extrusion"

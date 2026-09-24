@@ -15,6 +15,7 @@ import { createCatalogClient, supabaseCatalogQuery } from "@/utils/supabase/serv
 import { DMS_EXTRUSION_FALLBACK, DMS_INJECTION_FALLBACK } from "@/data/dms-fallback"
 import { ABS_PRODUCTS_FALLBACK } from "@/data/abs-fallback"
 import { applyCatalogSpecCorrections } from "@/data/catalog-spec-corrections"
+import { getDmsEditorialTitle, mapDmsExtrusionProduct } from "@/lib/dms-product-content"
 
 const EXTRUSION_SELECT =
   "id, name, type, subtype, size_raw, length_raw, code, length_kind, image, source_no"
@@ -45,35 +46,7 @@ export type SubcategoryPageData = {
 }
 
 function mapExtrusionProducts(extrusionData: Record<string, unknown>[]) {
-  return extrusionData.map((item) => {
-    const parts: string[] = []
-    if (item.size_raw) parts.push(`Габаритные размеры: ${item.size_raw}`)
-    if (item.length_raw) parts.push(`Длина изделия: ${item.length_raw}`)
-    if (item.code) parts.push(`Шифр: ${item.code}`)
-    const description = parts.join(" · ")
-
-    return {
-      id: `extrusion-${item.id}`,
-      name:
-        typeof item.name === "string" && item.name.startsWith("По документу")
-          ? item.code || "Изделие ДМС"
-          : item.name,
-      description: description || null,
-      image: item.image || "/placeholder-logo.png",
-      specifications: {
-        "Тип изделия": item.type,
-        ...(item.subtype ? { Подтип: item.subtype } : {}),
-        ...(item.size_raw ? { "Габаритные размеры": item.size_raw } : {}),
-        ...(item.code ? { "Шифр изделия": item.code } : {}),
-        ...(item.length_raw ? { "Длина изделия": item.length_raw } : {}),
-        ...(item.length_kind === "coil"
-          ? { Поставка: "в бухтах" }
-          : item.length_kind === "fixed"
-            ? { Поставка: "фиксированная длина" }
-            : {}),
-      },
-    }
-  })
+  return extrusionData.map(mapDmsExtrusionProduct)
 }
 
 function buildDisplayProducts(
@@ -108,7 +81,8 @@ function buildDisplayProducts(
       categoryId !== "dispersion" &&
       categoryId !== "machine-parts" &&
       categoryId !== "polystyrene" &&
-      categoryId !== "abs"
+      categoryId !== "abs" &&
+      categoryId !== "hoztovary"
     ) {
       return true
     }
@@ -122,16 +96,6 @@ function buildDisplayProducts(
 
   const fallbackById = new Map(
     fallbackProductsAll.map((product: Record<string, unknown>) => [product.id, product])
-  )
-  const fallbackBySub = new Map(
-    fallbackProductsAll.flatMap((product: Record<string, unknown>) => {
-      const keys: string[] = []
-      if (product.subcategory) {
-        keys.push(String(product.subcategory))
-        keys.push(`ps-${String(product.subcategory)}`)
-      }
-      return keys.map((key) => [key, product])
-    })
   )
 
   // Дисперсии поддерживаются как проверенный редакционный каталог в JSON:
@@ -149,11 +113,9 @@ function buildDisplayProducts(
   )
 
   return normalizedBaseProducts.map((product: Record<string, unknown>) => {
-    const fallback =
-      fallbackById.get(product.id) ||
-      fallbackBySub.get(product.subcategory_id ?? "") ||
-      fallbackBySub.get(subcategory.slug) ||
-      fallbackProducts[0]
+    // A missing specification must never be borrowed from a different grade.
+    // Only an exact product match is a valid editorial fallback.
+    const fallback = fallbackById.get(product.id)
 
     let specifications = product.specifications
     if (typeof specifications === "string") {
@@ -178,6 +140,10 @@ function buildDisplayProducts(
       String(product.id),
       stripHiddenSpecs(sourceSpecs)
     )
+    if (categoryId === "machine-parts") {
+      delete mergedSpecs["Артикул"]
+      delete mergedSpecs["Шифр изделия"]
+    }
 
     const imageRaw =
       product.image ||
@@ -194,9 +160,14 @@ function buildDisplayProducts(
       product.description ??
       (fallback as Record<string, unknown>)?.description ??
       fallbackCategory?.description
+    const editorialTitle =
+      categoryId === "machine-parts"
+        ? getDmsEditorialTitle(String(product.id), String(product.name ?? ""))
+        : null
 
     return {
       ...product,
+      name: editorialTitle?.ru ?? product.name,
       image,
       description,
       specifications: mergedSpecs,

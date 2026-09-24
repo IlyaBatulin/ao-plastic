@@ -146,7 +146,7 @@ export function LanguageProvider({
   return <LanguageContext.Provider value={{ lang, setLang, t, translations, isLoading }}>{children}</LanguageContext.Provider>
 }
 
-export function useLanguage() {
+export function useLanguage(): LanguageContextType {
   const context = useContext(LanguageContext)
   if (context === undefined) {
     return {

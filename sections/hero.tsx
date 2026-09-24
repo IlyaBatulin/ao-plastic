@@ -31,6 +31,11 @@ const SLIDES = [
     href: "/products/polystyrene",
   },
   {
+    key: "dispersion",
+    video: "/videos/dispersion-home.mp4",
+    href: "/products/dispersion",
+  },
+  {
     key: "hoztovary",
     video: "/videos/xoztov.mp4",
     href: "/products/hoztovary",
@@ -166,7 +171,7 @@ export function Hero() {
               loop
               muted
               playsInline
-              preload={idx === activeIndex ? "auto" : "metadata"}
+              preload={idx === activeIndex || idx === (activeIndex + 1) % SLIDES.length ? "auto" : "metadata"}
               controls={false}
               controlsList="nodownload noplaybackrate noremoteplayback"
               disablePictureInPicture
@@ -195,9 +200,15 @@ export function Hero() {
             }`}
             aria-hidden={idx !== activeIndex}
           >
-            <h1 className="text-display text-white mb-4 sm:mb-6 drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
-              {t(`homePage.heroSlides.${slide.key}.title`)}
-            </h1>
+            {idx === 0 ? (
+              <h1 className="text-display text-white mb-4 sm:mb-6 drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
+                {t(`homePage.heroSlides.${slide.key}.title`)}
+              </h1>
+            ) : (
+              <h2 className="text-display text-white mb-4 sm:mb-6 drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
+                {t(`homePage.heroSlides.${slide.key}.title`)}
+              </h2>
+            )}
             <p className="text-body-lead text-white/95 mb-8 sm:mb-12 max-w-3xl mx-auto text-pretty drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
               {t(`homePage.heroSlides.${slide.key}.description`)}
             </p>

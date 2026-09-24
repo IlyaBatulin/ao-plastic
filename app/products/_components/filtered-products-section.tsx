@@ -284,6 +284,8 @@ export function FilteredProductsSection({
 
       {showFilters && (
         <ProductFilters
+          key={categoryId + "/" + subcategoryId}
+          filterId={"catalog-filters-" + categoryId + "-" + subcategoryId}
           products={products}
           categoryId={categoryId}
           onFilterChange={setFilteredProducts}

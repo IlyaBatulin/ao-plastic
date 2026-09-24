@@ -1,5 +1,8 @@
 import type { MetadataRoute } from "next"
-import { getSiteUrl } from "@/lib/site"
+import { getSiteUrl, isIndexingAllowed } from "@/lib/site"
+
+// Password/indexing policy is deployment configuration, not a build-time snapshot.
+export const dynamic = "force-dynamic"
 
 function getDisallowPaths(): string[] {
   // ВАЖНО: /_next/ не блокируем — Google и Яндекс должны загружать JS/CSS,
@@ -24,6 +27,9 @@ function getDisallowPaths(): string[] {
 
 export default function robots(): MetadataRoute.Robots {
   const base = getSiteUrl()
+  if (!isIndexingAllowed()) {
+    return { rules: { userAgent: "*", disallow: "/" } }
+  }
   const disallow = getDisallowPaths()
 
   return {

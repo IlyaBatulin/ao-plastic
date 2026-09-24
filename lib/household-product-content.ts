@@ -8,7 +8,7 @@ const BOX_PRODUCT = {
   subcategory: "boxes",
   description:
     "Полимерный ящик для упаковки, хранения и транспортировки свежих грибов, овощей, ягод, зелени и других пищевых продуктов.",
-  image: "/prevyu/produktsiya/yaschik-polimernyi-1.jpeg",
+  image: "/prevyu/produktsiya/yaschik-polimernyi-studio.webp",
   package_quantity: 160,
   specifications: {
     "Размер": "299 мм (ширина) × 399 мм (длина) × 123 мм (высота)",
@@ -81,7 +81,7 @@ const CANISTER_PRODUCT = {
   subcategory: "canisters",
   description:
     "Канистры полимерные с крышками вместимостью 21,5 дм3 для упаковывания, транспортирования и хранения пищевой, химической и другой продукции.",
-  image: "/prevyu/produktsiya/kanistra-0.jpeg",
+  image: "/prevyu/produktsiya/kanistra-single-clean.webp",
   package_quantity: 5,
   specifications: {
     "Вместимость": "21,5 дм3",
@@ -97,7 +97,7 @@ const CANISTER_PRODUCT = {
   detailSections: [
     {
       title: "Описание",
-      image: "/prevyu/produktsiya/kanistry-polimernye-white-bg.png",
+      image: "/prevyu/produktsiya/kanistra-single-clean.webp",
       imageAlt: "Канистры полимерные с крышками",
       imageFit: "contain",
       imageBackground: "white",
@@ -129,7 +129,7 @@ const CANISTER_PRODUCT = {
   detailSectionsEn: [
     {
       title: "Description",
-      image: "/prevyu/produktsiya/kanistry-polimernye-white-bg.png",
+      image: "/prevyu/produktsiya/kanistra-single-clean.webp",
       imageAlt: "Polymer canisters with caps",
       imageFit: "contain",
       imageBackground: "white",

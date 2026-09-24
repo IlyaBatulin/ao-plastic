@@ -5,9 +5,6 @@ const nextConfig = {
   // не работает ("next start does not work with output: standalone").
   // Включаем standalone только когда собираем именно докер-образ.
   ...(process.env.DOCKER_BUILD === "1" ? { output: "standalone" } : {}),
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   images: {
     // Оптимизация включена: AVIF/WebP + ресайз под устройство.
     // Требует пакет sharp в production (добавлен в dependencies).
@@ -22,6 +19,19 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // Resolve legacy section URLs before React starts streaming the page.
+      {
+        source: "/products/polystyrene/ps-:section/:path*",
+        destination: "/products/polystyrene/:section/:path*",
+        permanent: true,
+      },
+      ...["injection", "extrusion"].flatMap((method) =>
+        [method, `${method}-parts`].map((alias) => ({
+          source: `/products/machine-parts/${alias}/:path*`,
+          destination: `/products/machine-parts/parts-${method}/:path*`,
+          permanent: true,
+        }))
+      ),
       {
         source: "/news/:path*",
         destination: "/about/news/:path*",
@@ -62,10 +72,10 @@ const nextConfig = {
         value: "max-age=63072000; includeSubDomains; preload",
       })
     }
-    // Долгий кэш для неизменяемой статики — телефон не перекачивает
-    // видео и картинки при каждом визите.
-    const immutableCache = [
-      { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+    // Эти имена файлов не содержат хеш: заменённое фото должно обновляться.
+    // Хешированные ресурсы /_next/static по-прежнему кэширует Next.js.
+    const mediaCache = [
+      { key: "Cache-Control", value: "public, max-age=3600, must-revalidate" },
     ]
 
     return [
@@ -73,9 +83,9 @@ const nextConfig = {
         source: "/:path*",
         headers: security,
       },
-      { source: "/videos/:path*", headers: immutableCache },
-      { source: "/images/:path*", headers: immutableCache },
-      { source: "/prevyu/:path*", headers: immutableCache },
+      { source: "/videos/:path*", headers: mediaCache },
+      { source: "/images/:path*", headers: mediaCache },
+      { source: "/prevyu/:path*", headers: mediaCache },
       {
         source: "/locales/:path*",
         headers: [

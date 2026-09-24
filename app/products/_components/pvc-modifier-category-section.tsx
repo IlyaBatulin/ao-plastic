@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { motion } from "framer-motion"
+import { motion, type Variants } from "framer-motion"
 import { Download, Shield, TrendingUp, Zap, Thermometer } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { StatsCounter } from "@/components/stats-counter"
@@ -18,7 +18,7 @@ import {
   PVC_MODIFIER_PAGE_KEYS,
 } from "@/lib/pvc-modifier-category-i18n"
 
-const storyParent = {
+const storyParent: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -26,7 +26,7 @@ const storyParent = {
   },
 }
 
-const storyChild = {
+const storyChild: Variants = {
   hidden: { opacity: 0, y: 22 },
   visible: {
     opacity: 1,

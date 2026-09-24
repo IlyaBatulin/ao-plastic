@@ -76,7 +76,7 @@ export function SubcategoryProducts({ products }: { products: any[] }) {
                 <div className="space-y-2 mb-6">
                   {Object.entries(specs).slice(0, 3).map(([key, value]) => {
                     // Форматируем значение: если массив - объединяем через запятую
-                    let formattedValue = value
+                    let formattedValue: string
                     if (Array.isArray(value)) {
                       formattedValue = value.join(", ")
                     } else if (typeof value === "string" || typeof value === "number") {

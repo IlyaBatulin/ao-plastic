@@ -214,6 +214,7 @@ const SPEC_KEY_EN: Record<string, string> = {
   "Нормативный документ": "Specification",
   "Термостабилизированная марка": "Heat-stabilized grade",
   "Термо- и светостабилизированная марка": "Heat- and light-stabilized grade",
+  "Морозостойкая марка": "Frost-resistant grade",
   "Разрешен контакт с пищевыми продуктами": "Approved for food contact",
   "Размер основной фракции": "Main fraction size",
   "Способ получения": "Production method",

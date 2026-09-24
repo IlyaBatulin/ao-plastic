@@ -1,7 +1,10 @@
 import type React from "react"
+import type { Metadata } from "next"
 import { getAdminRole } from "@/lib/admin-auth"
 import { AdminMobileNav } from "@/components/admin/admin-mobile-nav"
 import { AdminNav } from "@/components/admin/admin-nav"
+
+export const metadata: Metadata = { robots: { index: false, follow: false } }
 
 /**
  * Общий layout админки: на телефоне добавляет нижнюю навигацию,

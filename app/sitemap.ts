@@ -1,10 +1,12 @@
 import type { MetadataRoute } from "next"
 import { getSiteUrl } from "@/lib/site"
 import productsData from "@/data/products.json"
+import { getCategoryPageData } from "@/lib/catalog-category"
+import { getSubcategoryPageData } from "@/lib/catalog-subcategory"
+import { getPublicSubcategorySlug } from "@/lib/catalog-slugs"
+import { getProductUrlPath } from "@/lib/product-url"
 
 export const revalidate = 3600
-
-const HIDDEN_CATEGORIES = new Set<string>()
 
 const STATIC_PATHS = [
   "",
@@ -14,6 +16,7 @@ const STATIC_PATHS = [
   "/about/safety",
   "/about/quality",
   "/about/vacancies",
+  "/about/college",
   "/about/news",
   "/about/disclosure",
   "/about/publications",
@@ -48,134 +51,40 @@ function staticEntries(base: string): MetadataRoute.Sitemap {
   }))
 }
 
-function productEntriesFromJson(base: string): MetadataRoute.Sitemap {
+/** Use the same catalogue as category pages, including DMS/ABS fallbacks.
+ * Never manufacture product URLs from obsolete database subcategory IDs.
+ */
+async function catalogEntries(base: string): Promise<MetadataRoute.Sitemap> {
   const entries: MetadataRoute.Sitemap = []
-
+  const sections: Array<{ categoryId: string; slug: string }> = []
   for (const cat of productsData.categories) {
-    if (HIDDEN_CATEGORIES.has(cat.id)) continue
-
-    entries.push({
-      url: `${base}/products/${cat.id}`,
-      changeFrequency: "weekly",
-      priority: 0.85,
-    })
-
-    for (const sub of cat.subcategories ?? []) {
-      const slug = "slug" in sub && sub.slug ? sub.slug : (sub as { id?: string }).id
-      if (!slug) continue
-      entries.push({
-        url: `${base}/products/${cat.id}/${slug}`,
-        changeFrequency: "weekly",
-        priority: 0.75,
-      })
-    }
-
-    for (const product of cat.products ?? []) {
-      const p = product as { id: string; subcategory?: string }
-      const subSlug =
-        p.subcategory ||
-        (cat.subcategories?.[0] as { slug?: string } | undefined)?.slug ||
-        ""
-      if (!subSlug) continue
-      entries.push({
-        url: `${base}/products/${cat.id}/${subSlug}/${p.id}`,
-        changeFrequency: "monthly",
-        priority: 0.65,
-      })
+    const page = await getCategoryPageData(cat.id)
+    if (!page) continue
+    entries.push({ url: `${base}/products/${cat.id}`, changeFrequency: "weekly" })
+    for (const sub of page.subcategories) {
+      const slug = getPublicSubcategorySlug(cat.id, { id: String(sub.id), slug: String(sub.slug) })
+      sections.push({ categoryId: cat.id, slug })
     }
   }
-
+  // Bound parallel reads so sitemap generation does not overload the database.
+  for (let i = 0; i < sections.length; i += 4) {
+    const pages = await Promise.all(sections.slice(i, i + 4).map(async ({ categoryId, slug }) => {
+      const page = await getSubcategoryPageData(categoryId, slug)
+      if (!page) return []
+      const path = `/products/${categoryId}/${page.publicSubcategorySlug}`
+      return [
+        { url: `${base}${path}`, changeFrequency: "weekly" as const },
+        ...page.displayProducts.map((product) => ({
+          url: base + getProductUrlPath(categoryId, page.publicSubcategorySlug, {
+            id: String(product.id), slug: typeof product.slug === "string" ? product.slug : null,
+          }),
+          changeFrequency: "monthly" as const,
+        })),
+      ]
+    }))
+    entries.push(...pages.flat())
+  }
   return entries
-}
-
-async function fetchSupabaseProductUrls(base: string): Promise<MetadataRoute.Sitemap | null> {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  if (!supabaseUrl || !supabaseKey) return null
-
-  try {
-    const [productsRes, subcatsRes, categoriesRes] = await Promise.all([
-      fetch(`${supabaseUrl}/rest/v1/products?is_active=eq.true&select=id,category_id,subcategory_id,updated_at`, {
-        headers: {
-          apikey: supabaseKey,
-          Authorization: `Bearer ${supabaseKey}`,
-        },
-        next: { revalidate: 3600 },
-      }),
-      fetch(`${supabaseUrl}/rest/v1/subcategories?select=id,slug,category_id,updated_at`, {
-        headers: {
-          apikey: supabaseKey,
-          Authorization: `Bearer ${supabaseKey}`,
-        },
-        next: { revalidate: 3600 },
-      }),
-      fetch(`${supabaseUrl}/rest/v1/categories?is_active=eq.true&select=id,updated_at`, {
-        headers: {
-          apikey: supabaseKey,
-          Authorization: `Bearer ${supabaseKey}`,
-        },
-        next: { revalidate: 3600 },
-      }),
-    ])
-
-    if (!productsRes.ok || !subcatsRes.ok || !categoriesRes.ok) return null
-
-    const products = (await productsRes.json()) as Array<{
-      id: string
-      category_id: string
-      subcategory_id: string | null
-      updated_at: string | null
-    }>
-    const subcategories = (await subcatsRes.json()) as Array<{
-      id: string
-      slug: string
-      category_id: string
-      updated_at: string | null
-    }>
-    const categories = (await categoriesRes.json()) as Array<{
-      id: string
-      updated_at: string | null
-    }>
-
-    const subcatMap = new Map(subcategories.map((s) => [s.id, s.slug]))
-    const entries: MetadataRoute.Sitemap = []
-
-    for (const p of products) {
-      if (HIDDEN_CATEGORIES.has(p.category_id)) continue
-      const subSlug = p.subcategory_id ? subcatMap.get(p.subcategory_id) : undefined
-      if (!subSlug) continue
-      entries.push({
-        url: `${base}/products/${p.category_id}/${subSlug}/${p.id}`,
-        ...(p.updated_at ? { lastModified: new Date(p.updated_at) } : {}),
-        changeFrequency: "monthly",
-        priority: 0.65,
-      })
-    }
-
-    for (const c of categories) {
-      if (HIDDEN_CATEGORIES.has(c.id)) continue
-      entries.push({
-        url: `${base}/products/${c.id}`,
-        ...(c.updated_at ? { lastModified: new Date(c.updated_at) } : {}),
-        changeFrequency: "weekly",
-        priority: 0.85,
-      })
-    }
-
-    for (const s of subcategories) {
-      if (HIDDEN_CATEGORIES.has(s.category_id)) continue
-      entries.push({
-        url: `${base}/products/${s.category_id}/${s.slug}`,
-        ...(s.updated_at ? { lastModified: new Date(s.updated_at) } : {}),
-        changeFrequency: "weekly",
-        priority: 0.75,
-      })
-    }
-
-    return dedupeSitemap(entries)
-  } catch {
-    return null
-  }
 }
 
 async function fetchNewsUrls(base: string): Promise<MetadataRoute.Sitemap> {
@@ -192,6 +101,7 @@ async function fetchNewsUrls(base: string): Promise<MetadataRoute.Sitemap> {
           Authorization: `Bearer ${supabaseKey}`,
         },
         next: { revalidate: 3600 },
+        signal: AbortSignal.timeout(5000),
       }
     )
     if (!res.ok) return []
@@ -204,7 +114,8 @@ async function fetchNewsUrls(base: string): Promise<MetadataRoute.Sitemap> {
       .filter((r) => r.slug)
       .map((r) => ({
         url: `${base}/about/news/${r.slug}`,
-        lastModified: r.updated_at ? new Date(r.updated_at) : r.published_at ? new Date(r.published_at) : new Date(),
+        ...((r.updated_at || r.published_at) && !Number.isNaN(Date.parse(r.updated_at || r.published_at || ""))
+          ? { lastModified: new Date(r.updated_at || r.published_at!) } : {}),
         changeFrequency: "monthly" as const,
         priority: 0.6,
       }))
@@ -223,7 +134,7 @@ function dedupeSitemap(entries: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
     }
     const a = e.lastModified
     const b = prev.lastModified
-    if (a && b && a > b) map.set(e.url, e)
+    if (a && (!b || new Date(a).getTime() > new Date(b).getTime())) map.set(e.url, e)
   }
   return [...map.values()]
 }
@@ -232,15 +143,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = getSiteUrl()
   const staticPart = staticEntries(base)
 
-  const fromDb = await fetchSupabaseProductUrls(base)
-  const localProductEntries = productEntriesFromJson(base)
-  const localDispersionEntries = localProductEntries.filter((entry) =>
-    entry.url.includes("/products/dispersion")
-  )
-  const productPart = fromDb
-    ? dedupeSitemap([...fromDb, ...localDispersionEntries])
-    : localProductEntries
-  const newsPart = await fetchNewsUrls(base)
+  const [productPart, newsPart] = await Promise.all([catalogEntries(base), fetchNewsUrls(base)])
 
   return dedupeSitemap([...staticPart, ...productPart, ...newsPart])
 }

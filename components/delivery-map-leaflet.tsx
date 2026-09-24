@@ -95,7 +95,7 @@ export function DeliveryMapLeaflet({ factory, office, regions }: DeliveryMapLeaf
 
     regionPointSeries.data.setAll(regionPointData)
     regionPointSeries.bullets.push(function (_root, _target, dataItem) {
-      const ctx = dataItem.get("dataContext") as {
+      const ctx = dataItem.dataContext as {
         fill?: am5.Color
         fillBright?: am5.Color
         tooltipText?: string
@@ -134,7 +134,7 @@ export function DeliveryMapLeaflet({ factory, office, regions }: DeliveryMapLeaf
           fill: am5.color(0x94a3b8),
           fontSize: 8,
           maxWidth: 86,
-          wrap: true,
+          oversizedBehavior: "wrap",
           centerX: am5.percent(50),
           textAlign: "center",
           paddingTop: 2,
@@ -187,7 +187,7 @@ export function DeliveryMapLeaflet({ factory, office, regions }: DeliveryMapLeaf
     mainPointSeries.data.setAll(mainPointData)
 
     mainPointSeries.bullets.push(function (_root, _target, dataItem) {
-      const ctx = dataItem.get("dataContext") as {
+      const ctx = dataItem.dataContext as {
         fill?: am5.Color
         fillBright?: am5.Color
         tooltipText?: string

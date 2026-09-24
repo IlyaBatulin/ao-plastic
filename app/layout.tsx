@@ -8,7 +8,7 @@ import { ConditionalHeader } from "@/components/conditional-header"
 import { Toaster } from "@/components/ui/toaster"
 import { LoadingScreen } from "@/components/loading-screen"
 import { LenisProvider } from "@/components/lenis-provider"
-import { getSiteUrl } from "@/lib/site"
+import { getSiteUrl, isIndexingAllowed } from "@/lib/site"
 import { parseLanguage } from "@/lib/language"
 import { SiteJsonLd } from "@/components/seo/site-json-ld"
 import { BackgroundPaths } from "@/components/ui/background-paths"
@@ -54,10 +54,10 @@ export const metadata: Metadata = {
     apple: [{ url: "/images/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   robots: {
-    index: true,
+    index: isIndexingAllowed(),
     follow: true,
     googleBot: {
-      index: true,
+      index: isIndexingAllowed(),
       follow: true,
       "max-image-preview": "large",
       "max-snippet": -1,

@@ -15,7 +15,7 @@ type SegmentItem = {
 type FinndispSegmentsShowcaseProps = {
   badge: string
   title: string
-  segments: SegmentItem[]
+  segments: readonly SegmentItem[]
 }
 
 export function FinndispSegmentsShowcase({ badge, title, segments }: FinndispSegmentsShowcaseProps) {

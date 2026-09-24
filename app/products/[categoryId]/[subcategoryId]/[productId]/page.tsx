@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { notFound } from "next/navigation"
+import { notFound, permanentRedirect } from "next/navigation"
 import { ProductPageClient } from "./product-client"
 import { getProductSeo } from "@/lib/seo/catalog-meta"
 import { truncateMeta } from "@/lib/seo/text"
@@ -20,13 +20,18 @@ export async function generateMetadata({
   const { categoryId, subcategoryId, productId } = await params
   const seo = await getProductSeo(categoryId, subcategoryId, productId)
   if (!seo) {
-    return { title: "Товар" }
+    notFound()
   }
-  const path = `/products/${categoryId}/${subcategoryId}/${productId}`
+  const path = seo.canonicalPath
+  if (`/products/${categoryId}/${subcategoryId}/${encodeURIComponent(productId)}` !== path) {
+    permanentRedirect(path)
+  }
   return {
     title: `${seo.productName} — ${seo.categoryName}`,
     description: seo.description,
     alternates: { canonical: path },
+    twitter: { card: "summary_large_image", title: seo.productName, description: seo.description,
+      images: [seo.image || "/images/og-image.jpg"] },
     openGraph: {
       title: seo.productName,
       description: seo.description,
@@ -55,6 +60,9 @@ export default async function ProductPage({
   }
 
   const { product, category, subcategory } = pageData
+  if (`/products/${categoryId}/${subcategoryId}/${encodeURIComponent(productId)}` !== pageData.canonicalPath) {
+    permanentRedirect(pageData.canonicalPath)
+  }
 
   const productImageForLd = resolveProductImageUrl(
     String(productId),
@@ -62,7 +70,7 @@ export default async function ProductPage({
     typeof category?.image === "string" ? category.image : null
   )
 
-  const canonicalPath = `/products/${categoryId}/${subcategoryId}/${productId}`
+  const canonicalPath = pageData.canonicalPath
   const rawProductDesc =
     typeof product.description === "string"
       ? product.description
@@ -83,6 +91,7 @@ export default async function ProductPage({
         sku={String(product.id)}
         category={typeof category?.name === "string" ? category.name : categoryId}
         urlPath={canonicalPath}
+        specifications={product.specifications}
       />
       <BreadcrumbJsonLd
         items={[

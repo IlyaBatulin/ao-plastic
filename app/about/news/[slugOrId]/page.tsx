@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { cache } from "react"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { Footer } from "@/components/footer"
@@ -12,7 +13,7 @@ interface NewsDetailPageProps {
   params: Promise<{ slugOrId: string }>
 }
 
-async function getNews(slugOrId: string) {
+const getNews = cache(async (slugOrId: string) => {
   const supabase = createClient()
   const isNumeric = /^\d+$/.test(slugOrId)
 
@@ -22,7 +23,7 @@ async function getNews(slugOrId: string) {
   const { data, error } = await query.single()
   if (error || !data) return null
   return data
-}
+})
 
 export async function generateMetadata({ params }: NewsDetailPageProps): Promise<Metadata> {
   const { slugOrId } = await params

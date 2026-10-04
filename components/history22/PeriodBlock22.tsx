@@ -6,9 +6,10 @@ import Timeline22 from "./Timeline22";
 interface PeriodBlockProps {
   period: HistoryPeriod;
   image: string;
+  preserveImage?: boolean;
 }
 
-const PeriodBlock22 = ({ period, image }: PeriodBlockProps) => {
+const PeriodBlock22 = ({ period, image, preserveImage = false }: PeriodBlockProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   
   const { scrollYProgress } = useScroll({
@@ -95,7 +96,7 @@ const PeriodBlock22 = ({ period, image }: PeriodBlockProps) => {
           <img
             src={image}
             alt={period.title}
-            className="h-full w-full object-cover image-industrial"
+            className={preserveImage ? "h-full w-full object-contain bg-neutral-950" : "h-full w-full object-cover image-industrial"}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-background/10 to-transparent" />
         </div>
@@ -140,7 +141,7 @@ const PeriodBlock22 = ({ period, image }: PeriodBlockProps) => {
           <img
             src={image}
             alt={period.title}
-            className="w-full h-full object-cover image-industrial"
+            className={preserveImage ? "w-full h-full object-contain bg-neutral-950" : "w-full h-full object-cover image-industrial"}
           />
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />

@@ -10,7 +10,7 @@ import { missionPageContent } from "@/data/about-pages/mission"
 import { historyPageContent } from "@/data/about-pages/history"
 
 const periodImages: Record<string, string> = {
-  "period-1": "/images/history/period-1959-1992.jpeg",
+  "period-1": "/images/history/factory-1959-restored.webp",
   "period-2": "/images/history/period-1974-1992-v2.webp",
   "period-3": "/images/history/period-modernization.png",
   "period-4": "/images/history/period-2019-present.jpeg",
@@ -113,7 +113,7 @@ export function MissionPageClient() {
       </section>
 
       {history.periods.map((period) => (
-        <PeriodBlock22 key={period.id} period={period} image={periodImages[period.id]} />
+        <PeriodBlock22 key={period.id} period={period} image={periodImages[period.id]} preserveImage={period.id === "period-1"} />
       ))}
 
       <HistoryClosing phrase={history.closingPhrase} logoAlt={history.heroImageAlt} />

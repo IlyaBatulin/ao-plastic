@@ -18,9 +18,9 @@ export function Stats() {
     /** Если не задан — используется homePage.stats.suffix */
     suffixKey?: string
   }[] = [
-    { icon: TrendingUp, value: 150, label: "totalProductVolume", suffixKey: "homePage.stats.suffixPlus" },
+    { icon: TrendingUp, value: 160, label: "totalProductVolume", suffixKey: "homePage.stats.suffixPlus" },
     { icon: Factory, value: 23, label: "absPlastics" },
-    { icon: Package, value: 30, label: "expandablePolystyrene" },
+    { icon: Package, value: 42, label: "expandablePolystyrene" },
     { icon: FlaskConical, value: 20, label: "sadStyreneAcrylicDispersions" },
     { icon: Beaker, value: 60, label: "styrene" },
     { icon: Cog, value: 3, label: "machineBuildingPartsDms" },

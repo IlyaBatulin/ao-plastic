@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, useMemo, type ReactNode } from "react"
 import { type Language, persistLanguage } from "@/lib/language"
+import { useRouter } from "next/navigation"
 
 interface LanguageContextType {
   lang: Language
@@ -29,6 +30,7 @@ export function LanguageProvider({
   /** Переводы активного языка с сервера — чтобы текст был в HTML при SSR (важно для SEO и LCP). */
   initialTranslations?: Record<string, any>
 }) {
+  const router = useRouter()
   // Сидируем кэш серверными переводами до первого рендера,
   // тогда t() работает уже при SSR и краулеры видят текст.
   if (initialTranslations) {
@@ -110,6 +112,8 @@ export function LanguageProvider({
   const setLang = (newLang: Language) => {
     setLangState(newLang)
     persistLanguage(newLang)
+    // Server-rendered copy and metadata must use the same language as the UI.
+    router.refresh()
     if (translationsCache[newLang]) {
       applyTranslations(newLang, translationsCache[newLang]!)
       setIsLoading(false)

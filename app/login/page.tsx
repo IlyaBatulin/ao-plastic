@@ -6,8 +6,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Lock } from "lucide-react"
 import type { NextPageProps } from "@/lib/next-page-props"
+import { useLanguage } from "@/contexts/language-context"
 
 export default function SiteLogin({ params, searchParams }: NextPageProps) {
+  const { lang } = useLanguage()
+  const en = lang === "en"
   use(params ?? Promise.resolve({}))
   use(searchParams ?? Promise.resolve({}))
   const [password, setPassword] = useState("")
@@ -35,10 +38,10 @@ export default function SiteLogin({ params, searchParams }: NextPageProps) {
         router.push(returnUrl)
         router.refresh()
       } else {
-        setError(data.error || "Неверный пароль")
+        setError(en ? "Unable to sign in. Please check your password and try again." : data.error || "Неверный пароль")
       }
     } catch (err) {
-      setError("Ошибка подключения")
+      setError(en ? "Connection error. Please try again." : "Ошибка подключения")
     } finally {
       setIsLoading(false)
     }
@@ -52,21 +55,21 @@ export default function SiteLogin({ params, searchParams }: NextPageProps) {
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
               <Lock className="w-8 h-8 text-primary" />
             </div>
-            <h1 className="text-3xl font-bold text-foreground mb-2">Доступ к сайту</h1>
-            <p className="text-muted-foreground">Введите пароль для входа</p>
+            <h1 className="text-3xl font-bold text-foreground mb-2">{en ? "Website access" : "Доступ к сайту"}</h1>
+            <p className="text-muted-foreground">{en ? "Enter your password to continue" : "Введите пароль для входа"}</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-foreground mb-2">
-                Пароль
+                {en ? "Password" : "Пароль"}
               </label>
               <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Введите пароль"
+                placeholder={en ? "Enter password" : "Введите пароль"}
                 className="h-12"
                 autoFocus
                 disabled={isLoading}
@@ -80,7 +83,7 @@ export default function SiteLogin({ params, searchParams }: NextPageProps) {
             )}
 
             <Button type="submit" size="lg" className="w-full" disabled={isLoading}>
-              {isLoading ? "Проверка..." : "Войти"}
+              {isLoading ? (en ? "Checking…" : "Проверка...") : (en ? "Sign in" : "Войти")}
             </Button>
           </form>
         </div>

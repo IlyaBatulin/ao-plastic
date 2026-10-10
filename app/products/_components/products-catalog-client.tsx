@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { useLanguage } from "@/contexts/language-context"
 import { CATALOG_WARMUP_PATHS } from "@/lib/catalog-warmup"
 import { getCategoryImageUrl } from "@/lib/category-image"
+import { getCategoryName, resolveCatalogSubcategoryI18nKey } from "@/lib/catalog-translations"
 import { CatalogCategoryCard } from "@/app/products/_components/catalog-category-card"
 
 interface Category {
@@ -24,7 +25,7 @@ interface ProductsCatalogClientProps {
 }
 
 export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps) {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const router = useRouter()
   const catalogCategories = categories.filter((c) => c.id !== "custom-abs")
 
@@ -65,7 +66,9 @@ export function ProductsCatalogClient({ categories }: ProductsCatalogClientProps
                 category.description
               const subcategories = category.subcategories?.map((sub) => ({
                 id: sub.id,
-                name: t(`homePage.catalog.subcategories.${sub.id}`) || sub.name,
+                name: getCategoryName(resolveCatalogSubcategoryI18nKey(sub.id, sub.slug ?? sub.id), lang) !== resolveCatalogSubcategoryI18nKey(sub.id, sub.slug ?? sub.id)
+                  ? getCategoryName(resolveCatalogSubcategoryI18nKey(sub.id, sub.slug ?? sub.id), lang)
+                  : t(`homePage.catalog.subcategories.${sub.id}`) || sub.name,
               }))
 
               return (

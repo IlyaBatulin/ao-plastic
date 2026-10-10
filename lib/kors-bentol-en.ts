@@ -40,7 +40,7 @@ export function getKorsTuLabel(lang: "ru" | "en"): string {
 }
 
 export function getBentolTuLabel(lang: "ru" | "en"): string {
-  return BENTOL_TU_LABEL
+  return lang === "en" ? BENTOL_TU_LABEL.replace("ТУ", "TU") : BENTOL_TU_LABEL
 }
 
 /** Ключи → homePage.catalog.korsPage.* в locales */

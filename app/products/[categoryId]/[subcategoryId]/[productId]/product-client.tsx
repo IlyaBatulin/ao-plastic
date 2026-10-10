@@ -176,8 +176,8 @@ export function ProductPageClient({
             </div>
 
             {/* Product Info */}
-            <div className="flex flex-col justify-center">
-              <h1 className="text-4xl lg:text-5xl font-bold mb-4">{displayName}</h1>
+            <div className="min-w-0 flex flex-col justify-center">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-4 [overflow-wrap:anywhere]">{displayName}</h1>
 
               {displayDescription && (
                 <p className="text-xl text-muted-foreground mb-8 leading-relaxed">

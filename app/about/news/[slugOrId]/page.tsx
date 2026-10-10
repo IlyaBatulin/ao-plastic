@@ -1,4 +1,6 @@
 import type { Metadata } from "next"
+import { getServerLanguage } from "@/lib/server-language"
+import { localizeNews } from "@/lib/news-i18n"
 import { cache } from "react"
 import { notFound } from "next/navigation"
 import Link from "next/link"
@@ -27,14 +29,16 @@ const getNews = cache(async (slugOrId: string) => {
 
 export async function generateMetadata({ params }: NewsDetailPageProps): Promise<Metadata> {
   const { slugOrId } = await params
-  const item = await getNews(slugOrId)
+  const source = await getNews(slugOrId)
+  const lang = await getServerLanguage()
+  const item = source ? localizeNews(source, lang) : null
   if (!item) {
     return { title: "Новость" }
   }
   const desc =
     typeof item.excerpt === "string" && item.excerpt.trim()
       ? item.excerpt.replace(/<[^>]+>/g, "").slice(0, 160)
-      : `${item.title} — новости АО «Пластик».`
+      : `${item.title} — ${lang === "en" ? "JSC Plastic news" : "новости АО «Пластик»"}.`
   return {
     title: item.title,
     description: desc,
@@ -52,12 +56,14 @@ export async function generateMetadata({ params }: NewsDetailPageProps): Promise
 
 export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
   const { slugOrId } = await params
-  const item = await getNews(slugOrId)
+  const source = await getNews(slugOrId)
+  const lang = await getServerLanguage()
+  const item = source ? localizeNews(source, lang) : null
 
   if (!item) notFound()
 
   const publishedDate = item.published_at
-    ? new Date(item.published_at).toLocaleDateString("ru-RU", {
+    ? new Date(item.published_at).toLocaleDateString(lang === "en" ? "en-GB" : "ru-RU", {
         day: "numeric",
         month: "long",
         year: "numeric",
@@ -79,21 +85,22 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
         publishedAt={item.published_at}
         updatedAt={item.updated_at}
         urlPath={newsPath}
-      />      <div className="min-h-screen bg-transparent">
+      />
+      <div className="min-h-screen bg-transparent">
         <section className="pt-32 pb-24">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="max-w-3xl mx-auto">
               <Link href="/about/news">
                 <Button variant="ghost" size="sm" className="mb-8 -ml-2">
                   <ArrowLeft className="w-4 h-4 mr-2" />
-                  К списку новостей
+                  {lang === "en" ? "Back to news" : "К списку новостей"}
                 </Button>
               </Link>
 
               <article className="bg-card rounded-xl border border-border p-8 md:p-10">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
                   <Calendar className="w-4 h-4" />
-                  {publishedDate || "Без даты"}
+                  {publishedDate || (lang === "en" ? "Date not specified" : "Без даты")}
                 </div>
                 <h1 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">
                   {item.title}
@@ -111,7 +118,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
                     <div className="aspect-video max-w-2xl rounded-xl overflow-hidden border border-border mb-6">
                       <iframe
                         src={embedUrl}
-                        title={item.title ? `Видео: ${item.title}` : "Видео к новости"}
+                        title={item.title || (lang === "en" ? "News video" : "Видео к новости")}
                         className="w-full h-full"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
@@ -123,7 +130,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
                   <div className="mb-6 rounded-xl overflow-hidden border border-border max-w-2xl">
                     <img
                       src={item.image_url}
-                      alt={item.title ? `Иллюстрация к новости: ${item.title}` : "Иллюстрация к новости"}
+                      alt={item.title || (lang === "en" ? "News image" : "Иллюстрация к новости")}
                       className="w-full h-auto object-cover"
                     />
                   </div>

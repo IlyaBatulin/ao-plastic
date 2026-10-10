@@ -4,6 +4,9 @@ import { getProductPageData } from "@/lib/catalog-product"
 import { getSubcategoryPageData } from "@/lib/catalog-subcategory"
 import { parseSpecifications } from "@/lib/product-specs"
 import { getProductSearchName } from "@/lib/seo/product-name"
+import { getServerLanguage } from "@/lib/server-language"
+import { resolveProductDisplay } from "@/lib/product-en"
+import { getCatalogCategoryLabel } from "@/lib/catalog-translations"
 
 export async function getSubcategorySeo(categoryId: string, subcategorySlug: string) {
   const page = await getSubcategoryPageData(categoryId, subcategorySlug)
@@ -20,12 +23,14 @@ export async function getProductSeo(categoryId: string, subcategorySlug: string,
   const page = await getProductPageData(categoryId, subcategorySlug, productId)
   if (!page) return null
   const { product, category, subcategory } = page
-  const productName = getProductSearchName(String(product.name), categoryId, parseSpecifications(product.specifications))
+  const lang = await getServerLanguage()
+  const display = resolveProductDisplay({ ...product, id: String(product.id), name: String(product.name) }, lang, { categoryId })
+  const productName = lang === "en" ? display.name : getProductSearchName(String(product.name), categoryId, parseSpecifications(product.specifications))
   return {
     productName,
-    description: truncateMeta(`${productName}. ${product.description || `${category.name}. Производство АО «Пластик», Узловая.`}`),
+    description: truncateMeta(`${productName}. ${lang === "en" ? display.description || "Manufactured by JSC Plastic in Uzlovaya, Russia." : product.description || `${category.name}. Производство АО «Пластик», Узловая.`}`),
     image: resolveProductImageUrl(String(product.id), typeof product.image === "string" ? product.image : undefined),
-    categoryName: String(category.name),
+    categoryName: getCatalogCategoryLabel(categoryId, String(category.name), lang),
     subName: String(subcategory.name),
     canonicalPath: page.canonicalPath,
   }

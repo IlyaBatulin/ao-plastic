@@ -14,15 +14,23 @@ export type ProductEnEntry = { name: string; description: string }
 
 /** Каталог (кроме ТНП): id → EN name + description */
 const CATALOG_PRODUCT_EN: Record<string, ProductEnEntry> = {
+  "pse-1": {
+    name: "Polystyrene PSE-1",
+    description: "General-purpose emulsion polystyrene supplied as a white powder.",
+  },
+  "psv-l-unsieved": {
+    name: "Expandable Polystyrene EPS-L — Unscreened Fraction",
+    description: "Casting-grade expandable polystyrene, unscreened fraction, for expendable patterns.",
+  },
   "styrene-monomer": {
-    name: "Monomeric Styrene",
+    name: "Styrene Monomer",
     description:
-      "High-purity monomeric styrene for polystyrene and copolymer production. Used in the chemical industry for polymer synthesis.",
+      "High-purity styrene monomer for polystyrene and copolymer production. Used in the chemical industry for polymer synthesis.",
   },
   "abs-l-121": {
     name: "ABS L-121",
     description:
-      "General-purpose injection ABS for automotive parts and consumer appliances.",
+      "General-purpose injection-moulding ABS for automotive parts and consumer appliances.",
   },
   "abs-e-110": {
     name: "ABS E-110",
@@ -51,7 +59,7 @@ const CATALOG_PRODUCT_EN: Record<string, ProductEnEntry> = {
   },
   "finndisp-ac-2010": {
     name: "FINNDISP AC-2010",
-    description: "Plasticizer-free aqueous styrene-acrylic copolymer dispersion used for geogrids and glass-fiber mat.",
+    description: "Plasticizer-free aqueous styrene-acrylic copolymer dispersion used for geogrids and glass fibre mats.",
   },
   "finndisp-ac-2020": {
     name: "FINNDISP AC-2020",
@@ -59,7 +67,7 @@ const CATALOG_PRODUCT_EN: Record<string, ProductEnEntry> = {
   },
   "akromol-ac-101": {
     name: "AKROMOL AC-101",
-    description: "Plasticizer-free aqueous styrene-acrylic copolymer dispersion for geogrids, glass-fiber mat, interior and exterior paints, primers, fillers and renders.",
+    description: "Plasticizer-free aqueous styrene-acrylic copolymer dispersion for geogrids, glass fibre mats, interior and exterior paints, primers, fillers and renders.",
   },
   "finndisp-a-1049": {
     name: "FINNDISP A-1049",
@@ -106,13 +114,13 @@ const CATALOG_PRODUCT_EN: Record<string, ProductEnEntry> = {
     description: "Blue plastic tube for various applications.",
   },
   "modifier-pvc": {
-    name: "PVC Composition Modifier",
+    name: "PVC Compound Modifier",
     description: "Modifier to improve properties of PVC compounds.",
   },
   "kors-fuel": {
     name: "CORS",
     description:
-      "Cubic residue of styrene rectification used as fuel or a component in paint formulations.",
+      "Styrene distillation bottoms used as fuel or a component in paint formulations.",
   },
   "bentol": {
     name: "Bentol",
@@ -189,7 +197,7 @@ const PRODUCT_DESCRIPTION_PHRASES_EN: [RegExp, string][] = [
     /для\s+производства\s+листов\s+и\s+профилей\s+методом\s+экструзии/gi,
     "for sheet and profile production by extrusion",
   ],
-  [/литьевой\s+АБС-пластик/gi, "Injection ABS plastic"],
+  [/литьевой\s+АБС-пластик/gi, "Injection-moulding ABS plastic"],
   [/марки\s+/gi, "grade "],
   [/для\s+производства\s+деталей\s+методом\s+литья\s+под\s+давлением/gi, "for manufacturing parts by injection molding"],
   [/для\s+производства\s+деталей/gi, "for manufacturing parts"],
@@ -450,6 +458,7 @@ function translateProductDescriptionFallback(description: string): string {
   }
   return result
     .replace(/АБС/g, "ABS")
+    .replace(/(\d{4}-\d{2})М/g, "$1M")
     .replace(/ПТР/g, "MFR")
     .replace(/\s+/g, " ")
     .trim()
@@ -492,8 +501,11 @@ function normalizeSpecs(
 /** мм → mm и т.п. в размерах (цифры не трогаем) */
 function latinizeUnits(value: string): string {
   return value
-    .replace(/х/g, "x")
-    .replace(/Х/g, "X")
+    .replace(/(\d),(\d)/g, "$1.$2")
+    .replace(/(?<=\d)\s*[xхХ×]\s*(?=\d)/g, " × ")
+    .replace(/с развальцовкой/gi, "with a flared end")
+    .replace(/защитная/gi, "protective")
+    .replace(/перфорированная/gi, "perforated")
     .replace(/мм/g, "mm")
     .replace(/см/g, "cm")
     .replace(/(\d)\s*м\b/g, "$1 m")
@@ -741,11 +753,13 @@ function fallbackLatinProductName(name: string): string {
   }
   return result
     .replace(/АБС/g, "ABS")
+    .replace(/(\d{4}-\d{2})М/g, "$1M")
     .replace(/ПСВ/g, "EPS")
     .replace(/ПСЭ/g, "PSE")
     .replace(/ПТР/g, "MFR")
     .replace(/ПВХ/g, "PVC")
     .replace(/КОРС/g, "CORS")
-    .replace(/Стирол/gi, "Styrene")
+    .replace(/Полистирол/gi, "Polystyrene")
+    .replace(/(?<![а-яё])Стирол(?![а-яё])/gi, "Styrene")
     .replace(/Бентол/gi, "Bentol")
 }

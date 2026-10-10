@@ -8,6 +8,7 @@ import { HeroLanguageSwitcher } from "./hero-language-switcher"
 import { HeroOrderButton } from "./hero-order-button"
 import { MobileMenu } from "./header/mobile-menu"
 import { Menu, X, ShoppingCart, UserRound } from "lucide-react"
+import { useLanguage } from "@/contexts/language-context"
 import { useCart } from "@/contexts/cart-context"
 import { Badge } from "@/components/ui/badge"
 import { SHOW_ACCOUNT_BUTTON } from "@/lib/site-features"
@@ -19,6 +20,7 @@ export function HeroNavigation({ logoVisible = true }: { logoVisible?: boolean }
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false)
   const [isHiddenByScroll, setIsHiddenByScroll] = useState(false)
   const { itemCount } = useCart()
+  const { lang } = useLanguage()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,7 +61,7 @@ export function HeroNavigation({ logoVisible = true }: { logoVisible?: boolean }
           <div data-hero-logo-target className="relative h-20 w-20 flex-shrink-0 transition-transform duration-300 group-hover:scale-110 sm:h-20 sm:w-20 lg:h-24 lg:w-24" style={{ opacity: logoVisible ? 1 : 0 }}>
             <Image
               src="/images/logo123.png"
-              alt="АО Пластик"
+              alt={lang === "en" ? "JSC Plastic" : "АО Пластик"}
               fill
               sizes="96px"
               className={`object-contain transition-all duration-300 ${isMegaMenuOpen ? "" : "brightness-0 invert"}`}
@@ -77,8 +79,8 @@ export function HeroNavigation({ logoVisible = true }: { logoVisible?: boolean }
           {SHOW_ACCOUNT_BUTTON && (
             <Link
               href="/account"
-              aria-label="Личный кабинет"
-              title="Личный кабинет"
+              aria-label={lang === "en" ? "Customer account" : "Личный кабинет"}
+              title={lang === "en" ? "Customer account" : "Личный кабинет"}
               className={`flex h-11 w-11 items-center justify-center rounded-xl border backdrop-blur-sm transition ${isMegaMenuOpen ? "border-border/70 bg-white text-foreground hover:text-primary" : "border-white/30 bg-white/10 text-white hover:bg-white/20"}`}
             >
               <UserRound className="h-5 w-5" />
@@ -93,7 +95,7 @@ export function HeroNavigation({ logoVisible = true }: { logoVisible?: boolean }
             <Link
               href="/account"
               className="relative flex h-14 w-14 items-center justify-center rounded-2xl border border-white/30 bg-white/10 text-white shadow-sm backdrop-blur-sm transition active:scale-95 hover:bg-white/20 sm:h-16 sm:w-16"
-              aria-label="Личный кабинет"
+              aria-label={lang === "en" ? "Customer account" : "Личный кабинет"}
             >
               <UserRound className="h-6 w-6 sm:h-7 sm:w-7" />
             </Link>
@@ -102,7 +104,7 @@ export function HeroNavigation({ logoVisible = true }: { logoVisible?: boolean }
           <Link
             href="/cart"
             className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl border border-white/30 bg-white/10 backdrop-blur-sm text-white transition-all duration-200 shadow-sm active:scale-95 hover:bg-white/20"
-            aria-label="Корзина"
+            aria-label={lang === "en" ? "Cart" : "Корзина"}
           >
             <ShoppingCart className="w-6 h-6 sm:w-7 sm:h-7" />
             {itemCount > 0 && (
@@ -118,7 +120,7 @@ export function HeroNavigation({ logoVisible = true }: { logoVisible?: boolean }
             data-mobile-menu-trigger
             className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl border border-white/30 bg-white/10 backdrop-blur-sm text-white transition-all duration-200 shadow-sm active:scale-95 hover:bg-white/20 touch-manipulation"
             onClick={() => setIsMobileMenuOpen((open) => !open)}
-            aria-label={isMobileMenuOpen ? "Закрыть каталог" : "Открыть каталог"}
+            aria-label={lang === "en" ? (isMobileMenuOpen ? "Close catalogue" : "Open catalogue") : (isMobileMenuOpen ? "Закрыть каталог" : "Открыть каталог")}
             aria-pressed={isMobileMenuOpen}
             aria-expanded={isMobileMenuOpen}
           >

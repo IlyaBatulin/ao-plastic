@@ -227,7 +227,7 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
         subtitle: "Formation of the production complex",
         image: "/images/history/period-1959-1992.jpeg",
         timeline: [
-          { year: "1959", description: "The enterprise that began the history of JSC Plastic was founded in Uzlovaya." },
+          { year: "1959", description: "The company was founded in Uzlovaya." },
           { year: "1964", description: "A production facility for phenolic moulding compound (voloknit), a material used to manufacture machine components, was commissioned." },
           { year: "1967", description: "A shop producing emulsion and suspension polystyrene was commissioned." },
           { year: "1968", description: "A press shop was commissioned to manufacture components for VAZ and consumer goods." },
@@ -298,7 +298,7 @@ export const historyPageContent: Record<"ru" | "en", HistoryPage> = {
         timeline: [
           { year: "2024", description: "JSC Plastic celebrated its 65th anniversary, a milestone in the history of one of Russia's largest manufacturers of ABS plastics and suspension polystyrene." },
           { year: "2024", description: "Finndisp LLC joined the JSC Plastic Group." },
-          { year: "2025", description: "The first specialists graduated under the Professionalitet program. Together with educational institutions in Uzlovaya, the enterprise established its own training system for chemical production personnel." },
+          { year: "2025", description: "The first specialists graduated under Professionalitet, a federal vocational education programme. Together with educational institutions in Uzlovaya, the enterprise established its own training system for chemical production personnel." },
           { year: "2026 · project in progress", description: "Work continues on a project to build a new expandable polystyrene production facility." },
         ],
         infographic: [],

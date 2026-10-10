@@ -47,7 +47,7 @@ const partnerLogos: PartnerLogo[] = [
 ]
 
 export function Partners() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const nextLogo = () => {
@@ -81,7 +81,7 @@ export function Partners() {
               <button
                 onClick={prevLogo}
                 className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-colors"
-                aria-label="Предыдущий партнёр"
+                aria-label={lang === "en" ? "Previous partner" : "Предыдущий партнёр"}
               >
                 <ChevronLeft className="w-6 h-6 text-primary" />
               </button>
@@ -121,7 +121,7 @@ export function Partners() {
               <button
                 onClick={nextLogo}
                 className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-colors"
-                aria-label="Следующий партнёр"
+                aria-label={lang === "en" ? "Next partner" : "Следующий партнёр"}
               >
                 <ChevronRight className="w-6 h-6 text-primary" />
               </button>
@@ -138,7 +138,7 @@ export function Partners() {
                       ? "bg-primary w-6"
                       : "bg-primary/30 hover:bg-primary/50"
                   }`}
-                  aria-label={`Перейти к партнёру ${index + 1}`}
+                  aria-label={lang === "en" ? `Go to partner ${index + 1}` : `Перейти к партнёру ${index + 1}`}
                 />
               ))}
             </div>

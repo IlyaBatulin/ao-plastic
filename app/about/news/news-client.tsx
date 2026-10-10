@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Newspaper, Calendar, ChevronRight } from "lucide-react"
+import { useLanguage } from "@/contexts/language-context"
+import { localizeNews } from "@/lib/news-i18n"
 
 interface NewsItem {
   id: number
@@ -18,6 +20,8 @@ interface NewsItem {
 }
 
 export function NewsClient() {
+  const { lang } = useLanguage()
+  const en = lang === "en"
   const [news, setNews] = useState<NewsItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -32,7 +36,7 @@ export function NewsClient() {
   if (isLoading) {
     return (
       <div className="text-center py-12">
-        <p className="text-muted-foreground">Загрузка новостей...</p>
+        <p className="text-muted-foreground">{en ? "Loading news…" : "Загрузка новостей..."}</p>
       </div>
     )
   }
@@ -41,15 +45,16 @@ export function NewsClient() {
     return (
       <div className="text-center py-12 bg-card rounded-xl border border-border">
         <Newspaper className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-        <p className="text-muted-foreground">Пока нет новостей</p>
-        <p className="text-sm text-muted-foreground mt-2">Следите за обновлениями</p>
+        <p className="text-muted-foreground">{en ? "No news yet" : "Пока нет новостей"}</p>
+        <p className="text-sm text-muted-foreground mt-2">{en ? "Check back for updates" : "Следите за обновлениями"}</p>
       </div>
     )
   }
 
   return (
     <div className="space-y-8">
-      {news.map((item) => {
+      {news.map((source) => {
+        const item = localizeNews(source, lang)
         const href = `/about/news/${item.slug || item.id}`
         return (
           <Link key={item.id} href={href}>
@@ -59,7 +64,7 @@ export function NewsClient() {
                   <div className="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0 bg-muted">
                     <img
                       src={item.image_url}
-                      alt={item.title ? `Иллюстрация: ${item.title}` : "Новость АО «Пластик»"}
+                      alt={item.title || (en ? "JSC Plastic news" : "Новость АО «Пластик»")}
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -72,12 +77,12 @@ export function NewsClient() {
                   <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
                     <Calendar className="w-4 h-4" />
                     {item.published_at
-                      ? new Date(item.published_at).toLocaleDateString("ru-RU", {
+                      ? new Date(item.published_at).toLocaleDateString(en ? "en-GB" : "ru-RU", {
                           day: "numeric",
                           month: "long",
                           year: "numeric",
                         })
-                      : new Date(item.created_at).toLocaleDateString("ru-RU", {
+                      : new Date(item.created_at).toLocaleDateString(en ? "en-GB" : "ru-RU", {
                           day: "numeric",
                           month: "long",
                           year: "numeric",
@@ -90,13 +95,13 @@ export function NewsClient() {
                     <p className="text-muted-foreground mb-2">
                       {item.excerpt ||
                         (() => {
-                          const text = (item.content || "").replace(/<[^>]*>/g, "")
+                          const text = (item.content || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim()
                           return text.length > 300 ? text.slice(0, 300) + "…" : text
                         })()}
                     </p>
                   )}
                   <span className="inline-flex items-center text-sm text-primary font-medium">
-                    Читать полностью
+                    {en ? "Read more" : "Читать полностью"}
                     <ChevronRight className="w-4 h-4 ml-1" />
                   </span>
                 </div>

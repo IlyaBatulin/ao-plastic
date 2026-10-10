@@ -43,7 +43,7 @@
     "ralColor": "RAL color",
     "ralOptional": "(optional)",
     "ralOrderNote": "Will be noted in the order:",
-    "tons": "Tons:",
+    "tons": "Tonnes:",
     "packages": "Packages:",
     "pcsPerPack": "pcs/pack",
     "orderProduct": "Order product",
@@ -98,7 +98,10 @@
     "thankYouDescription": "Your order has been sent successfully. Our team will contact you shortly.",
     "backToShopping": "Back to shopping",
     "metaTitle": "Cart",
-    "metaDescription": "Order cart on the JSC «Plastic» website."
+    "metaDescription": "Order cart on the JSC «Plastic» website.",
+    "deliveryDate": "Preferred delivery date",
+    "deliveryAddress": "Delivery address",
+    "deliveryAddressPlaceholder": "City, street, warehouse"
   },
   "common": {
     "download": "Download",
@@ -114,7 +117,7 @@
   },
   "footer": {
     "logoAlt": "JSC «Plastic»",
-    "description": "Leader in the chemical industry in ABS plastics and polystyrene production. Quality, reliability, innovation.",
+    "description": "A leading manufacturer of ABS plastics and polystyrene. Quality, reliability, innovation.",
     "navigation": "Navigation",
     "aboutLink": "About",
     "productsLink": "Products",
@@ -124,7 +127,7 @@
     "addressLine2": "1 Tulskaya St.",
     "copyright": "All rights reserved.",
     "privacyPolicy": "Privacy Policy",
-    "terms": "Public Offer Agreement",
+    "terms": "Website Terms of Use",
     "companyDetails": "Company Details",
     "ethicsCode": "Code of Ethics",
     "legacySite": "Previous version of the website"
@@ -217,7 +220,7 @@
       "productionHours": "Mon–Thu: 08:30 – 17:30, Fri: 08:30 – 16:30",
       "salesHours": "Mon-Fri: 09:00 – 18:00",
       "weekend": "Sat-Sun: Closed",
-      "unifiedPhone": "For urgent contact, use the unified phone:"
+      "unifiedPhone": "For urgent enquiries, call our main number:"
     },
     "mapTitle": "JSC «Plastic» — Production"
   },
@@ -227,13 +230,13 @@
     "description": "We are open to cooperation with reliable suppliers of raw materials, chemical components, packaging, and services. Below are key contacts, current requests, and supplier requirements.",
     "contacts": {
       "title": "Main Contacts",
-      "description": "For inquiries regarding supplies and procurement of raw materials and supplies, please use the contacts of LLC «TEK-SNAB». We try to respond within 2 business days.",
+      "description": "For raw-material and supply enquiries, contact LLC «TEC-SNAB». We aim to respond within 2 business days.",
       "fullContactsLink": "Full Contact List",
       "phone": "Phone",
       "email": "Email",
       "address": "Address",
-      "mapTitle": "LLC «TEK-SNAB» — Moscow, Lobachevskogo St., 41",
-      "tekSnabTitle": "LLC «TEK-SNAB»",
+      "mapTitle": "LLC «TEC-SNAB» — Moscow, Lobachevskogo St., 41",
+      "tekSnabTitle": "LLC «TEC-SNAB»",
       "tekSnabDescription": "Prompt procurement of raw materials and auxiliary supplies",
       "tekSnabAddress": "119361, Moscow, Ochakovo-Matveyevskoye municipal district, 41 Lobachevskogo St., premises 6, floor 1, office 102B",
       "mapEmbedNote": "Map: OpenStreetMap (more reliable than the embedded widget during network issues).",
@@ -241,9 +244,9 @@
     },
     "etpTenders": {
       "title": "Tenders on ETP GPB",
-      "description": "Current procurements of JSC «Plastic» on Gazprombank's electronic trading platform. Participation is subject to ETP GPB rules.",
+      "description": "Current procurement opportunities at JSC «Plastic» on Gazprombank's electronic trading platform. Participation is subject to ETP GPB rules.",
       "openOnEtp": "Go to tenders",
-      "loading": "Loading procurements…",
+      "loading": "Loading procurement opportunities…",
       "empty": "No active procedures match the current filters. Open ETP GPB for the full list.",
       "deadline": "Application deadline"
     },
@@ -262,7 +265,7 @@
           "title": "Comprehensive Supply of General Purpose Polystyrene",
           "description": "JSC «Plastic» is considering proposals for the supply of PSE-1 polystyrene (granules) for the production of mass consumption products.",
           "details": [
-            "Volume: 48 tons (4 batches of 12 tons)",
+            "Volume: 48 tonnes (4 batches of 12 tonnes)",
             "Requirements: density 1.04 g/cm³, MFR 5–7 g/10 min, big bag packaging 1200 kg",
             "Desired terms: 30-day payment deferral, delivery to Uzlovaya"
           ],
@@ -364,15 +367,15 @@
     },
     "stats": {
       "title": "Production Volumes",
-      "subtitle": "Our Enterprise Capacity",
-      "sadStyreneAcrylicDispersions": "Current styrene-acrylic dispersion capacity; stage 2 adds 60,000 tons, bringing total capacity to 80,000 tons",
+      "subtitle": "Our Production Capacity",
+      "sadStyreneAcrylicDispersions": "Current styrene-acrylic dispersion capacity; stage 2 adds 60,000 tonnes, bringing total capacity to 80,000 tonnes",
       "absPlastics": "ABS plastics per year",
       "expandablePolystyrene": "Expandable polystyrene (EPS) per year",
       "styrene": "Styrene per year",
       "machineBuildingPartsDms": "Machine-building components per year",
       "totalProductVolume": "Total product output per year",
-      "suffix": " thousand tons",
-      "suffixPlus": "+ thousand tons"
+      "suffix": " thousand tonnes",
+      "suffixPlus": "+ thousand tonnes"
     },
     "about": {
       "title": "About Us",
@@ -519,29 +522,29 @@
         "hoztovary": "Consumer Goods",
         "canisters": "Canisters",
         "boxes": "Boxes",
-        "pvc-modifier": "PVC Composition Modifier",
+        "pvc-modifier": "PVC Compound Modifier",
         "kors": "CORS and Bentol",
-        "custom-abs": "Custom ABS Plastic Products Manufacturing"
+        "custom-abs": "Custom ABS Component Manufacturing"
       },
       "categoryCardNames": {
         "polystyrene": "Polystyrene"
       },
       "subcategories": {
-        "abs-injection": "Injection Grades",
+        "abs-injection": "Injection-moulding Grades",
         "abs-extrusion": "Extrusion Grades",
-        "abs-custom": "Custom ABS Plastic Products Manufacturing",
+        "abs-custom": "Custom ABS Component Manufacturing",
         "ps-psv-s": "UPEX Expandable Polystyrene",
         "ps-psv-l": "Expandable Polystyrene EPS-L",
         "ps-pse": "Polystyrene PSE-1",
         "dispersion-coatings": "Dispersion Product Range",
-        "extrusion-parts": "Extrusion Products",
-        "injection-parts": "Injection Products",
+        "extrusion-parts": "Extruded Parts",
+        "injection-parts": "Injection-moulded Parts",
         "vedra-tazy": "Buckets and Basins",
         "uborka": "Cleaning Supplies",
-        "steklo": "Glass Cleaners",
+        "steklo": "Window Squeegees",
         "sanuzel": "Bathroom Accessories",
         "kuhnya": "Kitchenware",
-        "veshalki": "Hangers and Clothes Hangers",
+        "veshalki": "Clothes Hangers",
         "otdyh": "Leisure Products",
         "canisters": "Canisters",
         "boxes": "Boxes"
@@ -560,7 +563,7 @@
       "subcategoryDescriptions": {
         "abs-injection": "ABS grades for injection molding",
         "abs-extrusion": "ABS grades for sheet and profile extrusion",
-        "abs-custom": "Manufacturing of ABS parts to individual orders",
+        "abs-custom": "Manufacturing of ABS parts to customer specifications",
         "ps-psv-s": "Self-extinguishing UPEX expandable polystyrene in grades 1–6. The grades differ by bead size and are intended for thermal insulation, sound insulation, protective packaging and moulded products.",
         "ps-psv-l": "Casting-grade EPS-L expandable polystyrene for expendable patterns. During moulding, the material accurately reproduces the future casting geometry and is displaced when molten metal is poured.",
         "ps-pse": "General-purpose emulsion polystyrene",
@@ -596,22 +599,22 @@
         "sectionTitle": "About ABS plastic grades",
         "sectionIntro": "A brief overview of injection and extrusion grades of ABS plastic. Product listings are available in the subcategories above.",
         "injection": {
-          "title": "Injection ABS plastic",
-          "intro": "A wide range of injection ABS plastic grades. The main processing method is injection molding on thermoplastic machines.",
+          "title": "Injection-moulding ABS plastic",
+          "intro": "A wide range of ABS plastic grades for processing on injection-moulding machines.",
           "propertiesHeading": "Grade properties",
           "applicationsHeading": "Applications",
-          "footer": "To purchase granulated ABS plastic at a competitive price, contact our company — granulated plastic that meets all quality standards.",
+          "footer": "Contact us for ABS resin prices and supply terms.",
           "advantages": [
             {
-              "title": "High MFR",
+              "title": "Specialty grades",
               "desc": "Selected grades — flame retardancy, antistatic properties"
             },
             {
-              "title": "Heat resistance",
+              "title": "Applications",
               "desc": "Automotive parts, compounding with polycarbonate"
             },
             {
-              "title": "Rigidity and flow",
+              "title": "Precision parts",
               "desc": "Small instrument and equipment parts"
             }
           ],
@@ -632,9 +635,9 @@
         },
         "extrusion": {
           "title": "Extrusion ABS plastic",
-          "intro": "AO Plastic offers several grades of extrusion ABS plastic. In extrusion, the material is melted in an extruder, then pushed through a die, cooled and calibrated. Advantages of extrusion ABS include high impact properties, mechanical strength and rigidity.",
+          "intro": "JSC Plastic offers several grades of extrusion ABS plastic. In extrusion, the material is melted in an extruder, then pushed through a die, cooled and calibrated. Advantages of extrusion ABS include high impact properties, mechanical strength and rigidity.",
           "applicationsHeading": "Applications",
-          "details": "Grades in this section are most often used to produce sheets of various thickness with glossy or matte surfaces, and in some cases with embossing. Sheets are later vacuum- or pressure-formed into finished parts.",
+          "details": "Grades in this section are most often used to produce sheets of various thicknesses with glossy or matte surfaces, and in some cases with embossing. Sheets are later vacuum- or pressure-formed into finished parts.",
           "applications": [
             "interior and exterior automotive parts, including large body components;",
             "structures used in the advertising industry;",
@@ -647,10 +650,10 @@
       },
       "styrenePage": {
         "title": "Styrene",
-        "lead": "A monomer for polystyrene, copolymers and synthetic rubber — the foundation of many polymer materials in the AO Plastic product range.",
-        "imageAlt": "SDEB grade styrene — clear liquid, AO Plastic production",
-        "p1": "Styrene (vinylbenzene) is a liquid aromatic hydrocarbon and the key building block in the polymer chain: expandable and extrusion polystyrene, ABS plastics, styrene-butadiene and styrene-containing rubbers, latices and other downstream products.",
-        "p2": "High chemical purity of the monomer directly affects polymerization stability and the quality of the finished product — from sheets and profiles to machine parts and consumer goods. AO Plastic maintains strict control of specification parameters plus storage and shipping conditions.",
+        "lead": "A monomer for polystyrene, copolymers and synthetic rubber — the foundation of many polymer materials in the JSC Plastic product range.",
+        "imageAlt": "SDEB grade styrene — clear liquid, JSC Plastic production",
+        "p1": "Styrene (vinylbenzene) is a liquid aromatic hydrocarbon used as a monomer in the production of polystyrene, ABS plastics, styrene-butadiene and other styrene-containing rubbers, latex dispersions and other products.",
+        "p2": "High chemical purity of the monomer directly affects polymerization stability and the quality of the finished product — from sheets and profiles to machine parts and consumer goods. JSC Plastic maintains strict control of specification parameters plus storage and shipping conditions.",
         "gradeTitle": "STYRENE, grade SDEB",
         "gradeGost": "GOST 10003-90 \"Styrene\", Amendment No. 1",
         "gradeNote": "This grade meets premium-grade styrene requirements for appearance, main substance content and impurities — see the table below.",
@@ -686,7 +689,7 @@
         "stat4Label": "modifier grades in the range",
         "articleTitle": "Russian alternative",
         "articleLead": "From the article by PhD G. Barsamyan in Plastics magazine",
-        "articleQuote": "Besides acrylic modifiers and CPE, there is another product widely used as a PVC modifier — acrylonitrile-butadiene-styrene (ABS) copolymer, considered in the USA the most cost-effective impact modifier for PVC. AO Plastic (UzlOVaya) is the largest ABS producer in Russia. ABS testing as impact and processing modifier for PVC began in July 2016.",
+        "articleQuote": "Besides acrylic modifiers and CPE, there is another product widely used as a PVC modifier — acrylonitrile-butadiene-styrene (ABS) copolymer, considered in the USA the most cost-effective impact modifier for PVC. JSC Plastic (UzlOVaya) is the largest ABS producer in Russia. ABS testing as impact and processing modifier for PVC began in July 2016.",
         "articleResultsTitle": "PVC samples with ABS modifier were tested at NIC Wood-Polymer Composites LLC with the following results:",
         "articleResults": [
           "reduced brittleness and 9% increase in impact strength",
@@ -699,20 +702,20 @@
       },
       "korsPage": {
         "corsTitle": "CORS",
-        "corsLead": "Cubic residue of styrene rectification — a styrene production by-product used as fuel, solvent and a component of industrial materials.",
-        "corsAlt": "CORS — cubic residue of styrene rectification",
-        "corsP1": "CORS (cubic residue of styrene rectification) is a by-product of styrene production.",
+        "corsLead": "Styrene distillation bottoms — a styrene production by-product used as fuel, solvent and a component of industrial materials.",
+        "corsAlt": "CORS — styrene distillation bottoms",
+        "corsP1": "CORS (styrene distillation bottoms) is a by-product of styrene production.",
         "corsP2": "It is used as fuel in some modern heating systems and boilers. CORS is also a solvent and a component in various types of industrial production.",
         "corsP3": "The main application is film-forming materials. CORS residues are also used to improve mechanical strength and reduce static in rubber-based floor coatings, and for impregnating wood and fibreboard to improve moisture resistance, strength and durability.",
-        "corsP4": "CORS quality from AO Plastic meets TU 2415-038-05762341-2012, rev. 1, 2, 3.",
+        "corsP4": "CORS quality from JSC Plastic meets TU 2415-038-05762341-2012, rev. 1, 2, 3.",
         "corsNormTitle": "Specification limits — CORS",
         "bentolTitle": "Bentol",
         "bentolLead": "Benzene-toluene fraction — a processing product used as feedstock and solvent across several industries.",
         "bentolAlt": "Bentol — benzene-toluene fraction, 500 ml lab bottle",
         "bentolP1": "Bentol is a liquid hydrocarbon mixture (mainly benzene and toluene) with composition and physico-chemical properties regulated by specifications. It is used as a solvent and feedstock component in paints, enamels and binders, and in rubber, adhesives and other organic synthesis where controlled aromatic hydrocarbon content is required.",
         "bentolP2": "Depending on the customer's process chain, Bentol can be used to adjust viscosity of coatings, accelerate drying of film coatings, and in formulations for polymer and rubber product processing. Delivery complies with labelling, packaging and safe transport requirements for chemicals.",
-        "bentolP3": "AO Plastic ensures consistent batch quality: fraction parameters meet approved TU limits, confirmed by incoming raw material control and acceptance testing of finished product.",
-        "bentolP4": "Bentol from AO Plastic meets TU 2415-032-05762341-2009.",
+        "bentolP3": "JSC Plastic ensures consistent batch quality: fraction parameters meet approved TU limits, confirmed by incoming raw material control and acceptance testing of finished product.",
+        "bentolP4": "Bentol from JSC Plastic meets TU 2415-032-05762341-2009.",
         "bentolNormTitle": "Specification limits — Bentol",
         "contactUs": "Contact us",
         "normColNo": "No.",
@@ -756,7 +759,7 @@
       "goToSlide": "Go to slide"
     },
     "geography": {
-      "title": "Delivery Geography",
+      "title": "Where We Deliver",
       "subtitle": "We deliver across Russia and to partner countries: Belarus, Kazakhstan, Uzbekistan, Kyrgyzstan, China, Vietnam, Brazil and Argentina",
       "factory": "Uzlovaya — production site",
       "office": "Moscow — sales office"

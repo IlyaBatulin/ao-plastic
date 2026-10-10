@@ -12,10 +12,12 @@ import { usePathname } from "next/navigation"
 import { useCart } from "@/contexts/cart-context"
 import { Badge } from "@/components/ui/badge"
 import { SHOW_ACCOUNT_BUTTON } from "@/lib/site-features"
+import { useLanguage } from "@/contexts/language-context"
 
 const HOME_SCROLL_THRESHOLD = 50
 
 export function Header() {
+  const { lang } = useLanguage()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const pathname = usePathname()
@@ -74,7 +76,7 @@ export function Header() {
           <div className="relative h-16 w-16 flex-shrink-0 bg-transparent transition-transform duration-300 group-hover:scale-110 sm:h-16 sm:w-16 lg:h-20 lg:w-20" style={{ background: 'transparent' }}>
             <Image
               src="/images/logo123.png"
-              alt="АО Пластик"
+              alt={lang === "en" ? "JSC Plastic" : "АО Пластик"}
               fill
               sizes="80px"
               className={`object-contain ${isScrolled || !isHomePage ? "" : "brightness-0 invert"}`}
@@ -90,7 +92,7 @@ export function Header() {
         <div className="hidden lg:flex items-center gap-1.5 xl:gap-3 flex-shrink-0 min-w-fit">
           <LanguageSwitcher />
           {SHOW_ACCOUNT_BUTTON && (
-            <Link href="/account" aria-label="Личный кабинет" title="Личный кабинет" className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/70 bg-white text-foreground transition hover:border-primary/40 hover:text-primary">
+            <Link href="/account" aria-label={lang === "en" ? "Customer account" : "Личный кабинет"} title={lang === "en" ? "Customer account" : "Личный кабинет"} className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/70 bg-white text-foreground transition hover:border-primary/40 hover:text-primary">
               <UserRound className="h-4.5 w-4.5" />
             </Link>
           )}
@@ -100,7 +102,7 @@ export function Header() {
         {/* Mobile Controls */}
         <div className="flex lg:hidden items-center gap-2 sm:gap-3 flex-shrink-0 ml-auto">
           {SHOW_ACCOUNT_BUTTON && (
-            <Link href="/account" className="flex h-11 w-11 items-center justify-center rounded-2xl border border-border/60 bg-white text-foreground shadow-sm" aria-label="Личный кабинет">
+            <Link href="/account" className="flex h-11 w-11 items-center justify-center rounded-2xl border border-border/60 bg-white text-foreground shadow-sm" aria-label={lang === "en" ? "Customer account" : "Личный кабинет"}>
               <UserRound className="h-5 w-5" />
             </Link>
           )}
@@ -108,7 +110,7 @@ export function Header() {
           <Link
             href="/cart"
             className="relative flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-2xl border border-border/60 bg-white text-foreground transition-all duration-200 shadow-sm active:scale-95"
-            aria-label="Корзина"
+            aria-label={lang === "en" ? "Cart" : "Корзина"}
           >
             <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" />
             {itemCount > 0 && (
@@ -124,7 +126,7 @@ export function Header() {
             data-mobile-menu-trigger
             className="relative flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-2xl border border-border/60 bg-white/10 backdrop-blur-sm text-foreground transition-all duration-200 shadow-sm active:scale-95 hover:bg-white/20 touch-manipulation"
             onClick={() => setIsMobileMenuOpen((open) => !open)}
-            aria-label={isMobileMenuOpen ? "Закрыть каталог" : "Открыть каталог"}
+            aria-label={lang === "en" ? (isMobileMenuOpen ? "Close catalogue" : "Open catalogue") : (isMobileMenuOpen ? "Закрыть каталог" : "Открыть каталог")}
             aria-pressed={isMobileMenuOpen}
             aria-expanded={isMobileMenuOpen}
           >

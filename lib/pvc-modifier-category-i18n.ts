@@ -112,7 +112,7 @@ export const PVC_MODIFIER_SPEC_ROWS_EN: PvcModifierSpecRow[] = [
     method: "Clause 7.4 TU and GOST 11645-73",
   },
   {
-    name: "Izod impact strength, kg·cm/cm² (kJ/m²), min.",
+    name: "Izod impact strength, kgf·cm/cm² (kJ/m²), min.",
     grade20: "24.5 (24.0)",
     grade28: "32.6 (32.0)",
     grade15: "13.0 (12.8)",
@@ -132,7 +132,7 @@ export const PVC_MODIFIER_SPEC_ROWS_EN: PvcModifierSpecRow[] = [
     grade15: "0.3",
     method: "Clause 7.7 TU",
   },
-  { name: "Reference indicators:", grade20: "", grade28: "", grade15: "", method: "", isSectionHeader: true },
+  { name: "Reference properties:", grade20: "", grade28: "", grade15: "", method: "", isSectionHeader: true },
   {
     name: "Density, kg/m³",
     grade20: "1040",

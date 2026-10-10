@@ -6,7 +6,7 @@ const HOUSEHOLD_PRODUCT_EN: Record<string, { name: string; description: string }
   "vedro-base-95l": {
     name: "Basin 10 L",
     description:
-      "10 L plastic basin — practical volume, strong and load-resistant. Handy for laundry, cleaning, kitchen or garden.",
+      "10 L plastic basin with a practical capacity and a sturdy, load-resistant design. Handy for laundry, cleaning, kitchen or garden.",
   },
   "vedro-25l": {
     name: "Bucket 2.5 L",
@@ -129,7 +129,7 @@ const HOUSEHOLD_PRODUCT_EN: Record<string, { name: string; description: string }
       "Practical plastic soap dish for bathroom or sink.",
   },
   "voronka-120mm": {
-    name: "Funnel d=120 mm",
+    name: "Funnel, Ø120 mm",
     description:
       "Food-contact plastic funnel; fits many containers and reduces spills. Bright colours.",
   },
@@ -176,7 +176,7 @@ const HOUSEHOLD_PRODUCT_EN: Record<string, { name: string; description: string }
   "canister-21-5l": {
     name: "Polymer Canisters with Caps",
     description:
-      "Polymer canisters with caps, capacity 21.5 dm3, for packaging, transportation and storage of food, chemical and other products.",
+      "Polymer canisters with caps, capacity 21.5 dm³, for packaging, transportation and storage of food, chemical and other products.",
   },
   "box-polymer": {
     name: "Polymer Crate (black, blue)",

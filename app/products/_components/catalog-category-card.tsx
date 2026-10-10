@@ -77,7 +77,7 @@ export function CatalogCategoryCard({
               <Package className="h-5 w-5 text-primary sm:h-6 sm:w-6" />
             </div>
             <div className="min-w-0 flex-1">
-              <h3 className="mb-2 text-xl font-bold leading-snug text-balance hyphens-auto break-words transition-colors group-hover:text-primary sm:text-2xl">
+              <h3 className="mb-2 text-xl font-bold leading-snug text-balance hyphens-auto [overflow-wrap:anywhere] transition-colors group-hover:text-primary sm:text-2xl">
                 {categoryName}
               </h3>
               {categoryDescription ? (

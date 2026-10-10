@@ -119,9 +119,9 @@ export function CategoryHero({
           <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
           <span>{backLabel}</span>
         </Link>
-        <div className="flex-1 flex items-center">
-          <div className="max-w-4xl">
-            <h1 className={cn("text-h1 mb-6 break-words", useVibrantImage ? "text-white drop-shadow-lg" : "text-primary")}>
+        <div className="min-w-0 flex-1 flex items-center">
+          <div className="min-w-0 max-w-4xl">
+            <h1 className={cn("mb-6 text-[clamp(2rem,7vw,3.5rem)] font-bold leading-[1.12] [overflow-wrap:anywhere] lg:text-6xl", useVibrantImage ? "text-white drop-shadow-lg" : "text-primary")}>
               {title}
             </h1>
             {description && (

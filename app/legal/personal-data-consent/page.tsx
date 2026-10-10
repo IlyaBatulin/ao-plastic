@@ -1,10 +1,11 @@
+import { localizePageMetadata } from "@/lib/seo/localized-metadata"
 import type { Metadata } from "next"
 import { LegalDocumentPage } from "@/components/legal/legal-document-page"
 import { LEGAL_DOCUMENT_CONTENT } from "@/lib/legal-content/documents"
 import { LegalRelatedLinks } from "@/components/legal/legal-related-links"
 import { pageOpenGraph } from "@/lib/seo/page-metadata"
 
-export const metadata: Metadata = {
+const originalMetadata: Metadata = {
   title: "Согласие на обработку персональных данных",
   description:
     "Согласие на обработку персональных данных при использовании сайта и форм АО «Пластик».",
@@ -15,6 +16,10 @@ export const metadata: Metadata = {
       "Согласие на обработку персональных данных при использовании сайта и форм АО «Пластик».",
     path: "/legal/personal-data-consent",
   }),
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  return localizePageMetadata(originalMetadata, "/legal/personal-data-consent")
 }
 
 export default function PersonalDataConsentPage() {

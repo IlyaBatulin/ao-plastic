@@ -93,7 +93,7 @@ export function CatalogShowcase({
       : "Выберите направление, чтобы посмотреть доступную продукцию и решения."
 
   return (
-    <section className="relative bg-[#f4f6f9] lg:grid lg:min-h-[calc(100svh-7rem)] lg:grid-cols-2">
+    <section lang={locale} className="relative bg-[#f4f6f9] lg:grid lg:min-h-[calc(100svh-7rem)] lg:grid-cols-2">
       <div className="relative min-h-[70svh] overflow-hidden bg-[#07142f] lg:sticky lg:top-28 lg:h-[calc(100svh-7rem)] lg:min-h-0">
         {imageSrc && (
           <img src={imageSrc} alt="" aria-hidden className="absolute inset-0 h-full w-full object-cover" />
@@ -125,13 +125,13 @@ export function CatalogShowcase({
             {backLabel}
           </Link>
 
-          <div className="max-w-2xl">
+          <div className="min-w-0 max-w-2xl">
             {eyebrow && (
-              <p className="mb-5 text-xs font-semibold uppercase tracking-[0.18em] text-white/65">
+              <p className="mb-5 text-xs font-semibold uppercase tracking-[0.18em] text-white/65 [overflow-wrap:anywhere]">
                 {eyebrow}
               </p>
             )}
-            <h1 className="text-[clamp(3.1rem,6vw,6.8rem)] font-semibold leading-[0.92] tracking-[-0.045em] text-white">
+            <h1 className="max-w-full text-[clamp(2rem,7vw,3.5rem)] font-semibold leading-[1.08] tracking-[-0.035em] text-white [overflow-wrap:anywhere] lg:text-[clamp(2.25rem,4.4vw,5.5rem)]">
               {title}
             </h1>
             {description && (
@@ -186,8 +186,8 @@ export function CatalogShowcase({
                     className="group grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-4 text-left transition-all duration-300 hover:border-primary/35 hover:shadow-[0_20px_55px_rgba(15,42,89,0.10)] sm:px-6 lg:py-3.5 xl:py-4"
                   >
                     <span className="text-sm font-bold tabular-nums text-primary/55">0{index + 1}</span>
-                    <span>
-                      <span className="block text-lg font-semibold leading-tight tracking-[-0.02em] text-slate-950 md:text-xl xl:text-2xl">
+                    <span className="min-w-0 [overflow-wrap:anywhere]">
+                      <span className="block text-lg font-semibold leading-snug tracking-[-0.02em] text-slate-950 md:text-xl xl:text-2xl">
                         {groupName}
                       </span>
                       {groupDescription && (
@@ -218,8 +218,8 @@ export function CatalogShowcase({
                     aria-expanded={isOpen}
                   >
                     <span className="text-sm font-bold tabular-nums text-primary/55">0{index + 1}</span>
-                    <span>
-                      <span className="block text-lg font-semibold leading-tight tracking-[-0.02em] text-slate-950 md:text-xl xl:text-2xl">
+                    <span className="min-w-0 [overflow-wrap:anywhere]">
+                      <span className="block text-lg font-semibold leading-snug tracking-[-0.02em] text-slate-950 md:text-xl xl:text-2xl">
                         {groupName}
                       </span>
                     </span>

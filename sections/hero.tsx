@@ -3,12 +3,13 @@
 import type React from "react"
 
 import { Button } from "@/components/ui/button"
-import { ArrowRight, ChevronDown } from "lucide-react"
+import { ArrowRight, ChevronDown, Pause, Play } from "lucide-react"
 import Link from "next/link"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useLanguage } from "@/contexts/language-context"
 import { HeroNavigation } from "@/components/hero-navigation"
-import { HERO_POSTER_SRC, HERO_VIDEO_READY_EVENT, HERO_VIDEO_SRC } from "@/lib/hero-media"
+import { HERO_VIDEO_READY_EVENT } from "@/lib/hero-media"
+import { HeroBackground } from "@/components/hero-background"
 import { getLenisInstance } from "@/lib/lenis-instance"
 import { HeroLogoIntro } from "@/components/hero-logo-intro"
 
@@ -17,27 +18,22 @@ import { HeroLogoIntro } from "@/components/hero-logo-intro"
 const SLIDES = [
   {
     key: "factory",
-    video: HERO_VIDEO_SRC,
     href: null as string | null,
   },
   {
     key: "abs",
-    video: "/videos/abs-category.mp4",
     href: "/products/abs",
   },
   {
     key: "polystyrene",
-    video: "/videos/polystyrene-category.mp4",
     href: "/products/polystyrene",
   },
   {
     key: "dispersion",
-    video: "/videos/dispersion-home.mp4",
     href: "/products/dispersion",
   },
   {
     key: "hoztovary",
-    video: "/videos/xoztov.mp4",
     href: "/products/hoztovary",
   },
 ]
@@ -45,83 +41,57 @@ const SLIDES = [
 const SLIDE_DURATION_MS = 8000
 
 export function Hero() {
-  const { t } = useLanguage()
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
+  const { t, lang } = useLanguage()
+  const sectionRef = useRef<HTMLElement>(null)
   const [activeIndex, setActiveIndex] = useState(0)
   const [introComplete, setIntroComplete] = useState(false)
   const completeIntro = useCallback(() => setIntroComplete(true), [])
-  const [isFirstVideoReady, setIsFirstVideoReady] = useState(false)
-  const [firstVideoFailed, setFirstVideoFailed] = useState(false)
-  // Видео монтируем лениво: активное и следующее (чтобы не качать всё сразу)
-  const [loadedSet, setLoadedSet] = useState<Set<number>>(() => new Set([0, 1]))
+  const [mediaStatus, setMediaStatus] = useState({ index: -1, ready: false })
+  const [visible, setVisible] = useState(true)
+  const [pageVisible, setPageVisible] = useState(true)
+  const [userPaused, setUserPaused] = useState(false)
+  const paused = !visible || !pageVisible || userPaused
+  const advance = introComplete && !paused && mediaStatus.index === activeIndex && mediaStatus.ready
   // Ключ для перезапуска CSS-анимации прогресса при смене слайда
   const [progressKey, setProgressKey] = useState(0)
 
-  const notifySplashReady = () => {
-    window.dispatchEvent(new Event(HERO_VIDEO_READY_EVENT))
-  }
+  const handleMediaStatus = useCallback((index: number, ready: boolean) => {
+    setMediaStatus((previous) => previous.index === index && previous.ready === ready ? previous : { index, ready })
+    if (index === 0 && ready) window.dispatchEvent(new Event(HERO_VIDEO_READY_EVENT))
+  }, [])
 
-  const handleFirstVideoReady = () => {
-    setIsFirstVideoReady(true)
-    notifySplashReady()
-  }
-
-  const startFirstVideo = (video: HTMLVideoElement) => {
-    video.muted = true
-    video.playsInline = true
-    handleFirstVideoReady()
-    void video.play().catch(() => {
-      // Автовоспроизведение повторно запускается общим эффектом после готовности медиа.
-    })
-  }
-
-  const handleFirstVideoError = () => {
-    setFirstVideoFailed(true)
-    console.error("Hero video failed to load:", HERO_VIDEO_SRC)
-    notifySplashReady()
-  }
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { threshold: 0.1 })
+    if (sectionRef.current) observer.observe(sectionRef.current)
+    const updateVisibility = () => setPageVisible(!document.hidden)
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)")
+    const updatePreference = () => setUserPaused(preference.matches)
+    updateVisibility()
+    updatePreference()
+    preference.addEventListener("change", updatePreference)
+    document.addEventListener("visibilitychange", updateVisibility)
+    return () => {
+      observer.disconnect()
+      preference.removeEventListener("change", updatePreference)
+      document.removeEventListener("visibilitychange", updateVisibility)
+    }
+  }, [])
 
   const goToSlide = useCallback((next: number) => {
     setIntroComplete(true)
     const target = ((next % SLIDES.length) + SLIDES.length) % SLIDES.length
     setActiveIndex(target)
     setProgressKey((k) => k + 1)
-    // Догружаем целевое и следующее за ним видео
-    setLoadedSet((prev) => {
-      const copy = new Set(prev)
-      copy.add(target)
-      copy.add((target + 1) % SLIDES.length)
-      return copy
-    })
   }, [])
 
   // Автосмена слайдов
   useEffect(() => {
-    if (!introComplete) return
+    if (!advance) return
     const timer = window.setTimeout(() => {
       goToSlide(activeIndex + 1)
     }, SLIDE_DURATION_MS)
     return () => window.clearTimeout(timer)
-  }, [activeIndex, goToSlide, progressKey, introComplete])
-
-  // Управление воспроизведением: активное видео играет, остальные на паузе
-  useEffect(() => {
-    videoRefs.current.forEach((video, idx) => {
-      if (!video) return
-      if (idx === activeIndex) {
-        video.muted = true
-        video.playsInline = true
-        void video.play().catch(() => {})
-      } else {
-        video.pause()
-        if (idx !== activeIndex) {
-          try {
-            video.currentTime = 0
-          } catch {}
-        }
-      }
-    })
-  }, [activeIndex, loadedSet])
+  }, [activeIndex, goToSlide, progressKey, advance])
 
   const handleScrollToStats = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -137,55 +107,13 @@ export function Hero() {
   }
 
   return (
-    <section className="relative flex h-[100svh] min-h-[100svh] items-center justify-center overflow-hidden md:h-auto md:min-h-screen">
+    <section ref={sectionRef} className="home-hero relative flex min-h-[100svh] items-center justify-center overflow-hidden">
       {/* Navigation Overlay */}
       <HeroNavigation logoVisible={introComplete} />
-      {!introComplete && <HeroLogoIntro mediaReady={isFirstVideoReady || firstVideoFailed} onComplete={completeIntro} />}
+      {!introComplete && <HeroLogoIntro mediaReady={mediaStatus.ready || userPaused} onComplete={completeIntro} />}
 
       {/* Background videos with crossfade */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src={HERO_POSTER_SRC}
-          alt=""
-          aria-hidden
-          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-            isFirstVideoReady ? "opacity-0" : "opacity-100"
-          }`}
-          fetchPriority="high"
-        />
-        {SLIDES.map((slide, idx) =>
-          loadedSet.has(idx) ? (
-            <video
-              key={slide.key}
-              ref={(el) => {
-                videoRefs.current[idx] = el
-                if (idx === 0 && el && el.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-                  startFirstVideo(el)
-                }
-              }}
-              src={slide.video}
-              className={`hero-bg-video absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-                idx === activeIndex && (idx !== 0 || isFirstVideoReady) ? "opacity-100" : "opacity-0"
-              }`}
-              autoPlay={idx === 0}
-              loop
-              muted
-              playsInline
-              preload={idx === activeIndex || idx === (activeIndex + 1) % SLIDES.length ? "auto" : "metadata"}
-              controls={false}
-              controlsList="nodownload noplaybackrate noremoteplayback"
-              disablePictureInPicture
-              disableRemotePlayback
-              onLoadedData={idx === 0 ? (event) => startFirstVideo(event.currentTarget) : undefined}
-              onCanPlay={idx === 0 ? (event) => startFirstVideo(event.currentTarget) : undefined}
-              onPlaying={idx === 0 ? handleFirstVideoReady : undefined}
-              onError={idx === 0 ? handleFirstVideoError : undefined}
-              style={{ pointerEvents: "none" }}
-            />
-          ) : null
-        )}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/25 to-black/50" />
-      </div>
+      <HeroBackground activeIndex={activeIndex} paused={paused} onStatus={handleMediaStatus} />
 
       {/* Content — crossfade per slide */}
       <div
@@ -199,6 +127,7 @@ export function Hero() {
               idx === activeIndex ? "opacity-100" : "pointer-events-none opacity-0"
             }`}
             aria-hidden={idx !== activeIndex}
+            inert={idx !== activeIndex}
           >
             {idx === 0 ? (
               <h1 className="text-display text-white mb-4 sm:mb-6 drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
@@ -258,7 +187,7 @@ export function Hero() {
       {/* Slider controls — как у LG Chem: номера с прогрессом + пауза */}
       <div className="absolute inset-x-0 bottom-6 z-10 sm:bottom-9">
         <div className="container mx-auto flex items-end justify-center gap-3 px-4 sm:gap-5 lg:px-8">
-          <div className="flex items-end gap-3 sm:gap-5" role="tablist" aria-label="Слайды">
+          <div className="flex items-end gap-3 sm:gap-5" role="tablist" aria-label={lang === "en" ? "Slides" : "Слайды"}>
             {SLIDES.map((slide, idx) => {
               const isActive = idx === activeIndex
               return (
@@ -280,7 +209,7 @@ export function Hero() {
                       {String(idx + 1).padStart(2, "0")}
                     </span>
                     <span
-                      className={`hidden whitespace-nowrap text-xs font-medium text-white drop-shadow transition-opacity sm:text-sm lg:inline ${
+                      className={`hidden whitespace-nowrap text-xs font-medium text-white drop-shadow transition-opacity sm:text-sm 2xl:inline ${
                         isActive ? "lg:opacity-100" : "lg:opacity-0 lg:group-hover:opacity-70"
                       }`}
                     >
@@ -298,7 +227,7 @@ export function Hero() {
                         className="hero-slide-progress absolute inset-y-0 left-0 block w-full rounded-full bg-white"
                         style={{
                           animationDuration: `${SLIDE_DURATION_MS}ms`,
-                          animationPlayState: introComplete ? "running" : "paused",
+                          animationPlayState: advance ? "running" : "paused",
                         }}
                       />
                     )}
@@ -307,7 +236,11 @@ export function Hero() {
               )
             })}
           </div>
-
+          <button type="button" onClick={() => setUserPaused((value) => !value)}
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/40 bg-black/20 text-white hover:bg-black/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+            aria-label={userPaused ? (lang === "en" ? "Play slideshow" : "Продолжить показ") : (lang === "en" ? "Pause slideshow" : "Приостановить показ")}>
+            {userPaused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
+          </button>
         </div>
       </div>
 
@@ -315,7 +248,7 @@ export function Hero() {
       <button
         onClick={handleScrollToStats}
         className="absolute bottom-20 left-1/2 z-10 hidden -translate-x-1/2 animate-bounce cursor-pointer sm:block"
-        aria-label="Scroll down"
+        aria-label={lang === "en" ? "Scroll down" : "Прокрутить вниз"}
       >
         <ChevronDown className="w-8 h-8 text-white drop-shadow-lg" />
       </button>

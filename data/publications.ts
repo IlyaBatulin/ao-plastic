@@ -21,7 +21,7 @@ export type LocalizedPublication = {
   links: { label: string; url: string }[]
 }
 
-function localizeLinkLabel(label: string, lang: Language): string {
+function localizeLinkLabel(label: string, lang: Language, url: string): string {
   if (lang === "ru") return label
   const replacements: [string, string][] = [
     ["Новость на портале ", "News on "],
@@ -48,6 +48,12 @@ function localizeLinkLabel(label: string, lang: Language): string {
       break
     }
   }
+  // Keep third-party source names and article text unchanged. Do not display
+  // half-translated captions assembled from English prefixes and Russian tails.
+  if (/[а-яё]/i.test(result)) {
+    try { return `Read source — ${new URL(url).hostname.replace(/^www\./, "")} (Russian)` }
+    catch { return "Read original source (Russian)" }
+  }
   return result
 }
 
@@ -62,7 +68,7 @@ export function getPublications(lang: Language): LocalizedPublication[] {
         url: link.url,
         label:
           lang === "en"
-            ? (link.labelEn ?? en?.linkLabels?.[linkIndex] ?? localizeLinkLabel(link.label, "en"))
+            ? (link.labelEn ?? en?.linkLabels?.[linkIndex] ?? localizeLinkLabel(link.label, "en", link.url))
             : link.label,
       })),
     }

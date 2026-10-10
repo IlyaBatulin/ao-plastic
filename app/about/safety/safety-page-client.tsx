@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { useLanguage } from "@/contexts/language-context"
+import { documentCaption } from "@/lib/document-captions-en"
 import { Footer } from "@/components/footer"
 import { Shield, Leaf, HardHat, FileText, Download, ChevronDown } from "lucide-react"
 import { useLocalizedContent } from "@/lib/use-localized-content"
@@ -20,6 +22,7 @@ function formatSize(bytes?: number): string {
 }
 
 function DocumentRow({ doc, download }: { doc: SafetyDocument; download: string }) {
+  const { lang } = useLanguage()
   const meta = [doc.fileType, formatSize(doc.size)].filter(Boolean).join(" • ")
   return (
     <a
@@ -34,7 +37,7 @@ function DocumentRow({ doc, download }: { doc: SafetyDocument; download: string 
       </div>
       <div className="min-w-0 flex-1">
         <p className="text-sm font-medium leading-snug text-foreground break-words sm:text-base">
-          {doc.title}
+          {documentCaption(doc.title, lang)}
         </p>
         {meta ? <p className="mt-0.5 text-xs text-muted-foreground">{meta}</p> : null}
       </div>
@@ -47,13 +50,15 @@ function DocumentRow({ doc, download }: { doc: SafetyDocument; download: string 
 }
 
 export function SafetyPageClient() {
+  const { lang } = useLanguage()
   const page = useLocalizedContent(safetyPageContent)
   const [openKey, setOpenKey] = useState<string | null>("1")
 
   const toggle = (key: string) => setOpenKey((cur) => (cur === key ? null : key))
 
   return (
-    <>      <div className="min-h-screen bg-transparent">
+    <>
+      <div className="min-h-screen bg-transparent">
         <section className="pt-32 pb-24">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="mx-auto max-w-5xl">
@@ -142,7 +147,7 @@ export function SafetyPageClient() {
                             {sIdx + 1}
                           </span>
                           <span className="min-w-0 flex-1 break-words text-sm font-semibold text-foreground sm:text-base">
-                            {section.title}
+                            {documentCaption(section.title, lang)}
                           </span>
                           <span className="flex-shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
                             {section.docs.length}
@@ -156,7 +161,7 @@ export function SafetyPageClient() {
                         {isOpen && (
                           <div className="space-y-2.5 border-t border-border px-3 py-4 sm:px-4">
                             {section.intro ? (
-                              <p className="mb-1 px-1 text-sm italic text-muted-foreground">{section.intro}</p>
+                              <p className="mb-1 px-1 text-sm italic text-muted-foreground">{documentCaption(section.intro, lang)}</p>
                             ) : null}
                             {section.docs.map((doc, dIdx) => (
                               <DocumentRow key={dIdx} doc={doc} download={page.download} />

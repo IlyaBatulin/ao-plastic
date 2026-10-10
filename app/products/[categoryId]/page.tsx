@@ -1,4 +1,7 @@
 import type { Metadata } from "next"
+import { getServerLanguage } from "@/lib/server-language"
+import { getCategoryName } from "@/lib/catalog-translations"
+import enTranslations from "@/public/locales/en.json"
 import productsData from "@/data/products.json"
 import { notFound } from "next/navigation"
 import { CategoryPageClient } from "@/app/products/_components/category-page-client"
@@ -47,6 +50,11 @@ export async function generateMetadata({
 
   const fromJsonImage = fromJson?.image as string | undefined
   const ogImage = dbImage || fromJsonImage
+  if (await getServerLanguage() === "en") {
+    title = getCategoryName(categoryId, "en")
+    const descriptions = enTranslations.homePage.catalog.categoryDescriptions as Record<string, string>
+    description = descriptions[categoryId] || `Explore ${title} from JSC Plastic. Product grades, applications and specifications.`
+  }
 
   return {
     title,

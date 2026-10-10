@@ -115,7 +115,7 @@ const content = {
     plant: "Завод",
   },
   en: {
-    heroBadge: "AO Plastic Group Company",
+    heroBadge: "JSC Plastic Group Company",
     heroTitle: "Finndisp",
     heroSubtitle: "Manufacturer of acrylic dispersions",
     heroText:
@@ -124,9 +124,9 @@ const content = {
     logoAlt: "Finndisp logo",
     contactButton: "Contact us",
     groupBadge: "Group structure",
-    groupTitle: "In January 2024, Finndisp joined AO Plastic",
+    groupTitle: "In January 2024, Finndisp joined JSC Plastic",
     groupParagraphs: [
-      "In January 2024, Finndisp was acquired by Russian investors and became part of AO Plastic (Uzlоvaya), a Russian chemical company.",
+      "In January 2024, Finndisp was acquired by Russian investors and became part of JSC Plastic (Uzlovaya), a Russian chemical company.",
       "The plant has operated in Ramenskoye since 2008. Production capacity is up to 20,000 tonnes of polymer dispersions per year for the paint and coatings industry.",
       "Safety, quality, environmental responsibility, and automation are the core principles of Finndisp.",
     ],
@@ -140,20 +140,20 @@ const content = {
       },
       {
         title: "R&D center",
-        description: "Three laboratories: QC, dispersion synthesis, and application laboratory.",
+        description: "Three laboratories for quality control, dispersion synthesis and application testing.",
       },
       {
-        title: "Raw material base",
+        title: "Raw-material supply",
         description: "In-house styrene production and raw materials from verified suppliers.",
       },
       {
         title: "Capacity expansion",
         description:
-          "Plans include increasing capacity by 60,000 tonnes per year at the AO Plastic site in Uzlоvaya.",
+          "Plans include increasing capacity by 60,000 tonnes per year at the JSC Plastic site in Uzlovaya.",
       },
     ],
     segmentsBadge: "Product range",
-    segmentsTitle: "Dispersion segments",
+    segmentsTitle: "Product applications",
     segments: [
       {
         title: "Paints & building materials",
@@ -192,7 +192,7 @@ const content = {
       { year: "2012", text: "The plant was fully adapted to Dow standards." },
       {
         year: "2024",
-        text: "In January, Finndisp was acquired by Russian investors and joined AO Plastic (Uzlоvaya).",
+        text: "In January, Finndisp was acquired by Russian investors and joined JSC Plastic (Uzlovaya).",
       },
     ],
     contactsBadge: "Contacts",
@@ -218,7 +218,8 @@ export function FinndispPageClient() {
   const page = content[lang === "en" ? "en" : "ru"]
 
   return (
-    <>      <div className="min-h-screen bg-transparent">
+    <>
+      <div className="min-h-screen bg-transparent">
         <section className="relative overflow-hidden pt-32 pb-16">
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#0046A0]/8 via-transparent to-transparent" />
 
@@ -364,7 +365,7 @@ export function FinndispPageClient() {
                 </li>
                 <li className="flex items-start gap-3">
                   <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                  <span>{contacts.salesAddress}</span>
+                  <span>{lang === "en" ? "Office 2, Building 1, 7–9 3rd Kadashevsky Lane, Moscow, 115035, Russia" : contacts.salesAddress}</span>
                 </li>
               </ul>
             </div>
@@ -380,7 +381,7 @@ export function FinndispPageClient() {
                 </li>
                 <li className="flex items-start gap-3">
                   <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                  <span>{contacts.plantAddress}</span>
+                  <span>{lang === "en" ? "69A Mikhalevicha Street, Ramenskoye, Moscow Region, 140108, Russia" : contacts.plantAddress}</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Mail className="mt-0.5 h-4 w-4 shrink-0 text-primary" />

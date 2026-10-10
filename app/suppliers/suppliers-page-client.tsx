@@ -207,6 +207,7 @@ export function SuppliersPageClient() {
               <p className="mt-3 text-muted-foreground leading-relaxed">
                 {t("suppliersPage.etpTenders.description")}
               </p>
+              {lang === "en" && <p className="mt-2 text-sm text-muted-foreground">Tender notices and deadlines are provided in Russian by ETP GPB.</p>}
             </div>
             <a
               href={etpFilterUrl}

@@ -1,3 +1,4 @@
+import { localizePageMetadata } from "@/lib/seo/localized-metadata"
 import type { Metadata } from "next"
 import { Hero } from "@/sections/hero"
 import { Stats } from "@/sections/stats"
@@ -12,7 +13,7 @@ import { pageOpenGraph } from "@/lib/seo/page-metadata"
 
 export const revalidate = 300
 
-export const metadata: Metadata = {
+const originalMetadata: Metadata = {
   title: {
     absolute:
       "АО «Пластик» — производство АБС-пластиков, полистирола и полимеров | Узловая",
@@ -29,6 +30,10 @@ export const metadata: Metadata = {
       "Официальный сайт производителя: АБС-пластики (литьё и экструзия), вспенивающийся и экструзионный полистирол, стирол, детали машиностроения, товары народного потребления. Каталог, новости, контакты завода в Узловой.",
     path: "/",
   }),
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  return localizePageMetadata(originalMetadata, "/")
 }
 
 export default async function Home() {

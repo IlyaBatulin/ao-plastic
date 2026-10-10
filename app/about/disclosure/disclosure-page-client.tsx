@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { useLanguage } from "@/contexts/language-context"
+import { documentCaption } from "@/lib/document-captions-en"
 import { Footer } from "@/components/footer"
 import { FileText, Download, ChevronDown, FolderOpen } from "lucide-react"
 import { useLocalizedContent } from "@/lib/use-localized-content"
@@ -18,6 +20,7 @@ function formatSize(bytes?: number): string {
 }
 
 function DocumentRow({ doc, download }: { doc: DisclosureDocument; download: string }) {
+  const { lang } = useLanguage()
   const meta = [doc.fileType, formatSize(doc.size)].filter(Boolean).join(" • ")
   return (
     <a
@@ -32,7 +35,7 @@ function DocumentRow({ doc, download }: { doc: DisclosureDocument; download: str
       </div>
       <div className="min-w-0 flex-1">
         <p className="text-sm font-medium leading-snug text-foreground break-words sm:text-base">
-          {doc.title}
+          {documentCaption(doc.title, lang)}
         </p>
         {meta ? <p className="mt-0.5 text-xs text-muted-foreground">{meta}</p> : null}
       </div>
@@ -45,13 +48,15 @@ function DocumentRow({ doc, download }: { doc: DisclosureDocument; download: str
 }
 
 export function DisclosurePageClient() {
+  const { lang } = useLanguage()
   const t = useLocalizedContent(disclosureHero)
   const [openKey, setOpenKey] = useState<string | null>(null)
 
   const toggle = (key: string) => setOpenKey((cur) => (cur === key ? null : key))
 
   return (
-    <>      <div className="min-h-screen bg-transparent">
+    <>
+      <div className="min-h-screen bg-transparent">
         <section className="pt-32 pb-24">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="mx-auto max-w-5xl">
@@ -77,7 +82,7 @@ export function DisclosurePageClient() {
                       <span className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-primary text-sm text-primary-foreground">
                         {sIdx + 1}
                       </span>
-                      <span className="break-words">{section.title}</span>
+                      <span className="break-words">{documentCaption(section.title, lang)}</span>
                     </h2>
 
                     {/* Документы верхнего уровня */}
@@ -108,7 +113,7 @@ export function DisclosurePageClient() {
                               >
                                 <FolderOpen className="h-5 w-5 flex-shrink-0 text-primary" />
                                 <span className="min-w-0 flex-1 break-words text-sm font-semibold text-foreground sm:text-base">
-                                  {sub.title}
+                                  {documentCaption(sub.title, lang)}
                                 </span>
                                 <span className="flex-shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
                                   {sub.docs.length}

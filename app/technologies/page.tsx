@@ -1,9 +1,12 @@
+import { getServerLanguage } from "@/lib/server-language"
+import { translatePublicText } from "@/lib/public-page-copy"
+import { localizePageMetadata } from "@/lib/seo/localized-metadata"
 import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
 import { Beaker, Cog, Leaf, Shield } from "lucide-react"
 import { pageOpenGraph } from "@/lib/seo/page-metadata"
 
-export const metadata: Metadata = {
+const originalMetadata: Metadata = {
   title: "Технологии производства",
   description:
     "Технологии АО «Пластик»: полимеризация, экструзия, контроль качества по ГОСТ и ISO, экологичные решения. Оборудование и этапы выпуска АБС, полистирола и изделий.",
@@ -14,6 +17,10 @@ export const metadata: Metadata = {
       "Технологии АО «Пластик»: полимеризация, экструзия, контроль качества по ГОСТ и ISO, экологичные решения. Оборудование и этапы выпуска АБС, полистирола и изделий.",
     path: "/technologies",
   }),
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  return localizePageMetadata(originalMetadata, "/technologies")
 }
 
 const technologies = [
@@ -80,30 +87,28 @@ const timeline = [
   },
 ]
 
-export default function TechnologiesPage() {
+export default async function TechnologiesPage() {
+  const lang = await getServerLanguage()
+  const tr = (text: string) => translatePublicText(text, lang)
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative pt-32 pb-24 overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img src="/images/factory-1.jpg" alt="Технологии" className="w-full h-full object-cover" loading="eager" fetchPriority="high" />
+          <img src="/images/factory-1.jpg" alt={tr("Технологии")} className="w-full h-full object-cover" loading="eager" fetchPriority="high" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/50" />
         </div>
 
         <div className="relative z-10 container mx-auto px-4 lg:px-8">
-          <h1 className="text-5xl lg:text-6xl font-bold text-white mb-6 text-balance">Технологии производства</h1>
-          <p className="text-xl text-white/90 max-w-3xl leading-relaxed">
-            Современное оборудование и передовые технологии для производства высококачественных пластиков
-          </p>
+          <h1 className="text-5xl lg:text-6xl font-bold text-white mb-6 text-balance">{tr("Технологии производства")}</h1>
+          <p className="text-xl text-white/90 max-w-3xl leading-relaxed">{tr("Современное оборудование и передовые технологии для производства высококачественных пластиков")}</p>
         </div>
       </section>
 
       {/* Technologies Grid */}
       <section className="py-24">
         <div className="container mx-auto px-4 lg:px-8">
-          <h2 className="text-3xl font-bold text-foreground mb-10 text-balance">
-            Ключевые направления производства
-          </h2>
+          <h2 className="text-3xl font-bold text-foreground mb-10 text-balance">{tr("Ключевые направления производства")}</h2>
           <div className="grid md:grid-cols-2 gap-8">
             {technologies.map((tech, index) => (
               <div
@@ -113,13 +118,13 @@ export default function TechnologiesPage() {
                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 mb-6 group-hover:bg-primary/20 transition-colors">
                   <tech.icon className="w-8 h-8 text-primary" />
                 </div>
-                <h3 className="text-2xl font-bold text-foreground mb-4">{tech.title}</h3>
-                <p className="text-muted-foreground mb-6 leading-relaxed">{tech.description}</p>
+                <h3 className="text-2xl font-bold text-foreground mb-4">{tr(tech.title)}</h3>
+                <p className="text-muted-foreground mb-6 leading-relaxed">{tr(tech.description)}</p>
                 <ul className="space-y-2">
                   {tech.features.map((feature, idx) => (
                     <li key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
                       <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                      {feature}
+                      {tr(feature)}
                     </li>
                   ))}
                 </ul>
@@ -132,9 +137,7 @@ export default function TechnologiesPage() {
       {/* Timeline */}
       <section className="py-24 bg-secondary">
         <div className="container mx-auto px-4 lg:px-8">
-          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-16 text-center">
-            История технологического развития
-          </h2>
+          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-16 text-center">{tr("История технологического развития")}</h2>
 
           <div className="max-w-4xl mx-auto">
             <div className="space-y-8">
@@ -147,8 +150,8 @@ export default function TechnologiesPage() {
                     {index < timeline.length - 1 && <div className="w-0.5 flex-1 bg-border mt-4" />}
                   </div>
                   <div className="flex-1 pb-8">
-                    <h3 className="text-xl font-semibold text-foreground mb-2">{item.title}</h3>
-                    <p className="text-muted-foreground">{item.description}</p>
+                    <h3 className="text-xl font-semibold text-foreground mb-2">{tr(item.title)}</h3>
+                    <p className="text-muted-foreground">{tr(item.description)}</p>
                   </div>
                 </div>
               ))}
@@ -160,35 +163,35 @@ export default function TechnologiesPage() {
       {/* Production Process */}
       <section className="py-24">
         <div className="container mx-auto px-4 lg:px-8">
-          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-16 text-center">Процесс производства</h2>
+          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-16 text-center">{tr("Процесс производства")}</h2>
 
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="relative h-64 lg:h-96 rounded-2xl overflow-hidden">
-              <img src="/images/factory-1.jpg" alt="Этап 1" className="w-full h-full object-cover" />
+              <img src="/images/factory-1.jpg" alt={tr("Этап 1")} className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
                 <div>
                   <div className="text-4xl font-bold text-white mb-2">01</div>
-                  <h3 className="text-xl font-semibold text-white">Подготовка сырья</h3>
+                  <h3 className="text-xl font-semibold text-white">{tr("Подготовка сырья")}</h3>
                 </div>
               </div>
             </div>
 
             <div className="relative h-64 lg:h-96 rounded-2xl overflow-hidden">
-              <img src="/images/factory-2.jpg" alt="Этап 2" className="w-full h-full object-cover" loading="lazy" />
+              <img src="/images/factory-2.jpg" alt={tr("Этап 2")} className="w-full h-full object-cover" loading="lazy" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
                 <div>
                   <div className="text-4xl font-bold text-white mb-2">02</div>
-                  <h3 className="text-xl font-semibold text-white">Полимеризация</h3>
+                  <h3 className="text-xl font-semibold text-white">{tr("Полимеризация")}</h3>
                 </div>
               </div>
             </div>
 
             <div className="relative h-64 lg:h-96 rounded-2xl overflow-hidden">
-              <img src="/images/factory-3.jpg" alt="Этап 3" className="w-full h-full object-cover" loading="lazy" />
+              <img src="/images/factory-3.jpg" alt={tr("Этап 3")} className="w-full h-full object-cover" loading="lazy" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
                 <div>
                   <div className="text-4xl font-bold text-white mb-2">03</div>
-                  <h3 className="text-xl font-semibold text-white">Контроль качества</h3>
+                  <h3 className="text-xl font-semibold text-white">{tr("Контроль качества")}</h3>
                 </div>
               </div>
             </div>

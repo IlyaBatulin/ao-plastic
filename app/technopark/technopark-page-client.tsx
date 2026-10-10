@@ -145,14 +145,14 @@ export function TechnoparkPageClient() {
   const en = lang === "en"
 
   const keyStats = [
-    { value: ">104", unit: en ? "ha" : "га", label: en ? "of territory" : "территория парка" },
-    { value: ">100 000", unit: "м²", label: en ? "of buildings" : "комплекс зданий" },
-    { value: "10", unit: "", label: en ? "active residents" : "действующих резидентов" },
+    { value: ">104", unit: en ? "ha" : "га", label: en ? "Site area" : "территория парка" },
+    { value: en ? ">100,000" : ">100 000", unit: en ? "m²" : "м²", label: en ? "Building floor area" : "комплекс зданий" },
+    { value: "10", unit: "", label: en ? "resident companies" : "действующих резидентов" },
     { value: "645", unit: "", label: en ? "jobs created" : "рабочих мест создано" },
   ]
 
   const infrastructure = [
-    { icon: Flame, text: en ? "Steam boiler stations" : "Паровые котельные" },
+    { icon: Flame, text: en ? "Steam boiler plants" : "Паровые котельные" },
     { icon: Droplets, text: en ? "Water treatment station — 400 m³/h" : "Станция фильтрации и очистки воды — 400 м³/час" },
     { icon: Zap, text: en ? "Power lines 2×15 MW" : "Линии электропередачи 2×15 МВт" },
     { icon: Wind, text: en ? "Compressor stations 108 and 210 m³/min" : "Компрессорные станции 108 и 210 м³/мин" },
@@ -163,7 +163,7 @@ export function TechnoparkPageClient() {
   const parkFeatures = [
     { icon: Warehouse, title: en ? "Customs warehouse" : "Таможенный склад", text: en ? "4,000 m² open-type customs warehouse" : "4 000 м² — таможенный склад открытого типа" },
     { icon: Train, title: en ? "Railway infrastructure" : "Ж/д инфраструктура", text: en ? "Own railway tracks and station" : "Собственные железнодорожные пути и станция" },
-    { icon: FlaskConical, title: en ? "Scientific base" : "Научно-техническая база", text: en ? "Own laboratories and testing facilities" : "Собственные лаборатории и испытательная база" },
+    { icon: FlaskConical, title: en ? "R&D and testing facilities" : "Научно-техническая база", text: en ? "Own laboratories and testing facilities" : "Собственные лаборатории и испытательная база" },
     { icon: Factory, title: en ? "Production sites" : "Производственные площади", text: en ? "Ready sites with utilities for residents" : "Готовые площадки с коммуникациями для резидентов" },
   ]
 
@@ -228,7 +228,7 @@ export function TechnoparkPageClient() {
             <h2 className="text-h2 text-primary">{en ? "Park infrastructure" : "Возможности парка"}</h2>
             <p className="text-body mt-4 text-muted-foreground">
               {en
-                ? "Everything needed to launch production quickly: sites, utilities, logistics and services on one territory."
+                ? "Everything needed to launch production quickly: sites, utilities, logistics and services on one site."
                 : "Всё для быстрого запуска производства: площадки, коммуникации, логистика и сервисы на одной территории."}
             </p>
           </motion.div>
@@ -412,10 +412,10 @@ export function TechnoparkPageClient() {
               </p>
               <div className="mt-8 grid grid-cols-2 gap-4">
                 {[
-                  { v: ">900", u: "м²", l: en ? "training space" : "учебных площадей" },
+                  { v: ">900", u: en ? "m²" : "м²", l: en ? "training space" : "учебных площадей" },
                   { v: "6", u: "", l: en ? "chemical laboratories" : "химических лабораторий" },
                   { v: ">100", u: "", l: en ? "modern instruments" : "единиц современных приборов" },
-                  { v: "110", u: "", l: en ? "study places" : "учебных мест" },
+                  { v: "110", u: "", l: en ? "training places" : "учебных мест" },
                 ].map((s) => (
                   <div key={s.l} className="rounded-2xl border border-border/70 bg-card p-5 shadow-sm">
                     <div className="text-2xl font-bold text-primary sm:text-3xl">

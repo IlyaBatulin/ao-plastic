@@ -130,14 +130,14 @@ const content = {
     outsourcingTitle: "Transfer of Functions to a Specialized Organization",
     outsourcingParagraphs: [
       "Organizations operating hazardous production facilities are required to establish their own professional emergency rescue formations or enter into service contracts with specialized providers.",
-      "AO PLASTIC offers to transfer gas rescue and fire safety functions to a professional emergency rescue formation. The work is performed in the interests of the customer under the management and control of the contractor.",
+      "JSC Plastic offers to transfer gas rescue and fire safety functions to a professional emergency rescue formation. The work is performed in the interests of the customer under the management and control of the contractor.",
     ],
     benefitsTitle: "Benefits for the Enterprise",
     benefits: [
       "Reduction of personnel, training, insurance and recruitment costs.",
       "Reduction of indirect and non-production costs related to maintaining emergency rescue readiness.",
       "Access to the expertise, methodology and experience of a professional emergency rescue formation.",
-      "Responsibility of PASF AO PLASTIC for operational readiness, response and scheduled technical re-equipment.",
+      "Responsibility of PASF JSC Plastic for operational readiness, response and scheduled technical re-equipment.",
     ],
     servicesBadge: "Main Areas",
     servicesTitle: "Gas Rescue Operations and Fire Safety",
@@ -149,7 +149,7 @@ const content = {
       "Assistance to people affected by an accident.",
       "Localization and elimination of accident consequences.",
       "Inspection of gas protection equipment and personal protective equipment.",
-      "Ensuring the safe performance of gas hazardous works.",
+      "Ensuring the safe performance of work in hazardous gas atmospheres.",
     ],
     fireTitle: "Fire Safety",
     fireText:
@@ -157,8 +157,8 @@ const content = {
     fireWorks: [
       "Rescue of people and property in fires, provision of first aid.",
       "Organization and execution of fire extinguishing and emergency rescue operations.",
-      "Ensuring the safe performance of hot works.",
-      "Inspection of external and internal fire water supply systems for water output.",
+      "Ensuring the safe performance of hot work.",
+      "Inspection of external and internal fire water supply systems for flow rate.",
       "Development and revision of fire extinguishing plans and cards.",
     ],
     resourcesBadge: "Unit Resources",
@@ -171,7 +171,7 @@ const content = {
       "Modern fire trucks equipped in accordance with EMERCOM requirements.",
       "Hose base with a threefold hose reserve and maintenance capability.",
       "Gas and smoke protection service post for compressed-air breathing apparatus maintenance.",
-      "Equipment for checking fire water supply systems for water output.",
+      "Equipment for checking fire water supply systems for flow rate.",
       "Automatic fire alarm signals displayed directly on the PASF dispatcher monitor.",
     ],
     preventiveTitle: "Preventive Activities",
@@ -184,15 +184,15 @@ const content = {
     docsBadge: "Documents and Certification",
     docsTitle: "Authorization to Conduct Emergency Rescue Operations",
     docsText:
-      "PASF AO PLASTIC performs works and provides services under its valid certificate of attestation and fire safety license.",
+      "PASF JSC Plastic provides services under its valid certificate of attestation and fire safety license.",
     docsNote:
-      "When entering into a service agreement, additional equipment, machinery and fire extinguishing means may be provided according to the specifics of your production facility.",
+      "When entering into a service agreement, additional equipment, machinery and firefighting equipment may be provided according to the specifics of your production facility.",
     certificateAlt: "PASF PLASTIC certificate of attestation",
     licenseAlt: "EMERCOM license notification",
     cooperationBadge: "Cooperation Experience",
     cooperationTitle: "PASF PLASTIC Provides Services to Industrial Customers",
     cooperationText:
-      "The emergency rescue service of AO PLASTIC works with production, infrastructure and service companies, ensuring comprehensive safety of the facilities under service.",
+      "The emergency rescue service of JSC Plastic works with production, infrastructure and service companies, ensuring comprehensive safety of the facilities under service.",
     partners: [
       "Polymerdor LLC",
       "Adventum Technologies LLC",
@@ -214,7 +214,8 @@ export function PasfPageClient() {
   const page = content[lang as keyof typeof content]
 
   return (
-    <>      <div className="min-h-screen bg-transparent">
+    <>
+      <div className="min-h-screen bg-transparent">
         <section className="relative overflow-hidden pt-32 pb-16">
           <div className="pointer-events-none absolute inset-0 overflow-hidden">
             <div

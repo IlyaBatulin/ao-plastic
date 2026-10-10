@@ -1,3 +1,4 @@
+import { localizePageMetadata } from "@/lib/seo/localized-metadata"
 import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
 import { createCatalogClient, supabaseCatalogQuery } from "@/utils/supabase/server"
@@ -8,7 +9,7 @@ import { pageOpenGraph } from "@/lib/seo/page-metadata"
 
 export const revalidate = 300
 
-export const metadata: Metadata = {
+const originalMetadata: Metadata = {
   title: "Каталог продукции",
   description:
     "Каталог АО «Пластик»: АБС-пластики, полистирол, стирол, детали машиностроения, канистры и бытовые изделия. Подкатегории, характеристики и заказ продукции.",
@@ -19,6 +20,10 @@ export const metadata: Metadata = {
       "Каталог АО «Пластик»: АБС-пластики, полистирол, стирол, детали машиностроения, канистры и бытовые изделия. Подкатегории, характеристики и заказ продукции.",
     path: "/products",
   }),
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  return localizePageMetadata(originalMetadata, "/products")
 }
 
 export default async function ProductsPage() {

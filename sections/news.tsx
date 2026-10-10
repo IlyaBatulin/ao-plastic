@@ -8,6 +8,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { ArrowRight, Calendar, Newspaper } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 import { SectionHeading } from "@/components/section-heading"
+import { localizeNews } from "@/lib/news-i18n"
 
 interface NewsItem {
   id: number
@@ -54,7 +55,7 @@ export function News({ items = [] }: NewsProps) {
         />
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 mb-12">
           {items.length > 0 ? (
-            items.map((item, index) => (
+            items.map((item) => localizeNews(item, lang)).map((item, index) => (
               <Card
                 key={item.id}
                 className={`transition-all duration-300 overflow-hidden ${

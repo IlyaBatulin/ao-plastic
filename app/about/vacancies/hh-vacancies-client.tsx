@@ -194,6 +194,7 @@ export function HHVacanciesClient() {
 
   return (
     <div className="space-y-6">
+      {lang === "en" && <p className="rounded-xl border border-border bg-secondary/40 p-4 text-sm text-muted-foreground">Vacancy descriptions are provided in Russian by our recruitment service. Use the filters below or contact us for details.</p>}
       {/* Поиск и фильтры */}
       <div className="bg-card rounded-lg p-5 border border-border shadow-sm">
         <div className="flex gap-3 mb-4">

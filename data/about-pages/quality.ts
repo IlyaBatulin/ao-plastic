@@ -106,7 +106,7 @@ export const qualityPageContent = {
     qmsParagraphs: [
       "Our plant operates a quality management system certified for compliance with ISO 9001:2015 and GOST R ISO 9001-2015. The company undergoes regular audits and confirms that its products meet all applicable standards. The foundation of quality for polymer products is the raw materials used in their manufacture and their properties.",
       "JSC Plastic has implemented and maintains a quality management system in accordance with international and national standards. This ensures stable quality of styrene, polystyrene, ABS plastics and finished products, and improves customer satisfaction and process efficiency.",
-      "The QMS is based on the Plan–Do–Check–Act (PDCA) cycle: we plan quality processes and objectives, execute them under control, conduct internal and external audits and corrective actions, and then improve the system.",
+      "The QMS is based on the Plan–Do–Check–Act (PDCA) cycle: we plan quality processes and objectives, implement and monitor them, conduct internal and external audits and corrective actions, and then improve the system.",
       "The quality policy is part of the company's overall strategy and is communicated to all employees; management and quality officers are responsible for its implementation.",
     ],
     principlesTitle: "Quality Management Principles",
@@ -135,9 +135,9 @@ export const qualityPageContent = {
     stepsTitle: "How We Ensure Quality",
     qualitySteps: [
       {
-        title: "Incoming Raw Material Control",
+        title: "Incoming Raw-material Inspection",
         description:
-          "Testing of incoming raw materials for physicochemical indicators in an accredited laboratory.",
+          "Testing of incoming raw materials for physicochemical properties in an accredited laboratory.",
       },
       {
         title: "In-Process Control",

@@ -363,13 +363,13 @@ export default function CartPage({ params, searchParams }: NextPageProps) {
                   </div>
 
                   <div>
-                    <label className="text-xs sm:text-sm font-semibold mb-1.5 md:mb-2 block">Желаемая дата поставки</label>
+                    <label className="text-xs sm:text-sm font-semibold mb-1.5 md:mb-2 block">{t("cartPage.deliveryDate")}</label>
                     <Input type="date" min={new Date().toISOString().slice(0, 10)} value={requestedDeliveryDate} onChange={(e) => setRequestedDeliveryDate(e.target.value)} className="h-10 md:h-11" />
                   </div>
 
                   <div>
-                    <label className="text-xs sm:text-sm font-semibold mb-1.5 md:mb-2 block">Адрес поставки</label>
-                    <Input value={deliveryAddress} onChange={(e) => setDeliveryAddress(e.target.value)} placeholder="Город, улица, склад" className="h-10 md:h-11" />
+                    <label className="text-xs sm:text-sm font-semibold mb-1.5 md:mb-2 block">{t("cartPage.deliveryAddress")}</label>
+                    <Input value={deliveryAddress} onChange={(e) => setDeliveryAddress(e.target.value)} placeholder={t("cartPage.deliveryAddressPlaceholder")} className="h-10 md:h-11" />
                   </div>
 
                   <div>

@@ -145,7 +145,7 @@ export default function ProductsGrid({
               </div>
 
               <div className="p-4 pb-3 sm:p-6 sm:pb-4">
-                <h3 className="text-xl font-bold mb-2 transition-colors duration-300 group-hover:text-primary">
+                <h3 className="text-xl font-bold mb-2 leading-snug [overflow-wrap:anywhere] transition-colors duration-300 group-hover:text-primary">
                   {displayName}
                 </h3>
                 <p className="text-muted-foreground text-sm mb-4 leading-relaxed line-clamp-2">

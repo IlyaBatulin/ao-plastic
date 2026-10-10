@@ -2,6 +2,8 @@
 
 import { useState, useMemo } from "react"
 import { Search, X } from "lucide-react"
+import { useLanguage } from "@/contexts/language-context"
+import { getRalColourName } from "@/lib/ral-names-en"
 
 export type RalColor = {
   code: string   // "RAL 1000"
@@ -243,6 +245,8 @@ type Props = {
 }
 
 export function RalColorPicker({ selected, onChange }: Props) {
+  const { lang } = useLanguage()
+  const en = lang === "en"
   const [search, setSearch] = useState("")
   const [isOpen, setIsOpen] = useState(false)
 
@@ -252,7 +256,8 @@ export function RalColorPicker({ selected, onChange }: Props) {
     return RAL_COLORS.filter(
       (c) =>
         c.code.toLowerCase().includes(q) ||
-        c.name.toLowerCase().includes(q)
+        c.name.toLowerCase().includes(q) ||
+        getRalColourName(c.code, c.name, "en").toLowerCase().includes(q)
     )
   }, [search])
 
@@ -281,13 +286,13 @@ export function RalColorPicker({ selected, onChange }: Props) {
               />
               <span className="flex-1">
                 <span className="font-semibold text-sm block">{selected.code}</span>
-                <span className="text-xs text-muted-foreground">{selected.name}</span>
+                <span className="text-xs text-muted-foreground">{getRalColourName(selected.code, selected.name, lang)}</span>
               </span>
             </>
           ) : (
             <>
               <span className="w-8 h-8 rounded-lg border-2 border-dashed border-border flex-shrink-0" />
-              <span className="text-sm text-muted-foreground">Выбрать цвет RAL...</span>
+              <span className="text-sm text-muted-foreground">{en ? "Select a RAL colour…" : "Выбрать цвет RAL..."}</span>
             </>
           )}
           <span className="text-xs text-muted-foreground ml-auto">{isOpen ? "▲" : "▼"}</span>
@@ -298,7 +303,7 @@ export function RalColorPicker({ selected, onChange }: Props) {
             type="button"
             onClick={() => onChange(null)}
             className="p-2 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors flex-shrink-0"
-            title="Сбросить"
+            title={en ? "Reset colour" : "Сбросить"}
           >
             <X className="w-4 h-4" />
           </button>
@@ -314,7 +319,7 @@ export function RalColorPicker({ selected, onChange }: Props) {
               <Search className="w-4 h-4 text-muted-foreground flex-shrink-0" />
               <input
                 type="text"
-                placeholder="Поиск по коду или названию…"
+                placeholder={en ? "Search by code or colour name…" : "Поиск по коду или названию…"}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="flex-1 bg-transparent outline-none text-sm"
@@ -331,7 +336,7 @@ export function RalColorPicker({ selected, onChange }: Props) {
           {/* Сетка цветов */}
           <div className="p-3 max-h-72 overflow-y-auto">
             {filtered.length === 0 ? (
-              <p className="text-center text-sm text-muted-foreground py-6">Ничего не найдено</p>
+              <p className="text-center text-sm text-muted-foreground py-6">{en ? "No colours found" : "Ничего не найдено"}</p>
             ) : (
               <div className="grid grid-cols-8 sm:grid-cols-10 gap-1.5">
                 {filtered.map((color) => {
@@ -340,7 +345,7 @@ export function RalColorPicker({ selected, onChange }: Props) {
                     <button
                       key={color.code}
                       type="button"
-                      title={`${color.code} — ${color.name}`}
+                      title={`${color.code} — ${getRalColourName(color.code, color.name, lang)}`}
                       onClick={() => {
                         onChange(color)
                         setIsOpen(false)
@@ -369,7 +374,7 @@ export function RalColorPicker({ selected, onChange }: Props) {
 
           {/* Подпись кол-ва */}
           <div className="px-3 pb-2 text-right">
-            <span className="text-xs text-muted-foreground">{filtered.length} цветов RAL Classic</span>
+            <span className="text-xs text-muted-foreground">{filtered.length} {en ? "RAL Classic colours" : "цветов RAL Classic"}</span>
           </div>
         </div>
       )}

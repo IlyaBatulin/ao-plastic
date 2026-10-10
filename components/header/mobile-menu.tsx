@@ -169,7 +169,7 @@ export function MobileMenu({ isOpen, onOpenChange }: MobileMenuProps) {
                 priority
               />
             </div>
-            <span className="font-bold text-lg text-foreground">АО Пластик</span>
+            <span className="font-bold text-lg text-foreground">{lang === "en" ? "JSC Plastic" : "АО Пластик"}</span>
           </Link>
           <button
             type="button"

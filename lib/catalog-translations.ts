@@ -13,29 +13,29 @@ export function getCategoryName(categoryId: string, lang: "ru" | "en" = "ru"): s
     hoztovary: { ru: "Товары народного потребления", en: "Consumer Goods" },
     canisters: { ru: "Канистры", en: "Canisters" },
     boxes: { ru: "Ящики", en: "Boxes" },
-    "pvc-modifier": { ru: "Модификатор для композиций ПВХ", en: "PVC Composition Modifier" },
+    "pvc-modifier": { ru: "Модификатор для композиций ПВХ", en: "PVC Compound Modifier" },
     kors: { ru: "КОРС и Бентол", en: "CORS and Bentol" },
-    "custom-abs": { ru: "Изготовление изделий из АБС пластика на заказ", en: "Custom ABS Plastic Products Manufacturing" },
+    "custom-abs": { ru: "Изготовление изделий из АБС пластика на заказ", en: "Custom ABS Component Manufacturing" },
     
     // Подкатегории
-    "abs-injection": { ru: "Литьевые марки", en: "Injection Grades" },
+    "abs-injection": { ru: "Литьевые марки", en: "Injection-moulding Grades" },
     "abs-extrusion": { ru: "Экструзионные марки", en: "Extrusion Grades" },
-    "abs-custom": { ru: "Изготовление изделий из АБС пластика на заказ", en: "Custom ABS Plastic Products Manufacturing" },
+    "abs-custom": { ru: "Изготовление изделий из АБС пластика на заказ", en: "Custom ABS Component Manufacturing" },
     "ps-psv-s": { ru: "Полистирол вспенивающийся «УПЕКС»", en: "UPEX Expandable Polystyrene" },
     "ps-psv-l": { ru: "Полистирол вспенивающийся ПСВ-Л", en: "Expandable Polystyrene EPS-L" },
     "ps-pse": { ru: "Полистирол ПСЭ-1", en: "Polystyrene PSE-1" },
     "dispersion-coatings": { ru: "ЛКМ и строительные материалы", en: "Coatings and Construction Materials" },
     "dispersion-nonwovens": { ru: "Нетканые материалы", en: "Nonwoven Materials" },
     "dispersion-adhesives": { ru: "Адгезивы", en: "Adhesives" },
-    "extrusion-parts": { ru: "Экструзионные изделия", en: "Extrusion Products" },
-    "parts-extrusion": { ru: "Экструзионные изделия", en: "Extrusion Products" },
-    "injection-parts": { ru: "Литьевые изделия", en: "Injection Products" },
+    "extrusion-parts": { ru: "Экструзионные изделия", en: "Extruded Parts" },
+    "parts-extrusion": { ru: "Экструзионные изделия", en: "Extruded Parts" },
+    "injection-parts": { ru: "Литьевые изделия", en: "Injection-moulded Parts" },
     "vedra-tazy": { ru: "Ведра и тазы", en: "Buckets and Basins" },
     uborka: { ru: "Уборочный инвентарь", en: "Cleaning Supplies" },
-    steklo: { ru: "Стеклоочистители", en: "Glass Cleaners" },
+    steklo: { ru: "Стеклоочистители", en: "Window Squeegees" },
     sanuzel: { ru: "Для ванной комнаты", en: "Bathroom Accessories" },
     kuhnya: { ru: "Кухонные принадлежности", en: "Kitchenware" },
-    veshalki: { ru: "Вешалки и плечики", en: "Hangers and Clothes Hangers" },
+    veshalki: { ru: "Вешалки и плечики", en: "Clothes Hangers" },
     otdyh: { ru: "Товары для отдыха", en: "Leisure Products" },
   }
 
@@ -51,7 +51,7 @@ export function getCategoryName(categoryId: string, lang: "ru" | "en" = "ru"): s
 const SUBCATEGORY_DESCRIPTIONS: Record<string, { ru: string; en: string }> = {
   "abs-injection": {
     ru: "Литьевые марки АБС-пластика",
-    en: "Injection grades of ABS plastic",
+    en: "Injection-moulding grades of ABS plastic",
   },
   "abs-extrusion": {
     ru: "Экструзионные марки АБС-пластика",
@@ -59,7 +59,7 @@ const SUBCATEGORY_DESCRIPTIONS: Record<string, { ru: string; en: string }> = {
   },
   "abs-custom": {
     ru: "Изготовление изделий из АБС-пластика по индивидуальным заказам",
-    en: "Manufacturing of ABS parts to individual orders",
+    en: "Manufacturing of ABS parts to customer specifications",
   },
   "ps-psv-s": {
     ru: "Самозатухающий вспенивающийся полистирол «УПЕКС» марок 1–6. Марки отличаются размером гранул и предназначены для теплоизоляции, звукоизоляции, защитной упаковки и формованных изделий.",

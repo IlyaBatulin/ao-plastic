@@ -90,19 +90,21 @@ const PeriodBlock22 = ({ period, image, preserveImage = false }: PeriodBlockProp
 
   return (
     <>
-    <section className="md:hidden border-t border-border/60 bg-background px-4 py-12">
-      <div className="mx-auto max-w-2xl">
+    <section className="history-flow border-t border-border/60 bg-background px-4 py-12 sm:px-8">
+      <div className="mx-auto max-w-5xl grid gap-x-10 lg:grid-cols-2">
         <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-lg">
           <img
             src={image}
             alt={period.title}
-            className={preserveImage ? "h-full w-full object-contain bg-neutral-950" : "h-full w-full object-cover image-industrial"}
+            loading="lazy"
+            decoding="async"
+            className={preserveImage ? "h-full w-full object-cover" : "h-full w-full object-cover image-industrial"}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-background/10 to-transparent" />
         </div>
 
-        <div className="mt-7">
-          <span className="text-lg font-bold tracking-[0.08em] text-white tabular-nums">
+        <div className="mt-7 lg:col-start-1 lg:row-start-2">
+          <span className="text-lg font-bold tracking-[0.08em] text-primary tabular-nums">
             {period.title}
           </span>
           <h2 className="mt-2 text-2xl font-semibold leading-tight text-foreground">
@@ -110,7 +112,7 @@ const PeriodBlock22 = ({ period, image, preserveImage = false }: PeriodBlockProp
           </h2>
         </div>
 
-        <div className="mt-7">
+        <div className="mt-7 lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:mt-0">
           <Timeline22 events={period.timeline} isVisible={true} />
         </div>
       </div>
@@ -118,7 +120,7 @@ const PeriodBlock22 = ({ period, image, preserveImage = false }: PeriodBlockProp
 
     <div 
       ref={containerRef} 
-      className="relative hidden md:block"
+      className="history-immersive relative"
       style={{ height: "280vh" }}
     >
       {/* Sticky container - holds everything in place */}
@@ -141,7 +143,9 @@ const PeriodBlock22 = ({ period, image, preserveImage = false }: PeriodBlockProp
           <img
             src={image}
             alt={period.title}
-            className={preserveImage ? "w-full h-full object-contain bg-neutral-950" : "w-full h-full object-cover image-industrial"}
+            loading="lazy"
+            decoding="async"
+            className={preserveImage ? "w-full h-full object-cover" : "w-full h-full object-cover image-industrial"}
           />
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
@@ -166,7 +170,7 @@ const PeriodBlock22 = ({ period, image, preserveImage = false }: PeriodBlockProp
             top: "calc(6% + 50vh)",
           }}
         >
-          <span className="text-base font-bold tracking-[0.08em] text-white drop-shadow-[0_1px_6px_rgba(0,0,0,0.65)] tabular-nums md:text-lg">
+          <span className="text-base font-bold tracking-[0.08em] text-primary tabular-nums md:text-lg">
             {period.title}
           </span>
           <h3 className="text-xl md:text-2xl font-semibold text-foreground mt-1 max-w-[38vw]">
@@ -177,7 +181,11 @@ const PeriodBlock22 = ({ period, image, preserveImage = false }: PeriodBlockProp
         {/* Right side — timeline only */}
         <div className="absolute right-[5%] md:right-[7%] top-[12%] bottom-[4%] w-[40%]">
           <motion.div
-            className="h-full overflow-y-auto overflow-x-hidden pr-1 pt-1 pb-1 scroll-pt-2 no-scrollbar"
+            className="h-full overflow-y-auto overflow-x-hidden pr-3 pt-1 pb-1 scroll-pt-2"
+            data-lenis-prevent
+            tabIndex={0}
+            role="region"
+            aria-label={period.title}
             style={{ 
               opacity: timelineOpacity,
               y: timelineY 

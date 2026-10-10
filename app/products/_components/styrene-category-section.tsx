@@ -96,7 +96,7 @@ export function StyreneCategorySection({ categoryName }: StyreneCategorySectionP
           >
             <h3 className="mb-6 text-h3">{t(styreneK.normTitle)}</h3>
             <KorsNormTable
-              tuLabel={STYRENE_OKP_LABEL}
+              tuLabel={lang === "en" ? STYRENE_OKP_LABEL.replace("ОКП", "OKP") : STYRENE_OKP_LABEL}
               rows={getStyreneNormRows(lang === "en" ? "en" : "ru")}
               {...normTableCols}
             />

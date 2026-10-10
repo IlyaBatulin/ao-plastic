@@ -12,6 +12,7 @@
     "audit:catalog": "node scripts/audit-catalog.mjs",
     "audit:seo": "node scripts/audit-seo.mjs",
     "typecheck": "tsc --noEmit",
+    "test:english": "node scripts/test-english.cjs",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui"
   },

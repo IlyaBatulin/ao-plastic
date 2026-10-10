@@ -32,7 +32,7 @@ const TimelineItem22 = forwardRef<HTMLDivElement, TimelineItemProps>(
             <span className="timeline-year block mb-1 text-base sm:text-lg md:text-xl font-bold">
               {event.year}
             </span>
-            <p className="timeline-description text-xs sm:text-sm md:text-base leading-relaxed">
+            <p className="timeline-description text-sm md:text-base leading-relaxed">
               {event.description}
             </p>
           </div>

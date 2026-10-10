@@ -1,10 +1,11 @@
+import { localizePageMetadata } from "@/lib/seo/localized-metadata"
 import type { Metadata } from "next"
 import { LegalDocumentPage } from "@/components/legal/legal-document-page"
 import { LEGAL_DOCUMENT_CONTENT } from "@/lib/legal-content/documents"
 import { LegalRelatedLinks } from "@/components/legal/legal-related-links"
 import { pageOpenGraph } from "@/lib/seo/page-metadata"
 
-export const metadata: Metadata = {
+const originalMetadata: Metadata = {
   title: "Пользовательское соглашение",
   description:
     "Пользовательское соглашение сайта АО «Пластик»: правила использования материалов, ответственность сторон.",
@@ -15,6 +16,10 @@ export const metadata: Metadata = {
       "Пользовательское соглашение сайта АО «Пластик»: правила использования материалов, ответственность сторон.",
     path: "/legal/terms",
   }),
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  return localizePageMetadata(originalMetadata, "/legal/terms")
 }
 
 export default function TermsPage() {

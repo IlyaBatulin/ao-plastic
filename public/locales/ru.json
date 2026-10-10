@@ -58,6 +58,9 @@
     "cancel": "Отмена"
   },
   "cartPage": {
+    "deliveryDate": "Желаемая дата поставки",
+    "deliveryAddress": "Адрес поставки",
+    "deliveryAddressPlaceholder": "Город, улица, склад",
     "emptyTitle": "Корзина пуста",
     "emptyToastDescription": "Добавьте товары в корзину",
     "emptyDescription": "Добавьте товары из каталога",

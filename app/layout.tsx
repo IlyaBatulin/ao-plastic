@@ -1,3 +1,4 @@
+import { localizePageMetadata } from "@/lib/seo/localized-metadata"
 import type React from "react"
 import type { Metadata, Viewport } from "next"
 import { cookies } from "next/headers"
@@ -29,7 +30,7 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 }
 
-export const metadata: Metadata = {
+const originalMetadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: "АО «Пластик» — АБС-пластики, полистирол, пластиковые изделия",
@@ -101,6 +102,10 @@ export const metadata: Metadata = {
         },
       }
     : {}),
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  return localizePageMetadata(originalMetadata, "/")
 }
 
 export default async function RootLayout({
